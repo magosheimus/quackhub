@@ -88,7 +88,6 @@
   --signal-success: #4e640c;   
 }
 
-
 .cartucho-slate {
   --lcd-screen: #d8e0e4;  
   --lcd-ink:    #16242d;   
@@ -122,6 +121,7 @@
   --bg-card:       color-mix(in srgb, var(--lcd-screen) 80%, var(--lcd-ink) 20%);
   --bg-card-hover: color-mix(in srgb, var(--lcd-screen) 75%, var(--lcd-ink) 25%);
   --bg-selected:   color-mix(in srgb, var(--lcd-screen) 65%, var(--lcd-ink) 35%);
+  
 
   /* Signal */
   --signal-danger:  #e07a5f;   
@@ -190,12 +190,26 @@
   opacity: var(--scanline-opacity, 0);
 }
 
+.glow-heading { text-shadow: var(--glow); }
+
+.glow-active   { text-shadow: 0 0 10px color-mix(in srgb, var(--lcd-ink) 80%, transparent); }
+
+.card-hover    { box-shadow: 0 0 0 1px var(--border), 0 0 8px color-mix(in srgb, var(--lcd-ink) 20%, transparent); }
+
+.theme-dark .glow-heading {
+  text-shadow:
+    -0.5px 0 0 color-mix(in srgb, var(--lcd-ink) 40%, transparent),
+     0.5px 0 0 color-mix(in srgb, var(--lcd-ink) 35%, transparent),
+    var(--glow);
+}
+
+
 /* ==========================================================================
    5. Motion — animações decorativas
    ========================================================================== */
-@keyframes marquee-scroll {
-  from { transform: translateX(100vw); }
-  to   { transform: translateX(-100%); }
+@keyframes marquee-loop {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -220,5 +234,14 @@ body {
   font-family: var(--font-body);
   margin: 0;
 }
+
+input, textarea, select {
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  box-shadow:
+    inset 1px 1px 2px color-mix(in srgb, var(--lcd-ink) 20%, transparent),
+    inset -1px -1px 0 color-mix(in srgb, var(--lcd-screen) 40%, transparent);
+}
+
 
 

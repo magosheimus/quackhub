@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react'
+import { Marquee } from './components/ui/marquee'
 
 const CARTRIDGES = [
   { label: 'Sage', className: '' },
   { label: 'Amber', className: 'cartucho-amber' },
   { label: 'Slate', className: 'cartucho-slate' },
-  { label: 'Sage Dark', className: 'cartucho-sage-dark theme-dark' },
-  { label: 'Amber Dark', className: 'cartucho-amber-dark theme-dark' },
   { label: 'Earth', className: 'cartucho-earth' },
+  { label: 'Sage Dark', className: 'cartucho-sage-dark' },
+  { label: 'Amber Dark', className: 'cartucho-amber-dark' },
 ]
 
 const TOKENS = [
@@ -44,28 +45,32 @@ function Swatch({ token }: { token: string }) {
 }
 
 function App() {
-  const [active, setActive] = useState('')
+  const [cartridge, setCartridge] = useState('')
+  const [effectsOn, setEffectsOn] = useState(true)
 
   useEffect(() => {
-    document.documentElement.className = active
-  }, [active])
+    const classes = [cartridge, effectsOn ? 'theme-dark' : '']
+      .filter(Boolean)
+      .join(' ')
+    document.documentElement.className = classes
+  }, [cartridge, effectsOn])
 
   return (
     <div style={{ minHeight: '100vh', padding: 24 }}>
       <div
-        style={{ display: 'flex', gap: 8, marginBottom: 24, flexWrap: 'wrap' }}
+        style={{ display: 'flex', gap: 8, marginBottom: 16, flexWrap: 'wrap' }}
       >
         {CARTRIDGES.map((c) => (
           <button
             key={c.label}
-            onClick={() => setActive(c.className)}
+            onClick={() => setCartridge(c.className)}
             style={{
               padding: '6px 14px',
               border: '1px solid var(--border)',
               background:
-                active === c.className ? 'var(--accent)' : 'var(--bg-card)',
+                cartridge === c.className ? 'var(--accent)' : 'var(--bg-card)',
               color:
-                active === c.className
+                cartridge === c.className
                   ? 'var(--bg-page)'
                   : 'var(--text-primary)',
               cursor: 'pointer',
@@ -76,16 +81,59 @@ function App() {
         ))}
       </div>
 
+      <label
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 8,
+          marginBottom: 24,
+        }}
+      >
+        <input
+          type="checkbox"
+          checked={effectsOn}
+          onChange={(e) => setEffectsOn(e.target.checked)}
+        />
+        Efeitos escuros ligados (glow / aberração cromática / scanlines)
+      </label>
+
       <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
         {TOKENS.map((t) => (
           <Swatch key={t} token={t} />
         ))}
       </div>
 
-      <p style={{ marginTop: 24, color: 'var(--text-muted)' }}>
-        text-muted de exemplo — compare a legibilidade em cada cartucho
-      </p>
-      <p style={{ color: 'var(--text-primary)' }}>text-primary de exemplo</p>
+      <div style={{ marginTop: 24 }}>
+        <Marquee speed={50}>
+          ★ Sprint Goal: Finalizar motor SRS antes do fim da semana ★
+        </Marquee>
+      </div>
+
+      <div
+        style={{
+          marginTop: 24,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 16,
+        }}
+      >
+        <p className="glow-heading" style={{ fontSize: 20 }}>
+          Teste de glow/aberração cromática — compare com o checkbox
+          ligado/desligado
+        </p>
+
+        <div
+          className="card-hover"
+          style={{ padding: 16, background: 'var(--bg-card)', width: 200 }}
+        >
+          Card com .card-hover
+        </div>
+
+        <input
+          placeholder="Teste do bevel duplo do input"
+          style={{ padding: 8, width: 240, fontFamily: 'var(--font-body)' }}
+        />
+      </div>
     </div>
   )
 }
