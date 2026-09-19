@@ -65,6 +65,7 @@ export function EpicManageModal({
             value={newEpicName}
             onChange={(e) => setNewEpicName(e.target.value)}
             placeholder="Nome do novo épico"
+            aria-label="Nome do novo épico"
             onKeyDown={(e) => e.key === 'Enter' && handleCreate()}
           />
           <Button
@@ -98,6 +99,7 @@ function EpicRow({ epic }: { epic: Epic }) {
       onChange={(e) => setName(e.target.value)}
       onBlur={handleBlur}
       disabled={isPending}
+      aria-label={`Renomear épico ${epic.name}`}
       className="text-sm"
     />
   )

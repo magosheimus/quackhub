@@ -1,4 +1,3 @@
-// src/services/projects.ts
 import { supabase } from '@/lib/supabase'
 import type { Database } from '@/types/database.types'
 

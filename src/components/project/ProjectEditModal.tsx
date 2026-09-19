@@ -17,11 +17,14 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { useUpdateProject } from '@/hooks/projects/useUpdateProject'
 import { useSoftDeleteProject } from '@/hooks/projects/useSoftDeleteProject'
-import { PROJECT_COLORS } from '@/lib/projectColors'
+import {
+  PROJECT_COLORS,
+  type ProjectColor,
+  type ProjectType,
+} from '@/lib/project'
 import type { Database } from '@/types/database.types'
 
 type Project = Database['public']['Tables']['projects']['Row']
-type ProjectType = 'general' | 'study'
 
 type ProjectEditModalProps = {
   project: Project | null
@@ -59,8 +62,8 @@ type ProjectEditFormProps = {
 function ProjectEditForm({ project, onClose }: ProjectEditFormProps) {
   const [name, setName] = useState(project.name)
   const [type, setType] = useState<ProjectType>(project.type as ProjectType)
-  const [color, setColor] = useState<(typeof PROJECT_COLORS)[number]>(
-    (project.color as (typeof PROJECT_COLORS)[number]) ?? PROJECT_COLORS[0],
+  const [color, setColor] = useState<ProjectColor>(
+    (project.color as ProjectColor) ?? PROJECT_COLORS[0],
   )
 
   const { mutate: updateProject, isPending: isUpdating } = useUpdateProject()

@@ -11,7 +11,7 @@ import { TokenPreview } from './dev/TokenPreview'
 
 function Placeholder({ label }: { label: string }) {
   return (
-    <div className="text-base text[--text-primary]">
+    <div className="text-base text-[--text-primary]">
       {label} — ainda não implementado
     </div>
   )

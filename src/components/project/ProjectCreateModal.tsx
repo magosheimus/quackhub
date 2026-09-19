@@ -17,17 +17,17 @@ import {
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { useCreateProject } from '@/hooks/projects/useCreateProject'
-import { PROJECT_COLORS } from '@/lib/projectColors'
-
-type ProjectType = 'general' | 'study'
+import {
+  PROJECT_COLORS,
+  type ProjectColor,
+  type ProjectType,
+} from '@/lib/project'
 
 export function ProjectCreateModal() {
   const [open, setOpen] = useState(false)
   const [name, setName] = useState('')
   const [type, setType] = useState<ProjectType>('general')
-  const [color, setColor] = useState<(typeof PROJECT_COLORS)[number]>(
-    PROJECT_COLORS[0],
-  )
+  const [color, setColor] = useState<ProjectColor>(PROJECT_COLORS[0])
   const nameInputRef = useRef<HTMLInputElement>(null)
   const { mutate: createProject, isPending } = useCreateProject()
 

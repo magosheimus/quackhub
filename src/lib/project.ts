@@ -6,3 +6,6 @@ export const PROJECT_COLORS = [
   '#8a7ca8',
   '#c2b280',
 ] as const
+
+export type ProjectColor = (typeof PROJECT_COLORS)[number]
+export type ProjectType = 'general' | 'study'

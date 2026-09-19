@@ -1,16 +1,16 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { createProject } from '@/services/projects/projects'
 
-export function useCreateProject () {
-    const queryClient = useQueryClient()
+export function useCreateProject() {
+  const queryClient = useQueryClient()
 
-    return useMutation({
-        mutationFn: createProject,
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['projects'] })
-        },
-        onError: (error) => {
-            console.log(error.message)
-        }
-    })
+  return useMutation({
+    mutationFn: createProject,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['projects'] })
+    },
+    onError: (error) => {
+      console.error(error.message)
+    }
+  })
 }
