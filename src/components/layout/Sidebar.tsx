@@ -1,4 +1,12 @@
+import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
+import { Pencil } from 'lucide-react'
+import { useProjects } from '@/hooks/useProjects'
+import { ProjectCreateModal } from '../project/ProjectCreateModal'
+import { ProjectEditModal } from '../project/ProjectEditModal'
+import type { Database } from '@/types/database.types'
+
+type Project = Database['public']['Tables']['projects']['Row']
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
   `block px-3 py-2 rounded-[--radius-md] text-base ${
@@ -8,6 +16,9 @@ const navLinkClass = ({ isActive }: { isActive: boolean }) =>
   }`
 
 export function Sidebar() {
+  const { data: projects, isLoading } = useProjects()
+  const [editingProject, setEditingProject] = useState<Project | null>(null)
+
   return (
     <aside className="w-55 shrink-0 border-r border-[--border] bg-[--bg-surface] p-4 flex flex-col">
       <div className="font-heading text-xl text-[--text-primary] mb-6">
@@ -24,11 +35,37 @@ export function Sidebar() {
       </nav>
 
       <div className="mt-6">
-        <div className="text-xs text-[--text-muted] uppercase tracking-wide mb-2 px-3">
-          Projetos
+        <div className="flex items-center justify-between mb-2 px-3">
+          <span className="text-xs text-[--text-muted] uppercase tracking-wide">
+            Projetos
+          </span>
+          <ProjectCreateModal />
         </div>
-        <div className="px-3 text-sm text-[--text-muted]">
-          (lista dinâmica — Etapa 4)
+
+        <div className="flex flex-col gap-1">
+          {isLoading && (
+            <div className="px-3 text-sm text-[--text-muted]">
+              [ CARREGANDO........ ]
+            </div>
+          )}
+          {projects?.map((project) => (
+            <div key={project.id} className="group flex items-center">
+              <NavLink
+                to={`/projeto/${project.id}`}
+                className={(props) => `${navLinkClass(props)} flex-1`}
+              >
+                {project.name}
+              </NavLink>
+              <button
+                type="button"
+                onClick={() => setEditingProject(project)}
+                className="opacity-0 group-hover:opacity-100 p-1 text-[--text-muted]"
+                aria-label={`Editar projeto ${project.name}`}
+              >
+                <Pencil size={14} />
+              </button>
+            </div>
+          ))}
         </div>
       </div>
 
@@ -37,6 +74,11 @@ export function Sidebar() {
           Configurações
         </NavLink>
       </div>
+
+      <ProjectEditModal
+        project={editingProject}
+        onOpenChange={(open) => !open && setEditingProject(null)}
+      />
     </aside>
   )
 }
