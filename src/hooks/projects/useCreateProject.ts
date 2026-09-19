@@ -11,6 +11,6 @@ export function useCreateProject() {
     },
     onError: (error) => {
       console.error(error.message)
-    }
+    },
   })
 }

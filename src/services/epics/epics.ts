@@ -17,20 +17,29 @@ export async function getEpicsByProject(projectId: string): Promise<Epic[]> {
 
 export async function createEpic(data: NewEpic): Promise<Epic> {
   const { data: epic, error } = await supabase
-    .from('epics').insert(data).select().single()
+    .from('epics')
+    .insert(data)
+    .select()
+    .single()
   if (error) throw new Error(`Falha ao criar épico: ${error.message}`)
   return epic
 }
 
 export async function updateEpic(id: string, data: EpicUpdate): Promise<Epic> {
   const { data: epic, error } = await supabase
-    .from('epics').update(data).eq('id', id).select().single()
+    .from('epics')
+    .update(data)
+    .eq('id', id)
+    .select()
+    .single()
   if (error) throw new Error(`Falha ao atualizar épico: ${error.message}`)
   return epic
 }
 
 export async function softDeleteEpic(id: string): Promise<void> {
   const { error } = await supabase
-    .from('epics').update({ deleted_at: new Date().toISOString() }).eq('id', id)
+    .from('epics')
+    .update({ deleted_at: new Date().toISOString() })
+    .eq('id', id)
   if (error) throw new Error(`Falha ao arquivar épico: ${error.message}`)
 }

@@ -4,34 +4,38 @@
 :root {
   /* Raízes do cartucho */
   --lcd-screen: #c8cba4;
-  --lcd-ink:    #2c2e1a;
+  --lcd-ink: #2c2e1a;
 
   /* Surface */
-  --bg-page:       var(--lcd-screen);
-  --bg-surface:    color-mix(in srgb, var(--lcd-screen) 80%, var(--lcd-ink) 20%);
-  --bg-card:       color-mix(in srgb, var(--lcd-screen) 60%, white 40%);
+  --bg-page: var(--lcd-screen);
+  --bg-surface: color-mix(in srgb, var(--lcd-screen) 80%, var(--lcd-ink) 20%);
+  --bg-card: color-mix(in srgb, var(--lcd-screen) 60%, white 40%);
   --bg-card-hover: color-mix(in srgb, var(--lcd-screen) 55%, white 45%);
-  --bg-selected:   color-mix(in srgb, var(--lcd-screen) 45%, white 55%);
-  --bg-input:      color-mix(in srgb, var(--lcd-screen) 70%, var(--lcd-ink) 30%);
+  --bg-selected: color-mix(in srgb, var(--lcd-screen) 45%, white 55%);
+  --bg-input: color-mix(in srgb, var(--lcd-screen) 70%, var(--lcd-ink) 30%);
 
   /* Text */
   --text-primary: var(--lcd-ink);
-  --text-muted:   color-mix(in srgb, var(--lcd-screen) 20%, var(--lcd-ink) 80%);
+  --text-muted: color-mix(in srgb, var(--lcd-screen) 20%, var(--lcd-ink) 80%);
 
   /* Border */
-  --border:        color-mix(in srgb, var(--lcd-screen) 50%, var(--lcd-ink) 50%);
-  --border-strong: color-mix(in srgb, var(--lcd-screen) 30%, var(--lcd-ink) 70%);
+  --border: color-mix(in srgb, var(--lcd-screen) 50%, var(--lcd-ink) 50%);
+  --border-strong: color-mix(
+    in srgb,
+    var(--lcd-screen) 30%,
+    var(--lcd-ink) 70%
+  );
 
   /* Accent */
   --accent: #204f43;
 
   /* Signal */
-  --signal-danger:  #c23b2a;
+  --signal-danger: #c23b2a;
   --signal-warning: #b17a04;
   --signal-success: #2f5e2f;
 
   /* Elevation */
-  --elevation-none:   var(--bg-card);
+  --elevation-none: var(--bg-card);
   --elevation-active: var(--bg-selected);
 
   /* Efeitos */
@@ -40,35 +44,35 @@
 
   /* Tipografia */
   --font-heading: 'VT323', monospace;
-  --font-body:    'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+  --font-body: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
 
-  --text-xs:   10px;
-  --text-sm:   12px;
+  --text-xs: 10px;
+  --text-sm: 12px;
   --text-base: 13px;
-  --text-lg:   16px;
-  --text-xl:   18px;
-  --text-2xl:  24px;
-  --text-3xl:  32px;
+  --text-lg: 16px;
+  --text-xl: 18px;
+  --text-2xl: 24px;
+  --text-3xl: 32px;
 
-  --leading-tight:  1.2;
+  --leading-tight: 1.2;
   --leading-normal: 1.5;
 
   /* Espaçamento */
-  --space-1:  2px;
-  --space-2:  4px;
-  --space-3:  6px;
-  --space-4:  8px;
-  --space-6:  12px;
-  --space-8:  16px;
+  --space-1: 2px;
+  --space-2: 4px;
+  --space-3: 6px;
+  --space-4: 8px;
+  --space-6: 12px;
+  --space-8: 16px;
   --space-10: 20px;
   --space-12: 24px;
   --space-16: 32px;
 
   /* Border Radius */
   --radius-none: 0;
-  --radius-sm:   2px;
-  --radius-md:   4px;
-  --radius-lg:   6px;
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 6px;
 
   /* Motion */
   --motion-fast: 150ms ease;
@@ -78,74 +82,80 @@
    2. Cartuchos — paletas alternativas
    ========================================================================== */
 .cartucho-amber {
-  --lcd-screen: #e0b878;   
-  --lcd-ink:    #3d2308;  
-  --accent: #7a3b12; 
+  --lcd-screen: #e0b878;
+  --lcd-ink: #3d2308;
+  --accent: #7a3b12;
 
   /* Signal */
-  --signal-danger:  #a31a08;  
-  --signal-warning: #d69200;  
-  --signal-success: #4e640c;   
+  --signal-danger: #a31a08;
+  --signal-warning: #d69200;
+  --signal-success: #4e640c;
 }
 
 .cartucho-slate {
-  --lcd-screen: #d8e0e4;  
-  --lcd-ink:    #16242d;   
+  --lcd-screen: #d8e0e4;
+  --lcd-ink: #16242d;
   --accent: #2c5a8a;
 
   /* Signal */
-  --signal-danger:  #a11a45;  
-  --signal-warning: #a8560f;   
-  --signal-success: #006b54;   
+  --signal-danger: #a11a45;
+  --signal-warning: #a8560f;
+  --signal-success: #006b54;
 }
 
 .cartucho-earth {
-  --lcd-screen: #f1dca7;  
-  --lcd-ink:    #3d2f22;   
+  --lcd-screen: #f1dca7;
+  --lcd-ink: #3d2f22;
   --bg-surface: #d9ae94;
   --accent: #646d34;
 
   /* Signal */
-  --signal-danger:  #b43313;  
-  --signal-warning: #e2a533;  
-  --signal-success: #588157;   
+  --signal-danger: #b43313;
+  --signal-warning: #e2a533;
+  --signal-success: #588157;
 }
 
 .cartucho-sage-dark {
-  --lcd-screen: #2e4632;  
-  --lcd-ink:    #f5f1e6; 
+  --lcd-screen: #2e4632;
+  --lcd-ink: #f5f1e6;
   --accent: #c9a24b;
 
   /* Sobrescrita da escada de superfície */
-  --bg-surface:    color-mix(in srgb, var(--lcd-screen) 90%, var(--lcd-ink) 10%);
-  --bg-card:       color-mix(in srgb, var(--lcd-screen) 80%, var(--lcd-ink) 20%);
-  --bg-card-hover: color-mix(in srgb, var(--lcd-screen) 75%, var(--lcd-ink) 25%);
-  --bg-selected:   color-mix(in srgb, var(--lcd-screen) 65%, var(--lcd-ink) 35%);
-  
+  --bg-surface: color-mix(in srgb, var(--lcd-screen) 90%, var(--lcd-ink) 10%);
+  --bg-card: color-mix(in srgb, var(--lcd-screen) 80%, var(--lcd-ink) 20%);
+  --bg-card-hover: color-mix(
+    in srgb,
+    var(--lcd-screen) 75%,
+    var(--lcd-ink) 25%
+  );
+  --bg-selected: color-mix(in srgb, var(--lcd-screen) 65%, var(--lcd-ink) 35%);
 
   /* Signal */
-  --signal-danger:  #e07a5f;   
-  --signal-warning: #c98a2e;  
-  --signal-success: #8fc292;   
+  --signal-danger: #e07a5f;
+  --signal-warning: #c98a2e;
+  --signal-success: #8fc292;
 }
 
 .cartucho-amber-dark {
-  --lcd-screen: #1d0d02;  
-  --lcd-ink:    #e8a33d;   
-  --accent: #b5651d; 
+  --lcd-screen: #1d0d02;
+  --lcd-ink: #e8a33d;
+  --accent: #b5651d;
 
   /* Sobrescrita da escada de superfície */
-  --bg-surface:    color-mix(in srgb, var(--lcd-screen) 90%, var(--lcd-ink) 10%);
-  --bg-card:       color-mix(in srgb, var(--lcd-screen) 80%, var(--lcd-ink) 20%);
-  --bg-card-hover: color-mix(in srgb, var(--lcd-screen) 75%, var(--lcd-ink) 25%);
-  --bg-selected:   color-mix(in srgb, var(--lcd-screen) 65%, var(--lcd-ink) 35%);
+  --bg-surface: color-mix(in srgb, var(--lcd-screen) 90%, var(--lcd-ink) 10%);
+  --bg-card: color-mix(in srgb, var(--lcd-screen) 80%, var(--lcd-ink) 20%);
+  --bg-card-hover: color-mix(
+    in srgb,
+    var(--lcd-screen) 75%,
+    var(--lcd-ink) 25%
+  );
+  --bg-selected: color-mix(in srgb, var(--lcd-screen) 65%, var(--lcd-ink) 35%);
 
   /* Signal */
-  --signal-danger:  #dd5833; 
-  --signal-warning: #db9119; 
-  --signal-success: #96c53e;  
+  --signal-danger: #dd5833;
+  --signal-warning: #db9119;
+  --signal-success: #96c53e;
 }
-
 
 .theme-dark {
   --glow: 0 0 6px color-mix(in srgb, var(--lcd-ink) 55%, transparent);
@@ -155,10 +165,17 @@
 /* ==========================================================================
    3. Texturas
    ========================================================================== */
-.texture-grid  {
+.texture-grid {
   background-image:
-    linear-gradient(color-mix(in srgb, var(--border) 45%, transparent) 1px, transparent 1px),
-    linear-gradient(90deg, color-mix(in srgb, var(--border) 45%, transparent) 1px, transparent 1px);
+    linear-gradient(
+      color-mix(in srgb, var(--border) 45%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--border) 45%, transparent) 1px,
+      transparent 1px
+    );
   background-size: 24px 24px;
 }
 
@@ -175,7 +192,7 @@
    4. Efeitos — scanlines
    ========================================================================== */
 .app-root::before {
-  content: "";
+  content: '';
   position: fixed;
   inset: 0;
   pointer-events: none;
@@ -190,26 +207,37 @@
   opacity: var(--scanline-opacity, 0);
 }
 
-.glow-heading { text-shadow: var(--glow); }
+.glow-heading {
+  text-shadow: var(--glow);
+}
 
-.glow-active   { text-shadow: 0 0 10px color-mix(in srgb, var(--lcd-ink) 80%, transparent); }
+.glow-active {
+  text-shadow: 0 0 10px color-mix(in srgb, var(--lcd-ink) 80%, transparent);
+}
 
-.card-hover    { box-shadow: 0 0 0 1px var(--border), 0 0 8px color-mix(in srgb, var(--lcd-ink) 20%, transparent); }
+.card-hover {
+  box-shadow:
+    0 0 0 1px var(--border),
+    0 0 8px color-mix(in srgb, var(--lcd-ink) 20%, transparent);
+}
 
 .theme-dark .glow-heading {
   text-shadow:
     -0.5px 0 0 color-mix(in srgb, var(--lcd-ink) 40%, transparent),
-     0.5px 0 0 color-mix(in srgb, var(--lcd-ink) 35%, transparent),
+    0.5px 0 0 color-mix(in srgb, var(--lcd-ink) 35%, transparent),
     var(--glow);
 }
-
 
 /* ==========================================================================
    5. Motion — animações decorativas
    ========================================================================== */
 @keyframes marquee-loop {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -235,13 +263,12 @@ body {
   margin: 0;
 }
 
-input, textarea, select {
+input,
+textarea,
+select {
   background: var(--bg-input);
   border: 1px solid var(--border);
   box-shadow:
     inset 1px 1px 2px color-mix(in srgb, var(--lcd-ink) 20%, transparent),
     inset -1px -1px 0 color-mix(in srgb, var(--lcd-screen) 40%, transparent);
 }
-
-
-

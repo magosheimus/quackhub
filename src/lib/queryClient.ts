@@ -17,4 +17,4 @@ const persister = createAsyncStoragePersister({
   key: 'quackhub-query-cache',
 })
 
-persistQueryClient({ queryClient, persister, maxAge: 1000 * 60 * 60 * 24})
+persistQueryClient({ queryClient, persister, maxAge: 1000 * 60 * 60 * 24 })
