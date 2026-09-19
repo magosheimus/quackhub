@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { createProject } from '@/services/projects'
+import { createProject } from '@/services/projects/projects'
 
 export function useCreateProject () {
     const queryClient = useQueryClient()

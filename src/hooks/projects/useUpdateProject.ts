@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { updateProject } from '@/services/projects'
+import { updateProject } from '@/services/projects/projects'
 import type { Database } from '@/types/database.types'
 
 type ProjectUpdate = Database['public']['Tables']['projects']['Update']

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { Pencil } from 'lucide-react'
-import { useProjects } from '@/hooks/useProjects'
+import { useProjects } from '@/hooks/projects/useProjects'
 import { ProjectCreateModal } from '../project/ProjectCreateModal'
 import { ProjectEditModal } from '../project/ProjectEditModal'
 import type { Database } from '@/types/database.types'

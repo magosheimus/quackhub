@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { softDeleteProject } from '@/services/projects'
+import { softDeleteProject } from '@/services/projects/projects'
 
 export function useSoftDeleteProject() {
   const queryClient = useQueryClient()

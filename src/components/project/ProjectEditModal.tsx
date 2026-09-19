@@ -15,8 +15,8 @@ import {
 } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { useUpdateProject } from '@/hooks/useUpdateProject'
-import { useSoftDeleteProject } from '@/hooks/useSoftDeleteProject'
+import { useUpdateProject } from '@/hooks/projects/useUpdateProject'
+import { useSoftDeleteProject } from '@/hooks/projects/useSoftDeleteProject'
 import { PROJECT_COLORS } from '@/lib/projectColors'
 import type { Database } from '@/types/database.types'
 

@@ -16,7 +16,7 @@ import {
 } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { useCreateProject } from '@/hooks/useCreateProject'
+import { useCreateProject } from '@/hooks/projects/useCreateProject'
 import { PROJECT_COLORS } from '@/lib/projectColors'
 
 type ProjectType = 'general' | 'study'
