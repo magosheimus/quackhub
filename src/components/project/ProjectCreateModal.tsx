@@ -26,6 +26,7 @@ import {
 export function ProjectCreateModal() {
   const [open, setOpen] = useState(false)
   const [name, setName] = useState('')
+  const [prefix, setPrefix] = useState('')
   const [type, setType] = useState<ProjectType>('general')
   const [color, setColor] = useState<ProjectColor>(PROJECT_COLORS[0])
   const nameInputRef = useRef<HTMLInputElement>(null)
@@ -39,13 +40,14 @@ export function ProjectCreateModal() {
     setName('')
     setType('general')
     setColor(PROJECT_COLORS[0])
+    setPrefix('')
   }
 
   function handleSubmit() {
-    if (!name.trim()) return
+    if (!name.trim() || !prefix.trim()) return
 
     createProject(
-      { name: name.trim(), type, color },
+      { name: name.trim(), type, color, prefix: prefix.trim().toUpperCase() },
       {
         onSuccess: () => {
           resetForm()
@@ -80,6 +82,22 @@ export function ProjectCreateModal() {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Nome do projeto"
+            />
+          </div>
+
+          <div className="flex flex-col gap-1.5">
+            <label
+              htmlFor="project-prefix"
+              className="text-xs text-[--text-muted]"
+            >
+              Prefixo
+            </label>
+            <Input
+              id="project-prefix"
+              value={prefix}
+              onChange={(e) => setPrefix(e.target.value.toUpperCase())}
+              placeholder="Ex: QH"
+              maxLength={6}
             />
           </div>
 
@@ -138,7 +156,10 @@ export function ProjectCreateModal() {
           <Button variant="outline" onClick={() => setOpen(false)}>
             Cancelar
           </Button>
-          <Button onClick={handleSubmit} disabled={!name.trim() || isPending}>
+          <Button
+            onClick={handleSubmit}
+            disabled={!name.trim() || !prefix.trim() || isPending}
+          >
             {isPending ? 'Criando...' : 'Criar'}
           </Button>
         </DialogFooter>

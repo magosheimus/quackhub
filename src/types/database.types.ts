@@ -90,7 +90,9 @@ export type Database = {
           created_at: string | null
           deleted_at: string | null
           id: string
+          last_task_number: number
           name: string
+          prefix: string | null
           type: string
         }
         Insert: {
@@ -98,7 +100,9 @@ export type Database = {
           created_at?: string | null
           deleted_at?: string | null
           id?: string
+          last_task_number?: number
           name: string
+          prefix?: string | null
           type: string
         }
         Update: {
@@ -106,7 +110,9 @@ export type Database = {
           created_at?: string | null
           deleted_at?: string | null
           id?: string
+          last_task_number?: number
           name?: string
+          prefix?: string | null
           type?: string
         }
         Relationships: []
@@ -289,7 +295,9 @@ export type Database = {
           recurrence_type: string | null
           sprint_id: string | null
           status: string
+          task_number: number | null
           title: string
+          updated_at: string
         }
         Insert: {
           created_at?: string | null
@@ -313,7 +321,9 @@ export type Database = {
           recurrence_type?: string | null
           sprint_id?: string | null
           status?: string
+          task_number?: number | null
           title: string
+          updated_at?: string
         }
         Update: {
           created_at?: string | null
@@ -337,7 +347,9 @@ export type Database = {
           recurrence_type?: string | null
           sprint_id?: string | null
           status?: string
+          task_number?: number | null
           title?: string
+          updated_at?: string
         }
         Relationships: [
           {

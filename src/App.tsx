@@ -8,6 +8,7 @@ import {
 } from 'react-router-dom'
 import { AppShell } from './components/layout/AppShell'
 import { TokenPreview } from './dev/TokenPreview'
+import { BoardView } from './components/board/BoardView'
 
 function Placeholder({ label }: { label: string }) {
   return (
@@ -39,10 +40,6 @@ function App() {
           <Route path="/inbox" element={<Placeholder label="Inbox" />} />
           <Route path="/projeto/:id" element={<ProjetoRedirect />} />
           <Route
-            path="/projeto/:id/board"
-            element={<Placeholder label="Board Kanban" />}
-          />
-          <Route
             path="/projeto/:id/backlog"
             element={<Placeholder label="Backlog" />}
           />
@@ -55,6 +52,7 @@ function App() {
             element={<Placeholder label="Analytics" />}
           />
           <Route path="/debug-tokens" element={<TokenPreview />} />
+          <Route path="/projeto/:id/board" element={<BoardView />} />
         </Route>
       </Routes>
     </BrowserRouter>
