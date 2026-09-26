@@ -29,7 +29,11 @@ export function EpicSelector({
       disabled={isLoading}
     >
       <SelectTrigger>
-        <SelectValue placeholder="Selecionar épico" />
+        <SelectValue>
+          {value
+            ? epics?.find((e) => e.id === value)?.name
+            : 'Selecionar épico'}
+        </SelectValue>
       </SelectTrigger>
       <SelectContent>
         <SelectItem value={NONE_VALUE}>Sem épico</SelectItem>

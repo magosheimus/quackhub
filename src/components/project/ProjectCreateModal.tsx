@@ -113,7 +113,9 @@ export function ProjectCreateModal() {
               onValueChange={(v) => setType(v as ProjectType)}
             >
               <SelectTrigger aria-labelledby="project-type-label">
-                <SelectValue />
+                <SelectValue>
+                  {type === 'general' ? 'Geral' : 'Estudo'}
+                </SelectValue>
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="general">Geral</SelectItem>

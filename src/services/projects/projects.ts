@@ -45,3 +45,13 @@ export async function softDeleteProject(id: string): Promise<void> {
     .eq('id', id)
   if (error) throw new Error(`Falha ao arquivar projeto: ${error.message}`)
 }
+
+export async function getProjectById(id: string): Promise<Project> {
+  const { data, error } = await supabase
+    .from('projects')
+    .select('*')
+    .eq('id', id)
+    .single()
+  if (error) throw new Error(`Falha ao buscar projeto: ${error.message}`)
+  return data
+}

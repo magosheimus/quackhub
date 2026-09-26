@@ -21,7 +21,7 @@
   --secondary-foreground: var(--text-primary);
   --muted: var(--bg-surface);
   --muted-foreground: var(--text-muted);
-  --accent-foreground: var(--text-primary);
+  --accent-foreground: var(--bg-page);
   --destructive: var(--signal-danger);
   --input: var(--bg-input);
   --ring: var(--border-strong);

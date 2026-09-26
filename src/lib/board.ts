@@ -1,4 +1,5 @@
 import type { ProjectType } from '@/lib/project'
+import { ArrowUp, Minus, ArrowDown, type LucideIcon } from 'lucide-react'
 
 export const COLUMNS_GENERAL = ['todo', 'blocked', 'doing', 'done']
 export const COLUMNS_STUDY = [
@@ -16,6 +17,7 @@ export const COLUMN_LABELS: Record<string, string> = {
   studying: 'ESTUDANDO',
   to_review: 'A REVISAR',
   blocked: 'IMPEDIDO',
+  scheduled: 'AGENDADO',
   done: 'FINALIZADO',
 }
 
@@ -30,7 +32,7 @@ export function getColumnsForType(type: ProjectType): string[] {
 export type TaskStatus =
   | 'to_study'
   | 'studying'
-  | 'agendado'
+  | 'scheduled'
   | 'to_review'
   | 'todo'
   | 'doing'
@@ -38,3 +40,36 @@ export type TaskStatus =
   | 'done'
 
 export type TaskPriority = 'alta' | 'média' | 'baixa'
+
+export const PRIORITY_CONFIG: Record<
+  TaskPriority,
+  {
+    icon: LucideIcon
+    ariaLabel: string
+    text: string
+    className: string
+    colorVar: string
+  }
+> = {
+  alta: {
+    icon: ArrowUp,
+    ariaLabel: 'Prioridade alta',
+    text: 'ALTA',
+    className: 'text-[--signal-danger]',
+    colorVar: '--signal-danger',
+  },
+  média: {
+    icon: Minus,
+    ariaLabel: 'Prioridade média',
+    text: 'MÉDIA',
+    className: 'text-[--text-muted]',
+    colorVar: '--text-muted',
+  },
+  baixa: {
+    icon: ArrowDown,
+    ariaLabel: 'Prioridade baixa',
+    text: 'BAIXA',
+    className: 'text-[--signal-success]',
+    colorVar: '--signal-success',
+  },
+}

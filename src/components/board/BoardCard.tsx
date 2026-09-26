@@ -1,42 +1,9 @@
 import { Draggable } from '@hello-pangea/dnd'
-import { Flag, ArrowUp, Minus, ArrowDown, type LucideIcon } from 'lucide-react'
-import type { TaskPriority } from '@/lib/board'
+import { Flag } from 'lucide-react'
+import { PRIORITY_CONFIG, type TaskPriority } from '@/lib/board'
 import type { Database } from '@/types/database.types'
 
 type Task = Database['public']['Tables']['tasks']['Row']
-
-const PRIORITY_CONFIG: Record<
-  TaskPriority,
-  {
-    icon: LucideIcon
-    ariaLabel: string
-    text: string
-    className: string
-    colorVar: string
-  }
-> = {
-  alta: {
-    icon: ArrowUp,
-    ariaLabel: 'Prioridade alta',
-    text: 'ALTA',
-    className: 'text-[--signal-danger]',
-    colorVar: '--signal-danger',
-  },
-  média: {
-    icon: Minus,
-    ariaLabel: 'Prioridade média',
-    text: 'MÉDIA',
-    className: 'text-[--text-muted]',
-    colorVar: '--text-muted',
-  },
-  baixa: {
-    icon: ArrowDown,
-    ariaLabel: 'Prioridade baixa',
-    text: 'BAIXA',
-    className: 'text-[--signal-success]',
-    colorVar: '--signal-success',
-  },
-}
 
 type BoardCardProps = {
   task: Task

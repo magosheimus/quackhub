@@ -9,6 +9,7 @@ import {
 import { AppShell } from './components/layout/AppShell'
 import { TokenPreview } from './dev/TokenPreview'
 import { BoardView } from './components/board/BoardView'
+import { BacklogView } from './components/backlog/BacklogView'
 
 function Placeholder({ label }: { label: string }) {
   return (
@@ -39,10 +40,7 @@ function App() {
           <Route path="/" element={<Placeholder label="Agenda" />} />
           <Route path="/inbox" element={<Placeholder label="Inbox" />} />
           <Route path="/projeto/:id" element={<ProjetoRedirect />} />
-          <Route
-            path="/projeto/:id/backlog"
-            element={<Placeholder label="Backlog" />}
-          />
+          <Route path="/projeto/:id/backlog" element={<BacklogView />} />
           <Route
             path="/configuracoes"
             element={<Placeholder label="Configurações" />}

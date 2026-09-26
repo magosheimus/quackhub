@@ -109,7 +109,9 @@ function ProjectEditForm({ project, onClose }: ProjectEditFormProps) {
           </span>
           <Select value={type} onValueChange={(v) => setType(v as ProjectType)}>
             <SelectTrigger aria-labelledby="project-edit-type-label">
-              <SelectValue />
+              <SelectValue>
+                {type === 'general' ? 'Geral' : 'Estudo'}
+              </SelectValue>
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="general">Geral</SelectItem>
