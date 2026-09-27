@@ -3,6 +3,8 @@ import { AppShell } from './components/layout/AppShell'
 import { TokenPreview } from './dev/TokenPreview'
 import { BoardView } from './components/board/BoardView'
 import { BacklogView } from './components/backlog/BacklogView'
+import { SprintHistoryView } from './components/sprint/SprintHistoryView'
+import { SprintDetailView } from './components/sprint/SprintDetailView'
 
 function Placeholder({ label }: { label: string }) {
   return (
@@ -38,6 +40,8 @@ function App() {
             element={<Placeholder label="Analytics" />}
           />
           <Route path="/debug-tokens" element={<TokenPreview />} />
+          <Route path="/sprints" element={<SprintHistoryView />} />
+          <Route path="/sprints/:id" element={<SprintDetailView />} />
         </Route>
       </Routes>
     </BrowserRouter>

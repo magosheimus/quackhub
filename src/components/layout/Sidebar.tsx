@@ -36,6 +36,9 @@ export function Sidebar() {
         <NavLink to="/backlog" className={navLinkClass}>
           Backlog
         </NavLink>
+        <NavLink to="/sprints" className={navLinkClass}>
+          Sprints
+        </NavLink>
         <NavLink to="/inbox" className={navLinkClass}>
           Inbox
         </NavLink>

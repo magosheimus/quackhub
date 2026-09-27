@@ -75,7 +75,10 @@ export async function activateSprint(id: string): Promise<Sprint> {
 
 export async function setSprintClosed(
   id: string,
-  metrics: SprintMetrics,
+  metrics: SprintMetrics & {
+    carried_to_next: number
+    carried_to_backlog: number
+  },
 ): Promise<Sprint> {
   const { data, error } = await supabase
     .from('sprints')
@@ -117,5 +120,16 @@ export async function closeSprint(
     ),
   )
 
-  return setSprintClosed(sprintId, metrics)
+  const carriedToNext = carryoverResults.filter(
+    (result) => result.sprintId !== null,
+  ).length
+  const carriedToBacklog = carryoverResults.filter(
+    (result) => result.sprintId === null,
+  ).length
+
+  return setSprintClosed(sprintId, {
+    ...metrics,
+    carried_to_next: carriedToNext,
+    carried_to_backlog: carriedToBacklog,
+  })
 }

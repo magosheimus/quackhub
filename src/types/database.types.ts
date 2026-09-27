@@ -119,6 +119,8 @@ export type Database = {
       }
       sprints: {
         Row: {
+          carried_to_backlog: number | null
+          carried_to_next: number | null
           completed_tasks: number | null
           completion_by_project: Json | null
           completion_rate: number | null
@@ -133,6 +135,8 @@ export type Database = {
           total_tasks: number | null
         }
         Insert: {
+          carried_to_backlog?: number | null
+          carried_to_next?: number | null
           completed_tasks?: number | null
           completion_by_project?: Json | null
           completion_rate?: number | null
@@ -147,6 +151,8 @@ export type Database = {
           total_tasks?: number | null
         }
         Update: {
+          carried_to_backlog?: number | null
+          carried_to_next?: number | null
           completed_tasks?: number | null
           completion_by_project?: Json | null
           completion_rate?: number | null
