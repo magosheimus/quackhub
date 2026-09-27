@@ -119,47 +119,48 @@ export type Database = {
       }
       sprints: {
         Row: {
+          completed_tasks: number | null
+          completion_by_project: Json | null
+          completion_rate: number | null
           created_at: string | null
           deleted_at: string | null
           end_date: string | null
           goal: string | null
           id: string
           name: string
-          project_id: string
           start_date: string | null
           status: string
+          total_tasks: number | null
         }
         Insert: {
+          completed_tasks?: number | null
+          completion_by_project?: Json | null
+          completion_rate?: number | null
           created_at?: string | null
           deleted_at?: string | null
           end_date?: string | null
           goal?: string | null
           id?: string
           name: string
-          project_id: string
           start_date?: string | null
           status?: string
+          total_tasks?: number | null
         }
         Update: {
+          completed_tasks?: number | null
+          completion_by_project?: Json | null
+          completion_rate?: number | null
           created_at?: string | null
           deleted_at?: string | null
           end_date?: string | null
           goal?: string | null
           id?: string
           name?: string
-          project_id?: string
           start_date?: string | null
           status?: string
+          total_tasks?: number | null
         }
-        Relationships: [
-          {
-            foreignKeyName: 'sprints_project_id_fkey'
-            columns: ['project_id']
-            isOneToOne: false
-            referencedRelation: 'projects'
-            referencedColumns: ['id']
-          },
-        ]
+        Relationships: []
       }
       srs_logs: {
         Row: {

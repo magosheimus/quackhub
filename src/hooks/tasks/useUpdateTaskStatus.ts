@@ -8,7 +8,7 @@ type Task = Database['public']['Tables']['tasks']['Row']
 type UpdateTaskStatusVars = {
   id: string
   status: TaskStatus
-  projectId: string
+  sprintId: string
 }
 
 export function useUpdateTaskStatus() {
@@ -18,8 +18,8 @@ export function useUpdateTaskStatus() {
     mutationFn: ({ id, status }: UpdateTaskStatusVars) =>
       updateTaskStatus(id, status),
 
-    onMutate: async ({ id, status, projectId }) => {
-      const queryKey = ['tasks', projectId]
+    onMutate: async ({ id, status, sprintId }) => {
+      const queryKey = ['tasks', 'sprint', sprintId]
       await queryClient.cancelQueries({ queryKey })
 
       const previousTasks = queryClient.getQueryData<Task[]>(queryKey)
@@ -45,8 +45,8 @@ export function useUpdateTaskStatus() {
       }
     },
 
-    onSettled: (_data, _error, { projectId }) => {
-      queryClient.invalidateQueries({ queryKey: ['tasks', projectId] })
+    onSettled: (_data, _error, { sprintId }) => {
+      queryClient.invalidateQueries({ queryKey: ['tasks', 'sprint', sprintId] })
     },
   })
 }

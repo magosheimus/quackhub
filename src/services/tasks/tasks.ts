@@ -4,26 +4,20 @@ import type { Database } from '@/types/database.types'
 
 type Task = Database['public']['Tables']['tasks']['Row']
 
-export async function getTasksByProject(projectId: string): Promise<Task[]> {
-  const { data, error } = await supabase
+export async function getBacklogTasks(
+  projectId?: string | null,
+): Promise<Task[]> {
+  let query = supabase
     .from('tasks')
     .select('*')
-    .eq('project_id', projectId)
-    .not('sprint_id', 'is', null)
-    .is('deleted_at', null)
-    .order('updated_at', { ascending: false })
-  if (error) throw new Error(`Falha ao buscar tasks: ${error.message}`)
-  return data
-}
-
-export async function getBacklogTasks(projectId: string): Promise<Task[]> {
-  const { data, error } = await supabase
-    .from('tasks')
-    .select('*')
-    .eq('project_id', projectId)
     .is('sprint_id', null)
     .is('deleted_at', null)
-    .order('updated_at', { ascending: false })
+
+  if (projectId) {
+    query = query.eq('project_id', projectId)
+  }
+
+  const { data, error } = await query.order('updated_at', { ascending: false })
   if (error) throw new Error(`Falha ao buscar backlog: ${error.message}`)
   return data
 }
@@ -65,5 +59,21 @@ export async function updateTaskSprint(
     .select()
     .single()
   if (error) throw new Error(`Falha ao mover task: ${error.message}`)
+  return data
+}
+
+export async function addTaskToSprint(
+  id: string,
+  sprintId: string,
+  status: TaskStatus,
+): Promise<Task> {
+  const { data, error } = await supabase
+    .from('tasks')
+    .update({ sprint_id: sprintId, status })
+    .eq('id', id)
+    .select()
+    .single()
+  if (error)
+    throw new Error(`Falha ao adicionar task à sprint: ${error.message}`)
   return data
 }

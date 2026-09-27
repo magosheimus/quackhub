@@ -6,10 +6,8 @@ export function useStartSprint() {
 
   return useMutation({
     mutationFn: activateSprint,
-    onSuccess: (sprint) => {
-      queryClient.invalidateQueries({
-        queryKey: ['sprints', sprint.project_id],
-      })
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['sprints'] })
     },
     onError: (error) => {
       console.error(error.message)

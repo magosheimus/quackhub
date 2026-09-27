@@ -8,13 +8,13 @@ type Task = Database['public']['Tables']['tasks']['Row']
 type BoardColumnProps = {
   status: TaskStatus
   tasks: Task[]
-  projectPrefix: string
+  projectPrefixById: Map<string, string>
 }
 
 export function BoardColumn({
   status,
   tasks,
-  projectPrefix,
+  projectPrefixById,
 }: BoardColumnProps) {
   return (
     <div className="flex flex-1 min-w-0 flex-col gap-2">
@@ -42,7 +42,7 @@ export function BoardColumn({
                 key={task.id}
                 task={task}
                 index={index}
-                projectPrefix={projectPrefix}
+                projectPrefixById={projectPrefixById}
               />
             ))}
             {provided.placeholder}

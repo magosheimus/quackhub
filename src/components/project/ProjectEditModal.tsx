@@ -61,6 +61,7 @@ type ProjectEditFormProps = {
 
 function ProjectEditForm({ project, onClose }: ProjectEditFormProps) {
   const [name, setName] = useState(project.name)
+  const [prefix, setPrefix] = useState(project.prefix ?? '')
   const [type, setType] = useState<ProjectType>(project.type as ProjectType)
   const [color, setColor] = useState<ProjectColor>(
     (project.color as ProjectColor) ?? PROJECT_COLORS[0],
@@ -71,9 +72,17 @@ function ProjectEditForm({ project, onClose }: ProjectEditFormProps) {
     useSoftDeleteProject()
 
   function handleSave() {
-    if (!name.trim()) return
+    if (!name.trim() || !prefix.trim()) return
     updateProject(
-      { id: project.id, data: { name: name.trim(), type, color } },
+      {
+        id: project.id,
+        data: {
+          name: name.trim(),
+          type,
+          color,
+          prefix: prefix.trim().toUpperCase(),
+        },
+      },
       { onSuccess: onClose },
     )
   }
@@ -97,6 +106,22 @@ function ProjectEditForm({ project, onClose }: ProjectEditFormProps) {
             id="project-edit-name"
             value={name}
             onChange={(e) => setName(e.target.value)}
+          />
+        </div>
+
+        <div className="flex flex-col gap-1.5">
+          <label
+            htmlFor="project-edit-prefix"
+            className="text-xs text-[--text-muted]"
+          >
+            Prefixo
+          </label>
+          <Input
+            id="project-edit-prefix"
+            value={prefix}
+            onChange={(e) => setPrefix(e.target.value.toUpperCase())}
+            placeholder="Ex: QH"
+            maxLength={6}
           />
         </div>
 
@@ -163,7 +188,10 @@ function ProjectEditForm({ project, onClose }: ProjectEditFormProps) {
           <Button variant="outline" onClick={onClose}>
             Cancelar
           </Button>
-          <Button onClick={handleSave} disabled={!name.trim() || isUpdating}>
+          <Button
+            onClick={handleSave}
+            disabled={!name.trim() || !prefix.trim() || isUpdating}
+          >
             {isUpdating ? 'Salvando...' : 'Salvar'}
           </Button>
         </div>

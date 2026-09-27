@@ -1,67 +1,86 @@
 import { DragDropContext, type DropResult } from '@hello-pangea/dnd'
-import { useParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 import { useProjects } from '@/hooks/projects/useProjects'
-import { useBoardTasks } from '@/hooks/tasks/useBoardTasks'
+import { useActiveSprint } from '@/hooks/sprints/useActiveSprint'
+import { useTasksBySprintId } from '@/hooks/tasks/useTasksBySprintId'
 import { useUpdateTaskStatus } from '@/hooks/tasks/useUpdateTaskStatus'
 import { getColumnsForType, type TaskStatus } from '@/lib/board'
 import type { ProjectType } from '@/lib/project'
 import { BoardColumn } from './BoardColumn'
+import { SprintHeader } from '@/components/sprint/SprintHeader'
 
 export function BoardView() {
-  const { id: projectId } = useParams<{ id: string }>()
+  const [searchParams] = useSearchParams()
+  const projectId = searchParams.get('project')
+
   const { data: projects, isLoading: isLoadingProjects } = useProjects()
-  const { data: tasks, isLoading: isLoadingTasks } = useBoardTasks(
-    projectId ?? '',
+  const { data: activeSprint, isLoading: isLoadingSprint } = useActiveSprint()
+  const { data: tasks, isLoading: isLoadingTasks } = useTasksBySprintId(
+    activeSprint?.id ?? '',
   )
   const { mutate: updateTaskStatus } = useUpdateTaskStatus()
 
-  const project = projects?.find((p) => p.id === projectId)
-
-  if (isLoadingProjects) {
+  if (isLoadingProjects || isLoadingSprint) {
     return (
       <div className="text-sm text-[--text-muted]">[ CARREGANDO........ ]</div>
     )
   }
 
-  if (!projectId || !project) {
-    return (
-      <div className="text-sm text-[--text-muted]">
-        — Projeto não encontrado —
-      </div>
-    )
-  }
+  const project = projectId
+    ? (projects?.find((p) => p.id === projectId) ?? null)
+    : null
 
-  const currentProjectId = projectId
-  const columns = getColumnsForType(project.type as ProjectType)
+  const visibleTasks = projectId
+    ? (tasks ?? []).filter((task) => task.project_id === projectId)
+    : (tasks ?? [])
+
+  const projectPrefixById = new Map(
+    projects?.map((p) => [p.id, p.prefix ?? '']),
+  )
+
+  const columns = getColumnsForType(
+    project ? (project.type as ProjectType) : null,
+  )
 
   function handleDragEnd(result: DropResult) {
+    if (!activeSprint) return
     const { destination, draggableId } = result
     if (!destination) return
 
     updateTaskStatus({
       id: draggableId,
       status: destination.droppableId as TaskStatus,
-      projectId: currentProjectId,
+      sprintId: activeSprint.id,
     })
   }
 
   return (
-    <DragDropContext onDragEnd={handleDragEnd}>
-      <div className="flex gap-4 overflow-x-auto">
-        {columns.map((status) => (
-          <BoardColumn
-            key={status}
-            status={status as TaskStatus}
-            tasks={(tasks ?? []).filter((task) => task.status === status)}
-            projectPrefix={project.prefix ?? ''}
-          />
-        ))}
-      </div>
-      {isLoadingTasks && (
-        <div className="mt-4 text-sm text-[--text-muted]">
-          [ CARREGANDO........ ]
+    <div className="flex flex-col gap-4">
+      <SprintHeader activeSprint={activeSprint ?? null} tasks={visibleTasks} />
+
+      {activeSprint ? (
+        <DragDropContext onDragEnd={handleDragEnd}>
+          <div className="flex gap-4 overflow-x-auto">
+            {columns.map((status) => (
+              <BoardColumn
+                key={status}
+                status={status as TaskStatus}
+                tasks={visibleTasks.filter((task) => task.status === status)}
+                projectPrefixById={projectPrefixById}
+              />
+            ))}
+          </div>
+          {isLoadingTasks && (
+            <div className="text-sm text-[--text-muted]">
+              [ CARREGANDO........ ]
+            </div>
+          )}
+        </DragDropContext>
+      ) : (
+        <div className="text-sm text-[--text-muted]">
+          — Sem Sprint ativa. Crie ou inicie uma acima pra ver o board. —
         </div>
       )}
-    </DragDropContext>
+    </div>
   )
 }

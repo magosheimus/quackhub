@@ -71,16 +71,15 @@ describe('applyCarryover', () => {
 })
 
 describe('computeSprintMetrics', () => {
-  const project = { id: 'project-1', name: 'QuackHub' }
-
   it('calcula total, concluídas e taxa de conclusão', () => {
+    const projectNameById = new Map([['project-1', 'QuackHub']])
     const tasks = [
       makeTask({ id: 't1', status: 'done' }),
       makeTask({ id: 't2', status: 'done' }),
       makeTask({ id: 't3', status: 'to_review' }),
       makeTask({ id: 't4', status: 'blocked' }),
     ]
-    const metrics = computeSprintMetrics(tasks, project)
+    const metrics = computeSprintMetrics(tasks, projectNameById)
 
     expect(metrics.total_tasks).toBe(4)
     expect(metrics.completed_tasks).toBe(2)
@@ -88,33 +87,52 @@ describe('computeSprintMetrics', () => {
   })
 
   it('to_review não conta como concluída', () => {
+    const projectNameById = new Map([['project-1', 'QuackHub']])
     const tasks = [
       makeTask({ id: 't1', status: 'done' }),
       makeTask({ id: 't2', status: 'to_review' }),
     ]
-    const metrics = computeSprintMetrics(tasks, project)
+    const metrics = computeSprintMetrics(tasks, projectNameById)
 
     expect(metrics.completed_tasks).toBe(1)
     expect(metrics.completion_rate).toBe(0.5)
   })
 
   it('retorna taxa 0 quando não há tasks (evita divisão por zero)', () => {
-    const metrics = computeSprintMetrics([], project)
+    const metrics = computeSprintMetrics([], new Map())
     expect(metrics.completion_rate).toBe(0)
   })
 
-  it('preenche completion_by_project com o projeto da sprint', () => {
-    const tasks = [makeTask({ id: 't1', status: 'done' })]
-    const metrics = computeSprintMetrics(tasks, project)
-
-    expect(metrics.completion_by_project).toEqual([
-      {
-        project_id: 'project-1',
-        project_name: 'QuackHub',
-        total: 1,
-        completed: 1,
-        rate: 1,
-      },
+  it('quebra completion_by_project por projeto, já que a sprint é global', () => {
+    const projectNameById = new Map([
+      ['project-1', 'QuackHub'],
+      ['project-2', 'Revalida'],
     ])
+    const tasks = [
+      makeTask({ id: 't1', project_id: 'project-1', status: 'done' }),
+      makeTask({ id: 't2', project_id: 'project-1', status: 'todo' }),
+      makeTask({ id: 't3', project_id: 'project-2', status: 'done' }),
+    ]
+    const metrics = computeSprintMetrics(tasks, projectNameById)
+
+    expect(metrics.completion_by_project).toHaveLength(2)
+    expect(metrics.completion_by_project).toEqual(
+      expect.arrayContaining([
+        {
+          project_id: 'project-1',
+          project_name: 'QuackHub',
+          total: 2,
+          completed: 1,
+          rate: 0.5,
+        },
+        {
+          project_id: 'project-2',
+          project_name: 'Revalida',
+          total: 1,
+          completed: 1,
+          rate: 1,
+        },
+      ]),
+    )
   })
 })

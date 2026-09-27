@@ -8,12 +8,13 @@ type Task = Database['public']['Tables']['tasks']['Row']
 type BoardCardProps = {
   task: Task
   index: number
-  projectPrefix: string
+  projectPrefixById: Map<string, string>
 }
 
-export function BoardCard({ task, index, projectPrefix }: BoardCardProps) {
+export function BoardCard({ task, index, projectPrefixById }: BoardCardProps) {
   const priority = PRIORITY_CONFIG[task.priority as TaskPriority]
   const PriorityIcon = priority.icon
+  const projectPrefix = projectPrefixById.get(task.project_id) ?? ''
 
   return (
     <Draggable draggableId={task.id} index={index}>

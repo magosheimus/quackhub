@@ -1,6 +1,5 @@
-// src/components/backlog/BacklogView.tsx
 import { useState } from 'react'
-import { useParams, useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 import {
   Select,
   SelectContent,
@@ -11,8 +10,17 @@ import {
 import { useProjects } from '@/hooks/projects/useProjects'
 import { useEpics } from '@/hooks/epics/useEpics'
 import { useBacklogTasks } from '@/hooks/tasks/useBacklogTasks'
-import { COLUMN_LABELS, type TaskStatus, type TaskPriority } from '@/lib/board'
+import {
+  COLUMN_LABELS,
+  type TaskStatus,
+  type TaskPriority,
+  getInitialStatusForType,
+} from '@/lib/board'
 import { BacklogRow } from './BacklogRow'
+import { useActiveSprint } from '@/hooks/sprints/useActiveSprint'
+import { useAddTaskToSprint } from '@/hooks/tasks/useAddTaskToSprint'
+import type { ProjectType } from '@/lib/project'
+import { useSprints } from '@/hooks/sprints/useSprints'
 
 const STATUS_OPTIONS: TaskStatus[] = [
   'to_study',
@@ -28,9 +36,11 @@ const PRIORITY_OPTIONS: TaskPriority[] = ['alta', 'média', 'baixa']
 const NONE_VALUE = '__all__'
 
 export function BacklogView() {
-  const { id: projectId } = useParams<{ id: string }>()
   const [searchParams] = useSearchParams()
 
+  const [projectFilter, setProjectFilter] = useState<string | null>(
+    searchParams.get('project') || null,
+  )
   const [statusFilter, setStatusFilter] = useState<TaskStatus | null>(
     (searchParams.get('status') as TaskStatus) || null,
   )
@@ -40,12 +50,16 @@ export function BacklogView() {
   const [epicFilter, setEpicFilter] = useState<string | null>(null)
 
   const { data: projects, isLoading: isLoadingProjects } = useProjects()
-  const { data: tasks, isLoading: isLoadingTasks } = useBacklogTasks(
-    projectId ?? '',
-  )
-  const { data: epics } = useEpics(projectId ?? '')
+  const { data: tasks, isLoading: isLoadingTasks } =
+    useBacklogTasks(projectFilter)
+  const { data: epics } = useEpics(projectFilter ?? '')
 
-  const project = projects?.find((p) => p.id === projectId)
+  const { data: activeSprint } = useActiveSprint()
+  const { data: sprints } = useSprints()
+  const { mutate: addTaskToSprint } = useAddTaskToSprint()
+
+  const targetSprint =
+    activeSprint ?? sprints?.find((s) => s.status === 'planned')
 
   if (isLoadingProjects) {
     return (
@@ -53,14 +67,10 @@ export function BacklogView() {
     )
   }
 
-  if (!projectId || !project) {
-    return (
-      <div className="text-sm text-[--text-muted]">
-        — Projeto não encontrado —
-      </div>
-    )
-  }
-
+  const projectById = new Map(projects?.map((p) => [p.id, p]))
+  const projectPrefixById = new Map(
+    projects?.map((p) => [p.id, p.prefix ?? '']),
+  )
   const epicNameById = new Map(epics?.map((e) => [e.id, e.name]))
 
   const filteredTasks = (tasks ?? []).filter(
@@ -73,6 +83,30 @@ export function BacklogView() {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-wrap gap-2">
+        <Select
+          value={projectFilter ?? NONE_VALUE}
+          onValueChange={(v) => {
+            setProjectFilter(v === NONE_VALUE ? null : v)
+            setEpicFilter(null)
+          }}
+        >
+          <SelectTrigger>
+            <SelectValue>
+              {projectFilter
+                ? (projectById.get(projectFilter)?.name ?? 'Projeto')
+                : 'Todos os projetos'}
+            </SelectValue>
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value={NONE_VALUE}>Todos os projetos</SelectItem>
+            {projects?.map((project) => (
+              <SelectItem key={project.id} value={project.id}>
+                {project.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+
         <Select
           value={statusFilter ?? NONE_VALUE}
           onValueChange={(v) =>
@@ -117,24 +151,26 @@ export function BacklogView() {
           </SelectContent>
         </Select>
 
-        <Select
-          value={epicFilter ?? NONE_VALUE}
-          onValueChange={(v) => setEpicFilter(v === NONE_VALUE ? null : v)}
-        >
-          <SelectTrigger>
-            <SelectValue>
-              {epicFilter ? epicNameById.get(epicFilter) : 'Todos os épicos'}
-            </SelectValue>
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value={NONE_VALUE}>Todos os épicos</SelectItem>
-            {epics?.map((epic) => (
-              <SelectItem key={epic.id} value={epic.id}>
-                {epic.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        {projectFilter && (
+          <Select
+            value={epicFilter ?? NONE_VALUE}
+            onValueChange={(v) => setEpicFilter(v === NONE_VALUE ? null : v)}
+          >
+            <SelectTrigger>
+              <SelectValue>
+                {epicFilter ? epicNameById.get(epicFilter) : 'Todos os épicos'}
+              </SelectValue>
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value={NONE_VALUE}>Todos os épicos</SelectItem>
+              {epics?.map((epic) => (
+                <SelectItem key={epic.id} value={epic.id}>
+                  {epic.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        )}
       </div>
 
       <div className="flex flex-col gap-2">
@@ -148,16 +184,31 @@ export function BacklogView() {
             — nenhum card no backlog —
           </div>
         )}
-        {filteredTasks.map((task) => (
-          <BacklogRow
-            key={task.id}
-            task={task}
-            projectPrefix={project.prefix ?? ''}
-            epicName={
-              task.epic_id ? (epicNameById.get(task.epic_id) ?? null) : null
-            }
-          />
-        ))}
+        {filteredTasks.map((task) => {
+          const taskProject = projectById.get(task.project_id)
+          return (
+            <BacklogRow
+              key={task.id}
+              task={task}
+              projectPrefixById={projectPrefixById}
+              epicName={
+                task.epic_id ? (epicNameById.get(task.epic_id) ?? null) : null
+              }
+              onAddToSprint={
+                targetSprint && taskProject
+                  ? () =>
+                      addTaskToSprint({
+                        taskId: task.id,
+                        sprintId: targetSprint.id,
+                        status: getInitialStatusForType(
+                          taskProject.type as ProjectType,
+                        ),
+                      })
+                  : undefined
+              }
+            />
+          )
+        })}
       </div>
     </div>
   )

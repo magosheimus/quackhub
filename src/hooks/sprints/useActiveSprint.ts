@@ -1,10 +1,9 @@
 import { useQuery } from '@tanstack/react-query'
 import { getActiveSprint } from '@/services/sprints/sprints'
 
-export function useActiveSprint(projectId: string) {
+export function useActiveSprint() {
   return useQuery({
-    queryKey: ['sprints', projectId, 'active'],
-    queryFn: () => getActiveSprint(projectId),
-    enabled: !!projectId,
+    queryKey: ['sprints', 'active'],
+    queryFn: getActiveSprint,
   })
 }

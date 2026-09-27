@@ -5,6 +5,7 @@ import { useProjects } from '@/hooks/projects/useProjects'
 import { ProjectCreateModal } from '../project/ProjectCreateModal'
 import { ProjectEditModal } from '../project/ProjectEditModal'
 import type { Database } from '@/types/database.types'
+import { ClearCacheButton } from '@/components/settings/ClearCacheButton'
 
 type Project = Database['public']['Tables']['projects']['Row']
 
@@ -29,6 +30,12 @@ export function Sidebar() {
         <NavLink to="/" className={navLinkClass} end>
           Agenda
         </NavLink>
+        <NavLink to="/board" className={navLinkClass}>
+          Board
+        </NavLink>
+        <NavLink to="/backlog" className={navLinkClass}>
+          Backlog
+        </NavLink>
         <NavLink to="/inbox" className={navLinkClass}>
           Inbox
         </NavLink>
@@ -51,7 +58,7 @@ export function Sidebar() {
           {projects?.map((project) => (
             <div key={project.id} className="group flex items-center">
               <NavLink
-                to={`/projeto/${project.id}`}
+                to={`/board?project=${project.id}`}
                 className={(props) => `${navLinkClass(props)} flex-1`}
               >
                 {project.name}
@@ -69,10 +76,11 @@ export function Sidebar() {
         </div>
       </div>
 
-      <div className="mt-auto">
+      <div className="mt-auto flex flex-col gap-1">
         <NavLink to="/configuracoes" className={navLinkClass}>
           Configurações
         </NavLink>
+        <ClearCacheButton />
       </div>
 
       <ProjectEditModal

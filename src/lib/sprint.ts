@@ -18,7 +18,6 @@ export function applyCarryover(
     .filter((task) => task.status !== 'done')
     .map((task) => {
       if (task.status === 'to_review') {
-        // RN-SP03 — to_review sempre volta ao Backlog, nunca carrega
         return { taskId: task.id, sprintId: null }
       }
       const decision = decisions[task.id]
@@ -46,24 +45,37 @@ export type SprintMetrics = {
 
 export function computeSprintMetrics(
   tasks: Task[],
-  project: { id: string; name: string },
+  projectNameById: Map<string, string>,
 ): SprintMetrics {
   const total = tasks.length
   const completed = tasks.filter((task) => task.status === 'done').length
   const rate = total === 0 ? 0 : Math.round((completed / total) * 100) / 100
 
+  const byProject = new Map<string, { total: number; completed: number }>()
+  for (const task of tasks) {
+    const entry = byProject.get(task.project_id) ?? { total: 0, completed: 0 }
+    entry.total += 1
+    if (task.status === 'done') entry.completed += 1
+    byProject.set(task.project_id, entry)
+  }
+
+  const completion_by_project: ProjectCompletion[] = Array.from(
+    byProject.entries(),
+  ).map(([project_id, stats]) => ({
+    project_id,
+    project_name: projectNameById.get(project_id) ?? '?',
+    total: stats.total,
+    completed: stats.completed,
+    rate:
+      stats.total === 0
+        ? 0
+        : Math.round((stats.completed / stats.total) * 100) / 100,
+  }))
+
   return {
     total_tasks: total,
     completed_tasks: completed,
     completion_rate: rate,
-    completion_by_project: [
-      {
-        project_id: project.id,
-        project_name: project.name,
-        total,
-        completed,
-        rate,
-      },
-    ],
+    completion_by_project,
   }
 }

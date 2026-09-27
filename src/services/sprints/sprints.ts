@@ -1,7 +1,7 @@
 import { supabase } from '@/lib/supabase'
 import type { Database } from '@/types/database.types'
 import { getTasksBySprintId, updateTaskSprint } from '@/services/tasks/tasks'
-import { getProjectById } from '@/services/projects/projects'
+import { getProjects } from '@/services/projects/projects'
 import {
   applyCarryover,
   computeSprintMetrics,
@@ -13,26 +13,20 @@ type Sprint = Database['public']['Tables']['sprints']['Row']
 type NewSprint = Database['public']['Tables']['sprints']['Insert']
 type SprintUpdate = Database['public']['Tables']['sprints']['Update']
 
-export async function getSprintsByProject(
-  projectId: string,
-): Promise<Sprint[]> {
+export async function getSprints(): Promise<Sprint[]> {
   const { data, error } = await supabase
     .from('sprints')
     .select('*')
-    .eq('project_id', projectId)
     .is('deleted_at', null)
     .order('created_at', { ascending: false })
   if (error) throw new Error(`Falha ao buscar sprints: ${error.message}`)
   return data
 }
 
-export async function getActiveSprint(
-  projectId: string,
-): Promise<Sprint | null> {
+export async function getActiveSprint(): Promise<Sprint | null> {
   const { data, error } = await supabase
     .from('sprints')
     .select('*')
-    .eq('project_id', projectId)
     .eq('status', 'active')
     .maybeSingle()
   if (error) throw new Error(`Falha ao buscar sprint ativa: ${error.message}`)
@@ -72,7 +66,7 @@ export async function activateSprint(id: string): Promise<Sprint> {
     .single()
   if (error) {
     if (error.code === '23505') {
-      throw new Error('Já existe uma Sprint ativa neste projeto (RN-P03)')
+      throw new Error('Já existe uma Sprint ativa (RN-P03)')
     }
     throw new Error(`Falha ao iniciar sprint: ${error.message}`)
   }
@@ -108,16 +102,13 @@ export async function closeSprint(
   decisions: Record<string, CarryoverDecision>,
   nextSprintId: string | null,
 ): Promise<Sprint> {
-  const sprint = await getSprintById(sprintId)
-  const [tasks, project] = await Promise.all([
+  const [tasks, projects] = await Promise.all([
     getTasksBySprintId(sprintId),
-    getProjectById(sprint.project_id),
+    getProjects(),
   ])
 
-  const metrics = computeSprintMetrics(tasks, {
-    id: project.id,
-    name: project.name,
-  })
+  const projectNameById = new Map(projects.map((p) => [p.id, p.name]))
+  const metrics = computeSprintMetrics(tasks, projectNameById)
 
   const carryoverResults = applyCarryover(tasks, decisions, nextSprintId)
   await Promise.all(

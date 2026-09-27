@@ -9,7 +9,15 @@ export const COLUMNS_STUDY = [
   'to_review',
   'done',
 ]
-
+export const ALL_COLUMNS = [
+  'to_study',
+  'todo',
+  'studying',
+  'doing',
+  'to_review',
+  'blocked',
+  'done',
+]
 export const COLUMN_LABELS: Record<string, string> = {
   to_study: 'A ESTUDAR',
   todo: 'A FAZER',
@@ -21,7 +29,8 @@ export const COLUMN_LABELS: Record<string, string> = {
   done: 'FINALIZADO',
 }
 
-export function getColumnsForType(type: ProjectType): string[] {
+export function getColumnsForType(type: ProjectType | null): string[] {
+  if (!type) return ALL_COLUMNS
   const columns: Record<ProjectType, string[]> = {
     general: COLUMNS_GENERAL,
     study: COLUMNS_STUDY,
@@ -72,4 +81,8 @@ export const PRIORITY_CONFIG: Record<
     className: 'text-[--signal-success]',
     colorVar: '--signal-success',
   },
+}
+
+export function getInitialStatusForType(type: ProjectType): TaskStatus {
+  return type === 'study' ? 'to_study' : 'todo'
 }
