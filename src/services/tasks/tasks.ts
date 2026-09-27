@@ -4,21 +4,56 @@ import type { Database } from '@/types/database.types'
 
 type Task = Database['public']['Tables']['tasks']['Row']
 
-export async function getBacklogTasks(
-  projectId?: string | null,
-): Promise<Task[]> {
-  let query = supabase
+type NewTask = Database['public']['Tables']['tasks']['Insert']
+
+export async function createTask(data: NewTask): Promise<Task> {
+  const { data: task, error } = await supabase
+    .from('tasks')
+    .insert(data)
+    .select()
+    .single()
+  if (error) throw new Error(`Falha ao criar card: ${error.message}`)
+  return task
+}
+
+export async function addTaskToSprint(
+  id: string,
+  sprintId: string,
+  status: TaskStatus,
+): Promise<Task> {
+  const { data, error } = await supabase
+    .from('tasks')
+    .update({ sprint_id: sprintId, status })
+    .eq('id', id)
+    .select()
+    .single()
+  if (error)
+    throw new Error(`Falha ao adicionar task à sprint: ${error.message}`)
+  return data
+}
+
+export async function updateTaskSprint(
+  id: string,
+  sprintId: string | null,
+): Promise<Task> {
+  const { data, error } = await supabase
+    .from('tasks')
+    .update({ sprint_id: sprintId })
+    .eq('id', id)
+    .select()
+    .single()
+  if (error) throw new Error(`Falha ao mover task: ${error.message}`)
+  return data
+}
+
+export async function getTasksBySprintId(sprintId: string): Promise<Task[]> {
+  const { data, error } = await supabase
     .from('tasks')
     .select('*')
-    .is('sprint_id', null)
+    .eq('sprint_id', sprintId)
     .is('deleted_at', null)
-
-  if (projectId) {
-    query = query.eq('project_id', projectId)
-  }
-
-  const { data, error } = await query.order('updated_at', { ascending: false })
-  if (error) throw new Error(`Falha ao buscar backlog: ${error.message}`)
+  if (error)
+    throw new Error(`Falha ao buscar tasks da sprint: ${error.message}`)
   return data
 }
 
@@ -37,43 +72,65 @@ export async function updateTaskStatus(
   return task
 }
 
-export async function getTasksBySprintId(sprintId: string): Promise<Task[]> {
+export async function searchSimilarCards(
+  title: string,
+  projectId: string,
+): Promise<Task[]> {
   const { data, error } = await supabase
     .from('tasks')
     .select('*')
-    .eq('sprint_id', sprintId)
+    .eq('project_id', projectId)
+    .ilike('title', `%${title}%`)
     .is('deleted_at', null)
+    .order('created_at', { ascending: false })
   if (error)
-    throw new Error(`Falha ao buscar tasks da sprint: ${error.message}`)
+    throw new Error(`Falha ao buscar cards similares: ${error.message}`)
   return data
 }
 
-export async function updateTaskSprint(
-  id: string,
-  sprintId: string | null,
-): Promise<Task> {
-  const { data, error } = await supabase
+export async function getBacklogTasks(
+  projectId?: string | null,
+): Promise<Task[]> {
+  let query = supabase
     .from('tasks')
-    .update({ sprint_id: sprintId })
-    .eq('id', id)
-    .select()
-    .single()
-  if (error) throw new Error(`Falha ao mover task: ${error.message}`)
+    .select('*')
+    .is('sprint_id', null)
+    .is('deleted_at', null)
+
+  if (projectId) {
+    query = query.eq('project_id', projectId)
+  }
+
+  const { data, error } = await query.order('updated_at', { ascending: false })
+  if (error) throw new Error(`Falha ao buscar backlog: ${error.message}`)
   return data
 }
 
-export async function addTaskToSprint(
-  id: string,
-  sprintId: string,
-  status: TaskStatus,
-): Promise<Task> {
+export async function getTagsByProject(projectId: string): Promise<string[]> {
   const { data, error } = await supabase
-    .from('tasks')
-    .update({ sprint_id: sprintId, status })
-    .eq('id', id)
-    .select()
-    .single()
-  if (error)
-    throw new Error(`Falha ao adicionar task à sprint: ${error.message}`)
-  return data
+    .from('task_tags')
+    .select('tag_name, tasks!inner(project_id)')
+    .eq('tasks.project_id', projectId)
+  if (error) throw new Error(`Falha ao buscar tags: ${error.message}`)
+  return Array.from(new Set(data.map((row) => row.tag_name)))
+}
+
+export async function createTaskTags(
+  taskId: string,
+  tagNames: string[],
+): Promise<void> {
+  if (tagNames.length === 0) return
+  const { error } = await supabase
+    .from('task_tags')
+    .insert(tagNames.map((tag_name) => ({ task_id: taskId, tag_name })))
+  if (error) throw new Error(`Falha ao salvar tags: ${error.message}`)
+}
+
+export async function createTaskWithTags(
+  data: NewTask,
+  tagNames: string[],
+): Promise<Task> {
+  const task = await createTask(data)
+  await createTaskTags(task.id, tagNames)
+  return task
 }

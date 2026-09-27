@@ -6,6 +6,7 @@ import { ProjectCreateModal } from '../project/ProjectCreateModal'
 import { ProjectEditModal } from '../project/ProjectEditModal'
 import type { Database } from '@/types/database.types'
 import { ClearCacheButton } from '@/components/settings/ClearCacheButton'
+import { CardCreateModal } from '../card/CardCreateModal'
 
 type Project = Database['public']['Tables']['projects']['Row']
 
@@ -36,6 +37,9 @@ export function Sidebar() {
         <NavLink to="/backlog" className={navLinkClass}>
           Backlog
         </NavLink>
+        <div className="px-3">
+          <CardCreateModal />
+        </div>
         <NavLink to="/sprints" className={navLinkClass}>
           Sprints
         </NavLink>
