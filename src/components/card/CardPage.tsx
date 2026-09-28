@@ -24,6 +24,7 @@ import { TagInput } from './TagInput'
 import { RecurrenceFields, type RecurrenceValue } from './RecurrenceFields'
 import { CardChecklist } from './CardChecklist'
 import { CardDependencies } from './CardDependencies'
+import { CardAttachments } from './CardAttachments'
 import {
   PRIORITY_CONFIG,
   COLUMN_LABELS,
@@ -360,6 +361,8 @@ function CardPageBody({ task }: { task: Task }) {
               placeholder="Adicionar contexto..."
             />
           </div>
+
+          <CardAttachments taskId={task.id} />
 
           <CardChecklist taskId={task.id} />
 

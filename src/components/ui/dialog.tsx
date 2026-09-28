@@ -4,13 +4,18 @@ import { cn } from 'cn'
 import { Button } from '@/components/ui/button'
 import { XIcon } from 'lucide-react'
 
-function Dialog({ onOpenChange, ...props }: DialogPrimitive.Root.Props) {
+function Dialog({
+  onOpenChange,
+  dismissible = false,
+  ...props
+}: DialogPrimitive.Root.Props & { dismissible?: boolean }) {
   return (
     <DialogPrimitive.Root
       data-slot="dialog"
-      disablePointerDismissal
+      disablePointerDismissal={!dismissible}
       onOpenChange={(open, eventDetails) => {
         if (
+          !dismissible &&
           !open &&
           (eventDetails.reason === 'outside-press' ||
             eventDetails.reason === 'escape-key')
