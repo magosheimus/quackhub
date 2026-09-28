@@ -26,11 +26,17 @@ import { CardChecklist } from './CardChecklist'
 import { CardDependencies } from './CardDependencies'
 import { PRIORITY_CONFIG, type TaskPriority } from '@/lib/board'
 import type { Database } from '@/types/database.types'
+import { RegisterPerformanceModal } from '../srs/RegisterPerformanceModal'
 
 type Task = Database['public']['Tables']['tasks']['Row']
 
 const PRIORITY_OPTIONS: TaskPriority[] = ['alta', 'média', 'baixa']
 const NONE_EPIC = '__none__'
+const SRS_ELIGIBLE_STATUSES: Task['status'][] = [
+  'studying',
+  'to_review',
+  'scheduled',
+]
 
 export function CardPage() {
   const { id } = useParams<{ id: string }>()
@@ -54,6 +60,7 @@ export function CardPage() {
 function CardPageBody({ task }: { task: Task }) {
   const [title, setTitle] = useState(task.title)
   const [isEditingTitle, setIsEditingTitle] = useState(false)
+  const [isSrsModalOpen, setIsSrsModalOpen] = useState(false)
   const navigate = useNavigate()
   const { mutate: updateTask } = useUpdateTask()
   const { data: projects } = useProjects()
@@ -269,7 +276,33 @@ function CardPageBody({ task }: { task: Task }) {
             </>
           )}
 
+          {project?.type === 'study' &&
+            SRS_ELIGIBLE_STATUSES.includes(task.status) && (
+              <div className="flex flex-col gap-1.5 rounded-[--radius-md] border border-[--border] bg-[--bg-card] p-3">
+                <span className="text-xs text-[--text-muted]">SRS</span>
+                <span className="text-sm text-[--text-primary]">
+                  EF: {(task.ease_factor ?? 2.5).toFixed(2)}
+                </span>
+                <span className="text-sm text-[--text-primary]">
+                  Próxima revisão: {task.next_review ?? '—'}
+                </span>
+                <Button
+                  type="button"
+                  size="sm"
+                  onClick={() => setIsSrsModalOpen(true)}
+                >
+                  Registrar Desempenho
+                </Button>
+              </div>
+            )}
+
           <CardDependencies taskId={task.id} projectId={task.project_id} />
+
+          <RegisterPerformanceModal
+            task={task}
+            open={isSrsModalOpen}
+            onOpenChange={setIsSrsModalOpen}
+          />
         </div>
       </div>
     </div>
