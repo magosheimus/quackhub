@@ -29,14 +29,17 @@ import { SimilarCardsHint } from './SimilarCardsHint'
 import { RecurrenceFields, type RecurrenceValue } from './RecurrenceFields'
 import { detectRecurrencePattern } from '@/lib/cardSearch'
 import { TagInput } from './TagInput'
-import { useProjectTags } from '@/hooks/tasks/useProjectTags'
+import { useProjectTags } from '@/hooks/tasks/tags/useProjectTags'
+import { useSprints } from '@/hooks/sprints/useSprints'
 
 const PRIORITY_OPTIONS: TaskPriority[] = ['alta', 'média', 'baixa']
+const NONE_VALUE = '__backlog__'
 
 export function CardCreateModal() {
   const [open, setOpen] = useState(false)
   const [projectId, setProjectId] = useState<string | null>(null)
   const [epicId, setEpicId] = useState<string | null>(null)
+  const [sprintId, setSprintId] = useState<string | null>(null)
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [priority, setPriority] = useState<TaskPriority>('média')
@@ -53,19 +56,25 @@ export function CardCreateModal() {
     useState(false)
 
   const { data: projects } = useProjects()
+  const { data: sprints } = useSprints()
   const { mutate: createTask, isPending } = useCreateTask()
 
   const project = projects?.find((p) => p.id === projectId)
-
   const debouncedTitle = useDebouncedValue(title, 300)
   const { data: similarCards } = useSimilarCards(debouncedTitle, projectId)
   const { data: tagSuggestions } = useProjectTags(projectId)
+
+  const eligibleSprints = sprints?.filter(
+    (s) => s.status === 'planned' || s.status === 'active',
+  )
+
   const recurrenceDetected =
     !recurrenceBannerDismissed && detectRecurrencePattern(similarCards ?? [])
 
   function resetForm() {
     setProjectId(null)
     setEpicId(null)
+    setSprintId(null)
     setTitle('')
     setDescription('')
     setPriority('média')
@@ -90,6 +99,7 @@ export function CardCreateModal() {
     return {
       project_id: projectId,
       epic_id: epicId,
+      sprint_id: sprintId,
       title: title.trim(),
       description: description.trim() || null,
       priority,
@@ -243,6 +253,36 @@ export function CardCreateModal() {
           </div>
 
           <div className="flex flex-col gap-1.5">
+            <span
+              id="card-sprint-label"
+              className="text-xs text-[--text-muted]"
+            >
+              Sprint (opcional)
+            </span>
+            <Select
+              value={sprintId ?? NONE_VALUE}
+              onValueChange={(v) => setSprintId(v === NONE_VALUE ? null : v)}
+            >
+              <SelectTrigger aria-labelledby="card-sprint-label">
+                <SelectValue>
+                  {sprintId
+                    ? (eligibleSprints?.find((s) => s.id === sprintId)?.name ??
+                      'Sprint')
+                    : 'Backlog (padrão)'}
+                </SelectValue>
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value={NONE_VALUE}>Backlog (padrão)</SelectItem>
+                {eligibleSprints?.map((sprint) => (
+                  <SelectItem key={sprint.id} value={sprint.id}>
+                    {sprint.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="flex flex-col gap-1.5">
             <span className="text-xs text-[--text-muted]">Tags</span>
             <TagInput
               tags={tags}
@@ -294,10 +334,6 @@ export function CardCreateModal() {
               placeholder="Adicionar contexto..."
             />
           </div>
-
-          <span className="text-xs text-[--text-muted]">
-            Status inicial: BACKLOG
-          </span>
         </div>
 
         <DialogFooter>

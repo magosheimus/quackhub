@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import {
   Select,
@@ -21,6 +20,8 @@ import { useActiveSprint } from '@/hooks/sprints/useActiveSprint'
 import { useAddTaskToSprint } from '@/hooks/tasks/useAddTaskToSprint'
 import type { ProjectType } from '@/lib/project'
 import { useSprints } from '@/hooks/sprints/useSprints'
+import { AnimatePresence } from 'framer-motion'
+import { useState } from 'react'
 
 const STATUS_OPTIONS: TaskStatus[] = [
   'to_study',
@@ -184,31 +185,34 @@ export function BacklogView() {
             — nenhum card no backlog —
           </div>
         )}
-        {filteredTasks.map((task) => {
-          const taskProject = projectById.get(task.project_id)
-          return (
-            <BacklogRow
-              key={task.id}
-              task={task}
-              projectPrefixById={projectPrefixById}
-              epicName={
-                task.epic_id ? (epicNameById.get(task.epic_id) ?? null) : null
-              }
-              onAddToSprint={
-                targetSprint && taskProject
-                  ? () =>
-                      addTaskToSprint({
-                        taskId: task.id,
-                        sprintId: targetSprint.id,
-                        status: getInitialStatusForType(
-                          taskProject.type as ProjectType,
-                        ),
-                      })
-                  : undefined
-              }
-            />
-          )
-        })}
+        <AnimatePresence>
+          {filteredTasks.map((task) => {
+            const taskProject = projectById.get(task.project_id)
+            return (
+              <BacklogRow
+                key={task.id}
+                task={task}
+                projectPrefixById={projectPrefixById}
+                epicName={
+                  task.epic_id ? (epicNameById.get(task.epic_id) ?? null) : null
+                }
+                onAddToSprint={
+                  targetSprint && taskProject
+                    ? () =>
+                        addTaskToSprint({
+                          taskId: task.id,
+                          sprintId: targetSprint.id,
+                          status: getInitialStatusForType(
+                            taskProject.type as ProjectType,
+                          ),
+                          projectId: task.project_id,
+                        })
+                    : undefined
+                }
+              />
+            )
+          })}
+        </AnimatePresence>
       </div>
     </div>
   )

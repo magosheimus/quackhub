@@ -39,7 +39,7 @@ export function useUpdateTaskStatus() {
     },
 
     onError: (error, _vars, context) => {
-      console.error(error.message)
+      window.alert(error.message)
       if (context) {
         queryClient.setQueryData(context.queryKey, context.previousTasks)
       }

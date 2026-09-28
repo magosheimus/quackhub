@@ -1,4 +1,5 @@
 import { Draggable } from '@hello-pangea/dnd'
+import { Link } from 'react-router-dom'
 import { Flag } from 'lucide-react'
 import { PRIORITY_CONFIG, type TaskPriority } from '@/lib/board'
 import type { Database } from '@/types/database.types'
@@ -52,9 +53,12 @@ export function BoardCard({ task, index, projectPrefixById }: BoardCardProps) {
                 {projectPrefix}-{task.task_number}
               </span>
             )}
-            <span className="line-clamp-3 text-[--text-primary]">
+            <Link
+              to={`/cards/${task.id}`}
+              className="line-clamp-3 text-[--text-primary] hover:text-[--accent] hover:underline"
+            >
               {task.title}
-            </span>
+            </Link>
             <span className="text-xs text-[--text-muted]">{priority.text}</span>
           </div>
         </div>
