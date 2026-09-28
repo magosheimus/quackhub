@@ -2,11 +2,11 @@ import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { Pencil } from 'lucide-react'
 import { useProjects } from '@/hooks/projects/useProjects'
-import { ProjectCreateModal } from '../project/ProjectCreateModal'
-import { ProjectEditModal } from '../project/ProjectEditModal'
+import { ProjectCreateModal } from '@/components/project/ProjectCreateModal'
+import { ProjectEditModal } from '@/components/project/ProjectEditModal'
 import type { Database } from '@/types/database.types'
 import { ClearCacheButton } from '@/components/settings/ClearCacheButton'
-import { CardCreateModal } from '../card/CardCreateModal'
+import { CardCreateModal } from '@/components/card/CardCreateModal'
 
 type Project = Database['public']['Tables']['projects']['Row']
 

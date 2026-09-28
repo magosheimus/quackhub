@@ -17,7 +17,7 @@ import {
 } from '@/lib/board'
 import { BacklogRow } from './BacklogRow'
 import { useActiveSprint } from '@/hooks/sprints/useActiveSprint'
-import { useAddTaskToSprint } from '@/hooks/tasks/useAddTaskToSprint'
+import { useAddTaskToSprint } from '@/hooks/tasks/sprint/useAddTaskToSprint'
 import type { ProjectType } from '@/lib/project'
 import { useSprints } from '@/hooks/sprints/useSprints'
 import { AnimatePresence } from 'framer-motion'
