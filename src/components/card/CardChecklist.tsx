@@ -47,7 +47,9 @@ export function CardChecklist({ taskId }: CardChecklistProps) {
 
   return (
     <div className="flex flex-col gap-2">
-      <span className="text-xs text-[--text-muted]">Checklist</span>
+      <span className="text-sm font-medium text-[--text-primary]">
+        Checklist
+      </span>
 
       <DragDropContext onDragEnd={handleDragEnd}>
         <Droppable droppableId="checklist">

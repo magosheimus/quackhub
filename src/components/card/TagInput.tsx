@@ -1,7 +1,8 @@
-import { useState, type KeyboardEvent } from 'react'
+import { useState, useRef, useEffect, type KeyboardEvent } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
-import { X } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Plus, X } from 'lucide-react'
 
 type TagInputProps = {
   tags: string[]
@@ -11,6 +12,12 @@ type TagInputProps = {
 
 export function TagInput({ tags, onChange, suggestions }: TagInputProps) {
   const [draft, setDraft] = useState('')
+  const [isAdding, setIsAdding] = useState(false)
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    if (isAdding) inputRef.current?.focus()
+  }, [isAdding])
 
   function addTag(tag: string) {
     const trimmed = tag.trim()
@@ -28,6 +35,14 @@ export function TagInput({ tags, onChange, suggestions }: TagInputProps) {
       e.preventDefault()
       addTag(draft)
     }
+    if (e.key === 'Escape') {
+      setDraft('')
+      setIsAdding(false)
+    }
+  }
+
+  function handleBlur() {
+    if (!draft.trim()) setIsAdding(false)
   }
 
   const matchingSuggestions = suggestions.filter(
@@ -39,29 +54,44 @@ export function TagInput({ tags, onChange, suggestions }: TagInputProps) {
 
   return (
     <div className="flex flex-col gap-1.5">
-      {tags.length > 0 && (
-        <div className="flex flex-wrap gap-1">
-          {tags.map((tag) => (
-            <Badge key={tag} variant="secondary">
-              {tag}
-              <button
-                type="button"
-                onClick={() => removeTag(tag)}
-                aria-label={`Remover tag ${tag}`}
-              >
-                <X size={12} />
-              </button>
-            </Badge>
-          ))}
-        </div>
+      <div className="flex flex-wrap items-center gap-1">
+        {tags.map((tag) => (
+          <Badge key={tag} variant="outline">
+            {tag}
+            <button
+              type="button"
+              onClick={() => removeTag(tag)}
+              aria-label={`Remover tag ${tag}`}
+            >
+              <X size={12} />
+            </button>
+          </Badge>
+        ))}
+        {!isAdding && (
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon-sm"
+            onClick={() => setIsAdding(true)}
+            aria-label="Adicionar tag"
+          >
+            <Plus size={14} />
+          </Button>
+        )}
+      </div>
+
+      {isAdding && (
+        <Input
+          ref={inputRef}
+          value={draft}
+          onChange={(e) => setDraft(e.target.value)}
+          onKeyDown={handleKeyDown}
+          onBlur={handleBlur}
+          placeholder="Adicionar tag e Enter"
+        />
       )}
-      <Input
-        value={draft}
-        onChange={(e) => setDraft(e.target.value)}
-        onKeyDown={handleKeyDown}
-        placeholder="Adicionar tag e Enter"
-      />
-      {matchingSuggestions.length > 0 && (
+
+      {isAdding && matchingSuggestions.length > 0 && (
         <div className="flex flex-wrap gap-1">
           {matchingSuggestions.slice(0, 5).map((suggestion) => (
             <button

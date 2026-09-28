@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, ChevronDown, ChevronRight, Folder } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
@@ -24,19 +24,33 @@ import { TagInput } from './TagInput'
 import { RecurrenceFields, type RecurrenceValue } from './RecurrenceFields'
 import { CardChecklist } from './CardChecklist'
 import { CardDependencies } from './CardDependencies'
-import { PRIORITY_CONFIG, type TaskPriority } from '@/lib/board'
+import {
+  PRIORITY_CONFIG,
+  COLUMN_LABELS,
+  STATUS_BADGE_CLASS,
+  type TaskPriority,
+} from '@/lib/board'
+import { useSprints } from '@/hooks/sprints/useSprints'
 import type { Database } from '@/types/database.types'
-import { RegisterPerformanceModal } from '../srs/RegisterPerformanceModal'
+import { RegisterPerformanceModal } from '@/components/srs/RegisterPerformanceModal'
 
 type Task = Database['public']['Tables']['tasks']['Row']
 
 const PRIORITY_OPTIONS: TaskPriority[] = ['alta', 'média', 'baixa']
 const NONE_EPIC = '__none__'
+const NONE_SPRINT = '__none__'
+const INLINE_TRIGGER_CLASS =
+  'h-auto! w-fit! border! border-transparent! bg-transparent! p-0! shadow-none! data-[popup-open]:border-[--border]! data-[popup-open]:bg-[--bg-input]! data-[popup-open]:px-2! data-[popup-open]:py-1!'
 const SRS_ELIGIBLE_STATUSES: Task['status'][] = [
   'studying',
   'to_review',
   'scheduled',
 ]
+
+function formatDate(value: string | null): string {
+  if (!value) return '—'
+  return new Date(value).toLocaleDateString('pt-BR')
+}
 
 export function CardPage() {
   const { id } = useParams<{ id: string }>()
@@ -61,12 +75,15 @@ function CardPageBody({ task }: { task: Task }) {
   const [title, setTitle] = useState(task.title)
   const [isEditingTitle, setIsEditingTitle] = useState(false)
   const [isSrsModalOpen, setIsSrsModalOpen] = useState(false)
+  const [isDetailsOpen, setIsDetailsOpen] = useState(true)
   const navigate = useNavigate()
   const { mutate: updateTask } = useUpdateTask()
   const { data: projects } = useProjects()
   const project = projects?.find((p) => p.id === task.project_id)
   const { data: epics } = useEpics(task.project_id)
   const epic = epics?.find((e) => e.id === task.epic_id)
+  const { data: sprints } = useSprints()
+  const assignableSprints = sprints?.filter((s) => s.status !== 'closed')
   const { data: tags } = useTaskTags(task.id)
   const { data: tagSuggestions } = useProjectTags(task.project_id)
   const { mutate: addTaskTag } = useAddTaskTag()
@@ -119,19 +136,21 @@ function CardPageBody({ task }: { task: Task }) {
 
   return (
     <div className="flex flex-col gap-4">
-      <Button
-        variant="ghost"
-        size="sm"
-        className="w-fit"
-        onClick={() => navigate(-1)}
-      >
-        <ArrowLeft size={14} /> Voltar
-      </Button>
+      <div className="flex items-center gap-3">
+        <Button
+          variant="ghost"
+          size="icon-sm"
+          onClick={() => navigate(-1)}
+          aria-label="Voltar"
+        >
+          <ArrowLeft size={16} />
+        </Button>
 
-      <div className="grid gap-6 sm:grid-cols-[1fr_240px]">
-        <div className="flex flex-col gap-4">
+        <Folder size={32} className="shrink-0 text-[--text-muted]" />
+
+        <div className="flex flex-col gap-0.5">
           {task.task_number && (
-            <span className="text-xs text-[--text-muted]">
+            <span className="ml-2 text-xs text-[--text-muted]">
               {epic ? `${epic.name}/` : ''}
               {project?.prefix}-{task.task_number}
             </span>
@@ -142,16 +161,194 @@ function CardPageBody({ task }: { task: Task }) {
             onFocus={() => setIsEditingTitle(true)}
             onBlur={handleTitleBlur}
             aria-label="Título do card"
-            className={`rounded-[--radius-md] px-2 py-1 font-heading text-2xl text-[--text-primary] outline-none ${
+            className={`-mt-2 rounded-[--radius-md] px-2 py-0 font-heading text-3xl leading-tight text-[--text-primary] outline-none ${
               isEditingTitle
                 ? 'border border-[--border] bg-[--bg-input] shadow-[inset_1px_1px_2px_color-mix(in_srgb,var(--lcd-ink)_20%,transparent),inset_-1px_-1px_0_color-mix(in_srgb,var(--lcd-screen)_40%,transparent)]'
                 : 'border! border-transparent! bg-transparent! shadow-none!'
             }`}
           />
+        </div>
+      </div>
+
+      <div className="grid gap-6 sm:grid-cols-[1fr_240px]">
+        <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-3">
+            <button
+              type="button"
+              onClick={() => setIsDetailsOpen((open) => !open)}
+              className="flex w-fit items-center gap-1 text-sm font-medium text-[--text-primary]"
+            >
+              {isDetailsOpen ? (
+                <ChevronDown size={16} />
+              ) : (
+                <ChevronRight size={16} />
+              )}
+              Detalhes
+            </button>
+            {isDetailsOpen && (
+              <div className="grid grid-cols-2 gap-4 pl-6">
+                <div className="flex flex-col gap-3">
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-xs text-[--text-muted]">Tipo:</span>
+                    <span className="text-sm text-[--text-primary]">
+                      {project?.type === 'study' ? 'Estudo' : 'Geral'}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center gap-1.5">
+                    <span
+                      id="epic-label"
+                      className="text-xs text-[--text-muted]"
+                    >
+                      Épico:
+                    </span>
+                    <Select
+                      value={task.epic_id ?? NONE_EPIC}
+                      onValueChange={(v) =>
+                        updateTask({
+                          id: task.id,
+                          data: { epic_id: v === NONE_EPIC ? null : v },
+                        })
+                      }
+                    >
+                      <SelectTrigger
+                        aria-labelledby="epic-label"
+                        className={INLINE_TRIGGER_CLASS}
+                      >
+                        <SelectValue>{epic ? epic.name : 'Nenhum'}</SelectValue>
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value={NONE_EPIC}>Nenhum</SelectItem>
+                        {epics?.map((e) => (
+                          <SelectItem key={e.id} value={e.id}>
+                            {e.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="flex items-center gap-1.5">
+                    <span
+                      id="sprint-label"
+                      className="text-xs text-[--text-muted]"
+                    >
+                      Sprint:
+                    </span>
+                    <Select
+                      value={task.sprint_id ?? NONE_SPRINT}
+                      onValueChange={(v) =>
+                        updateTask({
+                          id: task.id,
+                          data: { sprint_id: v === NONE_SPRINT ? null : v },
+                        })
+                      }
+                    >
+                      <SelectTrigger
+                        aria-labelledby="sprint-label"
+                        className={INLINE_TRIGGER_CLASS}
+                      >
+                        <SelectValue>
+                          {assignableSprints?.find(
+                            (s) => s.id === task.sprint_id,
+                          )?.name ?? 'Backlog'}
+                        </SelectValue>
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value={NONE_SPRINT}>Backlog</SelectItem>
+                        {assignableSprints?.map((s) => (
+                          <SelectItem key={s.id} value={s.id}>
+                            {s.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="flex items-center gap-1.5">
+                    <span
+                      id="priority-label"
+                      className="text-xs text-[--text-muted]"
+                    >
+                      Prioridade:
+                    </span>
+                    <Select
+                      value={task.priority}
+                      onValueChange={(v) =>
+                        updateTask({
+                          id: task.id,
+                          data: { priority: v as TaskPriority },
+                        })
+                      }
+                    >
+                      <SelectTrigger
+                        aria-labelledby="priority-label"
+                        className={INLINE_TRIGGER_CLASS}
+                      >
+                        <SelectValue>
+                          {PRIORITY_CONFIG[task.priority as TaskPriority].text}
+                        </SelectValue>
+                      </SelectTrigger>
+                      <SelectContent>
+                        {PRIORITY_OPTIONS.map((option) => (
+                          <SelectItem key={option} value={option}>
+                            {PRIORITY_CONFIG[option].text}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <span
+                      id="flagged-label"
+                      className="text-xs text-[--text-muted]"
+                    >
+                      Urgente:
+                    </span>
+                    <Checkbox
+                      checked={task.flagged}
+                      onCheckedChange={(checked) =>
+                        updateTask({
+                          id: task.id,
+                          data: { flagged: checked === true },
+                        })
+                      }
+                      aria-labelledby="flagged-label"
+                    />
+                  </div>
+                </div>
+                <div className="flex flex-col gap-3">
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-xs text-[--text-muted]">
+                      Situação:
+                    </span>
+                    <span
+                      className={`rounded-[--radius-sm] px-2 py-0.5 text-xs font-medium text-(--bg-page) ${
+                        STATUS_BADGE_CLASS[task.status] ?? +'bg-(--text-muted)'
+                      }`}
+                    >
+                      {COLUMN_LABELS[task.status] ?? task.status}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-xs text-[--text-muted]">Tags:</span>
+                    <TagInput
+                      tags={tags ?? []}
+                      onChange={handleTagsChange}
+                      suggestions={tagSuggestions ?? []}
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
           <div className="flex flex-col gap-1.5">
             <label
               htmlFor="card-description"
-              className="text-xs text-[--text-muted]"
+              className="text-sm font-medium text-[--text-primary]"
             >
               Descrição
             </label>
@@ -163,88 +360,21 @@ function CardPageBody({ task }: { task: Task }) {
               placeholder="Adicionar contexto..."
             />
           </div>
+
           <CardChecklist taskId={task.id} />
+
+          <CardDependencies taskId={task.id} projectId={task.project_id} />
         </div>
 
         <div className="flex flex-col gap-4">
-          <div className="flex flex-col gap-1.5">
-            <span className="text-xs text-[--text-muted]">Tags</span>
-            <TagInput
-              tags={tags ?? []}
-              onChange={handleTagsChange}
-              suggestions={tagSuggestions ?? []}
-            />
-          </div>
-
-          <div className="flex flex-col gap-1.5">
-            <span id="priority-label" className="text-xs text-[--text-muted]">
-              Prioridade
+          <div className="flex flex-col gap-1.5 rounded-[--radius-md] border border-[--border] bg-[--bg-card] p-3">
+            <span className="text-xs text-[--text-muted]">Datas</span>
+            <span className="text-sm text-[--text-primary]">
+              Criado: {formatDate(task.created_at)}
             </span>
-            <Select
-              value={task.priority}
-              onValueChange={(v) =>
-                updateTask({
-                  id: task.id,
-                  data: { priority: v as TaskPriority },
-                })
-              }
-            >
-              <SelectTrigger aria-labelledby="priority-label">
-                <SelectValue>
-                  {PRIORITY_CONFIG[task.priority as TaskPriority].text}
-                </SelectValue>
-              </SelectTrigger>
-              <SelectContent>
-                {PRIORITY_OPTIONS.map((option) => (
-                  <SelectItem key={option} value={option}>
-                    {PRIORITY_CONFIG[option].text}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <Checkbox
-              checked={task.flagged}
-              onCheckedChange={(checked) =>
-                updateTask({
-                  id: task.id,
-                  data: { flagged: checked === true },
-                })
-              }
-              aria-labelledby="flagged-label"
-            />
-            <span id="flagged-label" className="text-xs text-[--text-muted]">
-              Urgente
+            <span className="text-sm text-[--text-primary]">
+              Atualizado: {formatDate(task.updated_at)}
             </span>
-          </div>
-
-          <div className="flex flex-col gap-1.5">
-            <span id="epic-label" className="text-xs text-[--text-muted]">
-              Épico
-            </span>
-            <Select
-              value={task.epic_id ?? NONE_EPIC}
-              onValueChange={(v) =>
-                updateTask({
-                  id: task.id,
-                  data: { epic_id: v === NONE_EPIC ? null : v },
-                })
-              }
-            >
-              <SelectTrigger aria-labelledby="epic-label">
-                <SelectValue>{epic ? epic.name : 'Nenhum'}</SelectValue>
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value={NONE_EPIC}>Nenhum</SelectItem>
-                {epics?.map((e) => (
-                  <SelectItem key={e.id} value={e.id}>
-                    {e.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
           </div>
 
           {project?.type === 'general' && (
@@ -295,16 +425,14 @@ function CardPageBody({ task }: { task: Task }) {
                 </Button>
               </div>
             )}
-
-          <CardDependencies taskId={task.id} projectId={task.project_id} />
-
-          <RegisterPerformanceModal
-            task={task}
-            open={isSrsModalOpen}
-            onOpenChange={setIsSrsModalOpen}
-          />
         </div>
       </div>
+
+      <RegisterPerformanceModal
+        task={task}
+        open={isSrsModalOpen}
+        onOpenChange={setIsSrsModalOpen}
+      />
     </div>
   )
 }

@@ -28,7 +28,9 @@ export function CardDependencies({ taskId, projectId }: CardDependenciesProps) {
 
   return (
     <div className="flex flex-col gap-2">
-      <span className="text-xs text-[--text-muted]">Depende de</span>
+      <span className="text-sm font-medium text-[--text-primary]">
+        Depende de
+      </span>
 
       {dependencies && dependencies.length > 0 && (
         <div className="flex flex-col gap-1">

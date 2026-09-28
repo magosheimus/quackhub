@@ -29,6 +29,17 @@ export const COLUMN_LABELS: Record<string, string> = {
   done: 'FINALIZADO',
 }
 
+export const STATUS_BADGE_CLASS: Record<string, string> = {
+  to_study: 'bg-[var(--text-muted)]',
+  todo: 'bg-[var(--signal-warning)]',
+  scheduled: 'bg-[var(--text-muted)]',
+  doing: 'bg-[var(--accent)]',
+  studying: 'bg-[var(--accent)]',
+  to_review: 'bg-[var(--accent)]',
+  blocked: 'bg-[var(--signal-danger)]',
+  done: 'bg-[var(--signal-success)]',
+}
+
 export function getColumnsForType(type: ProjectType | null): string[] {
   if (!type) return ALL_COLUMNS
   const columns: Record<ProjectType, string[]> = {
