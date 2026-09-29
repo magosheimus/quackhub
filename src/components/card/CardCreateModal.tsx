@@ -31,16 +31,34 @@ import { detectRecurrencePattern } from '@/lib/cardSearch'
 import { TagInput } from './TagInput'
 import { useProjectTags } from '@/hooks/tasks/tags/useProjectTags'
 import { useSprints } from '@/hooks/sprints/useSprints'
+import type { Database } from '@/types/database.types'
 
+type Task = Database['public']['Tables']['tasks']['Row']
 const PRIORITY_OPTIONS: TaskPriority[] = ['alta', 'média', 'baixa']
 const NONE_VALUE = '__backlog__'
 
-export function CardCreateModal() {
-  const [open, setOpen] = useState(false)
+type CardCreateModalProps = {
+  open?: boolean
+  onOpenChange?: (open: boolean) => void
+  initialTitle?: string
+  onCreated?: (task: Task) => void
+  hideTrigger?: boolean
+}
+
+export function CardCreateModal({
+  open: controlledOpen,
+  onOpenChange: controlledOnOpenChange,
+  initialTitle,
+  onCreated,
+  hideTrigger = false,
+}: CardCreateModalProps = {}) {
+  const [internalOpen, setInternalOpen] = useState(false)
+  const isControlled = controlledOpen !== undefined
+  const open = isControlled ? controlledOpen : internalOpen
   const [projectId, setProjectId] = useState<string | null>(null)
   const [epicId, setEpicId] = useState<string | null>(null)
   const [sprintId, setSprintId] = useState<string | null>(null)
-  const [title, setTitle] = useState('')
+  const [title, setTitle] = useState(initialTitle ?? '')
   const [description, setDescription] = useState('')
   const [priority, setPriority] = useState<TaskPriority>('média')
   const [flagged, setFlagged] = useState(false)
@@ -91,7 +109,19 @@ export function CardCreateModal() {
 
   function handleOpenChange(nextOpen: boolean) {
     if (!nextOpen) resetForm()
-    setOpen(nextOpen)
+    if (isControlled) {
+      controlledOnOpenChange?.(nextOpen)
+    } else {
+      setInternalOpen(nextOpen)
+    }
+  }
+
+  const [prevOpen, setPrevOpen] = useState(open)
+  if (open !== prevOpen) {
+    setPrevOpen(open)
+    if (open && initialTitle !== undefined) {
+      setTitle(initialTitle)
+    }
   }
 
   function buildTaskPayload() {
@@ -128,7 +158,15 @@ export function CardCreateModal() {
   function handleSubmit() {
     const data = buildTaskPayload()
     if (!data) return
-    createTask({ data, tags }, { onSuccess: () => handleOpenChange(false) })
+    createTask(
+      { data, tags },
+      {
+        onSuccess: (task) => {
+          onCreated?.(task)
+          handleOpenChange(false)
+        },
+      },
+    )
   }
 
   function handleSubmitAndAddAnother() {
@@ -147,7 +185,9 @@ export function CardCreateModal() {
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogTrigger render={<Button size="sm" />}>+ Novo Card</DialogTrigger>
+      {!hideTrigger && (
+        <DialogTrigger render={<Button size="sm" />}>+ Novo Card</DialogTrigger>
+      )}
 
       <DialogContent>
         <DialogHeader>

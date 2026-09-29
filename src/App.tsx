@@ -6,6 +6,7 @@ import { BacklogView } from './components/backlog/BacklogView'
 import { SprintHistoryView } from './components/sprint/SprintHistoryView'
 import { SprintDetailView } from './components/sprint/SprintDetailView'
 import { CardPage } from './components/card/CardPage'
+import { InboxView } from './components/inbox/InboxView'
 
 function Placeholder({ label }: { label: string }) {
   return (
@@ -31,7 +32,7 @@ function App() {
           <Route path="/" element={<Placeholder label="Agenda" />} />
           <Route path="/board" element={<BoardView />} />
           <Route path="/backlog" element={<BacklogView />} />
-          <Route path="/inbox" element={<Placeholder label="Inbox" />} />
+          <Route path="/inbox" element={<InboxView />} />
           <Route
             path="/configuracoes"
             element={<Placeholder label="Configurações" />}
