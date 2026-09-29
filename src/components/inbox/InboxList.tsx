@@ -9,11 +9,32 @@ import type { Database } from '@/types/database.types'
 
 type InboxItem = Database['public']['Tables']['inbox_items']['Row']
 
+const CHECKED_KEY = 'quackhub-inbox-checked'
+
+function loadCheckedIds(): Set<string> {
+  try {
+    const raw = localStorage.getItem(CHECKED_KEY)
+    return raw ? new Set(JSON.parse(raw)) : new Set()
+  } catch {
+    return new Set()
+  }
+}
+
+function saveCheckedIds(ids: Set<string>) {
+  try {
+    localStorage.setItem(CHECKED_KEY, JSON.stringify([...ids]))
+  } catch {
+    // ignore
+  }
+}
+
 export function InboxList() {
   const { data: items, isLoading } = useInboxItems()
   const { mutate: triage } = useTriageItem()
   const [creatingCardFor, setCreatingCardFor] = useState<InboxItem | null>(null)
-  const [checkedIds, setCheckedIds] = useState<Set<string>>(new Set())
+  const [checkedIds, setCheckedIds] = useState<Set<string>>(() =>
+    loadCheckedIds(),
+  )
 
   function handleDiscard(item: InboxItem) {
     triage({
@@ -27,6 +48,7 @@ export function InboxList() {
       const next = new Set(prev)
       if (next.has(id)) next.delete(id)
       else next.add(id)
+      saveCheckedIds(next)
       return next
     })
   }
