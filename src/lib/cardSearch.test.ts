@@ -27,6 +27,7 @@ function makeTask(overrides: Partial<Task>): Task {
     ease_factor: null,
     next_review: null,
     task_number: null,
+    estimated_minutes: null,
     updated_at: '2026-01-01T00:00:00Z',
     deleted_at: null,
     created_at: '2026-01-05T00:00:00Z',

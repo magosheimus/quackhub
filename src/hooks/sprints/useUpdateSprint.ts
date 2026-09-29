@@ -10,9 +10,9 @@ export function useUpdateSprint() {
   return useMutation({
     mutationFn: ({ id, data }: { id: string; data: SprintUpdate }) =>
       updateSprint(id, data),
-    onSuccess: (sprint) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ['sprints', sprint.project_id],
+        queryKey: ['sprints'],
       })
     },
     onError: (error) => {

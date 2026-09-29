@@ -358,6 +358,7 @@ export type Database = {
           due_date: string | null
           ease_factor: number | null
           epic_id: string | null
+          estimated_minutes: number | null
           flag_note: string | null
           flagged: boolean
           id: string
@@ -384,6 +385,7 @@ export type Database = {
           due_date?: string | null
           ease_factor?: number | null
           epic_id?: string | null
+          estimated_minutes?: number | null
           flag_note?: string | null
           flagged?: boolean
           id?: string
@@ -410,6 +412,7 @@ export type Database = {
           due_date?: string | null
           ease_factor?: number | null
           epic_id?: string | null
+          estimated_minutes?: number | null
           flag_note?: string | null
           flagged?: boolean
           id?: string
@@ -456,6 +459,38 @@ export type Database = {
             columns: ['sprint_id']
             isOneToOne: false
             referencedRelation: 'sprints'
+            referencedColumns: ['id']
+          },
+        ]
+      }
+      time_entries: {
+        Row: {
+          created_at: string | null
+          ended_at: string | null
+          id: string
+          started_at: string
+          task_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          ended_at?: string | null
+          id?: string
+          started_at: string
+          task_id: string
+        }
+        Update: {
+          created_at?: string | null
+          ended_at?: string | null
+          id?: string
+          started_at?: string
+          task_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'time_entries_task_id_fkey'
+            columns: ['task_id']
+            isOneToOne: false
+            referencedRelation: 'tasks'
             referencedColumns: ['id']
           },
         ]

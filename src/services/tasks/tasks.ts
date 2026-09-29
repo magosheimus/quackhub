@@ -1,6 +1,7 @@
 import { supabase } from '@/lib/supabase'
 import type { TaskStatus } from '@/lib/board'
 import type { Database } from '@/types/database.types'
+import { calculateNextDueDate, buildRecurrentCard } from '@/lib/recurrence'
 
 type Task = Database['public']['Tables']['tasks']['Row']
 
@@ -93,6 +94,14 @@ export async function updateTaskStatus(
     .single()
   if (error)
     throw new Error(`Falha ao atualizar status da task: ${error.message}`)
+
+  if (status === 'done' && task.recurrence_type) {
+    const nextDue = calculateNextDueDate(task)
+    if (nextDue) {
+      await createTask(buildRecurrentCard(task, nextDue))
+    }
+  }
+
   return task
 }
 
