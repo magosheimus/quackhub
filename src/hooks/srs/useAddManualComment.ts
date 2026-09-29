@@ -9,6 +9,7 @@ export function useAddManualComment() {
       addManualComment(taskId, comment),
     onSuccess: (_log, { taskId }) => {
       queryClient.invalidateQueries({ queryKey: ['tasks', 'detail', taskId] })
+      queryClient.invalidateQueries({ queryKey: ['srs-logs', taskId] })
     },
     onError: (error) => {
       console.error(error.message)

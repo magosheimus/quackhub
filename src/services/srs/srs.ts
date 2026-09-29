@@ -67,3 +67,13 @@ export async function addManualComment(
   if (error) throw new Error(`Falha ao salvar observação: ${error.message}`)
   return data
 }
+
+export async function getSrsLogs(taskId: string): Promise<SrsLog[]> {
+  const { data, error } = await supabase
+    .from('srs_logs')
+    .select('*')
+    .eq('task_id', taskId)
+    .order('session_date', { ascending: false })
+  if (error) throw new Error(`Falha ao buscar histórico: ${error.message}`)
+  return data
+}

@@ -23,6 +23,7 @@ export function useRegisterPerformance() {
       registerPerformance(taskId, nota, confianca, comment),
     onSuccess: (_log, { taskId, projectId, sprintId }) => {
       queryClient.invalidateQueries({ queryKey: ['tasks', 'detail', taskId] })
+      queryClient.invalidateQueries({ queryKey: ['srs-logs', taskId] })
       queryClient.invalidateQueries({
         queryKey: ['tasks', 'backlog', projectId],
       })

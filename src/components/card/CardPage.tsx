@@ -25,6 +25,7 @@ import { RecurrenceFields, type RecurrenceValue } from './RecurrenceFields'
 import { CardChecklist } from './CardChecklist'
 import { CardDependencies } from './CardDependencies'
 import { CardAttachments } from './CardAttachments'
+import { CardHistory } from './CardHistory'
 import {
   PRIORITY_CONFIG,
   COLUMN_LABELS,
@@ -367,6 +368,8 @@ function CardPageBody({ task }: { task: Task }) {
           <CardChecklist taskId={task.id} />
 
           <CardDependencies taskId={task.id} projectId={task.project_id} />
+
+          <CardHistory taskId={task.id} />
         </div>
 
         <div className="flex flex-col gap-4">
