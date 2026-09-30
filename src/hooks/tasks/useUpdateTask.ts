@@ -12,6 +12,9 @@ export function useUpdateTask() {
       updateTask(id, data),
     onSuccess: (task) => {
       queryClient.invalidateQueries({
+        queryKey: ['tasks', 'detail', task.id],
+      })
+      queryClient.invalidateQueries({
         queryKey: ['tasks', 'backlog', task.project_id],
       })
       queryClient.invalidateQueries({ queryKey: ['tasks', 'backlog', 'all'] })

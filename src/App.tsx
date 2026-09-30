@@ -7,6 +7,7 @@ import { SprintHistoryView } from './components/sprint/SprintHistoryView'
 import { SprintDetailView } from './components/sprint/SprintDetailView'
 import { CardPage } from './components/card/CardPage'
 import { InboxView } from './components/inbox/InboxView'
+import { AgendaView } from './components/agenda/AgendaView'
 
 function Placeholder({ label }: { label: string }) {
   return (
@@ -29,7 +30,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route element={<Layout />}>
-          <Route path="/" element={<Placeholder label="Agenda" />} />
+          <Route path="/" element={<AgendaView />} />
           <Route path="/board" element={<BoardView />} />
           <Route path="/backlog" element={<BacklogView />} />
           <Route path="/inbox" element={<InboxView />} />
