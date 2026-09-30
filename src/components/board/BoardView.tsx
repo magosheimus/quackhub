@@ -4,9 +4,18 @@ import { useProjects } from '@/hooks/projects/useProjects'
 import { useActiveSprint } from '@/hooks/sprints/useActiveSprint'
 import { useTasksBySprintId } from '@/hooks/tasks/sprint/useTasksBySprintId'
 import { useUpdateTaskStatus } from '@/hooks/tasks/sprint/useUpdateTaskStatus'
-import { getColumnsForType, type TaskStatus } from '@/lib/board'
+import { useBoardFilters } from '@/hooks/board/useBoardFilters'
+import { useBulkTaskTags } from '@/hooks/tasks/tags/useBulkTaskTags'
+import { useAllEpics } from '@/hooks/epics/useAllEpics'
+import {
+  getColumnsForType,
+  applyBoardFilters,
+  type TaskStatus,
+} from '@/lib/board'
+import { todayLocal } from '@/lib/srs'
 import type { ProjectType } from '@/lib/project'
 import { BoardColumn } from './BoardColumn'
+import { FilterBar } from './FilterBar'
 import { SprintHeader } from '@/components/sprint/SprintHeader'
 
 export function BoardView() {
@@ -19,6 +28,14 @@ export function BoardView() {
     activeSprint?.id ?? '',
   )
   const { mutate: updateTaskStatus } = useUpdateTaskStatus()
+  const { data: epics } = useAllEpics()
+  const { filters, updateFilter, resetFilters } = useBoardFilters()
+
+  const scopedTasks = projectId
+    ? (tasks ?? []).filter((task) => task.project_id === projectId)
+    : (tasks ?? [])
+
+  const { data: taskTagsMap } = useBulkTaskTags(scopedTasks.map((t) => t.id))
 
   if (isLoadingProjects || isLoadingSprint) {
     return (
@@ -30,9 +47,12 @@ export function BoardView() {
     ? (projects?.find((p) => p.id === projectId) ?? null)
     : null
 
-  const visibleTasks = projectId
-    ? (tasks ?? []).filter((task) => task.project_id === projectId)
-    : (tasks ?? [])
+  const visibleTasks = applyBoardFilters(
+    scopedTasks,
+    filters,
+    taskTagsMap ?? new Map(),
+    todayLocal(),
+  )
 
   const projectPrefixById = new Map(
     projects?.map((p) => [p.id, p.prefix ?? '']),
@@ -57,6 +77,13 @@ export function BoardView() {
   return (
     <div className="flex flex-col gap-4">
       <SprintHeader activeSprint={activeSprint ?? null} tasks={visibleTasks} />
+
+      <FilterBar
+        filters={filters}
+        onUpdateFilter={updateFilter}
+        onReset={resetFilters}
+        epics={epics ?? []}
+      />
 
       {activeSprint ? (
         <DragDropContext onDragEnd={handleDragEnd}>

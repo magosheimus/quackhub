@@ -7,6 +7,7 @@ import { ProjectEditModal } from '@/components/project/ProjectEditModal'
 import type { Database } from '@/types/database.types'
 import { ClearCacheButton } from '@/components/settings/ClearCacheButton'
 import { CardCreateModal } from '@/components/card/CardCreateModal'
+import { GlobalSearch } from '../search/GlobalSearch'
 
 type Project = Database['public']['Tables']['projects']['Row']
 
@@ -26,7 +27,9 @@ export function Sidebar() {
       <div className="font-heading text-xl text-[--text-primary] mb-6">
         [ pato ] QUACKHUB
       </div>
-
+      <div className="mb-4">
+        <GlobalSearch />
+      </div>
       <nav className="flex flex-col gap-1">
         <NavLink to="/" className={navLinkClass} end>
           Agenda

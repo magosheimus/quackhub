@@ -43,3 +43,12 @@ export async function softDeleteEpic(id: string): Promise<void> {
     .eq('id', id)
   if (error) throw new Error(`Falha ao arquivar épico: ${error.message}`)
 }
+
+export async function getAllEpics(): Promise<Epic[]> {
+  const { data, error } = await supabase
+    .from('epics')
+    .select('*')
+    .is('deleted_at', null)
+  if (error) throw new Error(`Falha ao buscar épicos: ${error.message}`)
+  return data
+}
