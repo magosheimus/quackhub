@@ -8,6 +8,7 @@ import { SprintDetailView } from './components/sprint/SprintDetailView'
 import { CardPage } from './components/card/CardPage'
 import { InboxView } from './components/inbox/InboxView'
 import { AgendaView } from './components/agenda/AgendaView'
+import { SettingsView } from './components/settings/SettingsView'
 
 function Placeholder({ label }: { label: string }) {
   return (
@@ -34,10 +35,7 @@ function App() {
           <Route path="/board" element={<BoardView />} />
           <Route path="/backlog" element={<BacklogView />} />
           <Route path="/inbox" element={<InboxView />} />
-          <Route
-            path="/configuracoes"
-            element={<Placeholder label="Configurações" />}
-          />
+          <Route path="/configuracoes" element={<SettingsView />} />
           <Route
             path="/analytics"
             element={<Placeholder label="Analytics" />}

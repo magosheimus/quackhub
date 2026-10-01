@@ -12,7 +12,7 @@ export function AppShell({ children }: AppShellProps) {
     return () => window.removeEventListener('online', syncInboxQueue)
   }, [])
   return (
-    <div className="flex min-h-screen bg-[--bg-page]">
+    <div className="app-root flex min-h-screen bg-[var(--bg-page)]">
       <Sidebar />
       <main className="flex-1 p-6">{children}</main>
     </div>

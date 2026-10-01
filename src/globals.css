@@ -162,27 +162,39 @@
   --scanline-opacity: 1;
 }
 
+.scanlines-on {
+  --scanline-opacity: 1;
+}
+
+.glow-on {
+  --glow: 0 0 6px color-mix(in srgb, var(--lcd-ink) 55%, transparent);
+}
+
+.font-ibm-plex {
+  --font-body: 'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
+}
+
 /* ==========================================================================
    3. Texturas
    ========================================================================== */
-.texture-grid {
+.texture-grid .app-root {
   background-image:
     linear-gradient(
-      color-mix(in srgb, var(--border) 45%, transparent) 1px,
+      color-mix(in srgb, var(--border) var(--texture-opacity, 45%), transparent) 1px,
       transparent 1px
     ),
     linear-gradient(
       90deg,
-      color-mix(in srgb, var(--border) 45%, transparent) 1px,
+      color-mix(in srgb, var(--border) var(--texture-opacity, 45%), transparent) 1px,
       transparent 1px
     );
   background-size: 24px 24px;
 }
 
-.texture-dots {
+.texture-dots .app-root {
   background-image: radial-gradient(
     circle,
-    color-mix(in srgb, var(--border) 70%, transparent) 1px,
+    color-mix(in srgb, var(--border) var(--texture-opacity, 70%), transparent) 1px,
     transparent 1px
   );
   background-size: 20px 20px;
