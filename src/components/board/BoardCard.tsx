@@ -28,8 +28,8 @@ export function BoardCard({ task, index, projectPrefixById }: BoardCardProps) {
             ...provided.draggableProps.style,
             borderLeftColor: `var(${priority.colorVar})`,
           }}
-          className={`flex gap-2 rounded-[--radius-md] border border-l-4  border-[--border] bg-[--bg-card] p-3 text-sm ${
-            snapshot.isDragging ? 'bg-[--bg-card-hover]' : ''
+          className={`flex gap-2 rounded-[--radius-md] border border-l-4  border-[--border] bg-[var(--bg-card)] p-3 text-sm ${
+            snapshot.isDragging ? 'bg-[var(--bg-card-hover)]' : ''
           }`}
         >
           <div className="flex w-4 shrink-0 flex-col items-center gap-1 pt-0.5">

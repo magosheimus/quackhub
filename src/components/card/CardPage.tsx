@@ -42,7 +42,7 @@ const PRIORITY_OPTIONS: TaskPriority[] = ['alta', 'média', 'baixa']
 const NONE_EPIC = '__none__'
 const NONE_SPRINT = '__none__'
 const INLINE_TRIGGER_CLASS =
-  'h-auto! w-fit! border! border-transparent! bg-transparent! p-0! shadow-none! data-[popup-open]:border-[--border]! data-[popup-open]:bg-[--bg-input]! data-[popup-open]:px-2! data-[popup-open]:py-1!'
+  'h-auto! w-fit! border! border-transparent! bg-transparent! p-0! shadow-none! data-[popup-open]:border-[--border]! data-[popup-open]:bg-[var(--bg-input)]! data-[popup-open]:px-2! data-[popup-open]:py-1!'
 const SRS_ELIGIBLE_STATUSES: Task['status'][] = [
   'studying',
   'to_review',
@@ -165,7 +165,7 @@ function CardPageBody({ task }: { task: Task }) {
             aria-label="Título do card"
             className={`-mt-2 rounded-[--radius-md] px-2 py-0 font-heading text-3xl leading-tight text-[--text-primary] outline-none ${
               isEditingTitle
-                ? 'border border-[--border] bg-[--bg-input] shadow-[inset_1px_1px_2px_color-mix(in_srgb,var(--lcd-ink)_20%,transparent),inset_-1px_-1px_0_color-mix(in_srgb,var(--lcd-screen)_40%,transparent)]'
+                ? 'border border-[--border] bg-[var(--bg-input)] shadow-[inset_1px_1px_2px_color-mix(in_srgb,var(--lcd-ink)_20%,transparent),inset_-1px_-1px_0_color-mix(in_srgb,var(--lcd-screen)_40%,transparent)]'
                 : 'border! border-transparent! bg-transparent! shadow-none!'
             }`}
           />
@@ -373,7 +373,7 @@ function CardPageBody({ task }: { task: Task }) {
         </div>
 
         <div className="flex flex-col gap-4">
-          <div className="flex flex-col gap-1.5 rounded-[--radius-md] border border-[--border] bg-[--bg-card] p-3">
+          <div className="flex flex-col gap-1.5 rounded-[--radius-md] border border-[--border] bg-[var(--bg-card)] p-3">
             <span className="text-xs text-[--text-muted]">Datas</span>
             <span className="text-sm text-[--text-primary]">
               Criado: {formatDate(task.created_at)}
@@ -414,7 +414,7 @@ function CardPageBody({ task }: { task: Task }) {
 
           {project?.type === 'study' &&
             SRS_ELIGIBLE_STATUSES.includes(task.status) && (
-              <div className="flex flex-col gap-1.5 rounded-[--radius-md] border border-[--border] bg-[--bg-card] p-3">
+              <div className="flex flex-col gap-1.5 rounded-[--radius-md] border border-[--border] bg-[var(--bg-card)] p-3">
                 <span className="text-xs text-[--text-muted]">SRS</span>
                 <span className="text-sm text-[--text-primary]">
                   EF: {(task.ease_factor ?? 2.5).toFixed(2)}

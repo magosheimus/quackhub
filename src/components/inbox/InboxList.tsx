@@ -68,7 +68,7 @@ export function InboxList() {
       {items.map((item) => (
         <div
           key={item.id}
-          className="flex items-center gap-2 rounded-[--radius-md] border border-[--border] bg-[--bg-card] p-3 text-sm"
+          className="flex items-center gap-2 rounded-[--radius-md] border border-[--border] bg-[var(--bg-card)] p-3 text-sm"
         >
           <Checkbox
             checked={checkedIds.has(item.id)}

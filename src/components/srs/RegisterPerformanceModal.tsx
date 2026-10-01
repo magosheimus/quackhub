@@ -125,7 +125,7 @@ export function RegisterPerformanceModal({
             />
           </div>
 
-          <div className="rounded-[--radius-md] border border-[--border] bg-[--bg-card] p-3 text-xs text-[--text-muted]">
+          <div className="rounded-[--radius-md] border border-[--border] bg-[var(--bg-card)] p-3 text-xs text-[--text-muted]">
             <p>Qualidade calculada: {quality.toFixed(2)}</p>
             <p>Novo intervalo: {newInterval} dia(s)</p>
             <p>Próxima revisão: {nextReviewDate}</p>

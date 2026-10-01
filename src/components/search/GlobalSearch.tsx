@@ -92,7 +92,7 @@ export function GlobalSearch() {
                   key={task.id}
                   to={`/cards/${task.id}`}
                   onClick={() => handleOpenChange(false)}
-                  className="flex flex-col gap-0.5 rounded-[--radius-md] p-2 text-sm hover:bg-[--bg-card-hover]"
+                  className="flex flex-col gap-0.5 rounded-[--radius-md] p-2 text-sm hover:bg-(--bg-card-hover)"
                 >
                   <span className="text-[--text-primary]">{task.title}</span>
                   <span className="text-xs text-[--text-muted]">

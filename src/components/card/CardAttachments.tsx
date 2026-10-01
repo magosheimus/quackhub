@@ -117,7 +117,7 @@ export function CardAttachments({ taskId }: CardAttachmentsProps) {
             return (
               <div
                 key={attachment.id}
-                className="group relative flex h-28 w-28 items-center justify-center overflow-hidden rounded-[--radius-md] border border-[--border] bg-[--bg-card]"
+                className="group relative flex h-28 w-28 items-center justify-center overflow-hidden rounded-[--radius-md] border border-[--border] bg-[var(--bg-card)]"
               >
                 {isImage ? (
                   <button
@@ -158,7 +158,7 @@ export function CardAttachments({ taskId }: CardAttachmentsProps) {
                     })
                   }
                   aria-label={`Remover anexo ${attachment.file_name}`}
-                  className="absolute top-0.5 right-0.5 hidden rounded-full bg-[--bg-page] p-0.5 group-hover:block"
+                  className="absolute top-0.5 right-0.5 hidden rounded-full bg-[var(--bg-page)] p-0.5 group-hover:block"
                 >
                   <X size={12} />
                 </button>
