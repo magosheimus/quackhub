@@ -19,7 +19,7 @@ import { FilterBar } from './FilterBar'
 import { SprintHeader } from '@/components/sprint/SprintHeader'
 
 export function BoardView() {
-  const [searchParams] = useSearchParams()
+  const [searchParams, setSearchParams] = useSearchParams()
   const projectId = searchParams.get('project')
 
   const { data: projects, isLoading: isLoadingProjects } = useProjects()
@@ -58,9 +58,30 @@ export function BoardView() {
     projects?.map((p) => [p.id, p.prefix ?? '']),
   )
 
+  const projectIdsInSprint = new Set((tasks ?? []).map((t) => t.project_id))
+  const epicIdsInSprint = new Set(
+    (tasks ?? []).map((t) => t.epic_id).filter((id): id is string => !!id),
+  )
+  const sprintProjects = (projects ?? []).filter((p) =>
+    projectIdsInSprint.has(p.id),
+  )
+  const sprintEpics = (epics ?? []).filter((e) => epicIdsInSprint.has(e.id))
+
   const columns = getColumnsForType(
     project ? (project.type as ProjectType) : null,
   )
+
+  function handleSelectProject(nextProjectId: string | null) {
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev)
+      if (nextProjectId) {
+        next.set('project', nextProjectId)
+      } else {
+        next.delete('project')
+      }
+      return next
+    })
+  }
 
   function handleDragEnd(result: DropResult) {
     if (!activeSprint) return
@@ -82,7 +103,10 @@ export function BoardView() {
         filters={filters}
         onUpdateFilter={updateFilter}
         onReset={resetFilters}
-        epics={epics ?? []}
+        epics={sprintEpics}
+        projects={sprintProjects}
+        selectedProjectId={projectId}
+        onSelectProject={handleSelectProject}
       />
 
       {activeSprint ? (

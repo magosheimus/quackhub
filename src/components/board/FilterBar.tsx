@@ -1,26 +1,9 @@
 import { Button } from '@/components/ui/button'
-import {
-  COLUMN_LABELS,
-  PRIORITY_CONFIG,
-  type TaskPriority,
-  type TaskStatus,
-  type BoardFilters,
-} from '@/lib/board'
+import type { BoardFilters } from '@/lib/board'
 import type { Database } from '@/types/database.types'
 
 type Epic = Database['public']['Tables']['epics']['Row']
-
-const PRIORITY_OPTIONS: TaskPriority[] = ['alta', 'média', 'baixa']
-const STATUS_OPTIONS: TaskStatus[] = [
-  'to_study',
-  'todo',
-  'studying',
-  'doing',
-  'to_review',
-  'blocked',
-  'scheduled',
-  'done',
-]
+type Project = Database['public']['Tables']['projects']['Row']
 
 type FilterBarProps = {
   filters: BoardFilters
@@ -30,6 +13,9 @@ type FilterBarProps = {
   ) => void
   onReset: () => void
   epics: Epic[]
+  projects: Project[]
+  selectedProjectId: string | null
+  onSelectProject: (projectId: string | null) => void
 }
 
 export function FilterBar({
@@ -37,13 +23,20 @@ export function FilterBar({
   onUpdateFilter,
   onReset,
   epics,
+  projects,
+  selectedProjectId,
+  onSelectProject,
 }: FilterBarProps) {
   const hasActiveFilter =
     filters.flagged !== null ||
     filters.srsOverdue ||
-    filters.priority !== null ||
-    filters.status !== null ||
-    filters.epicId !== null
+    filters.epicId !== null ||
+    selectedProjectId !== null
+
+  function handleReset() {
+    onReset()
+    onSelectProject(null)
+  }
 
   return (
     <div className="flex flex-wrap items-center gap-2">
@@ -69,37 +62,6 @@ export function FilterBar({
         SRS vencido
       </Button>
 
-      {PRIORITY_OPTIONS.map((option) => (
-        <Button
-          key={option}
-          type="button"
-          variant={filters.priority === option ? 'default' : 'outline'}
-          size="sm"
-          onClick={() =>
-            onUpdateFilter(
-              'priority',
-              filters.priority === option ? null : option,
-            )
-          }
-        >
-          {PRIORITY_CONFIG[option].text}
-        </Button>
-      ))}
-
-      {STATUS_OPTIONS.map((status) => (
-        <Button
-          key={status}
-          type="button"
-          variant={filters.status === status ? 'default' : 'outline'}
-          size="sm"
-          onClick={() =>
-            onUpdateFilter('status', filters.status === status ? null : status)
-          }
-        >
-          {COLUMN_LABELS[status]}
-        </Button>
-      ))}
-
       {epics.map((epic) => (
         <Button
           key={epic.id}
@@ -117,8 +79,24 @@ export function FilterBar({
         </Button>
       ))}
 
+      {projects.map((project) => (
+        <Button
+          key={project.id}
+          type="button"
+          variant={selectedProjectId === project.id ? 'default' : 'outline'}
+          size="sm"
+          onClick={() =>
+            onSelectProject(
+              selectedProjectId === project.id ? null : project.id,
+            )
+          }
+        >
+          {project.name}
+        </Button>
+      ))}
+
       {hasActiveFilter && (
-        <Button type="button" variant="ghost" size="sm" onClick={onReset}>
+        <Button type="button" variant="ghost" size="sm" onClick={handleReset}>
           Limpar
         </Button>
       )}
