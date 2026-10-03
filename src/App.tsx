@@ -9,14 +9,7 @@ import { CardPage } from './components/card/CardPage'
 import { InboxView } from './components/inbox/InboxView'
 import { AgendaView } from './components/agenda/AgendaView'
 import { SettingsView } from './components/settings/SettingsView'
-
-function Placeholder({ label }: { label: string }) {
-  return (
-    <div className="text-base text-[--text-primary]">
-      {label} — ainda não implementado
-    </div>
-  )
-}
+import { AnalyticsView } from './components/analytics/AnalyticsView'
 
 function Layout() {
   return (
@@ -36,10 +29,7 @@ function App() {
           <Route path="/backlog" element={<BacklogView />} />
           <Route path="/inbox" element={<InboxView />} />
           <Route path="/configuracoes" element={<SettingsView />} />
-          <Route
-            path="/analytics"
-            element={<Placeholder label="Analytics" />}
-          />
+          <Route path="/analytics" element={<AnalyticsView />} />
           <Route path="/debug-tokens" element={<TokenPreview />} />
           <Route path="/sprints" element={<SprintHistoryView />} />
           <Route path="/sprints/:id" element={<SprintDetailView />} />
