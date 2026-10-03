@@ -71,6 +71,18 @@ export async function getTasksBySprintId(sprintId: string): Promise<Task[]> {
   return data
 }
 
+export async function getTasksByProjectId(projectId: string): Promise<Task[]> {
+  const { data, error } = await supabase
+    .from('tasks')
+    .select('*')
+    .eq('project_id', projectId)
+    .is('deleted_at', null)
+    .order('task_number', { ascending: true })
+  if (error)
+    throw new Error(`Falha ao buscar tasks do projeto: ${error.message}`)
+  return data
+}
+
 export async function updateTaskStatus(
   id: string,
   status: TaskStatus,

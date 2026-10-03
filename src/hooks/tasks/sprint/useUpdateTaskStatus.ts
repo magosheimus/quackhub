@@ -47,6 +47,7 @@ export function useUpdateTaskStatus() {
 
     onSettled: (_data, _error, { sprintId }) => {
       queryClient.invalidateQueries({ queryKey: ['tasks', 'sprint', sprintId] })
+      queryClient.invalidateQueries({ queryKey: ['tasks', 'project'] })
     },
   })
 }

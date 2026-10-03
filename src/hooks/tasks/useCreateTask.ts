@@ -20,6 +20,7 @@ export function useCreateTask() {
         queryKey: ['tasks', 'backlog', task.project_id],
       })
       queryClient.invalidateQueries({ queryKey: ['tasks', 'backlog', 'all'] })
+      queryClient.invalidateQueries({ queryKey: ['tasks', 'project'] })
       queryClient.invalidateQueries({ queryKey: ['tags', task.project_id] })
     },
     onError: (error) => {

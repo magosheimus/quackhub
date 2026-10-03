@@ -28,6 +28,7 @@ export function useRegisterPerformance() {
         queryKey: ['tasks', 'backlog', projectId],
       })
       queryClient.invalidateQueries({ queryKey: ['tasks', 'backlog', 'all'] })
+      queryClient.invalidateQueries({ queryKey: ['tasks', 'project'] })
       if (sprintId) {
         queryClient.invalidateQueries({
           queryKey: ['tasks', 'sprint', sprintId],

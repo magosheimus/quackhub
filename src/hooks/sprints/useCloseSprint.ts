@@ -20,6 +20,7 @@ export function useCloseSprint() {
         queryKey: ['tasks', 'backlog'],
       })
       queryClient.invalidateQueries({ queryKey: ['tasks', 'sprint'] })
+      queryClient.invalidateQueries({ queryKey: ['tasks', 'project'] })
     },
     onError: (error) => {
       console.error(error.message)
