@@ -17,6 +17,7 @@ import type { ProjectType } from '@/lib/project'
 import { BoardColumn } from './BoardColumn'
 import { FilterBar } from './FilterBar'
 import { SprintHeader } from '@/components/sprint/SprintHeader'
+import { LoadingText } from '../ui/loading-text'
 
 export function BoardView() {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -38,9 +39,7 @@ export function BoardView() {
   const { data: taskTagsMap } = useBulkTaskTags(scopedTasks.map((t) => t.id))
 
   if (isLoadingProjects || isLoadingSprint) {
-    return (
-      <div className="text-sm text-[--text-muted]">[ CARREGANDO........ ]</div>
-    )
+    return <LoadingText />
   }
 
   const project = projectId
@@ -121,11 +120,7 @@ export function BoardView() {
               />
             ))}
           </div>
-          {isLoadingTasks && (
-            <div className="text-sm text-[--text-muted]">
-              [ CARREGANDO........ ]
-            </div>
-          )}
+          {isLoadingTasks && <LoadingText />}
         </DragDropContext>
       ) : (
         <div className="text-sm text-[--text-muted]">

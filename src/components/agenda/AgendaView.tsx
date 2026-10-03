@@ -7,6 +7,7 @@ import { useProjects } from '@/hooks/projects/useProjects'
 import { AgendaSection } from './AgendaSection'
 import { RegisterPerformanceModal } from '@/components/srs/RegisterPerformanceModal'
 import type { Database } from '@/types/database.types'
+import { LoadingText } from '../ui/loading-text'
 
 type Task = Database['public']['Tables']['tasks']['Row']
 
@@ -18,9 +19,7 @@ export function AgendaView() {
   const [registeringTask, setRegisteringTask] = useState<Task | null>(null)
 
   if (isLoading) {
-    return (
-      <div className="text-sm text-[--text-muted]">[ CARREGANDO........ ]</div>
-    )
+    return <LoadingText />
   }
 
   const urgent = agenda?.urgent ?? []

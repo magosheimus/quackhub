@@ -6,6 +6,7 @@ import { useInboxItems } from '@/hooks/inbox/useInboxItems'
 import { useTriageItem } from '@/hooks/inbox/useTriageItem'
 import { CardCreateModal } from '@/components/card/CardCreateModal'
 import type { Database } from '@/types/database.types'
+import { LoadingText } from '../ui/loading-text'
 
 type InboxItem = Database['public']['Tables']['inbox_items']['Row']
 
@@ -54,9 +55,7 @@ export function InboxList() {
   }
 
   if (isLoading) {
-    return (
-      <div className="text-sm text-[--text-muted]">[ CARREGANDO........ ]</div>
-    )
+    return <LoadingText />
   }
 
   if (!items || items.length === 0) {
@@ -68,7 +67,7 @@ export function InboxList() {
       {items.map((item) => (
         <div
           key={item.id}
-          className="flex items-center gap-2 rounded-[--radius-md] border border-[--border] bg-[var(--bg-card)] p-3 text-sm"
+          className="flex items-center gap-2 rounded-[--radius-md] border border-[--border] bg-(--bg-card) p-3 text-sm"
         >
           <Checkbox
             checked={checkedIds.has(item.id)}

@@ -11,6 +11,7 @@ import { useEpics } from '@/hooks/epics/useEpics'
 import { useCreateEpic } from '@/hooks/epics/useCreateEpic'
 import { useUpdateEpic } from '@/hooks/epics/useUpdateEpic'
 import type { Database } from '@/types/database.types'
+import { LoadingText } from '../ui/loading-text'
 
 type Epic = Database['public']['Tables']['epics']['Row']
 
@@ -45,11 +46,7 @@ export function EpicManageModal({
         </DialogHeader>
 
         <div className="flex flex-col gap-2">
-          {isLoading && (
-            <div className="text-sm text-[--text-muted]">
-              [ CARREGANDO........ ]
-            </div>
-          )}
+          {isLoading && <LoadingText />}
           {epics?.length === 0 && !isLoading && (
             <div className="text-sm text-[--text-muted]">
               — nenhum épico ainda —

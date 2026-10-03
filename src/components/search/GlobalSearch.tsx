@@ -12,6 +12,7 @@ import { useSearchTasks } from '@/hooks/search/useSearchTasks'
 import { useProjects } from '@/hooks/projects/useProjects'
 import { useAllEpics } from '@/hooks/epics/useAllEpics'
 import { COLUMN_LABELS } from '@/lib/board'
+import { LoadingText } from '../ui/loading-text'
 
 export function GlobalSearch() {
   const [open, setOpen] = useState(false)
@@ -74,11 +75,7 @@ export function GlobalSearch() {
             placeholder="Buscar por título, descrição ou tag..."
           />
           <div className="flex max-h-80 flex-col gap-1 overflow-y-auto">
-            {isLoading && (
-              <span className="text-sm text-[--text-muted]">
-                [ CARREGANDO........ ]
-              </span>
-            )}
+            {isLoading && <LoadingText />}
             {!isLoading && debouncedQuery.trim() && results?.length === 0 && (
               <span className="text-sm text-[--text-muted]">
                 — nenhum resultado —

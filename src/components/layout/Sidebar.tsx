@@ -8,6 +8,7 @@ import type { Database } from '@/types/database.types'
 import { ClearCacheButton } from '@/components/settings/ClearCacheButton'
 import { CardCreateModal } from '@/components/card/CardCreateModal'
 import { GlobalSearch } from '../search/GlobalSearch'
+import { LoadingText } from '../ui/loading-text'
 
 type Project = Database['public']['Tables']['projects']['Row']
 
@@ -60,11 +61,7 @@ export function Sidebar() {
         </div>
 
         <div className="flex flex-col gap-1">
-          {isLoading && (
-            <div className="px-3 text-sm text-[--text-muted]">
-              [ CARREGANDO........ ]
-            </div>
-          )}
+          {isLoading && <LoadingText />}
           {projects?.map((project) => (
             <div key={project.id} className="group flex items-center">
               <NavLink

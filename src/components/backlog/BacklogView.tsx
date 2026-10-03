@@ -22,6 +22,7 @@ import type { ProjectType } from '@/lib/project'
 import { useSprints } from '@/hooks/sprints/useSprints'
 import { AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
+import { LoadingText } from '../ui/loading-text'
 
 const STATUS_OPTIONS: TaskStatus[] = [
   'to_study',
@@ -63,9 +64,7 @@ export function BacklogView() {
     activeSprint ?? sprints?.find((s) => s.status === 'planned')
 
   if (isLoadingProjects) {
-    return (
-      <div className="text-sm text-[--text-muted]">[ CARREGANDO........ ]</div>
-    )
+    return <LoadingText />
   }
 
   const projectById = new Map(projects?.map((p) => [p.id, p]))
@@ -175,11 +174,7 @@ export function BacklogView() {
       </div>
 
       <div className="flex flex-col gap-2">
-        {isLoadingTasks && (
-          <div className="text-sm text-[--text-muted]">
-            [ CARREGANDO........ ]
-          </div>
-        )}
+        {isLoadingTasks && <LoadingText />}
         {!isLoadingTasks && filteredTasks.length === 0 && (
           <div className="text-sm text-[--text-muted]">
             — nenhum card no backlog —
