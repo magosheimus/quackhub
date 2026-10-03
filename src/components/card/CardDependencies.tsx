@@ -5,7 +5,7 @@ import { useDependencies } from '@/hooks/tasks/dependencies/useDependencies'
 import { useAddDependency } from '@/hooks/tasks/dependencies/useAddDependency'
 import { useRemoveDependency } from '@/hooks/tasks/dependencies/useRemoveDependency'
 import { useSimilarCards } from '@/hooks/tasks/useSimilarCards'
-import { useDebouncedValue } from '@/hooks/useDebouncedValue'
+import { useDebouncedValue } from '@/hooks/shared/useDebouncedValue'
 
 type CardDependenciesProps = {
   taskId: string

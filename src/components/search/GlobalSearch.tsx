@@ -7,7 +7,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
-import { useDebouncedValue } from '@/hooks/useDebouncedValue'
+import { useDebouncedValue } from '@/hooks/shared/useDebouncedValue'
 import { useSearchTasks } from '@/hooks/search/useSearchTasks'
 import { useProjects } from '@/hooks/projects/useProjects'
 import { useAllEpics } from '@/hooks/epics/useAllEpics'

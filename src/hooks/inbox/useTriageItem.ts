@@ -12,6 +12,7 @@ export function useTriageItem() {
   return useMutation({
     mutationFn: ({ id, decision }: { id: string; decision: TriageDecision }) =>
       triageItem(id, decision),
+    meta: { silent: true },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['inbox'] })
     },
