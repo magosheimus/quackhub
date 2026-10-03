@@ -23,6 +23,8 @@ import { useSprints } from '@/hooks/sprints/useSprints'
 import { AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
 import { LoadingText } from '../ui/loading-text'
+import { Button } from '@/components/ui/button'
+import { EpicManageModal } from '../epic/EpicManageModal'
 
 const STATUS_OPTIONS: TaskStatus[] = [
   'to_study',
@@ -50,7 +52,7 @@ export function BacklogView() {
     null,
   )
   const [epicFilter, setEpicFilter] = useState<string | null>(null)
-
+  const [isEpicModalOpen, setIsEpicModalOpen] = useState(false)
   const { data: projects, isLoading: isLoadingProjects } = useProjects()
   const { data: tasks, isLoading: isLoadingTasks } =
     useBacklogTasks(projectFilter)
@@ -83,6 +85,18 @@ export function BacklogView() {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-wrap gap-2">
+        <Button variant="outline" onClick={() => setIsEpicModalOpen(true)}>
+          + Criar épico
+        </Button>
+
+        {isEpicModalOpen && (
+          <EpicManageModal
+            initialProjectId={projectFilter}
+            open={isEpicModalOpen}
+            onOpenChange={setIsEpicModalOpen}
+          />
+        )}
+
         <Select
           value={projectFilter ?? NONE_VALUE}
           onValueChange={(v) => {
