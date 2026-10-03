@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import {
   Select,
   SelectContent,
@@ -26,6 +27,27 @@ const TYPE_LABELS: Record<NonNullable<RecurrenceValue['type']>, string> = {
   yearly: 'Anual',
 }
 
+const MONTH_NAMES = [
+  'Janeiro',
+  'Fevereiro',
+  'Março',
+  'Abril',
+  'Maio',
+  'Junho',
+  'Julho',
+  'Agosto',
+  'Setembro',
+  'Outubro',
+  'Novembro',
+  'Dezembro',
+]
+
+function toEndOfMonthDate(yearMonth: string): string {
+  const [year, monthNumber] = yearMonth.split('-').map(Number)
+  const lastDay = new Date(year, monthNumber, 0).getDate()
+  return `${yearMonth}-${String(lastDay).padStart(2, '0')}`
+}
+
 export function RecurrenceFields({ value, onChange }: RecurrenceFieldsProps) {
   if (!value.type) {
     return (
@@ -39,8 +61,10 @@ export function RecurrenceFields({ value, onChange }: RecurrenceFieldsProps) {
     )
   }
 
+  const isMonthPrecision = value.type === 'monthly' || value.type === 'yearly'
+
   return (
-    <div className="flex flex-col gap-2 rounded-(--radius-md) border border-(--border) p-3">
+    <div className="flex flex-col gap-2 rounded-md border border-border p-3">
       <div className="flex items-center justify-between">
         <span className="text-xs text-[--text-muted]">Recorrência</span>
         <button
@@ -80,29 +104,106 @@ export function RecurrenceFields({ value, onChange }: RecurrenceFieldsProps) {
       </Select>
 
       {value.type === 'monthly' && (
-        <Input
-          type="number"
-          min={1}
-          max={31}
-          placeholder="Dia do mês"
-          value={value.dayOfMonth ?? ''}
-          onChange={(e) =>
-            onChange({
-              ...value,
-              dayOfMonth: e.target.value ? Number(e.target.value) : null,
-            })
-          }
-        />
+        <div className="flex flex-col gap-1.5">
+          <label
+            htmlFor="recurrence-day-of-month"
+            className="text-xs text-(--text-muted)"
+          >
+            Dia do mês
+          </label>
+          <Input
+            id="recurrence-day-of-month"
+            type="number"
+            min={1}
+            max={31}
+            value={value.dayOfMonth ?? ''}
+            onChange={(e) =>
+              onChange({
+                ...value,
+                dayOfMonth: e.target.value ? Number(e.target.value) : null,
+              })
+            }
+          />
+        </div>
       )}
 
-      <Input
-        type="date"
-        value={value.endDate ?? ''}
-        onChange={(e) =>
-          onChange({ ...value, endDate: e.target.value || null })
-        }
-        placeholder="Data final (opcional)"
-      />
+      <div className="flex flex-col gap-1.5">
+        <span className="text-xs text-(--text-muted)">
+          Repetir até (opcional)
+        </span>
+        {isMonthPrecision ? (
+          <MonthYearField
+            endDate={value.endDate}
+            onChange={(endDate) => onChange({ ...value, endDate })}
+          />
+        ) : (
+          <Input
+            type="date"
+            aria-label="Repetir até"
+            value={value.endDate ?? ''}
+            onChange={(e) =>
+              onChange({ ...value, endDate: e.target.value || null })
+            }
+          />
+        )}
+      </div>
+    </div>
+  )
+}
+
+type MonthYearFieldProps = {
+  endDate: string | null
+  onChange: (endDate: string | null) => void
+}
+
+function MonthYearField({ endDate, onChange }: MonthYearFieldProps) {
+  const currentYear = new Date().getFullYear()
+  const yearOptions = Array.from({ length: 11 }, (_, index) =>
+    String(currentYear + index),
+  )
+  const [month, setMonth] = useState(endDate ? endDate.slice(5, 7) : '')
+  const [year, setYear] = useState(endDate ? endDate.slice(0, 4) : '')
+
+  function update(nextMonth: string, nextYear: string) {
+    setMonth(nextMonth)
+    setYear(nextYear)
+    onChange(
+      nextMonth && nextYear
+        ? toEndOfMonthDate(`${nextYear}-${nextMonth}`)
+        : null,
+    )
+  }
+
+  return (
+    <div className="flex gap-2">
+      <Select value={month} onValueChange={(v) => update(v ?? '', year)}>
+        <SelectTrigger className="flex-1" aria-label="Mês">
+          <SelectValue>{MONTH_NAMES[Number(month) - 1] ?? 'Mês'}</SelectValue>
+        </SelectTrigger>
+        <SelectContent>
+          {MONTH_NAMES.map((name, index) => {
+            const monthValue = String(index + 1).padStart(2, '0')
+            return (
+              <SelectItem key={monthValue} value={monthValue}>
+                {name}
+              </SelectItem>
+            )
+          })}
+        </SelectContent>
+      </Select>
+
+      <Select value={year} onValueChange={(v) => update(month, v ?? '')}>
+        <SelectTrigger className="w-28" aria-label="Ano">
+          <SelectValue>{year || 'Ano'}</SelectValue>
+        </SelectTrigger>
+        <SelectContent>
+          {yearOptions.map((option) => (
+            <SelectItem key={option} value={option}>
+              {option}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
     </div>
   )
 }

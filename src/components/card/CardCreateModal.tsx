@@ -43,11 +43,13 @@ type CardCreateModalProps = {
   initialTitle?: string
   onCreated?: (task: Task) => void
   hideTrigger?: boolean
+  initialProjectId?: string | null
 }
 
 export function CardCreateModal({
   open: controlledOpen,
   onOpenChange: controlledOnOpenChange,
+  initialProjectId,
   initialTitle,
   onCreated,
   hideTrigger = false,
@@ -55,7 +57,9 @@ export function CardCreateModal({
   const [internalOpen, setInternalOpen] = useState(false)
   const isControlled = controlledOpen !== undefined
   const open = isControlled ? controlledOpen : internalOpen
-  const [projectId, setProjectId] = useState<string | null>(null)
+  const [projectId, setProjectId] = useState<string | null>(
+    initialProjectId ?? null,
+  )
   const [epicId, setEpicId] = useState<string | null>(null)
   const [sprintId, setSprintId] = useState<string | null>(null)
   const [title, setTitle] = useState(initialTitle ?? '')
@@ -90,7 +94,7 @@ export function CardCreateModal({
     !recurrenceBannerDismissed && detectRecurrencePattern(similarCards ?? [])
 
   function resetForm() {
-    setProjectId(null)
+    setProjectId(initialProjectId ?? null)
     setEpicId(null)
     setSprintId(null)
     setTitle('')
@@ -242,7 +246,7 @@ export function CardCreateModal({
           {project?.type === 'general' && (
             <div className="flex flex-col gap-2">
               {recurrenceDetected && (
-                <div className="flex flex-col gap-2 rounded-(--radius-md) border border-(--accent) bg-[var(--bg-surface)] p-2 text-sm">
+                <div className="flex flex-col gap-2 rounded-md border border-accent bg-(--bg-surface) p-2 text-sm">
                   <span className="text-[--text-primary]">
                     ↻ Este card parece recorrente
                   </span>
