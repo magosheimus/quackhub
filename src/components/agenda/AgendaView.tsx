@@ -42,7 +42,7 @@ export function AgendaView() {
 
       {isEmpty ? (
         <div className="text-sm text-[--text-muted]">
-          — Sem pendências para hoje. —
+          — Sem pendências para hoje. Use o board ou o Backlog para planejar. —
         </div>
       ) : (
         <>

@@ -60,7 +60,7 @@ export function InboxList() {
   }
 
   if (!items || items.length === 0) {
-    return <div className="text-sm text-[--text-muted]">— Inbox vazio —</div>
+    return <div className="text-sm text-[--text-muted]">— Nada por aqui. —</div>
   }
 
   return (
