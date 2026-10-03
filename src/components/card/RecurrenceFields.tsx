@@ -40,7 +40,7 @@ export function RecurrenceFields({ value, onChange }: RecurrenceFieldsProps) {
   }
 
   return (
-    <div className="flex flex-col gap-2 rounded-[--radius-md] border border-[--border] p-3">
+    <div className="flex flex-col gap-2 rounded-(--radius-md) border border-(--border) p-3">
       <div className="flex items-center justify-between">
         <span className="text-xs text-[--text-muted]">Recorrência</span>
         <button

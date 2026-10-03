@@ -117,7 +117,7 @@ export function CardAttachments({ taskId }: CardAttachmentsProps) {
             return (
               <div
                 key={attachment.id}
-                className="group relative flex h-28 w-28 items-center justify-center overflow-hidden rounded-[--radius-md] border border-[--border] bg-[var(--bg-card)]"
+                className="group relative flex h-28 w-28 items-center justify-center overflow-hidden rounded-(--radius-md) border border-(--border) bg-[var(--bg-card)]"
               >
                 {isImage ? (
                   <button

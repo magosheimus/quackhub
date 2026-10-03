@@ -287,6 +287,11 @@
   box-sizing: border-box;
 }
 
+:focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: 2px;
+}
+
 body {
   background: var(--bg-page);
   color: var(--text-primary);

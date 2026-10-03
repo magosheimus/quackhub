@@ -24,7 +24,7 @@ export function SprintHistoryView() {
         <Link
           key={sprint.id}
           to={`/sprints/${sprint.id}`}
-          className="rounded-[--radius-md] border border-[--border] bg-(--bg-card) p-3 text-sm text-[--text-primary] hover:bg-(--bg-card-hover)"
+          className="rounded-(--radius-md) border border-(--border) bg-(--bg-card) p-3 text-sm text-[--text-primary] hover:bg-(--bg-card-hover)"
         >
           {sprint.name}
           {sprint.completion_rate != null && (

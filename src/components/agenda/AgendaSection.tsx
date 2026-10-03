@@ -38,7 +38,7 @@ export function AgendaSection({
         return (
           <div
             key={task.id}
-            className="flex items-center gap-2 rounded-[--radius-md] border border-[--border] bg-(--bg-card) p-3 text-sm"
+            className="flex items-center gap-2 rounded-(--radius-md) border border-(--border) bg-(--bg-card) p-3 text-sm"
           >
             <Link
               to={`/cards/${task.id}`}

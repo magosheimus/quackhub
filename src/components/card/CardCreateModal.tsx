@@ -242,7 +242,7 @@ export function CardCreateModal({
           {project?.type === 'general' && (
             <div className="flex flex-col gap-2">
               {recurrenceDetected && (
-                <div className="flex flex-col gap-2 rounded-[--radius-md] border border-[--accent] bg-[var(--bg-surface)] p-2 text-sm">
+                <div className="flex flex-col gap-2 rounded-(--radius-md) border border-(--accent) bg-[var(--bg-surface)] p-2 text-sm">
                   <span className="text-[--text-primary]">
                     ↻ Este card parece recorrente
                   </span>

@@ -28,7 +28,7 @@ export function BoardCard({ task, index, projectPrefixById }: BoardCardProps) {
             ...provided.draggableProps.style,
             borderLeftColor: `var(${priority.colorVar})`,
           }}
-          className={`flex gap-2 rounded-[--radius-md] border border-l-4  border-[--border] bg-[var(--bg-card)] p-3 text-sm ${
+          className={`flex gap-2 rounded-(--radius-md) border border-l-4  border-(--border) bg-[var(--bg-card)] p-3 text-sm ${
             snapshot.isDragging ? 'bg-[var(--bg-card-hover)]' : ''
           }`}
         >

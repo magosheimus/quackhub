@@ -61,7 +61,7 @@ export function AnalyticsView() {
         </div>
       </div>
 
-      <div className="rounded-[--radius-md] border border-[--border] bg-(--bg-card) p-4">
+      <div className="rounded-(--radius-md) border border-(--border) bg-(--bg-card) p-4">
         <div className="mb-2 text-xs text-[--text-muted]">
           DISTRIBUIÇÃO DE CONFIANÇA
         </div>
@@ -91,7 +91,7 @@ export function AnalyticsView() {
         )}
       </div>
 
-      <div className="rounded-[--radius-md] border border-[--border] bg-(--bg-card) p-4">
+      <div className="rounded-(--radius-md) border border-(--border) bg-(--bg-card) p-4">
         <div className="mb-2 text-xs text-[--text-muted]">
           QUALITY MÉDIO POR SEMANA
         </div>
@@ -127,7 +127,7 @@ export function AnalyticsView() {
         )}
       </div>
 
-      <div className="rounded-[--radius-md] border border-[--border] bg-(--bg-card) p-4">
+      <div className="rounded-(--radius-md) border border-(--border) bg-(--bg-card) p-4">
         <div className="mb-2 text-xs text-[--text-muted]">
           TAXA DE CONCLUSÃO POR SPRINT
         </div>

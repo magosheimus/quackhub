@@ -32,7 +32,7 @@ export function SprintSummary({ sprint }: SprintSummaryProps) {
   }))
 
   return (
-    <div className="flex flex-col gap-6 rounded-[--radius-md] border border-[--border] bg-(--bg-card) p-6">
+    <div className="flex flex-col gap-6 rounded-(--radius-md) border border-(--border) bg-(--bg-card) p-6">
       <div>
         <span className="font-heading text-2xl text-[--text-primary]">
           {sprint.name}
@@ -49,7 +49,7 @@ export function SprintSummary({ sprint }: SprintSummaryProps) {
         )}
       </div>
 
-      <div className="grid grid-cols-3 gap-4 border-t border-[--border] pt-4">
+      <div className="grid grid-cols-3 gap-4 border-t border-(--border) pt-4">
         <div>
           <div className="text-xs text-[--text-muted]">ISSUES TOTAL</div>
           <div className="font-heading text-3xl text-[--text-primary]">
@@ -71,7 +71,7 @@ export function SprintSummary({ sprint }: SprintSummaryProps) {
       </div>
 
       {chartData.length > 0 && (
-        <div className="border-t border-[--border] pt-4">
+        <div className="border-t border-(--border) pt-4">
           <div className="mb-2 text-xs text-[--text-muted]">
             COMPLETION BY PROJECT
           </div>
@@ -103,7 +103,7 @@ export function SprintSummary({ sprint }: SprintSummaryProps) {
         </div>
       )}
 
-      <div className="border-t border-[--border] pt-4">
+      <div className="border-t border-(--border) pt-4">
         <div className="mb-2 text-xs text-[--text-muted]">CARRY-OVER</div>
         <div className="text-sm text-[--text-primary]">
           {sprint.carried_to_next ?? 0} cards → próxima Sprint

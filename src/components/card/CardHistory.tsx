@@ -63,7 +63,7 @@ export function CardHistory({ taskId }: CardHistoryProps) {
               {logs.map((log) => (
                 <div
                   key={log.id}
-                  className="rounded-[--radius-md] border border-[--border] bg-[var(--bg-card)] p-2 text-sm"
+                  className="rounded-(--radius-md) border border-(--border) bg-[var(--bg-card)] p-2 text-sm"
                 >
                   <div className="flex flex-wrap items-center gap-2 text-xs text-[--text-muted]">
                     <span>{formatDisplayDate(log.session_date)}</span>
@@ -119,7 +119,7 @@ export function CardHistory({ taskId }: CardHistoryProps) {
               {activity.map((entry) => (
                 <div
                   key={entry.id}
-                  className="rounded-[--radius-md] border border-[--border] bg-[var(--bg-card)] p-2 text-sm"
+                  className="rounded-(--radius-md) border border-(--border) bg-[var(--bg-card)] p-2 text-sm"
                 >
                   <div className="flex flex-wrap items-center gap-2 text-xs text-[--text-muted]">
                     <span>{formatDisplayDateTime(entry.created_at)}</span>

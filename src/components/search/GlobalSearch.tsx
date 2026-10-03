@@ -57,7 +57,7 @@ export function GlobalSearch() {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="flex w-full items-center justify-between rounded-[--radius-md] border border-[--border] px-2 py-1.5 text-left text-sm text-[--text-muted]"
+        className="flex w-full items-center justify-between rounded-(--radius-md) border border-(--border) px-2 py-1.5 text-left text-sm text-[--text-muted]"
       >
         Buscar...
         <span className="text-xs">Ctrl+K</span>
@@ -89,7 +89,7 @@ export function GlobalSearch() {
                   key={task.id}
                   to={`/cards/${task.id}`}
                   onClick={() => handleOpenChange(false)}
-                  className="flex flex-col gap-0.5 rounded-[--radius-md] p-2 text-sm hover:bg-(--bg-card-hover)"
+                  className="flex flex-col gap-0.5 rounded-(--radius-md) p-2 text-sm hover:bg-(--bg-card-hover)"
                 >
                   <span className="text-[--text-primary]">{task.title}</span>
                   <span className="text-xs text-[--text-muted]">

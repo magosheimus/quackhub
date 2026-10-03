@@ -13,7 +13,7 @@ import { LoadingText } from '../ui/loading-text'
 type Project = Database['public']['Tables']['projects']['Row']
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
-  `block px-3 py-2 rounded-[--radius-md] text-base ${
+  `block px-3 py-2 rounded-(--radius-md) text-base ${
     isActive
       ? 'bg-[var(--bg-selected)] text-[--text-primary]'
       : 'text-[--text-muted]'
@@ -24,7 +24,7 @@ export function Sidebar() {
   const [editingProject, setEditingProject] = useState<Project | null>(null)
 
   return (
-    <aside className="w-55 shrink-0 border-r border-[--border] bg-(--bg-surface) p-4 flex flex-col">
+    <aside className="w-55 shrink-0 border-r border-(--border) bg-(--bg-surface) p-4 flex flex-col">
       <div className="glow-heading font-heading text-xl text-[--text-primary] mb-6">
         [ pato ] QUACKHUB
       </div>

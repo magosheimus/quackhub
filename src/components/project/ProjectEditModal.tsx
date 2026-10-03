@@ -180,7 +180,7 @@ function ProjectEditForm({ project, onClose }: ProjectEditFormProps) {
           variant="outline"
           onClick={handleArchive}
           disabled={isArchiving}
-          className="text-[--signal-danger] border-[--signal-danger]"
+          className="text-[--signal-danger] border-(--signal-danger)"
         >
           {isArchiving ? 'Arquivando...' : 'Arquivar'}
         </Button>

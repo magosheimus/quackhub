@@ -57,7 +57,7 @@ export function EpicManageModal({
           ))}
         </div>
 
-        <div className="flex gap-2 pt-2 border-t border-[--border]">
+        <div className="flex gap-2 pt-2 border-t border-(--border)">
           <Input
             value={newEpicName}
             onChange={(e) => setNewEpicName(e.target.value)}

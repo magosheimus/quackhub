@@ -37,7 +37,7 @@ export function CardDependencies({ taskId, projectId }: CardDependenciesProps) {
           {dependencies.map((dep) => (
             <div
               key={dep.id}
-              className="flex items-center justify-between gap-2 rounded-[--radius-md] border border-[--border] p-2 text-sm"
+              className="flex items-center justify-between gap-2 rounded-(--radius-md) border border-(--border) p-2 text-sm"
             >
               <span
                 className={
@@ -79,7 +79,7 @@ export function CardDependencies({ taskId, projectId }: CardDependenciesProps) {
                 addDependency({ taskId, dependsOnTaskId: candidate.id })
                 setSearch('')
               }}
-              className="rounded-[--radius-md] border border-[--border] p-2 text-left text-sm text-[--text-primary]"
+              className="rounded-(--radius-md) border border-(--border) p-2 text-left text-sm text-[--text-primary]"
             >
               {candidate.title}
             </button>

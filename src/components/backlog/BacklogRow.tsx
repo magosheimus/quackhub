@@ -35,7 +35,7 @@ export function BacklogRow({
     >
       <div
         style={{ borderLeftColor: `var(${priority.colorVar})` }}
-        className="flex items-center gap-3 rounded-[--radius-md] border border-l-4 border-[--border] bg-[var(--bg-card)] p-3 text-sm"
+        className="flex items-center gap-3 rounded-(--radius-md) border border-l-4 border-(--border) bg-[var(--bg-card)] p-3 text-sm"
       >
         <div className="flex w-4 shrink-0 flex-col items-center gap-1">
           {task.flagged && (
