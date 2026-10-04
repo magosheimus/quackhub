@@ -71,7 +71,7 @@ export function ProjectBoardView({
     <DragDropContext onDragEnd={handleDragEnd}>
       <div className="flex flex-col gap-4">
         <div className="flex flex-wrap items-baseline justify-between gap-2">
-          <span className="font-heading text-2xl text-(--text-primary)">
+          <span className="font-heading text-3xl text-(--text-primary)">
             {project.name}
           </span>
           <div className="flex flex-wrap items-center gap-2">
@@ -187,7 +187,7 @@ function Section({
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-center justify-between px-1">
-        <span className="font-heading text-lg text-(--text-primary)">
+        <span className="font-heading text-xl text-(--text-primary)">
           {title}
         </span>
         <span className="text-xs text-(--text-muted)">{count}</span>
