@@ -8,35 +8,40 @@
 
   /* Surface */
   --bg-page: var(--lcd-screen);
-  --bg-surface: color-mix(in srgb, var(--lcd-screen) 80%, var(--lcd-ink) 20%);
-  --bg-card: color-mix(in srgb, var(--lcd-screen) 60%, white 40%);
-  --bg-card-hover: color-mix(in srgb, var(--lcd-screen) 55%, white 45%);
-  --bg-selected: color-mix(in srgb, var(--lcd-screen) 45%, white 55%);
-  --bg-input: color-mix(in srgb, var(--lcd-screen) 70%, var(--lcd-ink) 30%);
+  --bg-surface: #b4ba96;
+  --bg-card: #e6e8d5;
+  --bg-card-hover: #f0f1e3;
+  --bg-selected: #c5d8bd;
+  --bg-input: #f3f4e7;
 
   /* Text */
   --text-primary: var(--lcd-ink);
-  --text-muted: color-mix(in srgb, var(--lcd-screen) 20%, var(--lcd-ink) 80%);
+  --text-muted: #50533b;
 
   /* Border */
-  --border: color-mix(in srgb, var(--lcd-screen) 50%, var(--lcd-ink) 50%);
-  --border-strong: color-mix(
-    in srgb,
-    var(--lcd-screen) 30%,
-    var(--lcd-ink) 70%
-  );
+  --border: #929678;
+  --border-strong: #64694a;
 
   /* Accent */
   --accent: #204f43;
+  --on-accent: #f4f5e9;
 
   /* Signal */
-  --signal-danger: #c23b2a;
-  --signal-warning: #8f6200;
-  --signal-success: #2f5e2f;
+  --signal-danger: #a52d25;
+  --signal-warning: #765000;
+  --signal-success: #315e35;
 
   /* Elevation */
   --elevation-none: var(--bg-card);
   --elevation-active: var(--bg-selected);
+  --bg-hover: color-mix(in srgb, var(--bg-selected) 70%, var(--border));
+
+  /* Controles (botões outline, selects, inputs) */
+  --control-bg: var(--bg-surface);
+  --control-border: var(--border);
+  --control-hover: var(--bg-selected);
+  --control-radius: min(var(--radius-md), 12px);
+  --control-height: 1.75rem;
 
   /* Efeitos */
   --glow: none;
@@ -84,77 +89,121 @@
 .cartucho-amber {
   --lcd-screen: #e0b878;
   --lcd-ink: #3d2308;
+
+  --bg-surface: #cda269;
+  --bg-card: #f4dfc0;
+  --bg-card-hover: #fbebd3;
+  --bg-selected: #e8c696;
+  --bg-input: #f9e9cf;
+
+  --text-primary: var(--lcd-ink);
+  --text-muted: #73502a;
+
+  --border: #b08a56;
+  --border-strong: #8d6132;
+
   --accent: #7a3b12;
+  --on-accent: #fff0d8;
 
   /* Signal */
   --signal-danger: #a31a08;
-  --signal-warning: #d69200;
-  --signal-success: #4e640c;
+  --signal-warning: #805100;
+  --signal-success: #49600f;
 }
 
 .cartucho-slate {
   --lcd-screen: #d8e0e4;
   --lcd-ink: #16242d;
+
+  --bg-surface: #c0cdd3;
+  --bg-card: #edf2f4;
+  --bg-card-hover: #f7fafb;
+  --bg-selected: #c8dbec;
+  --bg-input: #f8fbfc;
+
+  --text-primary: var(--lcd-ink);
+  --text-muted: #4b606d;
+
+  --border: #95a8b3;
+  --border-strong: #5e7788;
+
   --accent: #2c5a8a;
+  --on-accent: #f5faff;
 
   /* Signal */
   --signal-danger: #a11a45;
-  --signal-warning: #a8560f;
-  --signal-success: #006b54;
+  --signal-warning: #8b460b;
+  --signal-success: #00634e;
 }
 
 .cartucho-earth {
   --lcd-screen: #f1dca7;
   --lcd-ink: #3d2f22;
   --bg-surface: #d9ae94;
-  --accent: #646d34;
+  --bg-card: #f8ecd7;
+  --bg-card-hover: #fff5df;
+  --bg-selected: #d8dcad;
+  --bg-input: #fff3db;
+  --text-muted: #735d43;
+  --border: #b99a6b;
+  --border-strong: #896c46;
+  --accent: #59632d;
+  --on-accent: #fff5dc;
 
   /* Signal */
-  --signal-danger: #b43313;
-  --signal-warning: #e2a533;
-  --signal-success: #588157;
+  --signal-danger: #a73318;
+  --signal-warning: #80520a;
+  --signal-success: #3e653e;
 }
 
 .cartucho-sage-dark {
-  --lcd-screen: #2e4632;
+  --lcd-screen: #24382a;
   --lcd-ink: #f5f1e6;
-  --accent: #c9a24b;
 
-  /* Sobrescrita da escada de superfície */
-  --bg-surface: color-mix(in srgb, var(--lcd-screen) 90%, var(--lcd-ink) 10%);
-  --bg-card: color-mix(in srgb, var(--lcd-screen) 80%, var(--lcd-ink) 20%);
-  --bg-card-hover: color-mix(
-    in srgb,
-    var(--lcd-screen) 75%,
-    var(--lcd-ink) 25%
-  );
-  --bg-selected: color-mix(in srgb, var(--lcd-screen) 65%, var(--lcd-ink) 35%);
+  --bg-surface: #2e4632;
+  --bg-card: #39543e;
+  --bg-card-hover: #426149;
+  --bg-selected: #4a6542;
+  --bg-input: #1c2f22;
+
+  --text-primary: var(--lcd-ink);
+  --text-muted: #c5d2bb;
+
+  --border: #60795c;
+  --border-strong: #91a17d;
+
+  --accent: #c9a24b;
+  --on-accent: #211d0c;
 
   /* Signal */
-  --signal-danger: #e07a5f;
-  --signal-warning: #c98a2e;
-  --signal-success: #8fc292;
+  --signal-danger: #ffa18a;
+  --signal-warning: #e8c16a;
+  --signal-success: #a8dba8;
 }
 
 .cartucho-amber-dark {
   --lcd-screen: #1d0d02;
-  --lcd-ink: #e8a33d;
-  --accent: #b5651d;
+  --lcd-ink: #f5d9a6;
 
-  /* Sobrescrita da escada de superfície */
-  --bg-surface: color-mix(in srgb, var(--lcd-screen) 90%, var(--lcd-ink) 10%);
-  --bg-card: color-mix(in srgb, var(--lcd-screen) 80%, var(--lcd-ink) 20%);
-  --bg-card-hover: color-mix(
-    in srgb,
-    var(--lcd-screen) 75%,
-    var(--lcd-ink) 25%
-  );
-  --bg-selected: color-mix(in srgb, var(--lcd-screen) 65%, var(--lcd-ink) 35%);
+  --bg-surface: #2d1a0b;
+  --bg-card: #3c2713;
+  --bg-card-hover: #49321b;
+  --bg-selected: #584020;
+  --bg-input: #160b04;
+
+  --text-primary: var(--lcd-ink);
+  --text-muted: #d0ac78;
+
+  --border: #78552e;
+  --border-strong: #b38b4c;
+
+  --accent: #e8a33d;
+  --on-accent: #261405;
 
   /* Signal */
-  --signal-danger: #dd5833;
-  --signal-warning: #db9119;
-  --signal-success: #96c53e;
+  --signal-danger: #ff9974;
+  --signal-warning: #f2c362;
+  --signal-success: #b7d77b;
 }
 
 .theme-dark {

@@ -16,12 +16,12 @@
   --popover: var(--bg-card);
   --popover-foreground: var(--text-primary);
   --primary: var(--accent);
-  --primary-foreground: var(--bg-page);
+  --primary-foreground: var(--on-accent);
   --secondary: var(--bg-surface);
   --secondary-foreground: var(--text-primary);
   --muted: var(--bg-surface);
   --muted-foreground: var(--text-muted);
-  --accent-foreground: var(--bg-page);
+  --accent-foreground: var(--on-accent);
   --destructive: var(--signal-danger);
   --input: var(--bg-input);
   --ring: var(--border-strong);
