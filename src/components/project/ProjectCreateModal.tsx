@@ -59,7 +59,14 @@ export function ProjectCreateModal() {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger render={<Button variant="ghost" size="icon-sm" />}>
+      <DialogTrigger
+        render={
+          <Button
+            variant="ghost"
+            className="size-7 rounded-full p-0 text-(--text-muted) hover:bg-(--bg-page)! hover:text-(--text-primary)!"
+          />
+        }
+      >
         +
       </DialogTrigger>
 
