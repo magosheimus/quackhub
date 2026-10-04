@@ -1,4 +1,10 @@
-import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom'
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Outlet,
+  Navigate,
+} from 'react-router-dom'
 import { AppShell } from './components/layout/AppShell'
 import { TokenPreview } from './dev/TokenPreview'
 import { BoardView } from './components/board/BoardView'
@@ -7,7 +13,7 @@ import { SprintHistoryView } from './components/sprint/SprintHistoryView'
 import { SprintDetailView } from './components/sprint/SprintDetailView'
 import { CardPage } from './components/card/CardPage'
 import { InboxView } from './components/inbox/InboxView'
-import { AgendaView } from './components/agenda/AgendaView'
+import { DraftsView } from './components/drafts/DraftsView'
 import { SettingsView } from './components/settings/SettingsView'
 import { AnalyticsView } from './components/analytics/AnalyticsView'
 
@@ -24,10 +30,11 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route element={<Layout />}>
-          <Route path="/" element={<AgendaView />} />
+          <Route path="/" element={<Navigate to="/inbox" replace />} />
+          <Route path="/inbox" element={<InboxView />} />
+          <Route path="/rascunhos" element={<DraftsView />} />
           <Route path="/board" element={<BoardView />} />
           <Route path="/backlog" element={<BacklogView />} />
-          <Route path="/rascunhos" element={<InboxView />} />
           <Route path="/configuracoes" element={<SettingsView />} />
           <Route path="/analytics" element={<AnalyticsView />} />
           <Route path="/debug-tokens" element={<TokenPreview />} />

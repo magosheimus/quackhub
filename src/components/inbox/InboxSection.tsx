@@ -21,7 +21,7 @@ function describeReview(nextReview: string | null, today: string): string {
   return `revisar em ${ahead} ${ahead === 1 ? 'dia' : 'dias'}`
 }
 
-type AgendaSectionProps = {
+type InboxSectionProps = {
   title: string
   tasks: Task[]
   projects: Project[]
@@ -29,13 +29,13 @@ type AgendaSectionProps = {
   onRegisterPerformance: (task: Task) => void
 }
 
-export function AgendaSection({
+export function InboxSection({
   title,
   tasks,
   projects,
   onComplete,
   onRegisterPerformance,
-}: AgendaSectionProps) {
+}: InboxSectionProps) {
   if (tasks.length === 0) return null
 
   const today = todayLocal()

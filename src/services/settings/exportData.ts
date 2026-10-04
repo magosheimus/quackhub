@@ -12,7 +12,7 @@ const TABLES = [
   'srs_logs',
   'task_activity_log',
   'time_entries',
-  'inbox_items',
+  'drafts_items',
 ] as const
 
 export async function exportAllData(): Promise<Record<string, unknown[]>> {

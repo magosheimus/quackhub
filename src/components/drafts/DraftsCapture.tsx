@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
-import { useCaptureItem } from '@/hooks/inbox/useCaptureItem'
+import { useCaptureDraft } from '@/hooks/drafts/useCaptureDraft'
 
-export function InboxCapture() {
+export function DraftsCapture() {
   const [content, setContent] = useState('')
-  const { mutate: capture, isPending } = useCaptureItem()
+  const { mutate: capture, isPending } = useCaptureDraft()
 
   function handleSubmit() {
     const trimmed = content.trim()

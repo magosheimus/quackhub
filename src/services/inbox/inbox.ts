@@ -1,69 +1,69 @@
 import { supabase } from '@/lib/supabase'
-import { enqueue, getQueue, clearQueue } from '@/lib/inboxQueue'
+import { todayLocal } from '@/lib/srs'
 import type { Database } from '@/types/database.types'
 
-type InboxItem = Database['public']['Tables']['inbox_items']['Row']
+type Task = Database['public']['Tables']['tasks']['Row']
 
-export async function captureItem(content: string): Promise<InboxItem | null> {
-  const item: InboxItem = {
-    id: crypto.randomUUID(),
-    content,
-    created_at: new Date().toISOString(),
-    triaged_at: null,
-    triaged_to: null,
-    triaged_task_id: null,
+const PRIORITY_WEIGHT: Record<string, number> = {
+  alta: 0,
+  média: 1,
+  baixa: 2,
+}
+
+function sortByPriorityThenDate(tasks: Task[]): Task[] {
+  return [...tasks].sort((a, b) => {
+    const priorityDiff =
+      (PRIORITY_WEIGHT[a.priority] ?? 99) - (PRIORITY_WEIGHT[b.priority] ?? 99)
+    if (priorityDiff !== 0) return priorityDiff
+    return (a.created_at ?? '').localeCompare(b.created_at ?? '')
+  })
+}
+
+export type InboxData = {
+  urgent: Task[]
+  srsOverdue: Task[]
+  dueToday: Task[]
+}
+
+export async function getInboxItems(): Promise<InboxData> {
+  const today = todayLocal()
+
+  const [urgentRes, srsOverdueRes, dueTodayRes] = await Promise.all([
+    supabase
+      .from('tasks')
+      .select('*')
+      .eq('flagged', true)
+      .not('status', 'in', '(done,blocked)')
+      .is('deleted_at', null),
+    supabase
+      .from('tasks')
+      .select('*')
+      .lte('next_review', today)
+      .eq('flagged', false)
+      .not('status', 'in', '(done,blocked)')
+      .is('deleted_at', null),
+    supabase
+      .from('tasks')
+      .select('*')
+      .eq('due_date', today)
+      .eq('flagged', false)
+      .not('status', 'in', '(done,blocked)')
+      .is('deleted_at', null)
+      .or(`next_review.is.null,next_review.gt.${today}`),
+  ])
+
+  if (urgentRes.error)
+    throw new Error(`Falha ao buscar urgentes: ${urgentRes.error.message}`)
+  if (srsOverdueRes.error)
+    throw new Error(
+      `Falha ao buscar SRS vencido: ${srsOverdueRes.error.message}`,
+    )
+  if (dueTodayRes.error)
+    throw new Error(`Falha ao buscar prazo hoje: ${dueTodayRes.error.message}`)
+
+  return {
+    urgent: sortByPriorityThenDate(urgentRes.data),
+    srsOverdue: sortByPriorityThenDate(srsOverdueRes.data),
+    dueToday: sortByPriorityThenDate(dueTodayRes.data),
   }
-
-  if (!navigator.onLine) {
-    enqueue(item)
-    return null
-  }
-
-  const { data, error } = await supabase
-    .from('inbox_items')
-    .insert(item)
-    .select()
-    .single()
-  if (error) throw new Error(`Falha ao capturar item: ${error.message}`)
-  return data
-}
-
-export async function syncInboxQueue(): Promise<void> {
-  const queue = getQueue()
-  if (queue.length === 0) return
-
-  const { error } = await supabase
-    .from('inbox_items')
-    .upsert(queue, { onConflict: 'id', ignoreDuplicates: true })
-  if (error)
-    throw new Error(`Falha ao sincronizar fila do inbox: ${error.message}`)
-  clearQueue()
-}
-
-export async function getInboxItems(): Promise<InboxItem[]> {
-  const { data, error } = await supabase
-    .from('inbox_items')
-    .select('*')
-    .is('triaged_at', null)
-    .order('created_at', { ascending: false })
-  if (error) throw new Error(`Falha ao buscar itens do inbox: ${error.message}`)
-  return data
-}
-
-export async function triageItem(
-  id: string,
-  decision: { triaged_to: string; triaged_task_id?: string | null },
-): Promise<InboxItem> {
-  const { data, error } = await supabase
-    .from('inbox_items')
-    .update({
-      triaged_to: decision.triaged_to,
-      triaged_task_id: decision.triaged_task_id ?? null,
-      triaged_at: new Date().toISOString(),
-    })
-    .eq('id', id)
-    .select()
-    .single()
-  if (error) throw new Error(`Falha ao triar item: ${error.message}`)
-  return data
 }

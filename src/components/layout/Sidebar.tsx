@@ -1,10 +1,10 @@
 import { useState, type ReactNode } from 'react'
 import { NavLink } from 'react-router-dom'
 import {
-  CalendarDays,
   Columns3,
   Folder,
   Inbox,
+  PenLine,
   List,
   Pencil,
   Settings,
@@ -13,13 +13,14 @@ import {
   type LucideIcon,
 } from 'lucide-react'
 import { useProjects } from '@/hooks/projects/useProjects'
-import { useInboxItems } from '@/hooks/inbox/useInboxItems'
+import { useDraftsItems } from '@/hooks/drafts/useDraftsItems'
 import { ProjectCreateModal } from '@/components/project/ProjectCreateModal'
 import { ProjectEditModal } from '@/components/project/ProjectEditModal'
 import type { Database } from '@/types/database.types'
 import { CardCreateModal } from '@/components/card/CardCreateModal'
 import { GlobalSearch } from '../search/GlobalSearch'
 import { LoadingText } from '../ui/loading-text'
+import { useInboxItems } from '@/hooks/inbox/useInboxItems'
 
 type Project = Database['public']['Tables']['projects']['Row']
 
@@ -51,8 +52,13 @@ function NavItem({
 
 export function Sidebar() {
   const { data: projects, isLoading } = useProjects()
-  const { data: inboxItems } = useInboxItems()
-  const inboxCount = inboxItems?.length ?? 0
+  const { data: draftsItems } = useDraftsItems()
+  const draftsCount = draftsItems?.length ?? 0
+  const { data: inboxData } = useInboxItems()
+  const inboxCount =
+    (inboxData?.urgent.length ?? 0) +
+    (inboxData?.srsOverdue.length ?? 0) +
+    (inboxData?.dueToday.length ?? 0)
   const [editingProject, setEditingProject] = useState<Project | null>(null)
   const [isProjectsOpen, setIsProjectsOpen] = useState(false)
 
@@ -74,14 +80,19 @@ export function Sidebar() {
       </div>
 
       <nav className="flex flex-col gap-1">
-        <NavItem to="/" icon={CalendarDays} end>
-          Agenda
-        </NavItem>
-        <NavItem to="/rascunhos" icon={Inbox}>
-          Rascunhos
+        <NavItem to="/inbox" icon={Inbox}>
+          Inbox
           {inboxCount > 0 && (
             <span className="ml-auto text-xs text-(--text-muted)">
               {inboxCount}
+            </span>
+          )}
+        </NavItem>
+        <NavItem to="/rascunhos" icon={PenLine}>
+          Rascunhos
+          {draftsCount > 0 && (
+            <span className="ml-auto text-xs text-(--text-muted)">
+              {draftsCount}
             </span>
           )}
         </NavItem>
