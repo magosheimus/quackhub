@@ -12,8 +12,8 @@ Personal project management and spaced-repetition study tool, in one place. Spri
 - [x] Projects and epics
 - [x] Kanban board _(in progress)_
 - [x] Backlog and sprints
-- [ ] Card creation and editing
-- [ ] SRS engine (SM-2)
+- [x] Card creation and editing
+- [x] SRS engine (SM-2)
 - [ ] Recurring tasks and time tracking
 - [ ] Inbox, today view and global search
 - [ ] Settings and analytics
