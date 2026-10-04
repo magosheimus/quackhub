@@ -8,6 +8,7 @@ import {
   type TaskPriority,
 } from '@/lib/board'
 import type { Database } from '@/types/database.types'
+import type { ReactNode } from 'react'
 
 type Task = Database['public']['Tables']['tasks']['Row']
 
@@ -111,12 +112,14 @@ type StaticBoardCardProps = {
   task: Task
   projectPrefixById: Map<string, string>
   showStatus?: boolean
+  actions?: ReactNode
 }
 
 export function StaticBoardCard({
   task,
   projectPrefixById,
   showStatus,
+  actions,
 }: StaticBoardCardProps) {
   return (
     <div style={getBorderStyle(task)} className={CARD_CLASS}>
@@ -125,6 +128,11 @@ export function StaticBoardCard({
         projectPrefixById={projectPrefixById}
         showStatus={showStatus}
       />
+      {actions && (
+        <div className="ml-auto flex items-center gap-2 self-center">
+          {actions}
+        </div>
+      )}
     </div>
   )
 }
