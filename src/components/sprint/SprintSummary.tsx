@@ -34,7 +34,7 @@ export function SprintSummary({ sprint }: SprintSummaryProps) {
   return (
     <div className="flex flex-col gap-6 rounded-(--radius-md) border border-(--border) bg-(--bg-card) p-6">
       <div>
-        <span className="font-heading text-2xl text-[--text-primary]">
+        <span className="font-heading text-3xl text-[--text-primary]">
           {sprint.name}
         </span>
         {(sprint.start_date || sprint.end_date) && (

@@ -27,7 +27,7 @@ function App() {
           <Route path="/" element={<AgendaView />} />
           <Route path="/board" element={<BoardView />} />
           <Route path="/backlog" element={<BacklogView />} />
-          <Route path="/inbox" element={<InboxView />} />
+          <Route path="/rascunhos" element={<InboxView />} />
           <Route path="/configuracoes" element={<SettingsView />} />
           <Route path="/analytics" element={<AnalyticsView />} />
           <Route path="/debug-tokens" element={<TokenPreview />} />

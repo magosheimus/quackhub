@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom'
 import { useProjects } from '@/hooks/projects/useProjects'
 import { useTasksByProjectId } from '@/hooks/projects/useTasksByProjectId'
 import { useActiveSprint } from '@/hooks/sprints/useActiveSprint'
+import { useSprints } from '@/hooks/sprints/useSprints'
 import { useTasksBySprintId } from '@/hooks/tasks/sprint/useTasksBySprintId'
 import { useUpdateTaskStatus } from '@/hooks/tasks/sprint/useUpdateTaskStatus'
 import { useBoardFilters } from '@/hooks/board/useBoardFilters'
@@ -11,6 +12,7 @@ import { useAllEpics } from '@/hooks/epics/useAllEpics'
 import { ALL_COLUMNS, applyBoardFilters, type TaskStatus } from '@/lib/board'
 import { todayLocal } from '@/lib/srs'
 import { BoardColumn } from './BoardColumn'
+import { BoardEmptyState } from './BoardEmptyState'
 import { FilterBar } from './FilterBar'
 import { ProjectBoardView } from './ProjectBoardView'
 import { SprintHeader } from '@/components/sprint/SprintHeader'
@@ -18,7 +20,9 @@ import { SprintHeader } from '@/components/sprint/SprintHeader'
 export function BoardView() {
   const [searchParams, setSearchParams] = useSearchParams()
   const projectId = searchParams.get('project')
+
   const { data: projects, isLoading: isLoadingProjects } = useProjects()
+  const { data: sprints } = useSprints()
   const { data: activeSprint, isLoading: isLoadingSprint } = useActiveSprint()
   const { data: tasks, isLoading: isLoadingTasks } = useTasksBySprintId(
     activeSprint?.id ?? '',
@@ -27,6 +31,7 @@ export function BoardView() {
   const { mutate: updateTaskStatus } = useUpdateTaskStatus()
   const { data: epics } = useAllEpics()
   const { filters, updateFilter, resetFilters } = useBoardFilters()
+
   const { data: taskTagsMap } = useBulkTaskTags((tasks ?? []).map((t) => t.id))
 
   if (isLoadingProjects || isLoadingSprint) {
@@ -42,6 +47,34 @@ export function BoardView() {
   const projectPrefixById = new Map(
     projects?.map((p) => [p.id, p.prefix ?? '']),
   )
+
+  if (project) {
+    return (
+      <ProjectBoardView
+        project={project}
+        activeSprintId={activeSprint?.id ?? null}
+        activeSprintName={activeSprint?.name ?? null}
+        tasks={projectTasks ?? []}
+        projectPrefixById={projectPrefixById}
+      />
+    )
+  }
+
+  if (!activeSprint) {
+    return (
+      <BoardEmptyState
+        plannedSprint={sprints?.find((s) => s.status === 'planned') ?? null}
+      />
+    )
+  }
+
+  const visibleTasks = applyBoardFilters(
+    tasks ?? [],
+    filters,
+    taskTagsMap ?? new Map(),
+    todayLocal(),
+  )
+
   const projectIdsInSprint = new Set((tasks ?? []).map((t) => t.project_id))
   const epicIdsInSprint = new Set(
     (tasks ?? []).map((t) => t.epic_id).filter((id): id is string => !!id),
@@ -63,37 +96,6 @@ export function BoardView() {
     })
   }
 
-  const filterBar = (
-    <FilterBar
-      filters={filters}
-      onUpdateFilter={updateFilter}
-      onReset={resetFilters}
-      epics={sprintEpics}
-      projects={sprintProjects}
-      selectedProjectId={projectId}
-      onSelectProject={handleSelectProject}
-    />
-  )
-
-  if (project) {
-    return (
-      <ProjectBoardView
-        project={project}
-        activeSprintId={activeSprint?.id ?? null}
-        activeSprintName={activeSprint?.name ?? null}
-        tasks={projectTasks ?? []}
-        projectPrefixById={projectPrefixById}
-      />
-    )
-  }
-
-  const visibleTasks = applyBoardFilters(
-    tasks ?? [],
-    filters,
-    taskTagsMap ?? new Map(),
-    todayLocal(),
-  )
-
   function handleDragEnd(result: DropResult) {
     if (!activeSprint) return
     const { destination, draggableId } = result
@@ -108,33 +110,35 @@ export function BoardView() {
 
   return (
     <div className="flex flex-col gap-4">
-      <SprintHeader activeSprint={activeSprint ?? null} tasks={visibleTasks} />
+      <SprintHeader activeSprint={activeSprint} tasks={visibleTasks} />
 
-      {filterBar}
+      <FilterBar
+        filters={filters}
+        onUpdateFilter={updateFilter}
+        onReset={resetFilters}
+        epics={sprintEpics}
+        projects={sprintProjects}
+        selectedProjectId={projectId}
+        onSelectProject={handleSelectProject}
+      />
 
-      {activeSprint ? (
-        <DragDropContext onDragEnd={handleDragEnd}>
-          <div className="flex gap-4 overflow-x-auto">
-            {ALL_COLUMNS.map((status) => (
-              <BoardColumn
-                key={status}
-                status={status as TaskStatus}
-                tasks={visibleTasks.filter((task) => task.status === status)}
-                projectPrefixById={projectPrefixById}
-              />
-            ))}
-          </div>
-          {isLoadingTasks && (
-            <div className="text-sm text-(--text-muted)">
-              [ CARREGANDO........ ]
-            </div>
-          )}
-        </DragDropContext>
-      ) : (
-        <div className="text-sm text-(--text-muted)">
-          — Sem Sprint ativa. Crie ou inicie uma acima pra ver o board. —
+      <DragDropContext onDragEnd={handleDragEnd}>
+        <div className="flex gap-4 overflow-x-auto">
+          {ALL_COLUMNS.map((status) => (
+            <BoardColumn
+              key={status}
+              status={status as TaskStatus}
+              tasks={visibleTasks.filter((task) => task.status === status)}
+              projectPrefixById={projectPrefixById}
+            />
+          ))}
         </div>
-      )}
+        {isLoadingTasks && (
+          <div className="text-sm text-(--text-muted)">
+            [ CARREGANDO........ ]
+          </div>
+        )}
+      </DragDropContext>
     </div>
   )
 }
