@@ -1,14 +1,14 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { captureItem } from '@/services/inbox/inbox'
+import { captureItem } from '@/services/drafts/drafts'
 
-export function useCaptureItem() {
+export function useCaptureDraft() {
   const queryClient = useQueryClient()
 
   return useMutation({
     mutationFn: (content: string) => captureItem(content),
     meta: { silent: true },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['inbox'] })
+      queryClient.invalidateQueries({ queryKey: ['drafts'] })
     },
     onError: (error) => {
       console.error(error.message)

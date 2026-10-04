@@ -1,12 +1,12 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { triageItem } from '@/services/inbox/inbox'
+import { triageItem } from '@/services/drafts/drafts'
 
 type TriageDecision = {
   triaged_to: string
   triaged_task_id?: string | null
 }
 
-export function useTriageItem() {
+export function useTriageDraft() {
   const queryClient = useQueryClient()
 
   return useMutation({
@@ -14,7 +14,7 @@ export function useTriageItem() {
       triageItem(id, decision),
     meta: { silent: true },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['inbox'] })
+      queryClient.invalidateQueries({ queryKey: ['drafts'] })
     },
     onError: (error) => {
       console.error(error.message)

@@ -49,7 +49,7 @@ export type Database = {
           },
         ]
       }
-      inbox_items: {
+      drafts_items: {
         Row: {
           content: string
           created_at: string | null
@@ -76,7 +76,7 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'inbox_items_triaged_task_id_fkey'
+            foreignKeyName: 'drafts_items_triaged_task_id_fkey'
             columns: ['triaged_task_id']
             isOneToOne: false
             referencedRelation: 'tasks'

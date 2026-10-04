@@ -1,6 +1,6 @@
 import { useEffect, type ReactNode } from 'react'
 import { Sidebar } from './Sidebar'
-import { syncInboxQueue } from '@/services/inbox/inbox'
+import { syncDraftsQueue } from '@/services/drafts/drafts'
 import { useOnlineStatus } from '@/hooks/network/useOnlineStatus'
 import { Toaster } from '../ui/toaster'
 
@@ -10,8 +10,8 @@ interface AppShellProps {
 
 export function AppShell({ children }: AppShellProps) {
   useEffect(() => {
-    window.addEventListener('online', syncInboxQueue)
-    return () => window.removeEventListener('online', syncInboxQueue)
+    window.addEventListener('online', syncDraftsQueue)
+    return () => window.removeEventListener('online', syncDraftsQueue)
   }, [])
   const isOnline = useOnlineStatus()
   return (

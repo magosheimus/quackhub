@@ -2,15 +2,15 @@ import { useState } from 'react'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Button } from '@/components/ui/button'
 import { Trash2, FilePlus2 } from 'lucide-react'
-import { useInboxItems } from '@/hooks/inbox/useInboxItems'
-import { useTriageItem } from '@/hooks/inbox/useTriageItem'
+import { useDraftsItems } from '@/hooks/drafts/useDraftsItems'
+import { useTriageDraft } from '@/hooks/drafts/useTriageDraft'
 import { CardCreateModal } from '@/components/card/CardCreateModal'
 import type { Database } from '@/types/database.types'
 import { LoadingText } from '../ui/loading-text'
 
-type InboxItem = Database['public']['Tables']['inbox_items']['Row']
+type DraftsItem = Database['public']['Tables']['drafts_items']['Row']
 
-const CHECKED_KEY = 'quackhub-inbox-checked'
+const CHECKED_KEY = 'quackhub-drafts-checked'
 
 function loadCheckedIds(): Set<string> {
   try {
@@ -29,15 +29,17 @@ function saveCheckedIds(ids: Set<string>) {
   }
 }
 
-export function InboxList() {
-  const { data: items, isLoading } = useInboxItems()
-  const { mutate: triage } = useTriageItem()
-  const [creatingCardFor, setCreatingCardFor] = useState<InboxItem | null>(null)
+export function DraftsList() {
+  const { data: items, isLoading } = useDraftsItems()
+  const { mutate: triage } = useTriageDraft()
+  const [creatingCardFor, setCreatingCardFor] = useState<DraftsItem | null>(
+    null,
+  )
   const [checkedIds, setCheckedIds] = useState<Set<string>>(() =>
     loadCheckedIds(),
   )
 
-  function handleDiscard(item: InboxItem) {
+  function handleDiscard(item: DraftsItem) {
     triage({
       id: item.id,
       decision: { triaged_to: 'discarded', triaged_task_id: null },

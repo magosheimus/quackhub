@@ -7,7 +7,7 @@ export function useCompleteTask() {
   return useMutation({
     mutationFn: (id: string) => updateTaskStatus(id, 'done'),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['agenda'] })
+      queryClient.invalidateQueries({ queryKey: ['inbox'] })
     },
     onError: (error) => {
       window.alert(error.message)
