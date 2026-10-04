@@ -372,7 +372,7 @@ function CardPageBody({ task }: { task: Task }) {
         </div>
 
         <div className="flex flex-col gap-4">
-          <div className="flex flex-col gap-1.5 rounded-md border border-(--border) bg-(--bg-card) p-3">
+          <div className="flex flex-col gap-1.5 rounded-md border border-border bg-(--bg-card) p-3">
             <span className="text-xs text-[--text-muted]">Datas</span>
             <span className="text-sm text-[--text-primary]">
               Criado: {formatDate(task.created_at)}
@@ -413,7 +413,7 @@ function CardPageBody({ task }: { task: Task }) {
 
           {project?.type === 'study' &&
             SRS_ELIGIBLE_STATUSES.includes(task.status) && (
-              <div className="flex flex-col gap-1.5 rounded-md border border-(--border) bg-(--bg-card) p-3">
+              <div className="flex flex-col gap-1.5 rounded-md border border-border bg-(--bg-card) p-3">
                 <span className="text-xs text-[--text-muted]">SRS</span>
                 <span className="text-sm text-[--text-primary]">
                   EF: {(task.ease_factor ?? 2.5).toFixed(2)}
