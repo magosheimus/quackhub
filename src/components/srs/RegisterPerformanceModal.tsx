@@ -100,7 +100,7 @@ export function RegisterPerformanceModal({
                 <Button
                   key={option}
                   type="button"
-                  variant={confianca === option ? 'default' : 'outline'}
+                  variant={confianca === option ? 'selected' : 'outline'}
                   size="sm"
                   onClick={() => setConfianca(option)}
                 >

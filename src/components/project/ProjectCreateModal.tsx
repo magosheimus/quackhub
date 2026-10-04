@@ -63,7 +63,7 @@ export function ProjectCreateModal() {
         render={
           <Button
             variant="ghost"
-            className="size-7 rounded-full p-0 text-(--text-muted) hover:bg-(--bg-page)! hover:text-(--text-primary)!"
+            className="size-7 rounded-full p-0 text-(--text-muted) hover:bg-[color-mix(in_srgb,var(--bg-surface)_60%,var(--signal-danger))]! hover:text-(--text-primary)!"
           />
         }
       >

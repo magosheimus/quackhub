@@ -104,7 +104,7 @@ export function SettingsView() {
         </span>
         <Button
           type="button"
-          variant={settings.texture === 'none' ? 'default' : 'outline'}
+          variant={settings.texture === 'none' ? 'selected' : 'outline'}
           size="sm"
           className="w-fit"
           onClick={() => update({ texture: 'none' })}
@@ -115,7 +115,7 @@ export function SettingsView() {
         <div className="flex items-center gap-2 border-t border-border pt-2">
           <Button
             type="button"
-            variant={settings.texture === 'grid' ? 'default' : 'outline'}
+            variant={settings.texture === 'grid' ? 'selected' : 'outline'}
             size="sm"
             onClick={() => update({ texture: 'grid' })}
           >
@@ -136,7 +136,7 @@ export function SettingsView() {
         <div className="flex items-center gap-2 border-t border-border pt-2">
           <Button
             type="button"
-            variant={settings.texture === 'dots' ? 'default' : 'outline'}
+            variant={settings.texture === 'dots' ? 'selected' : 'outline'}
             size="sm"
             onClick={() => update({ texture: 'dots' })}
           >

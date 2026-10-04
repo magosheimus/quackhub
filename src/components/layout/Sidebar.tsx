@@ -24,10 +24,10 @@ import { LoadingText } from '../ui/loading-text'
 type Project = Database['public']['Tables']['projects']['Row']
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
-  `flex items-center gap-3 px-3 py-2 rounded-(--radius-md) text-base ${
+  `flex h-10 items-center gap-3 border px-3 py-2 rounded-(--radius-md) text-base ${
     isActive
-      ? 'bg-(--accent) text-(--bg-page)'
-      : 'text-(--text-muted) hover:text-(--text-primary)'
+      ? 'border-(--border) bg-(--bg-selected) text-(--text-primary)'
+      : 'border-transparent text-(--text-primary) hover:bg-(--bg-hover)'
   }`
 
 function NavItem({
@@ -94,19 +94,18 @@ export function Sidebar() {
         <NavItem to="/sprints" icon={History}>
           Histórico
         </NavItem>
-        <div className="flex items-center">
+        <div className={navLinkClass({ isActive: false })}>
           <button
             type="button"
             onClick={() => setIsProjectsOpen((open) => !open)}
             aria-expanded={isProjectsOpen}
-            className="flex flex-1 items-center gap-3 px-3 py-2 rounded-md text-base text-(--text-muted) hover:text-(--text-primary)"
+            className="flex flex-1 items-center gap-3 text-left"
           >
             <ChevronRight
               size={14}
               aria-hidden="true"
               className={`transition-transform ${isProjectsOpen ? 'rotate-90' : ''}`}
             />
-            <Folder size={16} aria-hidden="true" />
             Projetos
           </button>
           <ProjectCreateModal />
