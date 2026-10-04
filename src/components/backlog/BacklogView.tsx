@@ -25,6 +25,7 @@ import { useState } from 'react'
 import { LoadingText } from '../ui/loading-text'
 import { Button } from '@/components/ui/button'
 import { EpicManageModal } from '../epic/EpicManageModal'
+import { ChevronRight } from 'lucide-react'
 
 const STATUS_OPTIONS: TaskStatus[] = [
   'to_study',
@@ -53,6 +54,19 @@ export function BacklogView() {
   )
   const [epicFilter, setEpicFilter] = useState<string | null>(null)
   const [isEpicModalOpen, setIsEpicModalOpen] = useState(false)
+  const [collapsedProjects, setCollapsedProjects] = useState<Set<string>>(
+    new Set(),
+  )
+
+  function toggleProject(projectId: string) {
+    setCollapsedProjects((prev) => {
+      const next = new Set(prev)
+      if (next.has(projectId)) next.delete(projectId)
+      else next.add(projectId)
+      return next
+    })
+  }
+
   const { data: projects, isLoading: isLoadingProjects } = useProjects()
   const { data: tasks, isLoading: isLoadingTasks } =
     useBacklogTasks(projectFilter)
@@ -187,41 +201,93 @@ export function BacklogView() {
         )}
       </div>
 
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-6">
         {isLoadingTasks && <LoadingText />}
         {!isLoadingTasks && filteredTasks.length === 0 && (
-          <div className="text-sm text-[--text-muted]">
+          <div className="text-sm text-(--text-muted)">
             — nenhum card no backlog —
           </div>
         )}
-        <AnimatePresence>
-          {filteredTasks.map((task) => {
-            const taskProject = projectById.get(task.project_id)
-            return (
-              <BacklogRow
-                key={task.id}
-                task={task}
-                projectPrefixById={projectPrefixById}
-                epicName={
-                  task.epic_id ? (epicNameById.get(task.epic_id) ?? null) : null
-                }
-                onAddToSprint={
-                  targetSprint && taskProject
-                    ? () =>
-                        addTaskToSprint({
-                          taskId: task.id,
-                          sprintId: targetSprint.id,
-                          status: getInitialStatusForType(
-                            taskProject.type as ProjectType,
-                          ),
-                          projectId: task.project_id,
-                        })
-                    : undefined
-                }
-              />
-            )
-          })}
-        </AnimatePresence>
+        {projects?.map((project) => {
+          const projectTasks = filteredTasks.filter(
+            (task) => task.project_id === project.id,
+          )
+          if (projectTasks.length === 0) return null
+          const isCollapsed = collapsedProjects.has(project.id)
+
+          return (
+            <section key={project.id} className="flex flex-col gap-2">
+              <div className="flex items-center justify-between px-1">
+                <button
+                  type="button"
+                  onClick={() => toggleProject(project.id)}
+                  aria-expanded={!isCollapsed}
+                  className="flex items-center gap-2 font-heading text-xl uppercase text-(--text-primary)"
+                >
+                  <ChevronRight
+                    size={14}
+                    aria-hidden="true"
+                    className={`transition-transform ${isCollapsed ? '' : 'rotate-90'}`}
+                  />
+                  {project.name}
+                </button>
+                <div className="flex items-center gap-3">
+                  <span className="text-xs text-(--text-muted)">
+                    {projectTasks.length}
+                  </span>
+                  {targetSprint && (
+                    <Button
+                      size="sm"
+                      onClick={() =>
+                        projectTasks.forEach((task) =>
+                          addTaskToSprint({
+                            taskId: task.id,
+                            sprintId: targetSprint.id,
+                            status: getInitialStatusForType(
+                              project.type as ProjectType,
+                            ),
+                            projectId: task.project_id,
+                          }),
+                        )
+                      }
+                    >
+                      + Adicionar todos
+                    </Button>
+                  )}
+                </div>
+              </div>
+              {!isCollapsed && (
+                <AnimatePresence>
+                  {projectTasks.map((task) => (
+                    <BacklogRow
+                      key={task.id}
+                      task={task}
+                      projectPrefixById={projectPrefixById}
+                      epicName={
+                        task.epic_id
+                          ? (epicNameById.get(task.epic_id) ?? null)
+                          : null
+                      }
+                      onAddToSprint={
+                        targetSprint
+                          ? () =>
+                              addTaskToSprint({
+                                taskId: task.id,
+                                sprintId: targetSprint.id,
+                                status: getInitialStatusForType(
+                                  project.type as ProjectType,
+                                ),
+                                projectId: task.project_id,
+                              })
+                          : undefined
+                      }
+                    />
+                  ))}
+                </AnimatePresence>
+              )}
+            </section>
+          )
+        })}
       </div>
     </div>
   )

@@ -12,6 +12,12 @@ import { Link } from 'react-router-dom'
 import { buttonVariants } from '@/components/ui/button'
 import { CalendarCheck } from 'lucide-react'
 
+function formatShortDate(date: string | null): string {
+  if (!date) return '?'
+  const [, month, day] = date.split('-')
+  return `${day}/${month}`
+}
+
 type Task = Database['public']['Tables']['tasks']['Row']
 
 export function AgendaView() {
@@ -40,7 +46,11 @@ export function AgendaView() {
 
   return (
     <div className="flex flex-col gap-4">
-      {activeSprint?.goal && <Marquee>{activeSprint.goal}</Marquee>}
+      {activeSprint && (
+        <Marquee>
+          {`${activeSprint.name}${activeSprint.goal ? ` — ${activeSprint.goal}` : ''} (${formatShortDate(activeSprint.start_date)} - ${formatShortDate(activeSprint.end_date)})`}
+        </Marquee>
+      )}
 
       <div className="flex items-baseline gap-3">
         <span className="font-heading text-3xl text-(--text-primary)">

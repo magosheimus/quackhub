@@ -14,11 +14,22 @@ import { useCreateSprint } from '@/hooks/sprints/useCreateSprint'
 import { useSprints } from '@/hooks/sprints/useSprints'
 import { todayLocal } from '@/lib/srs'
 
+const SPRINT_DURATION_DAYS = 14
+
+function addDays(date: string, days: number): string {
+  const [year, month, day] = date.split('-').map(Number)
+  return new Date(Date.UTC(year, month - 1, day + days))
+    .toISOString()
+    .slice(0, 10)
+}
+
 export function SprintCreateModal() {
   const [open, setOpen] = useState(false)
   const [name, setName] = useState('')
   const [startDate, setStartDate] = useState(todayLocal())
-  const [endDate, setEndDate] = useState('')
+  const [endDate, setEndDate] = useState(
+    addDays(todayLocal(), SPRINT_DURATION_DAYS),
+  )
   const [goal, setGoal] = useState('')
 
   const { data: sprints } = useSprints()
@@ -30,7 +41,7 @@ export function SprintCreateModal() {
       setName(`Sprint ${(sprints?.length ?? 0) + 1}`)
     } else {
       setStartDate(todayLocal())
-      setEndDate('')
+      setEndDate(addDays(todayLocal(), SPRINT_DURATION_DAYS))
       setGoal('')
     }
     setOpen(nextOpen)

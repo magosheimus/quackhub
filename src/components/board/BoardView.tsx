@@ -3,7 +3,6 @@ import { useSearchParams } from 'react-router-dom'
 import { useProjects } from '@/hooks/projects/useProjects'
 import { useTasksByProjectId } from '@/hooks/projects/useTasksByProjectId'
 import { useActiveSprint } from '@/hooks/sprints/useActiveSprint'
-import { useSprints } from '@/hooks/sprints/useSprints'
 import { useTasksBySprintId } from '@/hooks/tasks/sprint/useTasksBySprintId'
 import { useUpdateTaskStatus } from '@/hooks/tasks/sprint/useUpdateTaskStatus'
 import { useBoardFilters } from '@/hooks/board/useBoardFilters'
@@ -16,11 +15,13 @@ import { BoardEmptyState } from './BoardEmptyState'
 import { FilterBar } from './FilterBar'
 import { ProjectBoardView } from './ProjectBoardView'
 import { SprintHeader } from '@/components/sprint/SprintHeader'
+import { useSprints } from '@/hooks/sprints/useSprints'
+import { SprintPlanningHeader } from '../backlog/SprintPlanningHeader'
+import { BacklogView } from '../backlog/BacklogView'
 
 export function BoardView() {
   const [searchParams, setSearchParams] = useSearchParams()
   const projectId = searchParams.get('project')
-
   const { data: projects, isLoading: isLoadingProjects } = useProjects()
   const { data: sprints } = useSprints()
   const { data: activeSprint, isLoading: isLoadingSprint } = useActiveSprint()
@@ -60,11 +61,15 @@ export function BoardView() {
     )
   }
 
+  const plannedSprint = sprints?.find((s) => s.status === 'planned') ?? null
+
   if (!activeSprint) {
+    if (!plannedSprint) return <BoardEmptyState />
     return (
-      <BoardEmptyState
-        plannedSprint={sprints?.find((s) => s.status === 'planned') ?? null}
-      />
+      <div className="flex flex-col gap-4">
+        <SprintPlanningHeader sprint={plannedSprint} />
+        <BacklogView />
+      </div>
     )
   }
 

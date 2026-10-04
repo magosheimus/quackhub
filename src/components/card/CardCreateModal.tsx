@@ -342,7 +342,7 @@ export function CardCreateModal({
                 <Button
                   key={option}
                   type="button"
-                  variant={priority === option ? 'default' : 'outline'}
+                  variant={priority === option ? 'selected' : 'outline'}
                   size="sm"
                   onClick={() => setPriority(option)}
                 >

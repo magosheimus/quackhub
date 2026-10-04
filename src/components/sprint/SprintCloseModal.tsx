@@ -106,7 +106,9 @@ export function SprintCloseModal({ sprint, tasks }: SprintCloseModalProps) {
                   <div className="flex gap-1">
                     <Button
                       variant={
-                        decisions[task.id] === 'backlog' ? 'default' : 'outline'
+                        decisions[task.id] === 'backlog'
+                          ? 'selected'
+                          : 'outline'
                       }
                       size="sm"
                       onClick={() => handleDecisionChange(task.id, 'backlog')}

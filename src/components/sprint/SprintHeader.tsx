@@ -31,8 +31,8 @@ export function SprintHeader({ activeSprint, tasks }: SprintHeaderProps) {
     const progress = total === 0 ? 0 : Math.round((done / total) * 100)
 
     return (
-      <div className="flex flex-col gap-1 rounded-md border border-border bg-(--bg-card) p-4">
-        <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-4 rounded-md border border-border bg-(--bg-card) p-4">
+        <div className="flex flex-col gap-1">
           <span className="font-heading text-2xl text-(--text-primary)">
             {activeSprint.name}
             {(activeSprint.start_date || activeSprint.end_date) && (
@@ -42,19 +42,19 @@ export function SprintHeader({ activeSprint, tasks }: SprintHeaderProps) {
               </span>
             )}
           </span>
-          <div className="flex flex-col items-center gap-1">
-            <span className="text-xs text-(--text-muted)">
-              {progress}% concluído ({done}/{total})
+          {activeSprint.goal && (
+            <span className="text-sm text-(--text-muted)">
+              {activeSprint.goal}
             </span>
-            <SegmentedProgress value={progress} label="Progresso da sprint" />
-          </div>
-          <SprintCloseModal sprint={activeSprint} tasks={tasks} />
+          )}
         </div>
-        {activeSprint.goal && (
-          <span className="text-sm text-[--text-muted]">
-            {activeSprint.goal}
+        <div className="flex flex-col items-center gap-1">
+          <span className="text-xs text-(--text-muted)">
+            {progress}% concluído ({done}/{total})
           </span>
-        )}
+          <SegmentedProgress value={progress} label="Progresso da sprint" />
+        </div>
+        <SprintCloseModal sprint={activeSprint} tasks={tasks} />
       </div>
     )
   }

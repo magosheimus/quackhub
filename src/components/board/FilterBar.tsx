@@ -44,7 +44,7 @@ export function FilterBar({
 
       <Button
         type="button"
-        variant={filters.flagged === true ? 'default' : 'outline'}
+        variant={filters.flagged === true ? 'selected' : 'outline'}
         size="sm"
         onClick={() =>
           onUpdateFilter('flagged', filters.flagged === true ? null : true)
@@ -55,7 +55,7 @@ export function FilterBar({
 
       <Button
         type="button"
-        variant={filters.srsOverdue ? 'default' : 'outline'}
+        variant={filters.srsOverdue ? 'selected' : 'outline'}
         size="sm"
         onClick={() => onUpdateFilter('srsOverdue', !filters.srsOverdue)}
       >
@@ -66,7 +66,7 @@ export function FilterBar({
         <Button
           key={epic.id}
           type="button"
-          variant={filters.epicId === epic.id ? 'default' : 'outline'}
+          variant={filters.epicId === epic.id ? 'selected' : 'outline'}
           size="sm"
           onClick={() =>
             onUpdateFilter(
@@ -83,7 +83,7 @@ export function FilterBar({
         <Button
           key={project.id}
           type="button"
-          variant={selectedProjectId === project.id ? 'default' : 'outline'}
+          variant={selectedProjectId === project.id ? 'selected' : 'outline'}
           size="sm"
           onClick={() =>
             onSelectProject(
