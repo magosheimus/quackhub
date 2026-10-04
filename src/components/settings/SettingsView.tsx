@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
-import { Input } from '@/components/ui/input'
 import { Slider } from '@/components/ui/slider'
 import {
   Select,
@@ -78,7 +77,7 @@ export function SettingsView() {
   return (
     <div className="flex max-w-xl flex-col gap-6">
       <div className="flex flex-col gap-2">
-        <span className="font-heading text-lg text-[--text-primary]">
+        <span className="font-heading text-xl text-[--text-primary]">
           Cartucho
         </span>
         <div className="flex flex-wrap gap-2">
@@ -100,7 +99,7 @@ export function SettingsView() {
       </div>
 
       <div className="flex flex-col gap-2">
-        <span className="font-heading text-lg text-[--text-primary]">
+        <span className="font-heading text-xl text-[--text-primary]">
           Textura
         </span>
         <Button
@@ -244,25 +243,7 @@ export function SettingsView() {
         </Select>
       </div>
 
-      <div className="flex flex-col gap-1.5">
-        <label
-          htmlFor="sprint-duration"
-          className="text-xs text-[--text-muted]"
-        >
-          Duração padrão de Sprint (dias)
-        </label>
-        <Input
-          id="sprint-duration"
-          type="number"
-          min={1}
-          value={settings.defaultSprintDuration}
-          onChange={(e) =>
-            update({ defaultSprintDuration: Number(e.target.value) || 1 })
-          }
-        />
-      </div>
-
-      <div className="flex flex-col gap-2 border-t border-(--border) pt-4">
+      <div className="flex flex-col gap-2 border-t border-border pt-4">
         <Button
           type="button"
           variant="outline"

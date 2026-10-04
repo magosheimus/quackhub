@@ -10,7 +10,6 @@ export type Settings = {
   fontBody: 'jetbrains' | 'ibm-plex'
   dateFormat: 'dd/MM/yyyy' | 'MM/dd/yyyy'
   weekStartsOn: 0 | 1
-  defaultSprintDuration: number
 }
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -23,7 +22,6 @@ export const DEFAULT_SETTINGS: Settings = {
   fontBody: 'jetbrains',
   dateFormat: 'dd/MM/yyyy',
   weekStartsOn: 0,
-  defaultSprintDuration: 14,
 }
 
 export function isDarkCartucho(cartucho: Settings['cartucho']): boolean {

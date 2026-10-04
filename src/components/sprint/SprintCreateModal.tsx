@@ -12,11 +12,12 @@ import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
 import { useCreateSprint } from '@/hooks/sprints/useCreateSprint'
 import { useSprints } from '@/hooks/sprints/useSprints'
+import { todayLocal } from '@/lib/srs'
 
 export function SprintCreateModal() {
   const [open, setOpen] = useState(false)
   const [name, setName] = useState('')
-  const [startDate, setStartDate] = useState('')
+  const [startDate, setStartDate] = useState(todayLocal())
   const [endDate, setEndDate] = useState('')
   const [goal, setGoal] = useState('')
 
@@ -28,7 +29,7 @@ export function SprintCreateModal() {
       // RN-SP06 — sugere o próximo número toda vez que abre
       setName(`Sprint ${(sprints?.length ?? 0) + 1}`)
     } else {
-      setStartDate('')
+      setStartDate(todayLocal())
       setEndDate('')
       setGoal('')
     }
