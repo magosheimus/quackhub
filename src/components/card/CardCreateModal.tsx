@@ -1,3 +1,4 @@
+import { IconPlus } from '@/lib/icons'
 import { useRef, useState } from 'react'
 import {
   Dialog,
@@ -190,7 +191,10 @@ export function CardCreateModal({
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       {!hideTrigger && (
-        <DialogTrigger render={<Button size="sm" />}>+ Novo Card</DialogTrigger>
+        <DialogTrigger render={<Button size="sm" />}>
+          <IconPlus size={12} aria-hidden="true" />
+          Novo Card
+        </DialogTrigger>
       )}
 
       <DialogContent>

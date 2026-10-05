@@ -1,6 +1,7 @@
 import type { ProjectType } from '@/lib/project'
 import type { Database } from '@/types/database.types'
-import { ArrowUp, Minus, ArrowDown, type LucideIcon } from 'lucide-react'
+import type { IconComponent } from '@/lib/icons'
+import { IconArrowBigDown, IconArrowBigUp, IconChevronUp } from '@/lib/icons'
 
 type Task = Database['public']['Tables']['tasks']['Row']
 
@@ -30,6 +31,68 @@ export const COLUMN_LABELS: Record<string, string> = {
   blocked: 'IMPEDIDO',
   scheduled: 'AGENDADO',
   done: 'FINALIZADO',
+}
+
+export type BoardColumnKey = 'todo' | 'doing' | 'to_review' | 'blocked' | 'done'
+
+export const BOARD_COLUMNS: BoardColumnKey[] = [
+  'todo',
+  'doing',
+  'to_review',
+  'blocked',
+  'done',
+]
+
+const COLUMN_BY_STATUS: Record<string, BoardColumnKey> = {
+  to_study: 'todo',
+  todo: 'todo',
+  studying: 'doing',
+  doing: 'doing',
+  to_review: 'to_review',
+  blocked: 'blocked',
+  done: 'done',
+}
+
+const STATUS_BY_COLUMN: Record<
+  BoardColumnKey,
+  Record<ProjectType, TaskStatus | null>
+> = {
+  todo: { study: 'to_study', general: 'todo' },
+  doing: { study: 'studying', general: 'doing' },
+  to_review: { study: 'to_review', general: null },
+  blocked: { study: 'blocked', general: 'blocked' },
+  done: { study: 'done', general: 'done' },
+}
+
+const BOARD_COLUMN_LABELS: Record<
+  BoardColumnKey,
+  { study: string; general: string }
+> = {
+  todo: { study: 'A ESTUDAR', general: 'A FAZER' },
+  doing: { study: 'ESTUDANDO', general: 'FAZENDO' },
+  to_review: { study: 'A REVISAR', general: 'A REVISAR' },
+  blocked: { study: 'IMPEDIDO', general: 'IMPEDIDO' },
+  done: { study: 'FINALIZADO', general: 'FINALIZADO' },
+}
+
+export function getBoardColumnKey(status: string): BoardColumnKey | undefined {
+  return COLUMN_BY_STATUS[status]
+}
+
+export function getBoardColumnLabel(
+  column: BoardColumnKey,
+  scopeType: ProjectType | null,
+): string {
+  return BOARD_COLUMN_LABELS[column][
+    scopeType === 'study' ? 'study' : 'general'
+  ]
+}
+
+export function getStatusForColumn(
+  column: BoardColumnKey,
+  taskType: ProjectType,
+): TaskStatus | null {
+  return STATUS_BY_COLUMN[column][taskType]
 }
 
 export const STATUS_BADGE_CLASS: Record<string, string> = {
@@ -67,7 +130,7 @@ export type TaskPriority = 'alta' | 'média' | 'baixa'
 export const PRIORITY_CONFIG: Record<
   TaskPriority,
   {
-    icon: LucideIcon
+    icon: IconComponent
     ariaLabel: string
     text: string
     className: string
@@ -75,21 +138,21 @@ export const PRIORITY_CONFIG: Record<
   }
 > = {
   alta: {
-    icon: ArrowUp,
+    icon: IconArrowBigUp,
     ariaLabel: 'Prioridade alta',
     text: 'ALTA',
     className: 'text-[--signal-danger]',
     colorVar: '--signal-danger',
   },
   média: {
-    icon: Minus,
+    icon: IconChevronUp,
     ariaLabel: 'Prioridade média',
     text: 'MÉDIA',
     className: 'text-[--text-muted]',
     colorVar: '--text-muted',
   },
   baixa: {
-    icon: ArrowDown,
+    icon: IconArrowBigDown,
     ariaLabel: 'Prioridade baixa',
     text: 'BAIXA',
     className: 'text-[--signal-success]',
@@ -108,6 +171,7 @@ export type BoardFilters = {
   tag: string | null
   status: TaskStatus | null
   srsOverdue: boolean
+  projectIds: string[]
 }
 
 export const DEFAULT_BOARD_FILTERS: BoardFilters = {
@@ -117,6 +181,7 @@ export const DEFAULT_BOARD_FILTERS: BoardFilters = {
   tag: null,
   status: null,
   srsOverdue: false,
+  projectIds: [],
 }
 
 export function applyBoardFilters(
@@ -129,6 +194,11 @@ export function applyBoardFilters(
     if (filters.flagged !== null && task.flagged !== filters.flagged)
       return false
     if (filters.epicId && task.epic_id !== filters.epicId) return false
+    if (
+      filters.projectIds.length > 0 &&
+      !filters.projectIds.includes(task.project_id)
+    )
+      return false
     if (filters.priority && task.priority !== filters.priority) return false
     if (filters.status && task.status !== filters.status) return false
     if (filters.tag) {

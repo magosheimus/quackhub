@@ -1,7 +1,8 @@
 /* ==========================================================================
    1. Tokens — cartucho Sage (padrão)
    ========================================================================== */
-:root {
+:root, 
+.cartucho-sage {
   /* Raízes do cartucho */
   --lcd-screen: #c8cba4;
   --lcd-ink: #2c2e1a;
@@ -216,7 +217,9 @@
 }
 
 .glow-on {
-  --glow: 0 0 6px color-mix(in srgb, var(--lcd-ink) 55%, transparent);
+  --glow:
+    0 0 1px color-mix(in srgb, var(--accent) 70%, transparent),
+    0 0 8px color-mix(in srgb, var(--accent) 55%, transparent);
 }
 
 .font-ibm-plex {
@@ -327,6 +330,31 @@
   animation: loading-dots 1.2s steps(1, end) infinite;
 }
 
+@keyframes cartucho-pulse {
+  0%,
+  100% {
+    box-shadow:
+      2px 2px 0 0 var(--lcd-ink),
+      0 0 0 0 transparent;
+  }
+  50% {
+    box-shadow:
+      2px 2px 0 0 var(--lcd-ink),
+      0 0 12px 2px var(--accent);
+  }
+}
+
+@keyframes cartucho-deck-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* ==========================================================================
    6. Reset
    ========================================================================== */
@@ -351,7 +379,6 @@ body {
 .font-heading {
   -webkit-text-stroke: 0.2px currentColor;
 }
-
 
 input,
 textarea,

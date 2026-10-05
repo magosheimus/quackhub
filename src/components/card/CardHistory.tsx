@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ChevronDown, ChevronRight } from 'lucide-react'
+import { IconChevronDown, IconChevronRight } from '@/lib/icons'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { useSrsLogs } from '@/hooks/srs/useSrsLogs'
@@ -49,7 +49,11 @@ export function CardHistory({ taskId }: CardHistoryProps) {
         onClick={() => setIsOpen((open) => !open)}
         className="flex w-fit items-center gap-1 text-sm font-medium text-[--text-primary]"
       >
-        {isOpen ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
+        {isOpen ? (
+          <IconChevronDown size={12} />
+        ) : (
+          <IconChevronRight size={12} />
+        )}
         Histórico
       </button>
 
@@ -63,7 +67,7 @@ export function CardHistory({ taskId }: CardHistoryProps) {
               {logs.map((log) => (
                 <div
                   key={log.id}
-                  className="rounded-(--radius-md) border border-(--border) bg-[var(--bg-card)] p-2 text-sm"
+                  className="rounded-(--radius-md) border border-border bg-(--bg-card) p-2 text-sm"
                 >
                   <div className="flex flex-wrap items-center gap-2 text-xs text-[--text-muted]">
                     <span>{formatDisplayDate(log.session_date)}</span>
@@ -119,7 +123,7 @@ export function CardHistory({ taskId }: CardHistoryProps) {
               {activity.map((entry) => (
                 <div
                   key={entry.id}
-                  className="rounded-(--radius-md) border border-(--border) bg-[var(--bg-card)] p-2 text-sm"
+                  className="rounded-(--radius-md) border border-border bg-(--bg-card) p-2 text-sm"
                 >
                   <div className="flex flex-wrap items-center gap-2 text-xs text-[--text-muted]">
                     <span>{formatDisplayDateTime(entry.created_at)}</span>

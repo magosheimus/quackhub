@@ -1,3 +1,4 @@
+import { IconPlus } from '@/lib/icons'
 import { useState } from 'react'
 import {
   Dialog,
@@ -64,7 +65,8 @@ export function SprintCreateModal() {
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger render={<Button variant="outline" size="sm" />}>
-        + Nova Sprint
+        <IconPlus size={12} aria-hidden="true" />
+        Nova Sprint
       </DialogTrigger>
 
       <DialogContent>

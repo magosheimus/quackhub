@@ -2,7 +2,7 @@ import { useState, useRef, useEffect, type KeyboardEvent } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { Plus, X } from 'lucide-react'
+import { IconPlus, IconClose } from '@/lib/icons'
 
 type TagInputProps = {
   tags: string[]
@@ -63,7 +63,7 @@ export function TagInput({ tags, onChange, suggestions }: TagInputProps) {
               onClick={() => removeTag(tag)}
               aria-label={`Remover tag ${tag}`}
             >
-              <X size={12} />
+              <IconClose size={12} />
             </button>
           </Badge>
         ))}
@@ -75,7 +75,7 @@ export function TagInput({ tags, onChange, suggestions }: TagInputProps) {
             onClick={() => setIsAdding(true)}
             aria-label="Adicionar tag"
           >
-            <Plus size={14} />
+            <IconPlus size={12} />
           </Button>
         )}
       </div>
@@ -98,7 +98,7 @@ export function TagInput({ tags, onChange, suggestions }: TagInputProps) {
               key={suggestion}
               type="button"
               onClick={() => addTag(suggestion)}
-              className="rounded-(--radius-sm) border border-(--border) px-2 py-0.5 text-xs text-[--text-muted]"
+              className="rounded-(--radius-sm) border border-border px-2 py-0.5 text-xs text-[--text-muted]"
             >
               {suggestion}
             </button>

@@ -1,5 +1,5 @@
 import { supabase } from '@/lib/supabase'
-import type { Database } from '@/types/database.types'
+import type { Database, Json } from '@/types/database.types'
 import { getTasksBySprintId, updateTaskSprint } from '@/services/tasks/tasks'
 import { getProjects } from '@/services/projects/projects'
 import {
@@ -8,6 +8,11 @@ import {
   type CarryoverDecision,
   type SprintMetrics,
 } from '@/lib/sprint'
+import {
+  getAccuracyOverTime,
+  getCompletionByProject,
+  getConfidenceDistribution,
+} from '@/services/analytics/analytics'
 
 type Sprint = Database['public']['Tables']['sprints']['Row']
 type NewSprint = Database['public']['Tables']['sprints']['Insert']
@@ -78,6 +83,7 @@ export async function setSprintClosed(
   metrics: SprintMetrics & {
     carried_to_next: number
     carried_to_backlog: number
+    analytics_snapshot: Json
   },
 ): Promise<Sprint> {
   const { data, error } = await supabase
@@ -113,6 +119,12 @@ export async function closeSprint(
   const projectNameById = new Map(projects.map((p) => [p.id, p.name]))
   const metrics = computeSprintMetrics(tasks, projectNameById)
 
+  const [confidence, accuracy, completionByProject] = await Promise.all([
+    getConfidenceDistribution(sprintId),
+    getAccuracyOverTime(sprintId),
+    getCompletionByProject(sprintId),
+  ])
+
   const carryoverResults = applyCarryover(tasks, decisions, nextSprintId)
   await Promise.all(
     carryoverResults.map((result) =>
@@ -131,5 +143,6 @@ export async function closeSprint(
     ...metrics,
     carried_to_next: carriedToNext,
     carried_to_backlog: carriedToBacklog,
+    analytics_snapshot: { confidence, accuracy, completionByProject },
   })
 }

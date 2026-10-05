@@ -14,6 +14,41 @@ export type Database = {
   }
   public: {
     Tables: {
+      drafts_items: {
+        Row: {
+          content: string
+          created_at: string | null
+          id: string
+          triaged_at: string | null
+          triaged_task_id: string | null
+          triaged_to: string | null
+        }
+        Insert: {
+          content: string
+          created_at?: string | null
+          id?: string
+          triaged_at?: string | null
+          triaged_task_id?: string | null
+          triaged_to?: string | null
+        }
+        Update: {
+          content?: string
+          created_at?: string | null
+          id?: string
+          triaged_at?: string | null
+          triaged_task_id?: string | null
+          triaged_to?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'inbox_items_triaged_task_id_fkey'
+            columns: ['triaged_task_id']
+            isOneToOne: false
+            referencedRelation: 'tasks'
+            referencedColumns: ['id']
+          },
+        ]
+      }
       epics: {
         Row: {
           color: string | null
@@ -45,41 +80,6 @@ export type Database = {
             columns: ['project_id']
             isOneToOne: false
             referencedRelation: 'projects'
-            referencedColumns: ['id']
-          },
-        ]
-      }
-      drafts_items: {
-        Row: {
-          content: string
-          created_at: string | null
-          id: string
-          triaged_at: string | null
-          triaged_task_id: string | null
-          triaged_to: string | null
-        }
-        Insert: {
-          content: string
-          created_at?: string | null
-          id?: string
-          triaged_at?: string | null
-          triaged_task_id?: string | null
-          triaged_to?: string | null
-        }
-        Update: {
-          content?: string
-          created_at?: string | null
-          id?: string
-          triaged_at?: string | null
-          triaged_task_id?: string | null
-          triaged_to?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'drafts_items_triaged_task_id_fkey'
-            columns: ['triaged_task_id']
-            isOneToOne: false
-            referencedRelation: 'tasks'
             referencedColumns: ['id']
           },
         ]
@@ -119,6 +119,7 @@ export type Database = {
       }
       sprints: {
         Row: {
+          analytics_snapshot: Json | null
           carried_to_backlog: number | null
           carried_to_next: number | null
           completed_tasks: number | null
@@ -135,6 +136,7 @@ export type Database = {
           total_tasks: number | null
         }
         Insert: {
+          analytics_snapshot?: Json | null
           carried_to_backlog?: number | null
           carried_to_next?: number | null
           completed_tasks?: number | null
@@ -151,6 +153,7 @@ export type Database = {
           total_tasks?: number | null
         }
         Update: {
+          analytics_snapshot?: Json | null
           carried_to_backlog?: number | null
           carried_to_next?: number | null
           completed_tasks?: number | null
@@ -180,6 +183,7 @@ export type Database = {
           nota: number | null
           quality: number | null
           session_date: string
+          sprint_id: string | null
           task_id: string
         }
         Insert: {
@@ -193,6 +197,7 @@ export type Database = {
           nota?: number | null
           quality?: number | null
           session_date: string
+          sprint_id?: string | null
           task_id: string
         }
         Update: {
@@ -206,9 +211,17 @@ export type Database = {
           nota?: number | null
           quality?: number | null
           session_date?: string
+          sprint_id?: string | null
           task_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: 'srs_logs_sprint_id_fkey'
+            columns: ['sprint_id']
+            isOneToOne: false
+            referencedRelation: 'sprints'
+            referencedColumns: ['id']
+          },
           {
             foreignKeyName: 'srs_logs_task_id_fkey'
             columns: ['task_id']

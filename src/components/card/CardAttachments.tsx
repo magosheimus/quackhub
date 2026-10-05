@@ -6,12 +6,12 @@ import {
   type SyntheticEvent,
 } from 'react'
 import {
-  Paperclip,
-  X,
-  File as FileIcon,
-  ChevronLeft,
-  ChevronRight,
-} from 'lucide-react'
+  IconAttachment,
+  IconChevronLeft,
+  IconChevronRight,
+  IconClose,
+  IconFile,
+} from '@/lib/icons'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { useAttachments } from '@/hooks/attachments/useAttachments'
@@ -99,7 +99,7 @@ export function CardAttachments({ taskId }: CardAttachmentsProps) {
           aria-label="Adicionar anexo"
           disabled={isPending}
         >
-          <Paperclip size={14} />
+          <IconAttachment size={12} />
         </Button>
         <input
           ref={fileInputRef}
@@ -117,7 +117,7 @@ export function CardAttachments({ taskId }: CardAttachmentsProps) {
             return (
               <div
                 key={attachment.id}
-                className="group relative flex h-28 w-28 items-center justify-center overflow-hidden rounded-(--radius-md) border border-(--border) bg-[var(--bg-card)]"
+                className="group relative flex h-28 w-28 items-center justify-center overflow-hidden rounded-(--radius-md) border border-border bg-(--bg-card)"
               >
                 {isImage ? (
                   <button
@@ -142,7 +142,7 @@ export function CardAttachments({ taskId }: CardAttachmentsProps) {
                     rel="noreferrer"
                     className="flex flex-col items-center gap-1 p-1 text-center"
                   >
-                    <FileIcon size={20} className="text-[--text-muted]" />
+                    <IconFile size={16} className="text-[--text-muted]" />
                     <span className="line-clamp-2 text-[10px] text-[--text-muted]">
                       {attachment.file_name}
                     </span>
@@ -158,9 +158,9 @@ export function CardAttachments({ taskId }: CardAttachmentsProps) {
                     })
                   }
                   aria-label={`Remover anexo ${attachment.file_name}`}
-                  className="absolute top-0.5 right-0.5 hidden rounded-full bg-[var(--bg-page)] p-0.5 group-hover:block"
+                  className="absolute top-0.5 right-0.5 hidden rounded-full bg-(--bg-page) p-0.5 group-hover:block"
                 >
-                  <X size={12} />
+                  <IconClose size={12} />
                 </button>
               </div>
             )
@@ -185,7 +185,7 @@ export function CardAttachments({ taskId }: CardAttachmentsProps) {
                     onClick={showPrev}
                     aria-label="Anexo anterior"
                   >
-                    <ChevronLeft size={24} />
+                    <IconChevronLeft size={16} />
                   </Button>
                 </div>
               )}
@@ -209,7 +209,7 @@ export function CardAttachments({ taskId }: CardAttachmentsProps) {
                     onClick={showNext}
                     aria-label="Próximo anexo"
                   >
-                    <ChevronRight size={24} />
+                    <IconChevronRight size={16} />
                   </Button>
                 </div>
               )}

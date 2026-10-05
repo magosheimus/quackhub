@@ -8,7 +8,14 @@ import { useUpdateTaskStatus } from '@/hooks/tasks/sprint/useUpdateTaskStatus'
 import { useBoardFilters } from '@/hooks/board/useBoardFilters'
 import { useBulkTaskTags } from '@/hooks/tasks/tags/useBulkTaskTags'
 import { useAllEpics } from '@/hooks/epics/useAllEpics'
-import { ALL_COLUMNS, applyBoardFilters, type TaskStatus } from '@/lib/board'
+import {
+  BOARD_COLUMNS,
+  applyBoardFilters,
+  getBoardColumnKey,
+  getBoardColumnLabel,
+  getStatusForColumn,
+  type BoardColumnKey,
+} from '@/lib/board'
 import { todayLocal } from '@/lib/srs'
 import { BoardColumn } from './BoardColumn'
 import { BoardEmptyState } from './BoardEmptyState'
@@ -18,9 +25,10 @@ import { SprintHeader } from '@/components/sprint/SprintHeader'
 import { useSprints } from '@/hooks/sprints/useSprints'
 import { SprintPlanningHeader } from '../backlog/SprintPlanningHeader'
 import { BacklogView } from '../backlog/BacklogView'
+import type { ProjectType } from '@/lib/project'
 
 export function BoardView() {
-  const [searchParams, setSearchParams] = useSearchParams()
+  const [searchParams] = useSearchParams()
   const projectId = searchParams.get('project')
   const { data: projects, isLoading: isLoadingProjects } = useProjects()
   const { data: sprints } = useSprints()
@@ -31,7 +39,7 @@ export function BoardView() {
   const { data: projectTasks } = useTasksByProjectId(projectId)
   const { mutate: updateTaskStatus } = useUpdateTaskStatus()
   const { data: epics } = useAllEpics()
-  const { filters, updateFilter, resetFilters } = useBoardFilters()
+  const { filters, updateFilter } = useBoardFilters()
 
   const { data: taskTagsMap } = useBulkTaskTags((tasks ?? []).map((t) => t.id))
 
@@ -40,7 +48,6 @@ export function BoardView() {
       <div className="text-sm text-(--text-muted)">[ CARREGANDO........ ]</div>
     )
   }
-
   const project = projectId
     ? (projects?.find((p) => p.id === projectId) ?? null)
     : null
@@ -48,6 +55,14 @@ export function BoardView() {
   const projectPrefixById = new Map(
     projects?.map((p) => [p.id, p.prefix ?? '']),
   )
+  const projectTypeById = new Map<string, ProjectType>(
+    projects?.map((p) => [p.id, p.type as ProjectType]),
+  )
+  const filteredTypes = filters.projectIds.map((id) => projectTypeById.get(id))
+  const labelScope =
+    filteredTypes.length > 0 && filteredTypes.every((type) => type === 'study')
+      ? 'study'
+      : null
 
   if (project) {
     return (
@@ -89,26 +104,24 @@ export function BoardView() {
   )
   const sprintEpics = (epics ?? []).filter((e) => epicIdsInSprint.has(e.id))
 
-  function handleSelectProject(nextProjectId: string | null) {
-    setSearchParams((prev) => {
-      const next = new URLSearchParams(prev)
-      if (nextProjectId) {
-        next.set('project', nextProjectId)
-      } else {
-        next.delete('project')
-      }
-      return next
-    })
-  }
-
   function handleDragEnd(result: DropResult) {
     if (!activeSprint) return
     const { destination, draggableId } = result
     if (!destination) return
 
+    const task = tasks?.find((t) => t.id === draggableId)
+    const taskType = task ? projectTypeById.get(task.project_id) : undefined
+    if (!task || !taskType) return
+
+    const status = getStatusForColumn(
+      destination.droppableId as BoardColumnKey,
+      taskType,
+    )
+    if (!status) return
+
     updateTaskStatus({
       id: draggableId,
-      status: destination.droppableId as TaskStatus,
+      status,
       sprintId: activeSprint.id,
     })
   }
@@ -120,20 +133,20 @@ export function BoardView() {
       <FilterBar
         filters={filters}
         onUpdateFilter={updateFilter}
-        onReset={resetFilters}
         epics={sprintEpics}
         projects={sprintProjects}
-        selectedProjectId={projectId}
-        onSelectProject={handleSelectProject}
       />
 
       <DragDropContext onDragEnd={handleDragEnd}>
         <div className="flex gap-4 overflow-x-auto">
-          {ALL_COLUMNS.map((status) => (
+          {BOARD_COLUMNS.map((column) => (
             <BoardColumn
-              key={status}
-              status={status as TaskStatus}
-              tasks={visibleTasks.filter((task) => task.status === status)}
+              key={column}
+              column={column}
+              label={getBoardColumnLabel(column, labelScope)}
+              tasks={visibleTasks.filter(
+                (task) => getBoardColumnKey(task.status) === column,
+              )}
               projectPrefixById={projectPrefixById}
             />
           ))}

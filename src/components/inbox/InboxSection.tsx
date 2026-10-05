@@ -1,4 +1,4 @@
-import { BookOpenCheck } from 'lucide-react'
+import { IconBookOpen } from '@/lib/icons'
 import { Button } from '@/components/ui/button'
 import { StaticBoardCard } from '@/components/board/BoardCard'
 import { todayLocal } from '@/lib/srs'
@@ -72,7 +72,7 @@ export function InboxSection({
                     size="sm"
                     onClick={() => onRegisterPerformance(task)}
                   >
-                    <BookOpenCheck size={14} aria-hidden="true" />
+                    <IconBookOpen size={12} aria-hidden="true" />
                     Registrar Desempenho
                   </Button>
                 </div>

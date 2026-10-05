@@ -1,3 +1,4 @@
+import { IconInbox, IconCalendar } from '@/lib/icons'
 import { useState } from 'react'
 import { Marquee } from '@/components/ui/marquee'
 import { useInboxItems } from '@/hooks/inbox/useInboxItems'
@@ -10,7 +11,7 @@ import type { Database } from '@/types/database.types'
 import { LoadingText } from '../ui/loading-text'
 import { Link } from 'react-router-dom'
 import { buttonVariants } from '@/components/ui/button'
-import { CalendarCheck } from 'lucide-react'
+import { PageTitle } from '@/components/ui/page-title'
 
 function formatShortDate(date: string | null): string {
   if (!date) return '?'
@@ -52,11 +53,13 @@ export function InboxView() {
         </Marquee>
       )}
 
-      <div className="flex items-baseline gap-3">
-        <span className="font-heading text-3xl text-(--text-primary)">
-          HOJE
-        </span>
-        <span className="text-xs text-(--text-muted)">{todayLabel}</span>
+      <div className="flex flex-col gap-1">
+        <PageTitle
+          title="Inbox"
+          icon={IconInbox}
+          count={urgent.length + srsOverdue.length + dueToday.length}
+        />
+        <span className="pl-4 text-xs text-(--text-muted)">{todayLabel}</span>
       </div>
 
       <div className="grid grid-cols-3 gap-3">
@@ -79,8 +82,8 @@ export function InboxView() {
 
       {isEmpty ? (
         <div className="flex flex-col items-center gap-4 rounded-md border border-(--bg-surface) bg-(--bg-page) px-6 py-12 text-center">
-          <CalendarCheck
-            size={32}
+          <IconCalendar
+            size={24}
             aria-hidden="true"
             className="text-(--text-muted)"
           />

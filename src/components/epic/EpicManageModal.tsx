@@ -22,7 +22,7 @@ import { PROJECT_COLORS, type ProjectColor } from '@/lib/project'
 import type { Database } from '@/types/database.types'
 import { LoadingText } from '../ui/loading-text'
 import { useSoftDeleteEpic } from '@/hooks/epics/useSoftDeleteEpic'
-import { Trash2 } from 'lucide-react'
+import { IconTrash } from '@/lib/icons'
 
 type Epic = Database['public']['Tables']['epics']['Row']
 
@@ -175,7 +175,7 @@ function EpicRow({ epic }: { epic: Epic }) {
         disabled={isDeleting}
         aria-label={`Excluir épico ${epic.name}`}
       >
-        <Trash2 size={14} />
+        <IconTrash size={12} />
       </Button>
     </div>
   )

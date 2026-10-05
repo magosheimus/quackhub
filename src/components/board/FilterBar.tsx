@@ -11,63 +11,37 @@ type FilterBarProps = {
     key: K,
     value: BoardFilters[K],
   ) => void
-  onReset: () => void
   epics: Epic[]
   projects: Project[]
-  selectedProjectId: string | null
-  onSelectProject: (projectId: string | null) => void
+}
+
+const CHIP_CLASS = 'bg-(--bg-card) hover:bg-(--bg-hover)'
+
+function chipProps(active: boolean) {
+  return {
+    variant: active ? ('default' as const) : ('outline' as const),
+    className: active ? undefined : CHIP_CLASS,
+  }
 }
 
 export function FilterBar({
   filters,
   onUpdateFilter,
-  onReset,
   epics,
   projects,
-  selectedProjectId,
-  onSelectProject,
 }: FilterBarProps) {
-  const hasActiveFilter =
-    filters.flagged !== null ||
-    filters.srsOverdue ||
-    filters.epicId !== null ||
-    selectedProjectId !== null
-
-  function handleReset() {
-    onReset()
-    onSelectProject(null)
-  }
-
   return (
     <div className="flex flex-wrap items-center gap-2">
-      <span className="text-xs text-[--text-muted]">FILTROS RÁPIDOS:</span>
-
-      <Button
-        type="button"
-        variant={filters.flagged === true ? 'selected' : 'outline'}
-        size="sm"
-        onClick={() =>
-          onUpdateFilter('flagged', filters.flagged === true ? null : true)
-        }
-      >
-        Urgente
-      </Button>
-
-      <Button
-        type="button"
-        variant={filters.srsOverdue ? 'selected' : 'outline'}
-        size="sm"
-        onClick={() => onUpdateFilter('srsOverdue', !filters.srsOverdue)}
-      >
-        SRS vencido
-      </Button>
+      <span className="text-sm font-medium uppercase tracking-wide text-(--text-primary)">
+        Filtros rápidos:
+      </span>
 
       {epics.map((epic) => (
         <Button
           key={epic.id}
           type="button"
-          variant={filters.epicId === epic.id ? 'selected' : 'outline'}
           size="sm"
+          {...chipProps(filters.epicId === epic.id)}
           onClick={() =>
             onUpdateFilter(
               'epicId',
@@ -79,27 +53,27 @@ export function FilterBar({
         </Button>
       ))}
 
-      {projects.map((project) => (
-        <Button
-          key={project.id}
-          type="button"
-          variant={selectedProjectId === project.id ? 'selected' : 'outline'}
-          size="sm"
-          onClick={() =>
-            onSelectProject(
-              selectedProjectId === project.id ? null : project.id,
-            )
-          }
-        >
-          {project.name}
-        </Button>
-      ))}
-
-      {hasActiveFilter && (
-        <Button type="button" variant="ghost" size="sm" onClick={handleReset}>
-          Limpar
-        </Button>
-      )}
+      {projects.map((project) => {
+        const isActive = filters.projectIds.includes(project.id)
+        return (
+          <Button
+            key={project.id}
+            type="button"
+            size="sm"
+            {...chipProps(isActive)}
+            onClick={() =>
+              onUpdateFilter(
+                'projectIds',
+                isActive
+                  ? filters.projectIds.filter((id) => id !== project.id)
+                  : [...filters.projectIds, project.id],
+              )
+            }
+          >
+            {project.name}
+          </Button>
+        )
+      })}
     </div>
   )
 }

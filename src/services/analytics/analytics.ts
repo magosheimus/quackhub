@@ -8,16 +8,16 @@ export type ConfidenceDistributionItem = {
 }
 
 export async function getConfidenceDistribution(
-  projectId?: string | null,
+  sprintId?: string | null,
 ): Promise<ConfidenceDistributionItem[]> {
   let query = supabase
     .from('srs_logs')
-    .select('confianca, tasks!inner(project_id)')
+    .select('confianca')
     .eq('log_type', 'srs')
     .not('confianca', 'is', null)
 
-  if (projectId) {
-    query = query.eq('tasks.project_id', projectId)
+  if (sprintId) {
+    query = query.eq('sprint_id', sprintId)
   }
 
   const { data, error } = await query
@@ -39,17 +39,17 @@ export async function getConfidenceDistribution(
 }
 
 export async function getAccuracyOverTime(
-  projectId?: string | null,
+  sprintId?: string | null,
 ): Promise<AccuracyOverTimeItem[]> {
   let query = supabase
     .from('srs_logs')
-    .select('session_date, quality, tasks!inner(project_id)')
+    .select('session_date, quality')
     .eq('log_type', 'srs')
     .not('quality', 'is', null)
     .order('session_date', { ascending: true })
 
-  if (projectId) {
-    query = query.eq('tasks.project_id', projectId)
+  if (sprintId) {
+    query = query.eq('sprint_id', sprintId)
   }
 
   const { data, error } = await query
@@ -57,6 +57,39 @@ export async function getAccuracyOverTime(
     throw new Error(`Falha ao buscar evolução de acerto: ${error.message}`)
 
   return groupQualityByWeek(data)
+}
+
+export type CompletionByProjectItem = {
+  projectName: string
+  total: number
+  completed: number
+}
+
+export async function getCompletionByProject(
+  sprintId: string,
+): Promise<CompletionByProjectItem[]> {
+  const { data, error } = await supabase
+    .from('tasks')
+    .select('status, projects!inner(name)')
+    .eq('sprint_id', sprintId)
+    .is('deleted_at', null)
+  if (error)
+    throw new Error(`Falha ao buscar conclusão por projeto: ${error.message}`)
+
+  const byProject = new Map<string, CompletionByProjectItem>()
+  for (const task of data) {
+    const name = task.projects.name
+    const item = byProject.get(name) ?? {
+      projectName: name,
+      total: 0,
+      completed: 0,
+    }
+    item.total += 1
+    if (task.status === 'done') item.completed += 1
+    byProject.set(name, item)
+  }
+
+  return Array.from(byProject.values()).sort((a, b) => b.total - a.total)
 }
 
 export type SprintHistoryItem = {
@@ -180,4 +213,101 @@ export async function getSRSMetricsByTag(
       count,
     }))
     .sort((a, b) => b.count - a.count)
+}
+
+export type ConfidenceCalibrationItem = {
+  confianca: number
+  averageQuality: number
+  count: number
+}
+
+export async function getConfidenceCalibration(
+  sprintId?: string | null,
+): Promise<ConfidenceCalibrationItem[]> {
+  let query = supabase
+    .from('srs_logs')
+    .select('confianca, quality')
+    .eq('log_type', 'srs')
+    .not('confianca', 'is', null)
+    .not('quality', 'is', null)
+
+  if (sprintId) {
+    query = query.eq('sprint_id', sprintId)
+  }
+
+  const { data, error } = await query
+  if (error)
+    throw new Error(`Falha ao buscar calibração de confiança: ${error.message}`)
+
+  const buckets = new Map<number, { sum: number; count: number }>()
+  for (const row of data) {
+    if (row.confianca === null || row.quality === null) continue
+    const bucket = buckets.get(row.confianca) ?? { sum: 0, count: 0 }
+    bucket.sum += row.quality
+    bucket.count += 1
+    buckets.set(row.confianca, bucket)
+  }
+
+  return [1, 2, 3, 4, 5].map((confianca) => {
+    const bucket = buckets.get(confianca)
+    return {
+      confianca,
+      count: bucket?.count ?? 0,
+      averageQuality: bucket ? bucket.sum / bucket.count : 0,
+    }
+  })
+}
+
+export type ReviewsByEpicItem = {
+  epicName: string
+  count: number
+  color: string | null
+}
+
+export async function getReviewsByEpic(
+  sprintId?: string | null,
+): Promise<ReviewsByEpicItem[]> {
+  let query = supabase.from('srs_logs').select('task_id').eq('log_type', 'srs')
+
+  if (sprintId) {
+    query = query.eq('sprint_id', sprintId)
+  }
+
+  const { data: logs, error: logsError } = await query
+  if (logsError)
+    throw new Error(`Falha ao buscar revisões: ${logsError.message}`)
+  if (logs.length === 0) return []
+
+  const taskIds = Array.from(new Set(logs.map((l) => l.task_id)))
+  const { data: tasks, error: tasksError } = await supabase
+    .from('tasks')
+    .select('id, epic_id')
+    .in('id', taskIds)
+  if (tasksError)
+    throw new Error(`Falha ao buscar tasks: ${tasksError.message}`)
+
+  const { data: epics, error: epicsError } = await supabase
+    .from('epics')
+    .select('id, name, color')
+  if (epicsError)
+    throw new Error(`Falha ao buscar épicos: ${epicsError.message}`)
+
+  const epicIdByTask = new Map(tasks.map((t) => [t.id, t.epic_id]))
+  const epicById = new Map(epics.map((e) => [e.id, e]))
+
+  const counts = new Map<string, ReviewsByEpicItem>()
+  for (const log of logs) {
+    const epicId = epicIdByTask.get(log.task_id)
+    const epic = epicId ? epicById.get(epicId) : undefined
+    const key = epic?.name ?? 'Sem épico'
+    const item = counts.get(key) ?? {
+      epicName: key,
+      count: 0,
+      color: epic?.color ?? null,
+    }
+    item.count += 1
+    counts.set(key, item)
+  }
+
+  return Array.from(counts.values()).sort((a, b) => b.count - a.count)
 }

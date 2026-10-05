@@ -1,5 +1,5 @@
 import { useSyncExternalStore } from 'react'
-import { X } from 'lucide-react'
+import { IconClose } from '@/lib/icons'
 import { dismissToast, getToasts, subscribeToasts } from '@/lib/toast'
 
 export function Toaster() {
@@ -24,7 +24,7 @@ export function Toaster() {
             onClick={() => dismissToast(toast.id)}
             className="text-(--text-muted)"
           >
-            <X size={14} />
+            <IconClose size={12} />
           </button>
         </div>
       ))}

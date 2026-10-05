@@ -1,6 +1,11 @@
 import { useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { ArrowLeft, ChevronDown, ChevronRight, Folder } from 'lucide-react'
+import {
+  IconArrowLeft,
+  IconChevronDown,
+  IconChevronRight,
+  IconFolder,
+} from '@/lib/icons'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
@@ -144,10 +149,10 @@ function CardPageBody({ task }: { task: Task }) {
           onClick={() => navigate(-1)}
           aria-label="Voltar"
         >
-          <ArrowLeft size={16} />
+          <IconArrowLeft size={16} />
         </Button>
 
-        <Folder size={32} className="shrink-0 text-[--text-muted]" />
+        <IconFolder size={24} className="shrink-0 text-[--text-muted]" />
 
         <div className="flex flex-col gap-0.5">
           {task.task_number && (
@@ -180,9 +185,9 @@ function CardPageBody({ task }: { task: Task }) {
               className="flex w-fit items-center gap-1 text-sm font-medium text-[--text-primary]"
             >
               {isDetailsOpen ? (
-                <ChevronDown size={16} />
+                <IconChevronDown size={12} />
               ) : (
-                <ChevronRight size={16} />
+                <IconChevronRight size={12} />
               )}
               Detalhes
             </button>

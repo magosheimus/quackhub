@@ -1,3 +1,4 @@
+import { IconPlus } from '@/lib/icons'
 import { useState, type ReactNode } from 'react'
 import { DragDropContext, Droppable, type DropResult } from '@hello-pangea/dnd'
 import { BoardCard, StaticBoardCard } from './BoardCard'
@@ -85,14 +86,16 @@ export function ProjectBoardView({
               size="sm"
               onClick={() => setIsCardModalOpen(true)}
             >
-              + Novo card
+              <IconPlus size={12} aria-hidden="true" />
+              Novo card
             </Button>
             <Button
               variant="outline"
               size="sm"
               onClick={() => setIsEpicModalOpen(true)}
             >
-              + Criar épico
+              <IconPlus size={12} aria-hidden="true" />
+              Criar épico
             </Button>
           </div>
         </div>

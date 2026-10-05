@@ -1,17 +1,18 @@
 import { useState, type ReactNode } from 'react'
 import { NavLink } from 'react-router-dom'
 import {
-  Columns3,
-  Folder,
-  Inbox,
-  PenLine,
-  List,
-  Pencil,
-  Settings,
-  History,
-  ChevronRight,
-  type LucideIcon,
-} from 'lucide-react'
+  IconBulletlist,
+  IconChartBar,
+  IconChevronRight,
+  IconClock,
+  IconFolder,
+  IconGrid,
+  IconInbox,
+  IconNotes,
+  IconPencil,
+  IconSettings,
+  type IconComponent,
+} from '@/lib/icons'
 import { useProjects } from '@/hooks/projects/useProjects'
 import { useDraftsItems } from '@/hooks/drafts/useDraftsItems'
 import { ProjectCreateModal } from '@/components/project/ProjectCreateModal'
@@ -38,7 +39,7 @@ function NavItem({
   children,
 }: {
   to: string
-  icon: LucideIcon
+  icon: IconComponent
   end?: boolean
   children: ReactNode
 }) {
@@ -80,7 +81,7 @@ export function Sidebar() {
       </div>
 
       <nav className="flex flex-col gap-1">
-        <NavItem to="/inbox" icon={Inbox}>
+        <NavItem to="/inbox" icon={IconInbox}>
           Inbox
           {inboxCount > 0 && (
             <span className="ml-auto text-xs text-(--text-muted)">
@@ -88,7 +89,7 @@ export function Sidebar() {
             </span>
           )}
         </NavItem>
-        <NavItem to="/rascunhos" icon={PenLine}>
+        <NavItem to="/rascunhos" icon={IconNotes}>
           Rascunhos
           {draftsCount > 0 && (
             <span className="ml-auto text-xs text-(--text-muted)">
@@ -96,14 +97,17 @@ export function Sidebar() {
             </span>
           )}
         </NavItem>
-        <NavItem to="/board" icon={Columns3}>
+        <NavItem to="/board" icon={IconGrid}>
           Sprint atual
         </NavItem>
-        <NavItem to="/backlog" icon={List}>
+        <NavItem to="/backlog" icon={IconBulletlist}>
           Backlog
         </NavItem>
-        <NavItem to="/sprints" icon={History}>
+        <NavItem to="/sprints" icon={IconClock}>
           Histórico
+        </NavItem>
+        <NavItem to="/analytics" icon={IconChartBar}>
+          Analytics
         </NavItem>
         <div className={navLinkClass({ isActive: false })}>
           <button
@@ -112,8 +116,8 @@ export function Sidebar() {
             aria-expanded={isProjectsOpen}
             className="flex flex-1 items-center gap-3 text-left"
           >
-            <ChevronRight
-              size={14}
+            <IconChevronRight
+              size={16}
               aria-hidden="true"
               className={`transition-transform ${isProjectsOpen ? 'rotate-90' : ''}`}
             />
@@ -134,7 +138,7 @@ export function Sidebar() {
                   to={`/board?project=${project.id}`}
                   className="flex flex-1 items-center gap-2 px-3 py-2 text-sm text-(--text-primary)"
                 >
-                  <Folder size={14} aria-hidden="true" />
+                  <IconFolder size={12} aria-hidden="true" />
                   {project.name}
                 </NavLink>
                 <button
@@ -143,7 +147,7 @@ export function Sidebar() {
                   className="p-2 text-(--text-muted) opacity-0 group-hover:opacity-100"
                   aria-label={`Editar projeto ${project.name}`}
                 >
-                  <Pencil size={14} />
+                  <IconPencil size={12} />
                 </button>
               </div>
             ))}
@@ -151,8 +155,8 @@ export function Sidebar() {
         )}
       </nav>
 
-      <div className="mt-auto flex flex-col gap-1 border-t border-border pt-4">
-        <NavItem to="/configuracoes" icon={Settings}>
+      <div className="mt-auto flex flex-col gap-1 pt-4">
+        <NavItem to="/configuracoes" icon={IconSettings}>
           Configurações
         </NavItem>
       </div>

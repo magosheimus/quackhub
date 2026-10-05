@@ -1,19 +1,21 @@
 import { Droppable } from '@hello-pangea/dnd'
-import { COLUMN_LABELS, type TaskStatus } from '@/lib/board'
+import { type BoardColumnKey } from '@/lib/board'
 import { BoardCard } from './BoardCard'
 import type { Database } from '@/types/database.types'
-import { Layers } from 'lucide-react'
+import { IconLayout } from '@/lib/icons'
 
 type Task = Database['public']['Tables']['tasks']['Row']
 
 type BoardColumnProps = {
-  status: TaskStatus
+  column: BoardColumnKey
+  label: string
   tasks: Task[]
   projectPrefixById: Map<string, string>
 }
 
 export function BoardColumn({
-  status,
+  column,
+  label,
   tasks,
   projectPrefixById,
 }: BoardColumnProps) {
@@ -21,12 +23,14 @@ export function BoardColumn({
     <div className="flex flex-1 min-w-0 flex-col gap-2">
       <div className="flex items-center justify-between px-1">
         <span className="font-heading text-xl text-[--text-primary]">
-          {COLUMN_LABELS[status]}
+          {label}
         </span>
-        <span className="text-xs text-[--text-muted]">{tasks.length}</span>
+        <span className="flex size-6 items-center justify-center rounded-md border border-border text-xs text-(--text-muted)">
+          {tasks.length}
+        </span>
       </div>
 
-      <Droppable droppableId={status}>
+      <Droppable droppableId={column}>
         {(provided) => (
           <div
             ref={provided.innerRef}
@@ -35,7 +39,7 @@ export function BoardColumn({
           >
             {tasks.length === 0 && (
               <div className="flex h-21 flex-col items-center justify-center gap-1 rounded-md border border-(--bg-surface) bg-(--bg-page) px-2 text-xs text-(--text-muted)">
-                <Layers size={18} aria-hidden="true" />
+                <IconLayout size={24} aria-hidden="true" />
                 <span className="whitespace-nowrap">— vazio —</span>
               </div>
             )}
