@@ -34,6 +34,7 @@ export function useRegisterPerformance() {
           queryKey: ['tasks', 'sprint', sprintId],
         })
       }
+      queryClient.invalidateQueries({ queryKey: ['analytics'] })
     },
     onError: (error) => {
       console.error(error.message)

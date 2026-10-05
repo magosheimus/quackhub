@@ -10,7 +10,6 @@ import { TokenPreview } from './dev/TokenPreview'
 import { BoardView } from './components/board/BoardView'
 import { BacklogView } from './components/backlog/BacklogView'
 import { SprintHistoryView } from './components/sprint/SprintHistoryView'
-import { SprintDetailView } from './components/sprint/SprintDetailView'
 import { CardPage } from './components/card/CardPage'
 import { InboxView } from './components/inbox/InboxView'
 import { DraftsView } from './components/drafts/DraftsView'
@@ -39,7 +38,6 @@ function App() {
           <Route path="/analytics" element={<AnalyticsView />} />
           <Route path="/debug-tokens" element={<TokenPreview />} />
           <Route path="/sprints" element={<SprintHistoryView />} />
-          <Route path="/sprints/:id" element={<SprintDetailView />} />
           <Route path="/cards/:id" element={<CardPage />} />
         </Route>
       </Routes>

@@ -1,3 +1,4 @@
+import { IconPlus, IconClose } from '@/lib/icons'
 import { useState } from 'react'
 import {
   DragDropContext,
@@ -8,7 +9,6 @@ import {
 import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { X } from 'lucide-react'
 import { useChecklistItems } from '@/hooks/tasks/checklist/useChecklistItems'
 import { useCreateChecklistItem } from '@/hooks/tasks/checklist/useCreateChecklistItem'
 import { useUpdateChecklistItem } from '@/hooks/tasks/checklist/useUpdateChecklistItem'
@@ -92,7 +92,7 @@ export function CardChecklist({ taskId }: CardChecklistProps) {
                         onClick={() => deleteItem({ id: item.id, taskId })}
                         aria-label={`Remover "${item.content}"`}
                       >
-                        <X size={14} className="text-[--text-muted]" />
+                        <IconClose size={12} className="text-[--text-muted]" />
                       </button>
                     </div>
                   )}
@@ -113,7 +113,7 @@ export function CardChecklist({ taskId }: CardChecklistProps) {
           aria-label="Novo item do checklist"
         />
         <Button variant="outline" size="sm" onClick={handleAdd}>
-          +
+          <IconPlus size={12} aria-hidden="true" />
         </Button>
       </div>
     </div>

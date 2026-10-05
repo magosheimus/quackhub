@@ -24,8 +24,7 @@ export async function registerPerformance(
   const nextReview = addDaysToToday(newInterval)
 
   await updateTask(taskId, {
-    status: 'scheduled',
-    sprint_id: null,
+    sprint_id: task.sprint_id,
     ease_factor: newEF,
     interval: newInterval,
     next_review: nextReview,
@@ -35,6 +34,7 @@ export async function registerPerformance(
     .from('srs_logs')
     .insert({
       task_id: taskId,
+      sprint_id: task.sprint_id,
       log_type: 'srs',
       session_date: todayLocal(),
       nota,

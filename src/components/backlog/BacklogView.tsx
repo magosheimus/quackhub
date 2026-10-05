@@ -1,3 +1,4 @@
+import { IconPlus, IconBulletlist, IconChevronRight } from '@/lib/icons'
 import { useSearchParams } from 'react-router-dom'
 import {
   Select,
@@ -22,10 +23,10 @@ import type { ProjectType } from '@/lib/project'
 import { useSprints } from '@/hooks/sprints/useSprints'
 import { AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
-import { LoadingText } from '../ui/loading-text'
+import { LoadingText } from '@/components/ui/loading-text'
 import { Button } from '@/components/ui/button'
-import { EpicManageModal } from '../epic/EpicManageModal'
-import { ChevronRight } from 'lucide-react'
+import { EpicManageModal } from '@/components/epic/EpicManageModal'
+import { PageTitle } from '@/components/ui/page-title'
 
 const STATUS_OPTIONS: TaskStatus[] = [
   'to_study',
@@ -98,9 +99,15 @@ export function BacklogView() {
 
   return (
     <div className="flex flex-col gap-4">
+      <PageTitle
+        title="Backlog"
+        icon={IconBulletlist}
+        count={filteredTasks.length}
+      />
       <div className="flex flex-wrap gap-2">
         <Button variant="outline" onClick={() => setIsEpicModalOpen(true)}>
-          + Criar épico
+          <IconPlus size={16} aria-hidden="true" />
+          Criar épico
         </Button>
 
         {isEpicModalOpen && (
@@ -224,8 +231,8 @@ export function BacklogView() {
                   aria-expanded={!isCollapsed}
                   className="flex items-center gap-2 font-heading text-xl uppercase text-(--text-primary)"
                 >
-                  <ChevronRight
-                    size={14}
+                  <IconChevronRight
+                    size={12}
                     aria-hidden="true"
                     className={`transition-transform ${isCollapsed ? '' : 'rotate-90'}`}
                   />
@@ -251,7 +258,8 @@ export function BacklogView() {
                         )
                       }
                     >
-                      + Adicionar todos
+                      <IconPlus size={12} aria-hidden="true" />
+                      Adicionar todos
                     </Button>
                   )}
                 </div>

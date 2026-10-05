@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Input } from '@/components/ui/input'
-import { X } from 'lucide-react'
+import { IconClose } from '@/lib/icons'
 import { useDependencies } from '@/hooks/tasks/dependencies/useDependencies'
 import { useAddDependency } from '@/hooks/tasks/dependencies/useAddDependency'
 import { useRemoveDependency } from '@/hooks/tasks/dependencies/useRemoveDependency'
@@ -37,7 +37,7 @@ export function CardDependencies({ taskId, projectId }: CardDependenciesProps) {
           {dependencies.map((dep) => (
             <div
               key={dep.id}
-              className="flex items-center justify-between gap-2 rounded-(--radius-md) border border-(--border) p-2 text-sm"
+              className="flex items-center justify-between gap-2 rounded-(--radius-md) border border-border p-2 text-sm"
             >
               <span
                 className={
@@ -55,7 +55,7 @@ export function CardDependencies({ taskId, projectId }: CardDependenciesProps) {
                 }
                 aria-label={`Remover dependência de "${dep.title}"`}
               >
-                <X size={14} className="text-[--text-muted]" />
+                <IconClose size={12} className="text-[--text-muted]" />
               </button>
             </div>
           ))}
@@ -79,7 +79,7 @@ export function CardDependencies({ taskId, projectId }: CardDependenciesProps) {
                 addDependency({ taskId, dependsOnTaskId: candidate.id })
                 setSearch('')
               }}
-              className="rounded-(--radius-md) border border-(--border) p-2 text-left text-sm text-[--text-primary]"
+              className="rounded-(--radius-md) border border-border p-2 text-left text-sm text-[--text-primary]"
             >
               {candidate.title}
             </button>

@@ -1,6 +1,6 @@
+import { IconPlus, IconFlag } from '@/lib/icons'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { Flag } from 'lucide-react'
 import { PRIORITY_CONFIG, COLUMN_LABELS, type TaskPriority } from '@/lib/board'
 import type { Database } from '@/types/database.types'
 import { Button } from '@/components/ui/button'
@@ -39,17 +39,19 @@ export function BacklogRow({
       >
         <div className="flex w-4 shrink-0 flex-col items-center gap-1">
           {task.flagged && (
-            <Flag
-              size={14}
+            <IconFlag
+              size={12}
               className="text-[--signal-danger]"
               aria-label="Urgente"
             />
           )}
-          <PriorityIcon
-            size={14}
-            className={priority.className}
-            aria-label={priority.ariaLabel}
-          />
+          <span title={priority.ariaLabel} className="inline-flex">
+            <PriorityIcon
+              size={12}
+              className={priority.className}
+              aria-label={priority.ariaLabel}
+            />
+          </span>
         </div>
 
         <div className="flex flex-1 flex-col gap-0.5">
@@ -76,7 +78,8 @@ export function BacklogRow({
 
         {onAddToSprint && (
           <Button variant="outline" size="sm" onClick={onAddToSprint}>
-            + Adicionar à Sprint
+            <IconPlus size={12} aria-hidden="true" />
+            Adicionar à Sprint
           </Button>
         )}
       </div>

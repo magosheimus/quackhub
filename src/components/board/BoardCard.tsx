@@ -1,6 +1,6 @@
 import { Draggable } from '@hello-pangea/dnd'
 import { Link } from 'react-router-dom'
-import { Flag } from 'lucide-react'
+import { IconFlag } from '@/lib/icons'
 import {
   COLUMN_LABELS,
   PRIORITY_CONFIG,
@@ -13,7 +13,7 @@ import type { ReactNode } from 'react'
 type Task = Database['public']['Tables']['tasks']['Row']
 
 const CARD_CLASS =
-  'flex gap-2 rounded-(--radius-md) border border-l-4 border-(--border) bg-(--bg-card) p-3 text-sm'
+  'flex gap-2 rounded-md border border-l-4 border-border bg-(--bg-card) p-3 text-sm hover:bg-(--bg-card-hover)'
 
 function getBorderStyle(task: Task) {
   const priority = PRIORITY_CONFIG[task.priority as TaskPriority]
@@ -39,17 +39,19 @@ function BoardCardBody({
     <>
       <div className="flex w-4 shrink-0 flex-col items-center gap-1 pt-0.5">
         {task.flagged && (
-          <Flag
-            size={14}
+          <IconFlag
+            size={12}
             className="text-(--signal-danger)"
             aria-label="Urgente"
           />
         )}
-        <PriorityIcon
-          size={14}
-          className={priority.className}
-          aria-label={priority.ariaLabel}
-        />
+        <span title={priority.ariaLabel} className="inline-flex">
+          <PriorityIcon
+            size={12}
+            className={priority.className}
+            aria-label={priority.ariaLabel}
+          />
+        </span>
       </div>
 
       <div className="flex flex-col gap-1">

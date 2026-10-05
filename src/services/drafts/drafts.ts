@@ -68,3 +68,14 @@ export async function triageItem(
   if (error) throw new Error(`Falha ao triar item: ${error.message}`)
   return data
 }
+
+export async function updateDraftContent(
+  id: string,
+  content: string,
+): Promise<void> {
+  const { error } = await supabase
+    .from('drafts_items')
+    .update({ content })
+    .eq('id', id)
+  if (error) throw new Error(`Falha ao editar rascunho: ${error.message}`)
+}

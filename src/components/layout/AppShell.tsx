@@ -3,6 +3,7 @@ import { Sidebar } from './Sidebar'
 import { syncDraftsQueue } from '@/services/drafts/drafts'
 import { useOnlineStatus } from '@/hooks/network/useOnlineStatus'
 import { Toaster } from '../ui/toaster'
+import { CartuchoPicker } from '../settings/CartuchoPicker'
 
 interface AppShellProps {
   children: ReactNode
@@ -25,6 +26,9 @@ export function AppShell({ children }: AppShellProps) {
         )}
         {children}
       </main>
+      <div className="fixed right-4 bottom-4 z-40">
+        <CartuchoPicker />
+      </div>
       <Toaster />
     </div>
   )
