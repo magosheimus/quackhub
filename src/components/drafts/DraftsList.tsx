@@ -2,7 +2,12 @@ import { useEffect, useRef, useState } from 'react'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { IconCard, IconNotes, IconPencil, IconTrash } from '@/lib/icons'
+import {
+  IconNotes,
+  IconPencil,
+  IconStickyNoteSharp,
+  IconTrash,
+} from '@/lib/icons'
 import { useDraftsItems } from '@/hooks/drafts/useDraftsItems'
 import { useTriageDraft } from '@/hooks/drafts/useTriageDraft'
 import { useUpdateDraft } from '@/hooks/drafts/useUpdateDraft'
@@ -180,7 +185,7 @@ export function DraftsList() {
             aria-label="Transformar em card"
             className="size-8 rounded-full p-0 hover:bg-(--bg-surface)! hover:text-(--text-primary)!"
           >
-            <IconCard size={16} />
+            <IconStickyNoteSharp size={16} />
           </Button>
         </div>
       ))}
