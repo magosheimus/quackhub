@@ -1,10 +1,8 @@
 import { Droppable } from '@hello-pangea/dnd'
 import { type BoardColumnKey } from '@/lib/board'
 import { BoardCard } from './BoardCard'
-import type { Database } from '@/types/database.types'
 import { IconLayout } from '@/lib/icons'
-
-type Task = Database['public']['Tables']['tasks']['Row']
+import type { Task } from '@/types/entities'
 
 type BoardColumnProps = {
   column: BoardColumnKey

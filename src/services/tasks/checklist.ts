@@ -1,11 +1,9 @@
 import { supabase } from '@/lib/supabase'
-import type { Database } from '@/types/database.types'
-
-type ChecklistItem = Database['public']['Tables']['task_checklist_items']['Row']
-type NewChecklistItem =
-  Database['public']['Tables']['task_checklist_items']['Insert']
-type ChecklistItemUpdate =
-  Database['public']['Tables']['task_checklist_items']['Update']
+import type {
+  ChecklistItem,
+  ChecklistItemUpdate,
+  NewChecklistItem,
+} from '@/types/entities'
 
 export async function getChecklistItems(
   taskId: string,

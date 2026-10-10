@@ -13,12 +13,7 @@ import {
   STATUS_BADGE_CLASS,
   type TaskPriority,
 } from '@/lib/board'
-import type { Database } from '@/types/database.types'
-
-type Task = Database['public']['Tables']['tasks']['Row']
-type TaskUpdate = Database['public']['Tables']['tasks']['Update']
-type Epic = Database['public']['Tables']['epics']['Row']
-type Sprint = Database['public']['Tables']['sprints']['Row']
+import type { Epic, Sprint, Task, TaskUpdate } from '@/types/entities'
 
 const PRIORITY_OPTIONS: TaskPriority[] = ['alta', 'média', 'baixa']
 const NONE_EPIC = '__none__'

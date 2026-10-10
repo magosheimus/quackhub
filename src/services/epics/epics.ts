@@ -1,9 +1,5 @@
 import { supabase } from '@/lib/supabase'
-import type { Database } from '@/types/database.types'
-
-type Epic = Database['public']['Tables']['epics']['Row']
-type NewEpic = Database['public']['Tables']['epics']['Insert']
-type EpicUpdate = Database['public']['Tables']['epics']['Update']
+import type { Epic, EpicUpdate, NewEpic } from '@/types/entities'
 
 export async function getEpicsByProject(projectId: string): Promise<Epic[]> {
   const { data, error } = await supabase

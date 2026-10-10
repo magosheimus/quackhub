@@ -1,6 +1,4 @@
-import type { Database } from '@/types/database.types'
-
-type DraftsItem = Database['public']['Tables']['drafts_items']['Row']
+import type { DraftsItem } from '@/types/entities'
 
 const QUEUE_KEY = 'quackhub-drafts-queue'
 

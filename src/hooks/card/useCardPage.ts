@@ -9,9 +9,7 @@ import { useAddTaskTag } from '@/hooks/tasks/tags/useAddTaskTag'
 import { useRemoveTaskTag } from '@/hooks/tasks/tags/useRemoveTaskTag'
 import { useProjectTags } from '@/hooks/tasks/tags/useProjectTags'
 import type { RecurrenceValue } from '@/components/card/RecurrenceFields'
-import type { Database } from '@/types/database.types'
-
-type Task = Database['public']['Tables']['tasks']['Row']
+import type { Task } from '@/types/entities'
 
 export function useCardPage(task: Task) {
   const [title, setTitle] = useState(task.title)

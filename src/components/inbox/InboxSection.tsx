@@ -2,10 +2,7 @@ import { IconBookOpen } from '@/lib/icons'
 import { Button } from '@/components/ui/button'
 import { StaticBoardCard } from '@/components/board/BoardCard'
 import { todayLocal } from '@/lib/srs'
-import type { Database } from '@/types/database.types'
-
-type Task = Database['public']['Tables']['tasks']['Row']
-type Project = Database['public']['Tables']['projects']['Row']
+import type { Project, Task } from '@/types/entities'
 
 const SRS_ELIGIBLE_STATUSES = ['studying', 'to_review', 'scheduled']
 

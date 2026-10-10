@@ -2,10 +2,8 @@ import { IconPlus, IconFlag } from '@/lib/icons'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { PRIORITY_CONFIG, COLUMN_LABELS, type TaskPriority } from '@/lib/board'
-import type { Database } from '@/types/database.types'
 import { Button } from '@/components/ui/button'
-
-type Task = Database['public']['Tables']['tasks']['Row']
+import type { Task } from '@/types/entities'
 
 type BacklogRowProps = {
   task: Task

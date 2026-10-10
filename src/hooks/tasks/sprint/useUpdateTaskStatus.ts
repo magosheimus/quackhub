@@ -1,11 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { updateTaskStatus } from '@/services/tasks/tasks'
 import type { TaskStatus } from '@/lib/board'
-import type { Database } from '@/types/database.types'
 import { invalidateTaskQueries } from '@/lib/queryInvalidation'
 import { queryKeys } from '@/lib/queryKeys'
-
-type Task = Database['public']['Tables']['tasks']['Row']
+import type { Task } from '@/types/entities'
 
 type UpdateTaskStatusVars = {
   id: string

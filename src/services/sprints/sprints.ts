@@ -1,5 +1,5 @@
 import { supabase } from '@/lib/supabase'
-import type { Database, Json } from '@/types/database.types'
+import type { Json } from '@/types/database.types'
 import { getTasksBySprintId, updateTaskSprint } from '@/services/tasks/tasks'
 import { getProjects } from '@/services/projects/projects'
 import {
@@ -13,10 +13,7 @@ import {
   getCompletionByProject,
   getConfidenceDistribution,
 } from '@/services/analytics/analytics'
-
-type Sprint = Database['public']['Tables']['sprints']['Row']
-type NewSprint = Database['public']['Tables']['sprints']['Insert']
-type SprintUpdate = Database['public']['Tables']['sprints']['Update']
+import type { NewSprint, Sprint, SprintUpdate } from '@/types/entities'
 
 export async function getSprints(): Promise<Sprint[]> {
   const { data, error } = await supabase

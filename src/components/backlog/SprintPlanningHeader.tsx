@@ -1,8 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { useStartSprint } from '@/hooks/sprints/useStartSprint'
-import type { Database } from '@/types/database.types'
-
-type Sprint = Database['public']['Tables']['sprints']['Row']
+import type { Sprint } from '@/types/entities'
 
 type SprintPlanningHeaderProps = {
   sprint: Sprint

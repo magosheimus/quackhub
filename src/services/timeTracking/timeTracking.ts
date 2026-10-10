@@ -1,7 +1,5 @@
 import { supabase } from '@/lib/supabase'
-import type { Database } from '@/types/database.types'
-
-type TimeEntry = Database['public']['Tables']['time_entries']['Row']
+import type { TimeEntry } from '@/types/entities'
 
 export async function startTimer(taskId: string): Promise<TimeEntry> {
   const { data, error } = await supabase

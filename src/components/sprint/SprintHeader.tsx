@@ -1,13 +1,10 @@
 import { Button } from '@/components/ui/button'
 import { useStartSprint } from '@/hooks/sprints/useStartSprint'
 import { SprintCreateModal } from './SprintCreateModal'
-import type { Database } from '@/types/database.types'
 import { SprintCloseModal } from './SprintCloseModal'
 import { useSprints } from '@/hooks/sprints/useSprints'
 import { SegmentedProgress } from '@/components/ui/segmented-progress'
-
-type Sprint = Database['public']['Tables']['sprints']['Row']
-type Task = Database['public']['Tables']['tasks']['Row']
+import type { Sprint, Task } from '@/types/entities'
 
 function formatShortDate(date: string | null): string {
   if (!date) return '?'

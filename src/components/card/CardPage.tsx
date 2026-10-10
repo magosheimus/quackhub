@@ -9,12 +9,10 @@ import { CardDependencies } from './CardDependencies'
 import { CardAttachments } from './CardAttachments'
 import { CardHistory } from './CardHistory'
 import { type TaskPriority } from '@/lib/board'
-import type { Database } from '@/types/database.types'
 import { RegisterPerformanceModal } from '@/components/srs/RegisterPerformanceModal'
 import { LoadingText } from '../ui/loading-text'
 import { CardDescription } from './page/CardDescription'
-
-type Task = Database['public']['Tables']['tasks']['Row']
+import type { Task } from '@/types/entities'
 
 export function CardPage() {
   const { id } = useParams<{ id: string }>()

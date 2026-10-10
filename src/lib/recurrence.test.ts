@@ -1,8 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { calculateNextDueDate, buildRecurrentCard } from './recurrence'
-import type { Database } from '@/types/database.types'
-
-type Task = Database['public']['Tables']['tasks']['Row']
+import type { Task } from '@/types/entities'
 
 function makeTask(overrides: Partial<Task>): Task {
   return {

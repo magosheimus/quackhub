@@ -1,9 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { updateProject } from '@/services/projects/projects'
-import type { Database } from '@/types/database.types'
 import { queryKeys } from '@/lib/queryKeys'
-
-type ProjectUpdate = Database['public']['Tables']['projects']['Update']
+import type { ProjectUpdate } from '@/types/entities'
 
 export function useUpdateProject() {
   const queryClient = useQueryClient()

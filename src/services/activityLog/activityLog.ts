@@ -1,7 +1,5 @@
 import { supabase } from '@/lib/supabase'
-import type { Database } from '@/types/database.types'
-
-type ActivityLog = Database['public']['Tables']['task_activity_log']['Row']
+import type { ActivityLog } from '@/types/entities'
 
 export async function getActivityLog(taskId: string): Promise<ActivityLog[]> {
   const { data, error } = await supabase

@@ -6,9 +6,7 @@ import {
   ResponsiveContainer,
   LabelList,
 } from 'recharts'
-import type { Database } from '@/types/database.types'
-
-type Sprint = Database['public']['Tables']['sprints']['Row']
+import type { Sprint } from '@/types/entities'
 
 type ProjectCompletion = {
   project_id: string

@@ -32,9 +32,8 @@ import { detectRecurrencePattern } from '@/lib/cardSearch'
 import { TagInput } from './TagInput'
 import { useProjectTags } from '@/hooks/tasks/tags/useProjectTags'
 import { useSprints } from '@/hooks/sprints/useSprints'
-import type { Database } from '@/types/database.types'
+import type { Task } from '@/types/entities'
 
-type Task = Database['public']['Tables']['tasks']['Row']
 const PRIORITY_OPTIONS: TaskPriority[] = ['alta', 'média', 'baixa']
 const NONE_VALUE = '__backlog__'
 

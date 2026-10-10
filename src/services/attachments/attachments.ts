@@ -1,7 +1,5 @@
 import { supabase } from '@/lib/supabase'
-import type { Database } from '@/types/database.types'
-
-type Attachment = Database['public']['Tables']['task_attachments']['Row']
+import type { Attachment } from '@/types/entities'
 
 const BUCKET = 'task-attachments'
 

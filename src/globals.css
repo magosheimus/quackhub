@@ -1,7 +1,7 @@
 /* ==========================================================================
    1. Tokens — cartucho Sage (padrão)
    ========================================================================== */
-:root, 
+:root,
 .cartucho-sage {
   /* Raízes do cartucho */
   --lcd-screen: #c8cba4;
@@ -14,7 +14,7 @@
   --bg-card-hover: #f0f1e3;
   --bg-selected: #c5d8bd;
   --bg-input: #f3f4e7;
-  
+
   --border-card-empty: var(--border);
   --bg-card-empty: color-mix(in srgb, var(--bg-page) 88%, var(--lcd-ink));
 
@@ -237,12 +237,14 @@
 .texture-grid .app-root {
   background-image:
     linear-gradient(
-      color-mix(in srgb, var(--border) var(--texture-opacity, 45%), transparent) 1px,
+      color-mix(in srgb, var(--border) var(--texture-opacity, 45%), transparent)
+        1px,
       transparent 1px
     ),
     linear-gradient(
       90deg,
-      color-mix(in srgb, var(--border) var(--texture-opacity, 45%), transparent) 1px,
+      color-mix(in srgb, var(--border) var(--texture-opacity, 45%), transparent)
+        1px,
       transparent 1px
     );
   background-size: 24px 24px;
@@ -251,7 +253,8 @@
 .texture-dots .app-root {
   background-image: radial-gradient(
     circle,
-    color-mix(in srgb, var(--border) var(--texture-opacity, 70%), transparent) 1px,
+    color-mix(in srgb, var(--border) var(--texture-opacity, 70%), transparent)
+      1px,
     transparent 1px
   );
   background-size: 20px 20px;
@@ -323,11 +326,21 @@
 }
 
 @keyframes loading-dots {
-  0% { content: ''; }
-  25% { content: '.'; }
-  50% { content: '..'; }
-  75% { content: '...'; }
-  100% { content: '....'; }
+  0% {
+    content: '';
+  }
+  25% {
+    content: '.';
+  }
+  50% {
+    content: '..';
+  }
+  75% {
+    content: '...';
+  }
+  100% {
+    content: '....';
+  }
 }
 
 .loading-dots::after {

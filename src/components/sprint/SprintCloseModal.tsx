@@ -10,11 +10,8 @@ import {
 import { Button } from '@/components/ui/button'
 import { useCloseSprint } from '@/hooks/sprints/useCloseSprint'
 import type { CarryoverDecision } from '@/lib/sprint'
-import type { Database } from '@/types/database.types'
 import { useSprints } from '@/hooks/sprints/useSprints'
-
-type Sprint = Database['public']['Tables']['sprints']['Row']
-type Task = Database['public']['Tables']['tasks']['Row']
+import type { Sprint, Task } from '@/types/entities'
 
 type SprintCloseModalProps = {
   sprint: Sprint

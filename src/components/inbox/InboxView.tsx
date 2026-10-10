@@ -7,19 +7,17 @@ import { useActiveSprint } from '@/hooks/sprints/useActiveSprint'
 import { useProjects } from '@/hooks/projects/useProjects'
 import { InboxSection } from './InboxSection'
 import { RegisterPerformanceModal } from '@/components/srs/RegisterPerformanceModal'
-import type { Database } from '@/types/database.types'
 import { LoadingText } from '../ui/loading-text'
 import { Link } from 'react-router-dom'
 import { buttonVariants } from '@/components/ui/button'
 import { PageTitle } from '@/components/ui/page-title'
+import type { Task } from '@/types/entities'
 
 function formatShortDate(date: string | null): string {
   if (!date) return '?'
   const [, month, day] = date.split('-')
   return `${day}/${month}`
 }
-
-type Task = Database['public']['Tables']['tasks']['Row']
 
 export function InboxView() {
   const { data: inbox, isLoading } = useInboxItems()

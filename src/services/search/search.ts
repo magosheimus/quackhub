@@ -1,7 +1,5 @@
 import { supabase } from '@/lib/supabase'
-import type { Database } from '@/types/database.types'
-
-type Task = Database['public']['Tables']['tasks']['Row']
+import type { Task } from '@/types/entities'
 
 export async function searchTasks(query: string): Promise<Task[]> {
   const trimmed = query.trim()
