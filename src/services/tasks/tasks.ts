@@ -1,7 +1,6 @@
 import { supabase } from '@/lib/supabase'
-import type { TaskStatus } from '@/lib/board'
 import { calculateNextDueDate, buildRecurrentCard } from '@/lib/recurrence'
-import type { NewTask, Task, TaskUpdate } from '@/types/entities'
+import type { NewTask, Task, TaskStatus, TaskUpdate } from '@/types/entities'
 
 export async function createTask(data: NewTask): Promise<Task> {
   const { data: task, error } = await supabase

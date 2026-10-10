@@ -1,6 +1,6 @@
 import { supabase } from '@/lib/supabase'
 import { enqueue, getQueue, clearQueue } from '@/lib/draftsQueue'
-import type { DraftsItem } from '@/types/entities'
+import type { DraftsItem, DraftTriageTarget } from '@/types/entities'
 
 export async function captureItem(content: string): Promise<DraftsItem | null> {
   const item: DraftsItem = {
@@ -51,7 +51,7 @@ export async function getDraftsItems(): Promise<DraftsItem[]> {
 
 export async function triageItem(
   id: string,
-  decision: { triaged_to: string; triaged_task_id?: string | null },
+  decision: { triaged_to: DraftTriageTarget; triaged_task_id?: string | null },
 ): Promise<DraftsItem> {
   const { data, error } = await supabase
     .from('drafts_items')

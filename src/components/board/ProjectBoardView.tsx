@@ -12,7 +12,6 @@ import {
   sortByStatusOrder,
   type ProjectBucket,
 } from '@/lib/projectBoard'
-import type { ProjectType } from '@/lib/project'
 import type { Project, Task } from '@/types/entities'
 
 type ProjectBoardViewProps = {
@@ -33,7 +32,7 @@ export function ProjectBoardView({
   const { mutate: addTaskToSprint } = useAddTaskToSprint()
   const [isCardModalOpen, setIsCardModalOpen] = useState(false)
   const [isEpicModalOpen, setIsEpicModalOpen] = useState(false)
-  const projectType = project.type as ProjectType
+  const projectType = project.type
 
   const buckets: Record<ProjectBucket, Task[]> = {
     sprint: [],

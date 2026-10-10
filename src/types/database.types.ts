@@ -21,7 +21,7 @@ export type Database = {
           id: string
           triaged_at: string | null
           triaged_task_id: string | null
-          triaged_to: string | null
+          triaged_to: Database['public']['Enums']['draft_triage_target'] | null
         }
         Insert: {
           content: string
@@ -29,7 +29,7 @@ export type Database = {
           id?: string
           triaged_at?: string | null
           triaged_task_id?: string | null
-          triaged_to?: string | null
+          triaged_to?: Database['public']['Enums']['draft_triage_target'] | null
         }
         Update: {
           content?: string
@@ -37,7 +37,7 @@ export type Database = {
           id?: string
           triaged_at?: string | null
           triaged_task_id?: string | null
-          triaged_to?: string | null
+          triaged_to?: Database['public']['Enums']['draft_triage_target'] | null
         }
         Relationships: [
           {
@@ -93,7 +93,7 @@ export type Database = {
           last_task_number: number
           name: string
           prefix: string | null
-          type: string
+          type: Database['public']['Enums']['project_type']
         }
         Insert: {
           color?: string | null
@@ -103,7 +103,7 @@ export type Database = {
           last_task_number?: number
           name: string
           prefix?: string | null
-          type: string
+          type: Database['public']['Enums']['project_type']
         }
         Update: {
           color?: string | null
@@ -113,7 +113,7 @@ export type Database = {
           last_task_number?: number
           name?: string
           prefix?: string | null
-          type?: string
+          type?: Database['public']['Enums']['project_type']
         }
         Relationships: []
       }
@@ -132,7 +132,7 @@ export type Database = {
           id: string
           name: string
           start_date: string | null
-          status: string
+          status: Database['public']['Enums']['sprint_status']
           total_tasks: number | null
         }
         Insert: {
@@ -149,7 +149,7 @@ export type Database = {
           id?: string
           name: string
           start_date?: string | null
-          status?: string
+          status?: Database['public']['Enums']['sprint_status']
           total_tasks?: number | null
         }
         Update: {
@@ -166,7 +166,7 @@ export type Database = {
           id?: string
           name?: string
           start_date?: string | null
-          status?: string
+          status?: Database['public']['Enums']['sprint_status']
           total_tasks?: number | null
         }
         Relationships: []
@@ -177,7 +177,7 @@ export type Database = {
           confianca: number | null
           created_at: string | null
           id: string
-          log_type: string
+          log_type: Database['public']['Enums']['srs_log_type']
           new_ef: number | null
           new_interval: number | null
           nota: number | null
@@ -191,7 +191,7 @@ export type Database = {
           confianca?: number | null
           created_at?: string | null
           id?: string
-          log_type?: string
+          log_type?: Database['public']['Enums']['srs_log_type']
           new_ef?: number | null
           new_interval?: number | null
           nota?: number | null
@@ -205,7 +205,7 @@ export type Database = {
           confianca?: number | null
           created_at?: string | null
           id?: string
-          log_type?: string
+          log_type?: Database['public']['Enums']['srs_log_type']
           new_ef?: number | null
           new_interval?: number | null
           nota?: number | null
@@ -234,7 +234,7 @@ export type Database = {
       task_activity_log: {
         Row: {
           created_at: string | null
-          event_type: string
+          event_type: Database['public']['Enums']['activity_event_type']
           id: string
           new_value: string | null
           old_value: string | null
@@ -242,7 +242,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string | null
-          event_type: string
+          event_type: Database['public']['Enums']['activity_event_type']
           id?: string
           new_value?: string | null
           old_value?: string | null
@@ -250,7 +250,7 @@ export type Database = {
         }
         Update: {
           created_at?: string | null
-          event_type?: string
+          event_type?: Database['public']['Enums']['activity_event_type']
           id?: string
           new_value?: string | null
           old_value?: string | null
@@ -412,16 +412,16 @@ export type Database = {
           id: string
           interval: number | null
           next_review: string | null
-          origem: string
-          priority: string
+          origin: Database['public']['Enums']['task_origin']
+          priority: Database['public']['Enums']['task_priority']
           project_id: string
           recurrence_day_of_month: number | null
           recurrence_end_date: string | null
           recurrence_interval: number | null
           recurrence_parent_id: string | null
-          recurrence_type: string | null
+          recurrence_type: Database['public']['Enums']['recurrence_type'] | null
           sprint_id: string | null
-          status: string
+          status: Database['public']['Enums']['task_status']
           task_number: number | null
           title: string
           updated_at: string
@@ -439,16 +439,17 @@ export type Database = {
           id?: string
           interval?: number | null
           next_review?: string | null
-          origem?: string
-          priority?: string
+          origin?: Database['public']['Enums']['task_origin']
+          priority?: Database['public']['Enums']['task_priority']
           project_id: string
           recurrence_day_of_month?: number | null
           recurrence_end_date?: string | null
           recurrence_interval?: number | null
           recurrence_parent_id?: string | null
-          recurrence_type?: string | null
+          recurrence_type?:
+            Database['public']['Enums']['recurrence_type'] | null
           sprint_id?: string | null
-          status?: string
+          status?: Database['public']['Enums']['task_status']
           task_number?: number | null
           title: string
           updated_at?: string
@@ -466,16 +467,17 @@ export type Database = {
           id?: string
           interval?: number | null
           next_review?: string | null
-          origem?: string
-          priority?: string
+          origin?: Database['public']['Enums']['task_origin']
+          priority?: Database['public']['Enums']['task_priority']
           project_id?: string
           recurrence_day_of_month?: number | null
           recurrence_end_date?: string | null
           recurrence_interval?: number | null
           recurrence_parent_id?: string | null
-          recurrence_type?: string | null
+          recurrence_type?:
+            Database['public']['Enums']['recurrence_type'] | null
           sprint_id?: string | null
-          status?: string
+          status?: Database['public']['Enums']['task_status']
           task_number?: number | null
           title?: string
           updated_at?: string
@@ -551,7 +553,23 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      activity_event_type: 'status_change' | 'sprint_change'
+      draft_triage_target: 'task' | 'project' | 'habit' | 'discarded' | 'done'
+      project_type: 'general' | 'study'
+      recurrence_type: 'daily' | 'weekly' | 'monthly' | 'yearly'
+      sprint_status: 'planned' | 'active' | 'closed'
+      srs_log_type: 'srs' | 'manual'
+      task_origin: 'manual' | 'inbox' | 'recurrence' | 'quackdump'
+      task_priority: 'high' | 'medium' | 'low'
+      task_status:
+        | 'to_study'
+        | 'studying'
+        | 'scheduled'
+        | 'to_review'
+        | 'todo'
+        | 'doing'
+        | 'blocked'
+        | 'done'
     }
     CompositeTypes: {
       [_ in never]: never
@@ -675,6 +693,25 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      activity_event_type: ['status_change', 'sprint_change'],
+      draft_triage_target: ['task', 'project', 'habit', 'discarded', 'done'],
+      project_type: ['general', 'study'],
+      recurrence_type: ['daily', 'weekly', 'monthly', 'yearly'],
+      sprint_status: ['planned', 'active', 'closed'],
+      srs_log_type: ['srs', 'manual'],
+      task_origin: ['manual', 'inbox', 'recurrence', 'quackdump'],
+      task_priority: ['high', 'medium', 'low'],
+      task_status: [
+        'to_study',
+        'studying',
+        'scheduled',
+        'to_review',
+        'todo',
+        'doing',
+        'blocked',
+        'done',
+      ],
+    },
   },
 } as const

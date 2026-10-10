@@ -17,12 +17,9 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { useUpdateProject } from '@/hooks/projects/useUpdateProject'
 import { useSoftDeleteProject } from '@/hooks/projects/useSoftDeleteProject'
-import {
-  PROJECT_COLORS,
-  type ProjectColor,
-  type ProjectType,
-} from '@/lib/project'
-import type { Project } from '@/types/entities'
+import { PROJECT_COLORS, type ProjectColor } from '@/lib/project'
+import { isProjectType } from '@/lib/enums'
+import type { Project, ProjectType } from '@/types/entities'
 
 type ProjectEditModalProps = {
   project: Project | null
@@ -60,7 +57,7 @@ type ProjectEditFormProps = {
 function ProjectEditForm({ project, onClose }: ProjectEditFormProps) {
   const [name, setName] = useState(project.name)
   const [prefix, setPrefix] = useState(project.prefix ?? '')
-  const [type, setType] = useState<ProjectType>(project.type as ProjectType)
+  const [type, setType] = useState<ProjectType>(project.type)
   const [color, setColor] = useState<ProjectColor>(
     (project.color as ProjectColor) ?? PROJECT_COLORS[0],
   )
@@ -130,7 +127,14 @@ function ProjectEditForm({ project, onClose }: ProjectEditFormProps) {
           >
             Tipo
           </span>
-          <Select value={type} onValueChange={(v) => setType(v as ProjectType)}>
+          <Select
+            value={type}
+            onValueChange={(v) => {
+              if (isProjectType(v)) {
+                setType(v)
+              }
+            }}
+          >
             <SelectTrigger aria-labelledby="project-edit-type-label">
               <SelectValue>
                 {type === 'general' ? 'Geral' : 'Estudo'}

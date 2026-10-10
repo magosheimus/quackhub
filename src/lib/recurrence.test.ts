@@ -11,7 +11,7 @@ function makeTask(overrides: Partial<Task>): Task {
     title: 'Pagar aluguel',
     description: null,
     status: 'done',
-    priority: 'média',
+    priority: 'medium',
     flagged: false,
     flag_note: null,
     due_date: null,
@@ -20,7 +20,7 @@ function makeTask(overrides: Partial<Task>): Task {
     recurrence_day_of_month: null,
     recurrence_end_date: null,
     recurrence_parent_id: null,
-    origem: 'manual',
+    origin: 'manual',
     interval: null,
     ease_factor: null,
     next_review: null,
@@ -109,7 +109,7 @@ describe('calculateNextDueDate', () => {
 })
 
 describe('buildRecurrentCard', () => {
-  it('clona os campos relevantes e reseta origem/sprint/status', () => {
+  it('clona os campos relevantes e reseta origin/sprint/status', () => {
     const original = makeTask({
       id: 'task-original',
       title: 'Pagar aluguel',
@@ -119,7 +119,7 @@ describe('buildRecurrentCard', () => {
       status: 'done',
       sprint_id: 'sprint-1',
       flagged: true,
-      origem: 'manual',
+      origin: 'manual',
     })
     const nextDue = new Date(2026, 1, 5)
 
@@ -129,7 +129,7 @@ describe('buildRecurrentCard', () => {
     expect(result.due_date).toBe('2026-02-05')
     expect(result.status).toBe('todo')
     expect(result.sprint_id).toBeNull()
-    expect(result.origem).toBe('recurrence')
+    expect(result.origin).toBe('recurrence')
     expect(result.recurrence_parent_id).toBe('task-original')
     expect(result.flagged).toBe(false)
   })

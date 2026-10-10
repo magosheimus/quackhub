@@ -9,7 +9,8 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "prepare": "husky",
-    "test": "vitest"
+    "test": "vitest",
+    "db:types": "set -a && . ./.env.local && set +a && supabase gen types typescript --project-id ${SUPABASE_PROJECT_ID:?defina SUPABASE_PROJECT_ID no .env.local} --schema public > src/types/database.types.ts && prettier --write src/types/database.types.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.8.0",

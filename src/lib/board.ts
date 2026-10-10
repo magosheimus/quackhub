@@ -1,7 +1,11 @@
-import type { ProjectType } from '@/lib/project'
 import type { IconComponent } from '@/lib/icons'
 import { IconArrowBigDown, IconArrowBigUp, IconChevronUp } from '@/lib/icons'
-import type { Task } from '@/types/entities'
+import type {
+  ProjectType,
+  Task,
+  TaskPriority,
+  TaskStatus,
+} from '@/types/entities'
 
 export const COLUMNS_GENERAL = ['todo', 'blocked', 'doing', 'done']
 export const COLUMNS_STUDY = [
@@ -113,18 +117,6 @@ export function getColumnsForType(type: ProjectType | null): string[] {
   return columns[type]
 }
 
-export type TaskStatus =
-  | 'to_study'
-  | 'studying'
-  | 'scheduled'
-  | 'to_review'
-  | 'todo'
-  | 'doing'
-  | 'blocked'
-  | 'done'
-
-export type TaskPriority = 'alta' | 'média' | 'baixa'
-
 export const PRIORITY_CONFIG: Record<
   TaskPriority,
   {
@@ -135,21 +127,21 @@ export const PRIORITY_CONFIG: Record<
     colorVar: string
   }
 > = {
-  alta: {
+  high: {
     icon: IconArrowBigUp,
     ariaLabel: 'Prioridade alta',
     text: 'ALTA',
     className: 'text-(--signal-danger)',
     colorVar: '--signal-danger',
   },
-  média: {
+  medium: {
     icon: IconChevronUp,
     ariaLabel: 'Prioridade média',
     text: 'MÉDIA',
     className: 'text-(--text-muted)',
     colorVar: '--text-muted',
   },
-  baixa: {
+  low: {
     icon: IconArrowBigDown,
     ariaLabel: 'Prioridade baixa',
     text: 'BAIXA',

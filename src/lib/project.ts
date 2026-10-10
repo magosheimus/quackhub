@@ -8,4 +8,3 @@ export const PROJECT_COLORS = [
 ] as const
 
 export type ProjectColor = (typeof PROJECT_COLORS)[number]
-export type ProjectType = 'general' | 'study'

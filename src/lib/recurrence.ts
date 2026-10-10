@@ -78,7 +78,7 @@ export function buildRecurrentCard(original: Task, nextDue: Date): NewTask {
     recurrence_day_of_month: original.recurrence_day_of_month,
     recurrence_end_date: original.recurrence_end_date,
     recurrence_parent_id: original.id,
-    origem: 'recurrence',
+    origin: 'recurrence',
     sprint_id: null,
     flagged: false,
   }

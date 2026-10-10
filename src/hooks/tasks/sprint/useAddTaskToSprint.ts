@@ -1,9 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { addTaskToSprint } from '@/services/tasks/tasks'
-import type { TaskStatus } from '@/lib/board'
 import { invalidateTaskQueries } from '@/lib/queryInvalidation'
 import { queryKeys } from '@/lib/queryKeys'
-import type { Task } from '@/types/entities'
+import type { Task, TaskStatus } from '@/types/entities'
 
 type AddTaskToSprintVars = {
   taskId: string

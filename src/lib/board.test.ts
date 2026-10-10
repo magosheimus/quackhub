@@ -11,7 +11,7 @@ function makeTask(overrides: Partial<Task>): Task {
     title: 'Tarefa',
     description: null,
     status: 'todo',
-    priority: 'média',
+    priority: 'medium',
     flagged: false,
     flag_note: null,
     due_date: null,
@@ -20,7 +20,7 @@ function makeTask(overrides: Partial<Task>): Task {
     recurrence_day_of_month: null,
     recurrence_end_date: null,
     recurrence_parent_id: null,
-    origem: 'manual',
+    origin: 'manual',
     interval: null,
     ease_factor: null,
     next_review: null,
@@ -60,12 +60,12 @@ describe('applyBoardFilters', () => {
 
   it('filtra por prioridade', () => {
     const tasks = [
-      makeTask({ id: 't1', priority: 'alta' }),
-      makeTask({ id: 't2', priority: 'baixa' }),
+      makeTask({ id: 't1', priority: 'high' }),
+      makeTask({ id: 't2', priority: 'low' }),
     ]
     const result = applyBoardFilters(
       tasks,
-      { ...DEFAULT_BOARD_FILTERS, priority: 'alta' },
+      { ...DEFAULT_BOARD_FILTERS, priority: 'high' },
       emptyTags,
       today,
     )
@@ -101,12 +101,12 @@ describe('applyBoardFilters', () => {
 
   it('combina múltiplos filtros (AND)', () => {
     const tasks = [
-      makeTask({ id: 't1', flagged: true, priority: 'alta' }),
-      makeTask({ id: 't2', flagged: true, priority: 'baixa' }),
+      makeTask({ id: 't1', flagged: true, priority: 'high' }),
+      makeTask({ id: 't2', flagged: true, priority: 'low' }),
     ]
     const result = applyBoardFilters(
       tasks,
-      { ...DEFAULT_BOARD_FILTERS, flagged: true, priority: 'alta' },
+      { ...DEFAULT_BOARD_FILTERS, flagged: true, priority: 'high' },
       emptyTags,
       today,
     )

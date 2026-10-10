@@ -1,12 +1,7 @@
 import { Draggable } from '@hello-pangea/dnd'
 import { Link } from 'react-router-dom'
 import { IconFlag } from '@/lib/icons'
-import {
-  COLUMN_LABELS,
-  PRIORITY_CONFIG,
-  STATUS_BADGE_CLASS,
-  type TaskPriority,
-} from '@/lib/board'
+import { COLUMN_LABELS, PRIORITY_CONFIG, STATUS_BADGE_CLASS } from '@/lib/board'
 import type { ReactNode } from 'react'
 import type { Task } from '@/types/entities'
 
@@ -14,7 +9,7 @@ const CARD_CLASS =
   'flex gap-2 rounded-md border border-l-4 border-border bg-(--bg-card) p-3 text-sm hover:bg-(--bg-card-hover)'
 
 function getBorderStyle(task: Task) {
-  const priority = PRIORITY_CONFIG[task.priority as TaskPriority]
+  const priority = PRIORITY_CONFIG[task.priority]
   return { borderLeftColor: `var(${priority.colorVar})` }
 }
 
@@ -29,7 +24,7 @@ function BoardCardBody({
   projectPrefixById,
   showStatus = false,
 }: BoardCardBodyProps) {
-  const priority = PRIORITY_CONFIG[task.priority as TaskPriority]
+  const priority = PRIORITY_CONFIG[task.priority]
   const PriorityIcon = priority.icon
   const projectPrefix = projectPrefixById.get(task.project_id) ?? ''
 

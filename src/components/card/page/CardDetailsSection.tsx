@@ -7,15 +7,16 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { TagInput } from '../TagInput'
-import {
-  PRIORITY_CONFIG,
-  COLUMN_LABELS,
-  STATUS_BADGE_CLASS,
-  type TaskPriority,
-} from '@/lib/board'
-import type { Epic, Sprint, Task, TaskUpdate } from '@/types/entities'
+import { PRIORITY_CONFIG, COLUMN_LABELS, STATUS_BADGE_CLASS } from '@/lib/board'
+import { isTaskPriority, TASK_PRIORITIES } from '@/lib/enums'
+import type {
+  Epic,
+  Sprint,
+  Task,
+  TaskPriority,
+  TaskUpdate,
+} from '@/types/entities'
 
-const PRIORITY_OPTIONS: TaskPriority[] = ['alta', 'média', 'baixa']
 const NONE_EPIC = '__none__'
 const NONE_SPRINT = '__none__'
 const INLINE_TRIGGER_CLASS =
@@ -129,7 +130,11 @@ export function CardDetailsSection({
             </span>
             <Select
               value={priority}
-              onValueChange={(v) => onUpdate({ priority: v as TaskPriority })}
+              onValueChange={(v) => {
+                if (isTaskPriority(v)) {
+                  onUpdate({ priority: v })
+                }
+              }}
             >
               <SelectTrigger
                 aria-labelledby="priority-label"
@@ -138,7 +143,7 @@ export function CardDetailsSection({
                 <SelectValue>{PRIORITY_CONFIG[priority].text}</SelectValue>
               </SelectTrigger>
               <SelectContent>
-                {PRIORITY_OPTIONS.map((option) => (
+                {TASK_PRIORITIES.map((option) => (
                   <SelectItem key={option} value={option}>
                     {PRIORITY_CONFIG[option].text}
                   </SelectItem>

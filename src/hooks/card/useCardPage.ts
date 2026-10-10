@@ -31,7 +31,7 @@ export function useCardPage(task: Task) {
   const { mutate: removeTaskTag } = useRemoveTaskTag()
 
   const recurrenceValue: RecurrenceValue = {
-    type: task.recurrence_type as RecurrenceValue['type'],
+    type: task.recurrence_type,
     interval: task.recurrence_interval,
     dayOfMonth: task.recurrence_day_of_month,
     endDate: task.recurrence_end_date,
