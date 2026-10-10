@@ -54,7 +54,7 @@ export function RecurrenceFields({ value, onChange }: RecurrenceFieldsProps) {
       <button
         type="button"
         onClick={() => onChange({ ...value, type: 'monthly', interval: 1 })}
-        className="text-left text-sm text-[--text-muted]"
+        className="text-left text-sm text-(--text-muted)"
       >
         [ Não recorrente ▾ ]
       </button>
@@ -66,7 +66,7 @@ export function RecurrenceFields({ value, onChange }: RecurrenceFieldsProps) {
   return (
     <div className="flex flex-col gap-2 rounded-md border border-border p-3">
       <div className="flex items-center justify-between">
-        <span className="text-xs text-[--text-muted]">Recorrência</span>
+        <span className="text-xs text-(--text-muted)">Recorrência</span>
         <button
           type="button"
           onClick={() =>
@@ -77,7 +77,7 @@ export function RecurrenceFields({ value, onChange }: RecurrenceFieldsProps) {
               endDate: null,
             })
           }
-          className="text-xs text-[--text-muted] underline"
+          className="text-xs text-(--text-muted) underline"
         >
           remover
         </button>

@@ -46,7 +46,7 @@ export function CardChecklist({ taskId }: CardChecklistProps) {
 
   return (
     <div className="flex flex-col gap-2">
-      <span className="text-sm font-medium text-[--text-primary]">
+      <span className="text-sm font-medium text-(--text-primary)">
         Checklist
       </span>
 
@@ -80,8 +80,8 @@ export function CardChecklist({ taskId }: CardChecklistProps) {
                       <span
                         className={
                           item.done
-                            ? 'flex-1 text-[--text-muted] line-through'
-                            : 'flex-1 text-[--text-primary]'
+                            ? 'flex-1 text-(--text-muted) line-through'
+                            : 'flex-1 text-(--text-primary)'
                         }
                       >
                         {item.content}
@@ -91,7 +91,7 @@ export function CardChecklist({ taskId }: CardChecklistProps) {
                         onClick={() => deleteItem({ id: item.id, taskId })}
                         aria-label={`Remover "${item.content}"`}
                       >
-                        <IconClose size={12} className="text-[--text-muted]" />
+                        <IconClose size={12} className="text-(--text-muted)" />
                       </button>
                     </div>
                   )}

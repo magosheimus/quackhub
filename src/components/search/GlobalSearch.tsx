@@ -57,7 +57,7 @@ export function GlobalSearch() {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="flex w-full items-center justify-between rounded-md border border-border px-2 py-1.5 text-left text-sm text-[--text-muted]"
+        className="flex w-full items-center justify-between rounded-md border border-border px-2 py-1.5 text-left text-sm text-(--text-muted)"
       >
         Buscar...
         <span className="text-xs">Ctrl+K</span>
@@ -77,7 +77,7 @@ export function GlobalSearch() {
           <div className="flex max-h-80 flex-col gap-1 overflow-y-auto">
             {isLoading && <LoadingText />}
             {!isLoading && debouncedQuery.trim() && results?.length === 0 && (
-              <span className="text-sm text-[--text-muted]">
+              <span className="text-sm text-(--text-muted)">
                 — nenhum resultado —
               </span>
             )}
@@ -91,8 +91,8 @@ export function GlobalSearch() {
                   onClick={() => handleOpenChange(false)}
                   className="flex flex-col gap-0.5 rounded-md p-2 text-sm hover:bg-(--bg-card-hover)"
                 >
-                  <span className="text-[--text-primary]">{task.title}</span>
-                  <span className="text-xs text-[--text-muted]">
+                  <span className="text-(--text-primary)">{task.title}</span>
+                  <span className="text-xs text-(--text-muted)">
                     {project?.name ?? '—'} ·{' '}
                     {COLUMN_LABELS[task.status] ?? task.status}
                     {epic ? ` · ${epic.name}` : ''}

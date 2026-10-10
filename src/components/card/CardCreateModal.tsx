@@ -206,7 +206,7 @@ export function CardCreateModal({
           <div className="flex flex-col gap-1.5">
             <span
               id="card-project-label"
-              className="text-xs text-[--text-muted]"
+              className="text-xs text-(--text-muted)"
             >
               Projeto
             </span>
@@ -233,7 +233,7 @@ export function CardCreateModal({
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <label htmlFor="card-title" className="text-xs text-[--text-muted]">
+            <label htmlFor="card-title" className="text-xs text-(--text-muted)">
               Título
             </label>
             <Input
@@ -251,7 +251,7 @@ export function CardCreateModal({
             <div className="flex flex-col gap-2">
               {recurrenceDetected && (
                 <div className="flex flex-col gap-2 rounded-md border border-accent bg-(--bg-surface) p-2 text-sm">
-                  <span className="text-[--text-primary]">
+                  <span className="text-(--text-primary)">
                     ↻ Este card parece recorrente
                   </span>
                   <div className="flex flex-wrap gap-1">
@@ -286,7 +286,7 @@ export function CardCreateModal({
           )}
 
           <div className="flex flex-col gap-1.5">
-            <span className="text-xs text-[--text-muted]">Épico</span>
+            <span className="text-xs text-(--text-muted)">Épico</span>
             {projectId ? (
               <EpicSelector
                 projectId={projectId}
@@ -294,7 +294,7 @@ export function CardCreateModal({
                 onChange={setEpicId}
               />
             ) : (
-              <span className="text-xs text-[--text-muted]">
+              <span className="text-xs text-(--text-muted)">
                 Selecione um projeto primeiro
               </span>
             )}
@@ -303,7 +303,7 @@ export function CardCreateModal({
           <div className="flex flex-col gap-1.5">
             <span
               id="card-sprint-label"
-              className="text-xs text-[--text-muted]"
+              className="text-xs text-(--text-muted)"
             >
               Sprint (opcional)
             </span>
@@ -331,7 +331,7 @@ export function CardCreateModal({
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <span className="text-xs text-[--text-muted]">Tags</span>
+            <span className="text-xs text-(--text-muted)">Tags</span>
             <TagInput
               tags={tags}
               onChange={setTags}
@@ -340,7 +340,7 @@ export function CardCreateModal({
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <span className="text-xs text-[--text-muted]">Prioridade</span>
+            <span className="text-xs text-(--text-muted)">Prioridade</span>
             <div className="flex gap-1" role="group" aria-label="Prioridade">
               {PRIORITY_OPTIONS.map((option) => (
                 <Button
@@ -358,7 +358,7 @@ export function CardCreateModal({
 
           <label
             htmlFor="card-flagged"
-            className="flex items-center gap-2 text-sm text-[--text-primary]"
+            className="flex items-center gap-2 text-sm text-(--text-primary)"
           >
             <Checkbox
               id="card-flagged"
@@ -371,7 +371,7 @@ export function CardCreateModal({
           <div className="flex flex-col gap-1.5">
             <label
               htmlFor="card-description"
-              className="text-xs text-[--text-muted]"
+              className="text-xs text-(--text-muted)"
             >
               Descrição (opcional)
             </label>

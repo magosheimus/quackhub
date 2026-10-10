@@ -150,8 +150,8 @@ export function DraftsList() {
             <span
               className={
                 checkedIds.has(item.id)
-                  ? 'flex-1 text-[--text-muted] line-through'
-                  : 'flex-1 text-[--text-primary]'
+                  ? 'flex-1 text-(--text-muted) line-through'
+                  : 'flex-1 text-(--text-primary)'
               }
             >
               {item.content}

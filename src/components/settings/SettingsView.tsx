@@ -135,7 +135,7 @@ export function SettingsView() {
               />
               <span
                 id="scanlines-label"
-                className="text-xs text-[--text-muted]"
+                className="text-xs text-(--text-muted)"
               >
                 Scanlines
               </span>
@@ -148,7 +148,7 @@ export function SettingsView() {
                 }
                 aria-labelledby="glow-label"
               />
-              <span id="glow-label" className="text-xs text-[--text-muted]">
+              <span id="glow-label" className="text-xs text-(--text-muted)">
                 Glow
               </span>
             </div>
@@ -157,7 +157,7 @@ export function SettingsView() {
 
         <SettingsCard title="Preferências">
           <div className="flex flex-col gap-1.5">
-            <span id="font-label" className="text-xs text-[--text-muted]">
+            <span id="font-label" className="text-xs text-(--text-muted)">
               Fonte do corpo
             </span>
             <Select
@@ -187,7 +187,7 @@ export function SettingsView() {
           <div className="flex flex-col gap-1.5">
             <span
               id="date-format-label"
-              className="text-xs text-[--text-muted]"
+              className="text-xs text-(--text-muted)"
             >
               Formato de data
             </span>
@@ -208,7 +208,7 @@ export function SettingsView() {
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <span id="week-start-label" className="text-xs text-[--text-muted]">
+            <span id="week-start-label" className="text-xs text-(--text-muted)">
               Primeiro dia da semana
             </span>
             <Select

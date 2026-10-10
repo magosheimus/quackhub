@@ -22,7 +22,7 @@ export function BoardColumn({
   return (
     <div className="flex flex-1 min-w-0 flex-col gap-2">
       <div className="flex items-center justify-between px-1">
-        <span className="font-heading text-xl text-[--text-primary]">
+        <span className="font-heading text-xl text-(--text-primary)">
           {label}
         </span>
         <span className="flex size-6 items-center justify-center rounded-md border border-(--border-card-empty) bg-(--bg-card-empty) text-xs text-(--text-muted)">

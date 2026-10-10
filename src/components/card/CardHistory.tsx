@@ -59,7 +59,7 @@ export function CardHistory({ taskId }: CardHistoryProps) {
       <div className="flex justify-center">
         <button
           type="button"
-          className="text-xs text-[--text-muted] underline underline-offset-2 hover:text-[--text-primary]"
+          className="text-xs text-(--text-muted) underline underline-offset-2 hover:text-(--text-primary)"
           onClick={
             canExpand
               ? () => setVisibleCount((n) => n + PAGE_SIZE)
@@ -79,7 +79,7 @@ export function CardHistory({ taskId }: CardHistoryProps) {
 
   return (
     <div className="flex flex-col gap-3">
-      <span className="text-sm font-medium text-[--text-primary]">
+      <span className="text-sm font-medium text-(--text-primary)">
         Histórico
       </span>
 
@@ -111,7 +111,7 @@ export function CardHistory({ taskId }: CardHistoryProps) {
                   key={entry.id}
                   className="rounded-md border border-border bg-(--bg-card) p-2 text-sm"
                 >
-                  <div className="flex flex-wrap items-center gap-2 text-xs text-[--text-muted]">
+                  <div className="flex flex-wrap items-center gap-2 text-xs text-(--text-muted)">
                     <span>{formatDisplayDateTime(entry.created_at)}</span>
                     <span>·</span>
                     <span>
@@ -120,7 +120,7 @@ export function CardHistory({ taskId }: CardHistoryProps) {
                         : 'Sprint'}
                     </span>
                   </div>
-                  <p className="mt-1 text-[--text-primary]">
+                  <p className="mt-1 text-(--text-primary)">
                     {entry.event_type === 'status_change'
                       ? `${COLUMN_LABELS[entry.old_value ?? ''] ?? entry.old_value} → ${COLUMN_LABELS[entry.new_value ?? ''] ?? entry.new_value}`
                       : `${formatSprintValue(entry.old_value)} → ${formatSprintValue(entry.new_value)}`}
@@ -129,7 +129,7 @@ export function CardHistory({ taskId }: CardHistoryProps) {
               ))}
             </div>
           ) : (
-            <span className="text-sm text-[--text-muted]">
+            <span className="text-sm text-(--text-muted)">
               — nenhuma movimentação registrada ainda —
             </span>
           )}
@@ -147,7 +147,7 @@ export function CardHistory({ taskId }: CardHistoryProps) {
                   key={log.id}
                   className="rounded-md border border-border bg-(--bg-card) p-2 text-sm"
                 >
-                  <div className="flex flex-wrap items-center gap-2 text-xs text-[--text-muted]">
+                  <div className="flex flex-wrap items-center gap-2 text-xs text-(--text-muted)">
                     <span>{formatDisplayDate(log.session_date)}</span>
                     <span>·</span>
                     <span>{log.log_type === 'srs' ? 'SRS' : 'Manual'}</span>
@@ -165,13 +165,13 @@ export function CardHistory({ taskId }: CardHistoryProps) {
                     )}
                   </div>
                   {log.comment && (
-                    <p className="mt-1 text-[--text-primary]">{log.comment}</p>
+                    <p className="mt-1 text-(--text-primary)">{log.comment}</p>
                   )}
                 </div>
               ))}
             </div>
           ) : (
-            <span className="text-sm text-[--text-muted]">
+            <span className="text-sm text-(--text-muted)">
               — nenhum registro ainda —
             </span>
           )}

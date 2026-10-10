@@ -98,7 +98,7 @@ function ProjectEditForm({ project, onClose }: ProjectEditFormProps) {
         <div className="flex flex-col gap-1.5">
           <label
             htmlFor="project-edit-name"
-            className="text-xs text-[--text-muted]"
+            className="text-xs text-(--text-muted)"
           >
             Nome
           </label>
@@ -112,7 +112,7 @@ function ProjectEditForm({ project, onClose }: ProjectEditFormProps) {
         <div className="flex flex-col gap-1.5">
           <label
             htmlFor="project-edit-prefix"
-            className="text-xs text-[--text-muted]"
+            className="text-xs text-(--text-muted)"
           >
             Prefixo
           </label>
@@ -128,7 +128,7 @@ function ProjectEditForm({ project, onClose }: ProjectEditFormProps) {
         <div className="flex flex-col gap-1.5">
           <span
             id="project-edit-type-label"
-            className="text-xs text-[--text-muted]"
+            className="text-xs text-(--text-muted)"
           >
             Tipo
           </span>
@@ -148,7 +148,7 @@ function ProjectEditForm({ project, onClose }: ProjectEditFormProps) {
         <div className="flex flex-col gap-1.5">
           <span
             id="project-edit-color-label"
-            className="text-xs text-[--text-muted]"
+            className="text-xs text-(--text-muted)"
           >
             Cor
           </span>
@@ -180,7 +180,7 @@ function ProjectEditForm({ project, onClose }: ProjectEditFormProps) {
           variant="outline"
           onClick={handleArchive}
           disabled={isArchiving}
-          className="text-[--signal-danger] border-(--signal-danger)"
+          className="text-(--signal-danger) border-(--signal-danger)"
         >
           {isArchiving ? 'Arquivando...' : 'Arquivar'}
         </Button>

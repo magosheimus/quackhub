@@ -16,7 +16,7 @@ export function Marquee({ children, speed = 30, repeat = 4 }: MarqueeProps) {
         {items.map((_, i) => (
           <span
             key={i}
-            className="inline-block whitespace-nowrap font-heading text-3xl text-[--text-muted] px-6"
+            className="inline-block whitespace-nowrap font-heading text-3xl text-(--text-muted) px-6"
             aria-hidden={i > 0 || undefined}
           >
             {children}
