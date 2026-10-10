@@ -23,7 +23,7 @@ type SprintSnapshot = {
   completionByProject: CompletionByProjectItem[]
 }
 
-export function AnalyticsView() {
+export function AnalyticsPage() {
   const [searchParams, setSearchParams] = useSearchParams()
   const scope = searchParams.get('sprint') ?? CURRENT_SCOPE
   const isAll = scope === ALL_SCOPE

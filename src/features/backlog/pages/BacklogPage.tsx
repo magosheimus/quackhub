@@ -35,7 +35,7 @@ import { PageTitle } from '@/components/ui/page-title'
 
 const NONE_VALUE = '__all__'
 
-export function BacklogView() {
+export function BacklogPage() {
   const [searchParams] = useSearchParams()
 
   const [projectFilter, setProjectFilter] = useState<string | null>(

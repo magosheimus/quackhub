@@ -12,7 +12,7 @@ function formatShortDate(date: string | null): string {
   return `${day}/${month}`
 }
 
-export function SprintHistoryView() {
+export function SprintHistoryPage() {
   const { data: sprints, isLoading } = useSprints()
   const [openSprintIds, setOpenSprintIds] = useState<Set<string>>(new Set())
   const closedSprints = sprints

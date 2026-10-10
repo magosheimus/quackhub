@@ -19,7 +19,7 @@ function formatShortDate(date: string | null): string {
   return `${day}/${month}`
 }
 
-export function InboxView() {
+export function InboxPage() {
   const { data: inbox, isLoading } = useInboxItems()
   const { data: activeSprint } = useActiveSprint()
   const { data: projects } = useProjects()
