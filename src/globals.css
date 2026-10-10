@@ -27,7 +27,7 @@
   --border-strong: #64694a;
 
   /* Accent */
-  --accent: #204f43;
+  --accent: #004e3c;
   --on-accent: #f4f5e9;
 
   /* Signal */
@@ -106,13 +106,13 @@
   --border: #b08a56;
   --border-strong: #8d6132;
 
-  --accent: #7a3b12;
+  --accent: #7a180b;
   --on-accent: #fff0d8;
 
   /* Signal */
   --signal-danger: #a31a08;
   --signal-warning: #805100;
-  --signal-success: #49600f;
+  --signal-success: #597b02;
 }
 
 .cartucho-slate {
@@ -131,7 +131,7 @@
   --border: #95a8b3;
   --border-strong: #5e7788;
 
-  --accent: #2c5a8a;
+  --accent: #0f3a68;
   --on-accent: #f5faff;
 
   /* Signal */
@@ -177,7 +177,7 @@
   --border: #50684c;
   --border-strong: #91a17d;
 
-  --accent: #c9a24b;
+  --accent: #9dc94b;
   --on-accent: #211d0c;
 
   /* Signal */
