@@ -22,10 +22,8 @@ import { Button } from '@/components/ui/button'
 import { useProjects } from '@/features/projects/hooks/useProjects'
 import { useCreateTask } from '@/features/tasks/hooks/useCreateTask'
 import { EpicSelector } from '@/features/epics/components/EpicSelector'
-import {
-  getInitialStatusForType,
-  PRIORITY_CONFIG,
-} from '@/features/board/lib/board'
+import { getInitialStatusForType } from '@/features/tasks/lib/taskStatus'
+import { PRIORITY_CONFIG } from '@/features/tasks/lib/taskPriority'
 import { TASK_PRIORITIES } from '@/shared/lib/enums'
 import { useDebouncedValue } from '@/shared/hooks/useDebouncedValue'
 import { useSimilarCards } from '@/features/tasks/hooks/useSimilarCards'

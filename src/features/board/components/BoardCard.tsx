@@ -2,10 +2,10 @@ import { Draggable } from '@hello-pangea/dnd'
 import { Link } from 'react-router-dom'
 import { IconFlag } from '@/shared/lib/icons'
 import {
-  COLUMN_LABELS,
-  PRIORITY_CONFIG,
   STATUS_BADGE_CLASS,
-} from '@/features/board/lib/board'
+  STATUS_LABELS,
+} from '@/features/tasks/lib/taskStatus'
+import { PRIORITY_CONFIG } from '@/features/tasks/lib/taskPriority'
 import type { ReactNode } from 'react'
 import type { Task } from '@/shared/types/entities'
 
@@ -67,10 +67,10 @@ function BoardCardBody({
         {showStatus && (
           <span
             className={`w-fit rounded-(--radius-sm) px-2 py-0.5 text-xs font-medium text-(--bg-page) ${
-              STATUS_BADGE_CLASS[task.status] ?? 'bg-(--text-muted)'
+              STATUS_BADGE_CLASS[task.status]
             }`}
           >
-            {COLUMN_LABELS[task.status] ?? task.status}
+            {STATUS_LABELS[task.status]}
           </span>
         )}
       </div>

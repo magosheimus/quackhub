@@ -8,10 +8,10 @@ import {
 } from '@/components/ui/select'
 import { TagInput } from '@/features/tasks/components/TagInput'
 import {
-  PRIORITY_CONFIG,
-  COLUMN_LABELS,
   STATUS_BADGE_CLASS,
-} from '@/features/board/lib/board'
+  STATUS_LABELS,
+} from '@/features/tasks/lib/taskStatus'
+import { PRIORITY_CONFIG } from '@/features/tasks/lib/taskPriority'
 import { isTaskPriority, TASK_PRIORITIES } from '@/shared/lib/enums'
 import type {
   Epic,
@@ -175,10 +175,10 @@ export function CardDetailsSection({
             <span className="text-xs text-(--text-muted)">Situação:</span>
             <span
               className={`rounded-(--radius-sm) px-2 py-0.5 text-xs font-medium text-(--bg-page) ${
-                STATUS_BADGE_CLASS[status] ?? 'bg-(--text-muted)'
+                STATUS_BADGE_CLASS[status]
               }`}
             >
-              {COLUMN_LABELS[status] ?? status}
+              {STATUS_LABELS[status]}
             </span>
           </div>
 

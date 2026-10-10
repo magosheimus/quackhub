@@ -6,10 +6,8 @@ import { CardCreateModal } from '@/features/tasks/components/CardCreateModal'
 import { EpicManageModal } from '@/features/epics/components/EpicManageModal'
 import { Button } from '@/components/ui/button'
 import { useAddTaskToSprint } from '@/features/tasks/hooks/sprint/useAddTaskToSprint'
-import {
-  getColumnsForType,
-  getInitialStatusForType,
-} from '@/features/board/lib/board'
+import { getColumnsForType } from '@/features/board/lib/board'
+import { getInitialStatusForType } from '@/features/tasks/lib/taskStatus'
 import {
   getProjectBucket,
   sortByStatusOrder,

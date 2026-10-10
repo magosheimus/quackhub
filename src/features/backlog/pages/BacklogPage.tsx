@@ -11,10 +11,10 @@ import { useProjects } from '@/features/projects/hooks/useProjects'
 import { useEpics } from '@/features/epics/hooks/useEpics'
 import { useBacklogTasks } from '@/features/tasks/hooks/useBacklogTasks'
 import {
-  COLUMN_LABELS,
   getInitialStatusForType,
-  PRIORITY_CONFIG,
-} from '@/features/board/lib/board'
+  STATUS_LABELS,
+} from '@/features/tasks/lib/taskStatus'
+import { PRIORITY_CONFIG } from '@/features/tasks/lib/taskPriority'
 import { BacklogRow } from '@/features/backlog/components/BacklogRow'
 import { useActiveSprint } from '@/features/sprints/hooks/useActiveSprint'
 import { useAddTaskToSprint } from '@/features/tasks/hooks/sprint/useAddTaskToSprint'
@@ -143,14 +143,14 @@ export function BacklogPage() {
         >
           <SelectTrigger>
             <SelectValue>
-              {statusFilter ? COLUMN_LABELS[statusFilter] : 'Todos os status'}
+              {statusFilter ? STATUS_LABELS[statusFilter] : 'Todos os status'}
             </SelectValue>
           </SelectTrigger>
           <SelectContent>
             <SelectItem value={NONE_VALUE}>Todos os status</SelectItem>
             {TASK_STATUSES.map((status) => (
               <SelectItem key={status} value={status}>
-                {COLUMN_LABELS[status]}
+                {STATUS_LABELS[status]}
               </SelectItem>
             ))}
           </SelectContent>

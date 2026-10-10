@@ -1,9 +1,3 @@
-import type { IconComponent } from '@/shared/lib/icons'
-import {
-  IconArrowBigDown,
-  IconArrowBigUp,
-  IconChevronUp,
-} from '@/shared/lib/icons'
 import type {
   ProjectType,
   Task,
@@ -28,17 +22,6 @@ export const ALL_COLUMNS = [
   'blocked',
   'done',
 ]
-export const COLUMN_LABELS: Record<string, string> = {
-  to_study: 'A ESTUDAR',
-  todo: 'A FAZER',
-  doing: 'FAZENDO',
-  studying: 'ESTUDANDO',
-  to_review: 'A REVISAR',
-  blocked: 'IMPEDIDO',
-  scheduled: 'AGENDADO',
-  done: 'FINALIZADO',
-}
-
 export type BoardColumnKey = 'todo' | 'doing' | 'to_review' | 'blocked' | 'done'
 
 export const BOARD_COLUMNS: BoardColumnKey[] = [
@@ -101,17 +84,6 @@ export function getStatusForColumn(
   return STATUS_BY_COLUMN[column][taskType]
 }
 
-export const STATUS_BADGE_CLASS: Record<string, string> = {
-  to_study: 'bg-(--text-muted)',
-  todo: 'bg-(--signal-warning)',
-  scheduled: 'bg-(--text-muted)',
-  doing: 'bg-(--accent)',
-  studying: 'bg-(--accent)',
-  to_review: 'bg-(--accent)',
-  blocked: 'bg-(--signal-danger)',
-  done: 'bg-(--signal-success)',
-}
-
 export function getColumnsForType(type: ProjectType | null): string[] {
   if (!type) return ALL_COLUMNS
   const columns: Record<ProjectType, string[]> = {
@@ -119,43 +91,6 @@ export function getColumnsForType(type: ProjectType | null): string[] {
     study: COLUMNS_STUDY,
   }
   return columns[type]
-}
-
-export const PRIORITY_CONFIG: Record<
-  TaskPriority,
-  {
-    icon: IconComponent
-    ariaLabel: string
-    text: string
-    className: string
-    colorVar: string
-  }
-> = {
-  high: {
-    icon: IconArrowBigUp,
-    ariaLabel: 'Prioridade alta',
-    text: 'ALTA',
-    className: 'text-(--signal-danger)',
-    colorVar: '--signal-danger',
-  },
-  medium: {
-    icon: IconChevronUp,
-    ariaLabel: 'Prioridade média',
-    text: 'MÉDIA',
-    className: 'text-(--text-muted)',
-    colorVar: '--text-muted',
-  },
-  low: {
-    icon: IconArrowBigDown,
-    ariaLabel: 'Prioridade baixa',
-    text: 'BAIXA',
-    className: 'text-(--signal-success)',
-    colorVar: '--signal-success',
-  },
-}
-
-export function getInitialStatusForType(type: ProjectType): TaskStatus {
-  return type === 'study' ? 'to_study' : 'todo'
 }
 
 export type BoardFilters = {

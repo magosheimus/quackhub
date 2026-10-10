@@ -1,7 +1,8 @@
 import { IconPlus, IconFlag } from '@/shared/lib/icons'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { PRIORITY_CONFIG, COLUMN_LABELS } from '@/features/board/lib/board'
+import { STATUS_LABELS } from '@/features/tasks/lib/taskStatus'
+import { PRIORITY_CONFIG } from '@/features/tasks/lib/taskPriority'
 import { Button } from '@/components/ui/button'
 import type { Task } from '@/shared/types/entities'
 
@@ -67,7 +68,7 @@ export function BacklogRow({
         </div>
 
         <span className="text-xs text-(--text-muted)">
-          {COLUMN_LABELS[task.status] ?? task.status}
+          {STATUS_LABELS[task.status]}
         </span>
 
         {epicName && (

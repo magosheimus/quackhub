@@ -5,7 +5,7 @@ import { useSrsLogs } from '@/features/srs/hooks/useSrsLogs'
 import { useAddManualComment } from '@/features/srs/hooks/useAddManualComment'
 import { useActivityLog } from '@/features/tasks/hooks/activityLog/useActivityLog'
 import { useSprints } from '@/features/sprints/hooks/useSprints'
-import { COLUMN_LABELS } from '@/features/board/lib/board'
+import { getStatusLabel } from '@/features/tasks/lib/taskStatus'
 
 const PAGE_SIZE = 5
 
@@ -122,7 +122,7 @@ export function CardHistory({ taskId }: CardHistoryProps) {
                   </div>
                   <p className="mt-1 text-(--text-primary)">
                     {entry.event_type === 'status_change'
-                      ? `${COLUMN_LABELS[entry.old_value ?? ''] ?? entry.old_value} → ${COLUMN_LABELS[entry.new_value ?? ''] ?? entry.new_value}`
+                      ? `${getStatusLabel(entry.old_value)} → ${getStatusLabel(entry.new_value)}`
                       : `${formatSprintValue(entry.old_value)} → ${formatSprintValue(entry.new_value)}`}
                   </p>
                 </div>
