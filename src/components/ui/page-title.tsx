@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import type { IconComponent } from '@/lib/icons'
+import type { IconComponent } from '@/shared/lib/icons'
 
 type PageTitleProps = {
   count?: number

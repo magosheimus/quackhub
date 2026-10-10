@@ -1,6 +1,6 @@
 import { useSyncExternalStore } from 'react'
-import { IconClose } from '@/lib/icons'
-import { dismissToast, getToasts, subscribeToasts } from '@/lib/toast'
+import { IconClose } from '@/shared/lib/icons'
+import { dismissToast, getToasts, subscribeToasts } from '@/shared/lib/toast'
 
 export function Toaster() {
   const toasts = useSyncExternalStore(subscribeToasts, getToasts)
