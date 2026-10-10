@@ -24,10 +24,10 @@ import { ProjectBoardView } from '@/features/board/components/ProjectBoardView'
 import { SprintHeader } from '@/features/sprints/components/SprintHeader'
 import { useSprints } from '@/features/sprints/hooks/useSprints'
 import { SprintPlanningHeader } from '@/features/backlog/components/SprintPlanningHeader'
-import { BacklogView } from '@/features/backlog/pages/BacklogView'
+import { BacklogPage } from '@/features/backlog/pages/BacklogPage'
 import type { ProjectType } from '@/shared/types/entities'
 
-export function BoardView() {
+export function BoardPage() {
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('project')
   const { data: projects, isLoading: isLoadingProjects } = useProjects()
@@ -83,7 +83,7 @@ export function BoardView() {
     return (
       <div className="flex flex-col gap-4">
         <SprintPlanningHeader sprint={plannedSprint} />
-        <BacklogView />
+        <BacklogPage />
       </div>
     )
   }

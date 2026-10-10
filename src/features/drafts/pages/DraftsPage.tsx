@@ -4,7 +4,7 @@ import { DraftsCapture } from '@/features/drafts/components/DraftsCapture'
 import { DraftsList } from '@/features/drafts/components/DraftsList'
 import { useDraftsItems } from '@/features/drafts/hooks/useDraftsItems'
 
-export function DraftsView() {
+export function DraftsPage() {
   const { data: items } = useDraftsItems()
 
   return (

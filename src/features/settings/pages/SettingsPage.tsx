@@ -51,7 +51,7 @@ function SettingsCard({
   )
 }
 
-export function SettingsView() {
+export function SettingsPage() {
   const [settings, setSettings] = useState<Settings>(() => loadSettings())
   const [isExporting, setIsExporting] = useState(false)
 
