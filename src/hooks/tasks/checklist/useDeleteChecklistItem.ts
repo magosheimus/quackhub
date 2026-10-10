@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { deleteChecklistItem } from '@/services/tasks/checklist'
+import { queryKeys } from '@/lib/queryKeys'
 
 export function useDeleteChecklistItem() {
   const queryClient = useQueryClient()
@@ -8,7 +9,9 @@ export function useDeleteChecklistItem() {
     mutationFn: ({ id }: { id: string; taskId: string }) =>
       deleteChecklistItem(id),
     onSuccess: (_data, { taskId }) => {
-      queryClient.invalidateQueries({ queryKey: ['checklist', taskId] })
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.checklist.byTask(taskId),
+      })
     },
     onError: (error) => {
       console.error(error.message)

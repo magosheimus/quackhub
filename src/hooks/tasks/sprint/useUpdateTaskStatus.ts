@@ -2,6 +2,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { updateTaskStatus } from '@/services/tasks/tasks'
 import type { TaskStatus } from '@/lib/board'
 import type { Database } from '@/types/database.types'
+import { invalidateTaskQueries } from '@/lib/queryInvalidation'
+import { queryKeys } from '@/lib/queryKeys'
 
 type Task = Database['public']['Tables']['tasks']['Row']
 
@@ -19,7 +21,7 @@ export function useUpdateTaskStatus() {
       updateTaskStatus(id, status),
 
     onMutate: async ({ id, status, sprintId }) => {
-      const queryKey = ['tasks', 'sprint', sprintId]
+      const queryKey = queryKeys.tasks.sprint(sprintId)
       await queryClient.cancelQueries({ queryKey })
 
       const previousTasks = queryClient.getQueryData<Task[]>(queryKey)
@@ -45,10 +47,8 @@ export function useUpdateTaskStatus() {
       }
     },
 
-    onSettled: (_data, _error, { sprintId }) => {
-      queryClient.invalidateQueries({ queryKey: ['tasks', 'sprint', sprintId] })
-      queryClient.invalidateQueries({ queryKey: ['tasks', 'project'] })
-      queryClient.invalidateQueries({ queryKey: ['analytics'] })
+    onSettled: (_data, _error, { id }) => {
+      invalidateTaskQueries(queryClient, id)
     },
   })
 }

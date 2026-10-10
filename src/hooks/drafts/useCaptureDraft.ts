@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { captureItem } from '@/services/drafts/drafts'
+import { queryKeys } from '@/lib/queryKeys'
 
 export function useCaptureDraft() {
   const queryClient = useQueryClient()
@@ -8,7 +9,7 @@ export function useCaptureDraft() {
     mutationFn: (content: string) => captureItem(content),
     meta: { silent: true },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['drafts'] })
+      queryClient.invalidateQueries({ queryKey: queryKeys.drafts.root })
     },
     onError: (error) => {
       console.error(error.message)

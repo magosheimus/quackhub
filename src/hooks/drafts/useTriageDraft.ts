@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { triageItem } from '@/services/drafts/drafts'
+import { queryKeys } from '@/lib/queryKeys'
 
 type TriageDecision = {
   triaged_to: string
@@ -14,7 +15,7 @@ export function useTriageDraft() {
       triageItem(id, decision),
     meta: { silent: true },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['drafts'] })
+      queryClient.invalidateQueries({ queryKey: queryKeys.drafts.root })
     },
     onError: (error) => {
       console.error(error.message)
