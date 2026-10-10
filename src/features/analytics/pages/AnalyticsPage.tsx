@@ -9,7 +9,8 @@ import { useCompletionByProject } from '@/features/analytics/hooks/useCompletion
 import { useCompletionRateOverTime } from '@/features/analytics/hooks/useCompletionRateOverTime'
 import { useReviewsByEpic } from '@/features/analytics/hooks/useReviewsByEpic'
 import { useConfidenceCalibration } from '@/features/analytics/hooks/useConfidenceCalibration'
-import { ALL_COLUMNS, COLUMN_LABELS } from '@/features/board/lib/board'
+import { ALL_COLUMNS } from '@/features/board/lib/board'
+import { getStatusLabel } from '@/features/tasks/lib/taskStatus'
 import type { CompletionByProjectItem } from '@/features/analytics/api/analytics'
 import {
   ALL_SCOPE,
@@ -70,7 +71,7 @@ export function AnalyticsPage() {
   const accuracyPercent = Math.round((averageAccuracy / 5) * 100)
   const byProject = snapshot?.completionByProject ?? liveByProject ?? []
   const statusChartData = ALL_COLUMNS.map((status) => ({
-    name: COLUMN_LABELS[status] ?? status,
+    name: getStatusLabel(status),
     count: (tasks ?? []).filter((t) => t.status === status).length,
   }))
 

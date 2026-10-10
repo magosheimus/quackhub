@@ -11,7 +11,7 @@ import { useDebouncedValue } from '@/shared/hooks/useDebouncedValue'
 import { useSearchTasks } from '@/features/search/hooks/useSearchTasks'
 import { useProjects } from '@/features/projects/hooks/useProjects'
 import { useAllEpics } from '@/features/epics/hooks/useAllEpics'
-import { COLUMN_LABELS } from '@/features/board/lib/board'
+import { STATUS_LABELS } from '@/features/tasks/lib/taskStatus'
 import { LoadingText } from '@/components/ui/loading-text'
 
 export function GlobalSearch() {
@@ -93,8 +93,7 @@ export function GlobalSearch() {
                 >
                   <span className="text-(--text-primary)">{task.title}</span>
                   <span className="text-xs text-(--text-muted)">
-                    {project?.name ?? '—'} ·{' '}
-                    {COLUMN_LABELS[task.status] ?? task.status}
+                    {project?.name ?? '—'} · {STATUS_LABELS[task.status]}
                     {epic ? ` · ${epic.name}` : ''}
                   </span>
                 </Link>
