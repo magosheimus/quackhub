@@ -7,9 +7,7 @@ import {
   addDaysToToday,
 } from '@/lib/srs'
 import { getTaskById, updateTask } from '@/services/tasks/tasks'
-import type { Database } from '@/types/database.types'
-
-type SrsLog = Database['public']['Tables']['srs_logs']['Row']
+import type { SrsLog } from '@/types/entities'
 
 export async function registerPerformance(
   taskId: string,

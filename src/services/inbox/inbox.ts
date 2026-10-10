@@ -1,8 +1,6 @@
 import { supabase } from '@/lib/supabase'
 import { todayLocal } from '@/lib/srs'
-import type { Database } from '@/types/database.types'
-
-type Task = Database['public']['Tables']['tasks']['Row']
+import type { Task } from '@/types/entities'
 
 const PRIORITY_WEIGHT: Record<string, number> = {
   alta: 0,

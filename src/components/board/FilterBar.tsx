@@ -1,9 +1,6 @@
 import { Button } from '@/components/ui/button'
 import type { BoardFilters } from '@/lib/board'
-import type { Database } from '@/types/database.types'
-
-type Epic = Database['public']['Tables']['epics']['Row']
-type Project = Database['public']['Tables']['projects']['Row']
+import type { Epic, Project } from '@/types/entities'
 
 type FilterBarProps = {
   filters: BoardFilters

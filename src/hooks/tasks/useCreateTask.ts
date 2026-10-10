@@ -1,12 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { createTaskWithTags } from '@/services/tasks/tasks'
-import type { Database } from '@/types/database.types'
 import {
   invalidateTagQueries,
   invalidateTaskQueries,
 } from '@/lib/queryInvalidation'
-
-type NewTask = Database['public']['Tables']['tasks']['Insert']
+import type { NewTask } from '@/types/entities'
 
 type CreateTaskVars = {
   data: NewTask

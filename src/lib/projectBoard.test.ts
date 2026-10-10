@@ -1,8 +1,6 @@
 import { describe, it, expect } from 'vitest'
-import type { Database } from '@/types/database.types'
 import { getProjectBucket, sortByStatusOrder } from './projectBoard'
-
-type Task = Database['public']['Tables']['tasks']['Row']
+import type { Task } from '@/types/entities'
 
 function makeTask(overrides: Partial<Task>): Task {
   return { status: 'todo', sprint_id: null, ...overrides } as Task

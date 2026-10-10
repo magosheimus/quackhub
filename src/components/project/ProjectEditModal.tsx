@@ -22,9 +22,7 @@ import {
   type ProjectColor,
   type ProjectType,
 } from '@/lib/project'
-import type { Database } from '@/types/database.types'
-
-type Project = Database['public']['Tables']['projects']['Row']
+import type { Project } from '@/types/entities'
 
 type ProjectEditModalProps = {
   project: Project | null

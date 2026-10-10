@@ -12,10 +12,8 @@ import { useDraftsItems } from '@/hooks/drafts/useDraftsItems'
 import { useTriageDraft } from '@/hooks/drafts/useTriageDraft'
 import { useUpdateDraft } from '@/hooks/drafts/useUpdateDraft'
 import { CardCreateModal } from '@/components/card/CardCreateModal'
-import type { Database } from '@/types/database.types'
 import { LoadingText } from '../ui/loading-text'
-
-type DraftsItem = Database['public']['Tables']['drafts_items']['Row']
+import type { DraftsItem } from '@/types/entities'
 
 const CHECKED_KEY = 'quackhub-drafts-checked'
 

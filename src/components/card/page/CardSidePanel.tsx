@@ -1,9 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { RecurrenceFields, type RecurrenceValue } from '../RecurrenceFields'
-import type { Database } from '@/types/database.types'
-
-type Task = Database['public']['Tables']['tasks']['Row']
+import type { Task } from '@/types/entities'
 
 const SRS_ELIGIBLE_STATUSES: Task['status'][] = [
   'studying',

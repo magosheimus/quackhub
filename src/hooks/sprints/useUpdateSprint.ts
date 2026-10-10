@@ -1,9 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { updateSprint } from '@/services/sprints/sprints'
-import type { Database } from '@/types/database.types'
 import { queryKeys } from '@/lib/queryKeys'
-
-type SprintUpdate = Database['public']['Tables']['sprints']['Update']
+import type { SprintUpdate } from '@/types/entities'
 
 export function useUpdateSprint() {
   const queryClient = useQueryClient()

@@ -1,6 +1,4 @@
-import type { Database } from '@/types/database.types'
-
-type Task = Database['public']['Tables']['tasks']['Row']
+import type { Task } from '@/types/entities'
 
 export function detectRecurrencePattern(cards: Task[]): boolean {
   const months = new Set(

@@ -17,13 +17,11 @@ import { useProjects } from '@/hooks/projects/useProjects'
 import { useDraftsItems } from '@/hooks/drafts/useDraftsItems'
 import { ProjectCreateModal } from '@/components/project/ProjectCreateModal'
 import { ProjectEditModal } from '@/components/project/ProjectEditModal'
-import type { Database } from '@/types/database.types'
 import { CardCreateModal } from '@/components/card/CardCreateModal'
 import { GlobalSearch } from '../search/GlobalSearch'
 import { LoadingText } from '../ui/loading-text'
 import { useInboxItems } from '@/hooks/inbox/useInboxItems'
-
-type Project = Database['public']['Tables']['projects']['Row']
+import type { Project } from '@/types/entities'
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
   `flex h-10 items-center gap-3 border px-3 py-2 rounded-(--radius-md) text-base ${

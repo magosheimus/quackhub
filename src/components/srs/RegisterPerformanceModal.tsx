@@ -16,9 +16,7 @@ import {
   calculateNextInterval,
   addDaysToToday,
 } from '@/lib/srs'
-import type { Database } from '@/types/database.types'
-
-type Task = Database['public']['Tables']['tasks']['Row']
+import type { Task } from '@/types/entities'
 
 const CONFIANCA_OPTIONS = [1, 2, 3, 4, 5]
 

@@ -1,9 +1,5 @@
 import { supabase } from '@/lib/supabase'
-import type { Database } from '@/types/database.types'
-
-type Project = Database['public']['Tables']['projects']['Row']
-type NewProject = Database['public']['Tables']['projects']['Insert']
-type ProjectUpdate = Database['public']['Tables']['projects']['Update']
+import type { NewProject, Project, ProjectUpdate } from '@/types/entities'
 
 export async function getProjects(): Promise<Project[]> {
   const { data, error } = await supabase

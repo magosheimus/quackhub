@@ -1,9 +1,7 @@
 import type { ProjectType } from '@/lib/project'
-import type { Database } from '@/types/database.types'
 import type { IconComponent } from '@/lib/icons'
 import { IconArrowBigDown, IconArrowBigUp, IconChevronUp } from '@/lib/icons'
-
-type Task = Database['public']['Tables']['tasks']['Row']
+import type { Task } from '@/types/entities'
 
 export const COLUMNS_GENERAL = ['todo', 'blocked', 'doing', 'done']
 export const COLUMNS_STUDY = [

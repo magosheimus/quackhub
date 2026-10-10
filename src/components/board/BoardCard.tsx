@@ -7,10 +7,8 @@ import {
   STATUS_BADGE_CLASS,
   type TaskPriority,
 } from '@/lib/board'
-import type { Database } from '@/types/database.types'
 import type { ReactNode } from 'react'
-
-type Task = Database['public']['Tables']['tasks']['Row']
+import type { Task } from '@/types/entities'
 
 const CARD_CLASS =
   'flex gap-2 rounded-md border border-l-4 border-border bg-(--bg-card) p-3 text-sm hover:bg-(--bg-card-hover)'

@@ -1,9 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { updateTask } from '@/services/tasks/tasks'
-import type { Database } from '@/types/database.types'
 import { invalidateTaskQueries } from '@/lib/queryInvalidation'
-
-type TaskUpdate = Database['public']['Tables']['tasks']['Update']
+import type { TaskUpdate } from '@/types/entities'
 
 export function useUpdateTask() {
   const queryClient = useQueryClient()

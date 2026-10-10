@@ -1,10 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { updateChecklistItem } from '@/services/tasks/checklist'
-import type { Database } from '@/types/database.types'
 import { queryKeys } from '@/lib/queryKeys'
-
-type ChecklistItemUpdate =
-  Database['public']['Tables']['task_checklist_items']['Update']
+import type { ChecklistItemUpdate } from '@/types/entities'
 
 export function useUpdateChecklistItem() {
   const queryClient = useQueryClient()

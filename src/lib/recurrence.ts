@@ -1,7 +1,4 @@
-import type { Database } from '@/types/database.types'
-
-type Task = Database['public']['Tables']['tasks']['Row']
-type NewTask = Database['public']['Tables']['tasks']['Insert']
+import type { NewTask, Task } from '@/types/entities'
 
 function parseDate(dateStr: string): {
   year: number

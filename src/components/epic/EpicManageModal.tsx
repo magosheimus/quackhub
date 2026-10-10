@@ -19,12 +19,10 @@ import { useEpics } from '@/hooks/epics/useEpics'
 import { useCreateEpic } from '@/hooks/epics/useCreateEpic'
 import { useUpdateEpic } from '@/hooks/epics/useUpdateEpic'
 import { PROJECT_COLORS, type ProjectColor } from '@/lib/project'
-import type { Database } from '@/types/database.types'
 import { LoadingText } from '../ui/loading-text'
 import { useSoftDeleteEpic } from '@/hooks/epics/useSoftDeleteEpic'
 import { IconTrash } from '@/lib/icons'
-
-type Epic = Database['public']['Tables']['epics']['Row']
+import type { Epic } from '@/types/entities'
 
 type EpicManageModalProps = {
   initialProjectId: string | null

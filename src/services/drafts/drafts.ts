@@ -1,8 +1,6 @@
 import { supabase } from '@/lib/supabase'
 import { enqueue, getQueue, clearQueue } from '@/lib/draftsQueue'
-import type { Database } from '@/types/database.types'
-
-type DraftsItem = Database['public']['Tables']['drafts_items']['Row']
+import type { DraftsItem } from '@/types/entities'
 
 export async function captureItem(content: string): Promise<DraftsItem | null> {
   const item: DraftsItem = {

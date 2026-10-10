@@ -1,13 +1,7 @@
 import { supabase } from '@/lib/supabase'
 import type { TaskStatus } from '@/lib/board'
-import type { Database } from '@/types/database.types'
 import { calculateNextDueDate, buildRecurrentCard } from '@/lib/recurrence'
-
-type Task = Database['public']['Tables']['tasks']['Row']
-
-type NewTask = Database['public']['Tables']['tasks']['Insert']
-
-type TaskUpdate = Database['public']['Tables']['tasks']['Update']
+import type { NewTask, Task, TaskUpdate } from '@/types/entities'
 
 export async function createTask(data: NewTask): Promise<Task> {
   const { data: task, error } = await supabase

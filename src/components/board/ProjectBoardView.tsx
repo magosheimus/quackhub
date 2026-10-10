@@ -13,10 +13,7 @@ import {
   type ProjectBucket,
 } from '@/lib/projectBoard'
 import type { ProjectType } from '@/lib/project'
-import type { Database } from '@/types/database.types'
-
-type Task = Database['public']['Tables']['tasks']['Row']
-type Project = Database['public']['Tables']['projects']['Row']
+import type { Project, Task } from '@/types/entities'
 
 type ProjectBoardViewProps = {
   project: Project
