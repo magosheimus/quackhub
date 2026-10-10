@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { removeTaskTag } from '@/services/tasks/tasks'
+import { invalidateTagQueries } from '@/lib/queryInvalidation'
 
 export function useRemoveTaskTag() {
   const queryClient = useQueryClient()
@@ -7,8 +8,8 @@ export function useRemoveTaskTag() {
   return useMutation({
     mutationFn: ({ taskId, tagName }: { taskId: string; tagName: string }) =>
       removeTaskTag(taskId, tagName),
-    onSuccess: (_data, { taskId }) => {
-      queryClient.invalidateQueries({ queryKey: ['tags', 'task', taskId] })
+    onSuccess: () => {
+      invalidateTagQueries(queryClient)
     },
     onError: (error) => {
       console.error(error.message)

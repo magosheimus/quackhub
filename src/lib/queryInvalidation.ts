@@ -1,0 +1,23 @@
+import type { QueryClient } from '@tanstack/react-query'
+import { queryKeys } from './queryKeys'
+
+export function invalidateTaskQueries(
+  queryClient: QueryClient,
+  taskId?: string,
+) {
+  queryClient.invalidateQueries({ queryKey: queryKeys.tasks.root })
+  queryClient.invalidateQueries({ queryKey: queryKeys.inbox.root })
+  queryClient.invalidateQueries({ queryKey: queryKeys.analytics.root })
+  queryClient.invalidateQueries({ queryKey: queryKeys.search.root })
+  if (taskId) {
+    queryClient.invalidateQueries({
+      queryKey: queryKeys.activityLog.byTask(taskId),
+    })
+  }
+}
+
+export function invalidateTagQueries(queryClient: QueryClient) {
+  queryClient.invalidateQueries({ queryKey: queryKeys.tags.root })
+  queryClient.invalidateQueries({ queryKey: queryKeys.taskTags.root })
+  queryClient.invalidateQueries({ queryKey: queryKeys.analytics.root })
+}

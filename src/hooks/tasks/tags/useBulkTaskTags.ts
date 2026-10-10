@@ -1,9 +1,10 @@
 import { useQuery } from '@tanstack/react-query'
 import { supabase } from '@/lib/supabase'
+import { queryKeys } from '@/lib/queryKeys'
 
 export function useBulkTaskTags(taskIds: string[]) {
   return useQuery({
-    queryKey: ['task-tags', 'bulk', taskIds.sort().join(',')],
+    queryKey: queryKeys.taskTags.bulk(taskIds),
     queryFn: async () => {
       const { data, error } = await supabase
         .from('task_tags')

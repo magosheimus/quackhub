@@ -2,6 +2,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { addTaskToSprint } from '@/services/tasks/tasks'
 import type { TaskStatus } from '@/lib/board'
 import type { Database } from '@/types/database.types'
+import { invalidateTaskQueries } from '@/lib/queryInvalidation'
+import { queryKeys } from '@/lib/queryKeys'
 
 type Task = Database['public']['Tables']['tasks']['Row']
 
@@ -21,8 +23,8 @@ export function useAddTaskToSprint() {
 
     onMutate: async ({ taskId, projectId }) => {
       const keys = [
-        ['tasks', 'backlog', projectId],
-        ['tasks', 'backlog', 'all'],
+        queryKeys.tasks.backlog(projectId),
+        queryKeys.tasks.backlog(),
       ]
       await Promise.all(
         keys.map((key) => queryClient.cancelQueries({ queryKey: key })),
@@ -48,17 +50,8 @@ export function useAddTaskToSprint() {
       }
     },
 
-    onSettled: (task, _error, { projectId }) => {
-      queryClient.invalidateQueries({
-        queryKey: ['tasks', 'backlog', projectId],
-      })
-      queryClient.invalidateQueries({ queryKey: ['tasks', 'backlog', 'all'] })
-      queryClient.invalidateQueries({ queryKey: ['tasks', 'project'] })
-      if (task) {
-        queryClient.invalidateQueries({
-          queryKey: ['tasks', 'sprint', task.sprint_id],
-        })
-      }
+    onSettled: (_task, _error, { taskId }) => {
+      invalidateTaskQueries(queryClient, taskId)
     },
   })
 }

@@ -1,9 +1,10 @@
 import { useQuery } from '@tanstack/react-query'
 import { getConfidenceCalibration } from '@/services/analytics/analytics'
+import { queryKeys } from '@/lib/queryKeys'
 
 export function useConfidenceCalibration(sprintId?: string | null) {
   return useQuery({
-    queryKey: ['analytics', 'confidence-calibration', sprintId ?? 'all'],
+    queryKey: queryKeys.analytics.confidenceCalibration(sprintId),
     queryFn: () => getConfidenceCalibration(sprintId),
   })
 }

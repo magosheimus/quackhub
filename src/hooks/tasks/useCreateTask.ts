@@ -1,6 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { createTaskWithTags } from '@/services/tasks/tasks'
 import type { Database } from '@/types/database.types'
+import {
+  invalidateTagQueries,
+  invalidateTaskQueries,
+} from '@/lib/queryInvalidation'
 
 type NewTask = Database['public']['Tables']['tasks']['Insert']
 
@@ -16,12 +20,8 @@ export function useCreateTask() {
     mutationFn: ({ data, tags }: CreateTaskVars) =>
       createTaskWithTags(data, tags),
     onSuccess: (task) => {
-      queryClient.invalidateQueries({
-        queryKey: ['tasks', 'backlog', task.project_id],
-      })
-      queryClient.invalidateQueries({ queryKey: ['tasks', 'backlog', 'all'] })
-      queryClient.invalidateQueries({ queryKey: ['tasks', 'project'] })
-      queryClient.invalidateQueries({ queryKey: ['tags', task.project_id] })
+      invalidateTaskQueries(queryClient, task.id)
+      invalidateTagQueries(queryClient)
     },
     onError: (error) => {
       console.error(error.message)

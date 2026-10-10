@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { updateSprint } from '@/services/sprints/sprints'
 import type { Database } from '@/types/database.types'
+import { queryKeys } from '@/lib/queryKeys'
 
 type SprintUpdate = Database['public']['Tables']['sprints']['Update']
 
@@ -12,7 +13,7 @@ export function useUpdateSprint() {
       updateSprint(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ['sprints'],
+        queryKey: queryKeys.sprints.root,
       })
     },
     onError: (error) => {

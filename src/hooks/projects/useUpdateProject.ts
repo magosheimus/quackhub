@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { updateProject } from '@/services/projects/projects'
 import type { Database } from '@/types/database.types'
+import { queryKeys } from '@/lib/queryKeys'
 
 type ProjectUpdate = Database['public']['Tables']['projects']['Update']
 
@@ -11,7 +12,7 @@ export function useUpdateProject() {
     mutationFn: ({ id, data }: { id: string; data: ProjectUpdate }) =>
       updateProject(id, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['projects'] })
+      queryClient.invalidateQueries({ queryKey: queryKeys.projects.root })
     },
     onError: (error) => {
       console.error(error.message)

@@ -1,10 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { registerPerformance } from '@/services/srs/srs'
+import { invalidateTaskQueries } from '@/lib/queryInvalidation'
+import { queryKeys } from '@/lib/queryKeys'
 
 type RegisterPerformanceInput = {
   taskId: string
-  projectId: string
-  sprintId: string | null
   nota: number
   confianca: number
   comment?: string
@@ -21,20 +21,11 @@ export function useRegisterPerformance() {
       comment,
     }: RegisterPerformanceInput) =>
       registerPerformance(taskId, nota, confianca, comment),
-    onSuccess: (_log, { taskId, projectId, sprintId }) => {
-      queryClient.invalidateQueries({ queryKey: ['tasks', 'detail', taskId] })
-      queryClient.invalidateQueries({ queryKey: ['srs-logs', taskId] })
+    onSuccess: (_log, { taskId }) => {
       queryClient.invalidateQueries({
-        queryKey: ['tasks', 'backlog', projectId],
+        queryKey: queryKeys.srsLogs.byTask(taskId),
       })
-      queryClient.invalidateQueries({ queryKey: ['tasks', 'backlog', 'all'] })
-      queryClient.invalidateQueries({ queryKey: ['tasks', 'project'] })
-      if (sprintId) {
-        queryClient.invalidateQueries({
-          queryKey: ['tasks', 'sprint', sprintId],
-        })
-      }
-      queryClient.invalidateQueries({ queryKey: ['analytics'] })
+      invalidateTaskQueries(queryClient, taskId)
     },
     onError: (error) => {
       console.error(error.message)

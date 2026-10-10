@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { addDependency } from '@/services/tasks/tasks'
+import { queryKeys } from '@/lib/queryKeys'
 
 export function useAddDependency() {
   const queryClient = useQueryClient()
@@ -13,7 +14,9 @@ export function useAddDependency() {
       dependsOnTaskId: string
     }) => addDependency(taskId, dependsOnTaskId),
     onSuccess: (_data, { taskId }) => {
-      queryClient.invalidateQueries({ queryKey: ['dependencies', taskId] })
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.dependencies.byTask(taskId),
+      })
     },
     onError: (error) => {
       window.alert(error.message)

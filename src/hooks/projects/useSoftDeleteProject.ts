@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { softDeleteProject } from '@/services/projects/projects'
+import { queryKeys } from '@/lib/queryKeys'
 
 export function useSoftDeleteProject() {
   const queryClient = useQueryClient()
@@ -7,7 +8,7 @@ export function useSoftDeleteProject() {
   return useMutation({
     mutationFn: softDeleteProject,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['projects'] })
+      queryClient.invalidateQueries({ queryKey: queryKeys.projects.root })
     },
     onError: (error) => {
       console.error(error.message)
