@@ -15,7 +15,7 @@ export function CardDescription({
     <div className="flex flex-col gap-1.5">
       <label
         htmlFor="card-description"
-        className="text-sm font-medium text-[--text-primary]"
+        className="text-sm font-medium text-(--text-primary)"
       >
         Descrição
       </label>

@@ -26,7 +26,7 @@ export function CardPage() {
 
   if (!task) {
     return (
-      <div className="text-sm text-[--text-muted]">— Card não encontrado —</div>
+      <div className="text-sm text-(--text-muted)">— Card não encontrado —</div>
     )
   }
 

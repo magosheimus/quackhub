@@ -96,14 +96,14 @@ export function getStatusForColumn(
 }
 
 export const STATUS_BADGE_CLASS: Record<string, string> = {
-  to_study: 'bg-[var(--text-muted)]',
-  todo: 'bg-[var(--signal-warning)]',
-  scheduled: 'bg-[var(--text-muted)]',
-  doing: 'bg-[var(--accent)]',
-  studying: 'bg-[var(--accent)]',
-  to_review: 'bg-[var(--accent)]',
-  blocked: 'bg-[var(--signal-danger)]',
-  done: 'bg-[var(--signal-success)]',
+  to_study: 'bg-(--text-muted)',
+  todo: 'bg-(--signal-warning)',
+  scheduled: 'bg-(--text-muted)',
+  doing: 'bg-(--accent)',
+  studying: 'bg-(--accent)',
+  to_review: 'bg-(--accent)',
+  blocked: 'bg-(--signal-danger)',
+  done: 'bg-(--signal-success)',
 }
 
 export function getColumnsForType(type: ProjectType | null): string[] {
@@ -141,21 +141,21 @@ export const PRIORITY_CONFIG: Record<
     icon: IconArrowBigUp,
     ariaLabel: 'Prioridade alta',
     text: 'ALTA',
-    className: 'text-[--signal-danger]',
+    className: 'text-(--signal-danger)',
     colorVar: '--signal-danger',
   },
   média: {
     icon: IconChevronUp,
     ariaLabel: 'Prioridade média',
     text: 'MÉDIA',
-    className: 'text-[--text-muted]',
+    className: 'text-(--text-muted)',
     colorVar: '--text-muted',
   },
   baixa: {
     icon: IconArrowBigDown,
     ariaLabel: 'Prioridade baixa',
     text: 'BAIXA',
-    className: 'text-[--signal-success]',
+    className: 'text-(--signal-success)',
     colorVar: '--signal-success',
   },
 }

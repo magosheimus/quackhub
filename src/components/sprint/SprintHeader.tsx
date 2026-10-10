@@ -62,7 +62,7 @@ export function SprintHeader({ activeSprint, tasks }: SprintHeaderProps) {
   if (plannedSprint) {
     return (
       <div className="flex items-center justify-between rounded-md border border-border bg-(--bg-card) p-4">
-        <span className="text-sm text-[--text-primary]">
+        <span className="text-sm text-(--text-primary)">
           {plannedSprint.name} — pronta pra começar
         </span>
         <Button

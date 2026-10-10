@@ -78,7 +78,7 @@ export function SprintCreateModal() {
           <div className="flex flex-col gap-1.5">
             <label
               htmlFor="sprint-name"
-              className="text-xs text-[--text-muted]"
+              className="text-xs text-(--text-muted)"
             >
               Nome
             </label>
@@ -93,7 +93,7 @@ export function SprintCreateModal() {
             <div className="flex flex-1 flex-col gap-1.5">
               <label
                 htmlFor="sprint-start"
-                className="text-xs text-[--text-muted]"
+                className="text-xs text-(--text-muted)"
               >
                 Início
               </label>
@@ -107,7 +107,7 @@ export function SprintCreateModal() {
             <div className="flex flex-1 flex-col gap-1.5">
               <label
                 htmlFor="sprint-end"
-                className="text-xs text-[--text-muted]"
+                className="text-xs text-(--text-muted)"
               >
                 Fim
               </label>
@@ -123,7 +123,7 @@ export function SprintCreateModal() {
           <div className="flex flex-col gap-1.5">
             <label
               htmlFor="sprint-goal"
-              className="text-xs text-[--text-muted]"
+              className="text-xs text-(--text-muted)"
             >
               Goal (opcional)
             </label>

@@ -46,11 +46,11 @@ export function CardSidePanel({
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-1.5 rounded-md border border-border bg-(--bg-card) p-3">
-        <span className="text-sm font-medium text-[--text-primary]">Datas</span>
-        <span className="text-sm text-[--text-primary]">
+        <span className="text-sm font-medium text-(--text-primary)">Datas</span>
+        <span className="text-sm text-(--text-primary)">
           Criado: {formatDate(createdAt)}
         </span>
-        <span className="text-sm text-[--text-primary]">
+        <span className="text-sm text-(--text-primary)">
           Atualizado: {formatDate(updatedAt)}
         </span>
       </div>
@@ -60,7 +60,7 @@ export function CardSidePanel({
           <div className="flex flex-col gap-1.5">
             <label
               htmlFor="card-due-date"
-              className="text-xs text-[--text-muted]"
+              className="text-xs text-(--text-muted)"
             >
               Due Date
             </label>
@@ -81,11 +81,11 @@ export function CardSidePanel({
 
       {projectType === 'study' && SRS_ELIGIBLE_STATUSES.includes(status) && (
         <div className="flex flex-col gap-1.5 rounded-md border border-border bg-(--bg-card) p-3">
-          <span className="text-sm font-medium text-[--text-primary]">SRS</span>
-          <span className="text-sm text-[--text-primary]">
+          <span className="text-sm font-medium text-(--text-primary)">SRS</span>
+          <span className="text-sm text-(--text-primary)">
             EF: {(easeFactor ?? 2.5).toFixed(2)}
           </span>
-          <span className="text-sm text-[--text-primary]">
+          <span className="text-sm text-(--text-primary)">
             Próxima revisão: {nextReview ?? '—'}
           </span>
           <Button type="button" size="sm" onClick={onRegisterPerformance}>

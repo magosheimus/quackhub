@@ -28,7 +28,7 @@ export function CardDependencies({ taskId, projectId }: CardDependenciesProps) {
 
   return (
     <div className="flex flex-col gap-2">
-      <span className="text-sm font-medium text-[--text-primary]">
+      <span className="text-sm font-medium text-(--text-primary)">
         Depende de
       </span>
 
@@ -37,13 +37,13 @@ export function CardDependencies({ taskId, projectId }: CardDependenciesProps) {
           {dependencies.map((dep) => (
             <div
               key={dep.id}
-              className="flex items-center justify-between gap-2 rounded-(--radius-md) border border-border p-2 text-sm"
+              className="flex items-center justify-between gap-2 rounded-md border border-border p-2 text-sm"
             >
               <span
                 className={
                   dep.status === 'done'
-                    ? 'text-[--text-muted] line-through'
-                    : 'text-[--text-primary]'
+                    ? 'text-(--text-muted) line-through'
+                    : 'text-(--text-primary)'
                 }
               >
                 {dep.status === 'done' ? '✓' : '○'} {dep.title}
@@ -55,7 +55,7 @@ export function CardDependencies({ taskId, projectId }: CardDependenciesProps) {
                 }
                 aria-label={`Remover dependência de "${dep.title}"`}
               >
-                <IconClose size={12} className="text-[--text-muted]" />
+                <IconClose size={12} className="text-(--text-muted)" />
               </button>
             </div>
           ))}
@@ -79,7 +79,7 @@ export function CardDependencies({ taskId, projectId }: CardDependenciesProps) {
                 addDependency({ taskId, dependsOnTaskId: candidate.id })
                 setSearch('')
               }}
-              className="rounded-(--radius-md) border border-border p-2 text-left text-sm text-[--text-primary]"
+              className="rounded-md border border-border p-2 text-left text-sm text-(--text-primary)"
             >
               {candidate.title}
             </button>

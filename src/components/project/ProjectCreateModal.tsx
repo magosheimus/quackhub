@@ -64,7 +64,7 @@ export function ProjectCreateModal() {
         render={
           <Button
             variant="ghost"
-            className="size-7 rounded-(--radius-md) p-0 text-(--text-muted) motion-safe:transition-transform motion-safe:hover:scale-110"
+            className="size-7 rounded-md p-0 text-(--text-muted) motion-safe:transition-transform motion-safe:hover:scale-110"
           />
         }
       >
@@ -80,7 +80,7 @@ export function ProjectCreateModal() {
           <div className="flex flex-col gap-1.5">
             <label
               htmlFor="project-name"
-              className="text-xs text-[--text-muted]"
+              className="text-xs text-(--text-muted)"
             >
               Nome
             </label>
@@ -96,7 +96,7 @@ export function ProjectCreateModal() {
           <div className="flex flex-col gap-1.5">
             <label
               htmlFor="project-prefix"
-              className="text-xs text-[--text-muted]"
+              className="text-xs text-(--text-muted)"
             >
               Prefixo
             </label>
@@ -112,7 +112,7 @@ export function ProjectCreateModal() {
           <div className="flex flex-col gap-1.5">
             <span
               id="project-type-label"
-              className="text-xs text-[--text-muted]"
+              className="text-xs text-(--text-muted)"
             >
               Tipo
             </span>
@@ -135,7 +135,7 @@ export function ProjectCreateModal() {
           <div className="flex flex-col gap-1.5">
             <span
               id="project-color-label"
-              className="text-xs text-[--text-muted]"
+              className="text-xs text-(--text-muted)"
             >
               Cor
             </span>

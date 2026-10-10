@@ -41,7 +41,7 @@ export function BacklogRow({
           {task.flagged && (
             <IconFlag
               size={12}
-              className="text-[--signal-danger]"
+              className="text-(--signal-danger)"
               aria-label="Urgente"
             />
           )}
@@ -56,24 +56,24 @@ export function BacklogRow({
 
         <div className="flex flex-1 flex-col gap-0.5">
           {task.task_number && (
-            <span className="text-xs text-[--text-muted]">
+            <span className="text-xs text-(--text-muted)">
               {projectPrefix}-{task.task_number}
             </span>
           )}
           <Link
             to={`/cards/${task.id}`}
-            className="text-[--text-primary] hover:text-[--accent] hover:underline"
+            className="text-(--text-primary) hover:text-accent hover:underline"
           >
             {task.title}
           </Link>
         </div>
 
-        <span className="text-xs text-[--text-muted]">
+        <span className="text-xs text-(--text-muted)">
           {COLUMN_LABELS[task.status] ?? task.status}
         </span>
 
         {epicName && (
-          <span className="text-xs text-[--text-muted]">{epicName}</span>
+          <span className="text-xs text-(--text-muted)">{epicName}</span>
         )}
 
         {onAddToSprint && (

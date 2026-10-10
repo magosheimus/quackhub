@@ -88,7 +88,7 @@ export function CardAttachments({ taskId }: CardAttachmentsProps) {
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-center gap-1.5">
-        <span className="text-sm font-medium text-[--text-primary]">
+        <span className="text-sm font-medium text-(--text-primary)">
           Anexos
         </span>
         <Button
@@ -117,7 +117,7 @@ export function CardAttachments({ taskId }: CardAttachmentsProps) {
             return (
               <div
                 key={attachment.id}
-                className="group relative flex h-28 w-28 items-center justify-center overflow-hidden rounded-(--radius-md) border border-border bg-(--bg-card)"
+                className="group relative flex h-28 w-28 items-center justify-center overflow-hidden rounded-md border border-border bg-(--bg-card)"
               >
                 {isImage ? (
                   <button
@@ -142,8 +142,8 @@ export function CardAttachments({ taskId }: CardAttachmentsProps) {
                     rel="noreferrer"
                     className="flex flex-col items-center gap-1 p-1 text-center"
                   >
-                    <IconFile size={16} className="text-[--text-muted]" />
-                    <span className="line-clamp-2 text-[10px] text-[--text-muted]">
+                    <IconFile size={16} className="text-(--text-muted)" />
+                    <span className="line-clamp-2 text-[10px] text-(--text-muted)">
                       {attachment.file_name}
                     </span>
                   </a>
