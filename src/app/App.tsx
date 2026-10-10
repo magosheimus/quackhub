@@ -6,7 +6,6 @@ import {
   Navigate,
 } from 'react-router-dom'
 import { AppShell } from './layout/AppShell'
-import { TokenPreview } from '@/dev/TokenPreview'
 import { BoardView } from '@/features/board/pages/BoardView'
 import { BacklogView } from '@/features/backlog/pages/BacklogView'
 import { SprintHistoryView } from '@/features/sprints/pages/SprintHistoryView'
@@ -36,7 +35,6 @@ function App() {
           <Route path="/backlog" element={<BacklogView />} />
           <Route path="/configuracoes" element={<SettingsView />} />
           <Route path="/analytics" element={<AnalyticsView />} />
-          <Route path="/debug-tokens" element={<TokenPreview />} />
           <Route path="/sprints" element={<SprintHistoryView />} />
           <Route path="/cards/:id" element={<CardPage />} />
         </Route>
