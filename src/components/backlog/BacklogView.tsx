@@ -12,14 +12,19 @@ import { useEpics } from '@/hooks/epics/useEpics'
 import { useBacklogTasks } from '@/hooks/tasks/useBacklogTasks'
 import {
   COLUMN_LABELS,
-  type TaskStatus,
-  type TaskPriority,
   getInitialStatusForType,
+  PRIORITY_CONFIG,
 } from '@/lib/board'
 import { BacklogRow } from './BacklogRow'
 import { useActiveSprint } from '@/hooks/sprints/useActiveSprint'
 import { useAddTaskToSprint } from '@/hooks/tasks/sprint/useAddTaskToSprint'
-import type { ProjectType } from '@/lib/project'
+import {
+  isTaskPriority,
+  isTaskStatus,
+  TASK_PRIORITIES,
+  TASK_STATUSES,
+} from '@/lib/enums'
+import type { TaskPriority, TaskStatus } from '@/types/entities'
 import { useSprints } from '@/hooks/sprints/useSprints'
 import { AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
@@ -28,17 +33,6 @@ import { Button } from '@/components/ui/button'
 import { EpicManageModal } from '@/components/epic/EpicManageModal'
 import { PageTitle } from '@/components/ui/page-title'
 
-const STATUS_OPTIONS: TaskStatus[] = [
-  'to_study',
-  'studying',
-  'scheduled',
-  'to_review',
-  'todo',
-  'doing',
-  'blocked',
-  'done',
-]
-const PRIORITY_OPTIONS: TaskPriority[] = ['alta', 'média', 'baixa']
 const NONE_VALUE = '__all__'
 
 export function BacklogView() {
@@ -47,8 +41,9 @@ export function BacklogView() {
   const [projectFilter, setProjectFilter] = useState<string | null>(
     searchParams.get('project') || null,
   )
+  const initialStatus = searchParams.get('status')
   const [statusFilter, setStatusFilter] = useState<TaskStatus | null>(
-    (searchParams.get('status') as TaskStatus) || null,
+    isTaskStatus(initialStatus) ? initialStatus : null,
   )
   const [priorityFilter, setPriorityFilter] = useState<TaskPriority | null>(
     null,
@@ -144,9 +139,7 @@ export function BacklogView() {
 
         <Select
           value={statusFilter ?? NONE_VALUE}
-          onValueChange={(v) =>
-            setStatusFilter(v === NONE_VALUE ? null : (v as TaskStatus))
-          }
+          onValueChange={(v) => setStatusFilter(isTaskStatus(v) ? v : null)}
         >
           <SelectTrigger>
             <SelectValue>
@@ -155,7 +148,7 @@ export function BacklogView() {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value={NONE_VALUE}>Todos os status</SelectItem>
-            {STATUS_OPTIONS.map((status) => (
+            {TASK_STATUSES.map((status) => (
               <SelectItem key={status} value={status}>
                 {COLUMN_LABELS[status]}
               </SelectItem>
@@ -165,22 +158,20 @@ export function BacklogView() {
 
         <Select
           value={priorityFilter ?? NONE_VALUE}
-          onValueChange={(v) =>
-            setPriorityFilter(v === NONE_VALUE ? null : (v as TaskPriority))
-          }
+          onValueChange={(v) => setPriorityFilter(isTaskPriority(v) ? v : null)}
         >
           <SelectTrigger>
             <SelectValue>
               {priorityFilter
-                ? priorityFilter.toUpperCase()
+                ? PRIORITY_CONFIG[priorityFilter].text
                 : 'Todas as prioridades'}
             </SelectValue>
           </SelectTrigger>
           <SelectContent>
             <SelectItem value={NONE_VALUE}>Todas as prioridades</SelectItem>
-            {PRIORITY_OPTIONS.map((priority) => (
+            {TASK_PRIORITIES.map((priority) => (
               <SelectItem key={priority} value={priority}>
-                {priority.toUpperCase()}
+                {PRIORITY_CONFIG[priority].text}
               </SelectItem>
             ))}
           </SelectContent>
@@ -250,9 +241,7 @@ export function BacklogView() {
                           addTaskToSprint({
                             taskId: task.id,
                             sprintId: targetSprint.id,
-                            status: getInitialStatusForType(
-                              project.type as ProjectType,
-                            ),
+                            status: getInitialStatusForType(project.type),
                             projectId: task.project_id,
                           }),
                         )
@@ -282,9 +271,7 @@ export function BacklogView() {
                               addTaskToSprint({
                                 taskId: task.id,
                                 sprintId: targetSprint.id,
-                                status: getInitialStatusForType(
-                                  project.type as ProjectType,
-                                ),
+                                status: getInitialStatusForType(project.type),
                                 projectId: task.project_id,
                               })
                           : undefined

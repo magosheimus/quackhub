@@ -22,8 +22,8 @@ import { Button } from '@/components/ui/button'
 import { useProjects } from '@/hooks/projects/useProjects'
 import { useCreateTask } from '@/hooks/tasks/useCreateTask'
 import { EpicSelector } from '@/components/epic/EpicSelector'
-import { getInitialStatusForType, type TaskPriority } from '@/lib/board'
-import type { ProjectType } from '@/lib/project'
+import { getInitialStatusForType, PRIORITY_CONFIG } from '@/lib/board'
+import { TASK_PRIORITIES } from '@/lib/enums'
 import { useDebouncedValue } from '@/hooks/shared/useDebouncedValue'
 import { useSimilarCards } from '@/hooks/tasks/useSimilarCards'
 import { SimilarCardsHint } from './SimilarCardsHint'
@@ -32,9 +32,8 @@ import { detectRecurrencePattern } from '@/lib/cardSearch'
 import { TagInput } from './TagInput'
 import { useProjectTags } from '@/hooks/tasks/tags/useProjectTags'
 import { useSprints } from '@/hooks/sprints/useSprints'
-import type { Task } from '@/types/entities'
+import type { Task, TaskPriority } from '@/types/entities'
 
-const PRIORITY_OPTIONS: TaskPriority[] = ['alta', 'média', 'baixa']
 const NONE_VALUE = '__backlog__'
 
 type CardCreateModalProps = {
@@ -64,7 +63,7 @@ export function CardCreateModal({
   const [sprintId, setSprintId] = useState<string | null>(null)
   const [title, setTitle] = useState(initialTitle ?? '')
   const [description, setDescription] = useState('')
-  const [priority, setPriority] = useState<TaskPriority>('média')
+  const [priority, setPriority] = useState<TaskPriority>('medium')
   const [flagged, setFlagged] = useState(false)
   const [tags, setTags] = useState<string[]>([])
   const titleInputRef = useRef<HTMLInputElement>(null)
@@ -99,7 +98,7 @@ export function CardCreateModal({
     setSprintId(null)
     setTitle('')
     setDescription('')
-    setPriority('média')
+    setPriority('medium')
     setFlagged(false)
     setRecurrence({
       type: null,
@@ -138,7 +137,7 @@ export function CardCreateModal({
       description: description.trim() || null,
       priority,
       flagged,
-      status: getInitialStatusForType(project.type as ProjectType),
+      status: getInitialStatusForType(project.type),
       recurrence_type: recurrence.type,
       recurrence_interval: recurrence.interval,
       recurrence_day_of_month: recurrence.dayOfMonth,
@@ -341,7 +340,7 @@ export function CardCreateModal({
           <div className="flex flex-col gap-1.5">
             <span className="text-xs text-(--text-muted)">Prioridade</span>
             <div className="flex gap-1" role="group" aria-label="Prioridade">
-              {PRIORITY_OPTIONS.map((option) => (
+              {TASK_PRIORITIES.map((option) => (
                 <Button
                   key={option}
                   type="button"
@@ -349,7 +348,7 @@ export function CardCreateModal({
                   size="sm"
                   onClick={() => setPriority(option)}
                 >
-                  {option.toUpperCase()}
+                  {PRIORITY_CONFIG[option].text}
                 </Button>
               ))}
             </div>

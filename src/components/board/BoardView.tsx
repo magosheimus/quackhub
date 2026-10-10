@@ -25,7 +25,7 @@ import { SprintHeader } from '@/components/sprint/SprintHeader'
 import { useSprints } from '@/hooks/sprints/useSprints'
 import { SprintPlanningHeader } from '../backlog/SprintPlanningHeader'
 import { BacklogView } from '../backlog/BacklogView'
-import type { ProjectType } from '@/lib/project'
+import type { ProjectType } from '@/types/entities'
 
 export function BoardView() {
   const [searchParams] = useSearchParams()
@@ -56,7 +56,7 @@ export function BoardView() {
     projects?.map((p) => [p.id, p.prefix ?? '']),
   )
   const projectTypeById = new Map<string, ProjectType>(
-    projects?.map((p) => [p.id, p.type as ProjectType]),
+    projects?.map((p) => [p.id, p.type]),
   )
   const filteredTypes = filters.projectIds.map((id) => projectTypeById.get(id))
   const labelScope =

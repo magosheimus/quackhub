@@ -18,11 +18,9 @@ import {
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { useCreateProject } from '@/hooks/projects/useCreateProject'
-import {
-  PROJECT_COLORS,
-  type ProjectColor,
-  type ProjectType,
-} from '@/lib/project'
+import { PROJECT_COLORS, type ProjectColor } from '@/lib/project'
+import { isProjectType } from '@/lib/enums'
+import type { ProjectType } from '@/types/entities'
 
 export function ProjectCreateModal() {
   const [open, setOpen] = useState(false)
@@ -118,7 +116,11 @@ export function ProjectCreateModal() {
             </span>
             <Select
               value={type}
-              onValueChange={(v) => setType(v as ProjectType)}
+              onValueChange={(v) => {
+                if (isProjectType(v)) {
+                  setType(v)
+                }
+              }}
             >
               <SelectTrigger aria-labelledby="project-type-label">
                 <SelectValue>

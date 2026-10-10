@@ -8,7 +8,6 @@ import { CardChecklist } from './CardChecklist'
 import { CardDependencies } from './CardDependencies'
 import { CardAttachments } from './CardAttachments'
 import { CardHistory } from './CardHistory'
-import { type TaskPriority } from '@/lib/board'
 import { RegisterPerformanceModal } from '@/components/srs/RegisterPerformanceModal'
 import { LoadingText } from '../ui/loading-text'
 import { CardDescription } from './page/CardDescription'
@@ -75,7 +74,7 @@ function CardPageBody({ task }: { task: Task }) {
           <CardDetailsSection
             projectType={project?.type}
             status={task.status}
-            priority={task.priority as TaskPriority}
+            priority={task.priority}
             flagged={task.flagged}
             epicId={task.epic_id}
             epicName={epic?.name}

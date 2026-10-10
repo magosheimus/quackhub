@@ -1,9 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { triageItem } from '@/services/drafts/drafts'
 import { queryKeys } from '@/lib/queryKeys'
+import type { DraftTriageTarget } from '@/types/entities'
 
 type TriageDecision = {
-  triaged_to: string
+  triaged_to: DraftTriageTarget
   triaged_task_id?: string | null
 }
 

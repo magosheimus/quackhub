@@ -197,7 +197,7 @@ export function DraftsList() {
           if (!creatingCardFor) return
           triage({
             id: creatingCardFor.id,
-            decision: { triaged_to: 'card', triaged_task_id: task.id },
+            decision: { triaged_to: 'task', triaged_task_id: task.id },
           })
         }}
       />

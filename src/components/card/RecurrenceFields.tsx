@@ -7,9 +7,11 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
+import { isRecurrenceType } from '@/lib/enums'
+import type { RecurrenceType } from '@/types/entities'
 
 export type RecurrenceValue = {
-  type: 'daily' | 'weekly' | 'monthly' | 'yearly' | null
+  type: RecurrenceType | null
   interval: number | null
   dayOfMonth: number | null
   endDate: string | null
@@ -20,7 +22,7 @@ type RecurrenceFieldsProps = {
   onChange: (value: RecurrenceValue) => void
 }
 
-const TYPE_LABELS: Record<NonNullable<RecurrenceValue['type']>, string> = {
+const TYPE_LABELS: Record<RecurrenceType, string> = {
   daily: 'Diária',
   weekly: 'Semanal',
   monthly: 'Mensal',
@@ -85,12 +87,11 @@ export function RecurrenceFields({ value, onChange }: RecurrenceFieldsProps) {
 
       <Select
         value={value.type}
-        onValueChange={(v) =>
-          onChange({
-            ...value,
-            type: v as NonNullable<RecurrenceValue['type']>,
-          })
-        }
+        onValueChange={(v) => {
+          if (isRecurrenceType(v)) {
+            onChange({ ...value, type: v })
+          }
+        }}
       >
         <SelectTrigger>
           <SelectValue>{TYPE_LABELS[value.type]}</SelectValue>

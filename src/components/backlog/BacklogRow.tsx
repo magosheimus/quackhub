@@ -1,7 +1,7 @@
 import { IconPlus, IconFlag } from '@/lib/icons'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { PRIORITY_CONFIG, COLUMN_LABELS, type TaskPriority } from '@/lib/board'
+import { PRIORITY_CONFIG, COLUMN_LABELS } from '@/lib/board'
 import { Button } from '@/components/ui/button'
 import type { Task } from '@/types/entities'
 
@@ -18,7 +18,7 @@ export function BacklogRow({
   epicName,
   onAddToSprint,
 }: BacklogRowProps) {
-  const priority = PRIORITY_CONFIG[task.priority as TaskPriority]
+  const priority = PRIORITY_CONFIG[task.priority]
   const PriorityIcon = priority.icon
   const projectPrefix = projectPrefixById.get(task.project_id) ?? ''
 
