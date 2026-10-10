@@ -6,7 +6,8 @@ import {
   ResponsiveContainer,
   CartesianGrid,
 } from 'recharts'
-import { ChartCard, SectionTitle } from './ChartCard'
+import { ChartCard } from './ChartCard'
+import { SectionTitle } from '@/components/ui/section-title'
 import { SegmentedProgress } from '@/components/ui/segmented-progress'
 import type {
   CompletionByProjectItem,

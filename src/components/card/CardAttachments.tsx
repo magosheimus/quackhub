@@ -99,7 +99,7 @@ export function CardAttachments({ taskId }: CardAttachmentsProps) {
           aria-label="Adicionar anexo"
           disabled={isPending}
         >
-          <IconAttachment size={12} />
+          <IconAttachment size={16} />
         </Button>
         <input
           ref={fileInputRef}

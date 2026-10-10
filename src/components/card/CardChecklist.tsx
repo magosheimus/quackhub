@@ -1,4 +1,4 @@
-import { IconPlus, IconClose } from '@/lib/icons'
+import { IconPlusBoxSharp, IconClose } from '@/lib/icons'
 import { useState } from 'react'
 import {
   DragDropContext,
@@ -8,7 +8,6 @@ import {
 } from '@hello-pangea/dnd'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
 import { useChecklistItems } from '@/hooks/tasks/checklist/useChecklistItems'
 import { useCreateChecklistItem } from '@/hooks/tasks/checklist/useCreateChecklistItem'
 import { useUpdateChecklistItem } from '@/hooks/tasks/checklist/useUpdateChecklistItem'
@@ -112,9 +111,14 @@ export function CardChecklist({ taskId }: CardChecklistProps) {
           placeholder="Adicionar item"
           aria-label="Novo item do checklist"
         />
-        <Button variant="outline" size="sm" onClick={handleAdd}>
-          <IconPlus size={12} aria-hidden="true" />
-        </Button>
+        <button
+          type="button"
+          onClick={handleAdd}
+          aria-label="Adicionar item"
+          className="flex size-8 items-center justify-center text-(--text-muted) hover:text-(--text-primary) motion-safe:transition-transform motion-safe:hover:scale-110"
+        >
+          <IconPlusBoxSharp size={16} aria-hidden="true" />
+        </button>
       </div>
     </div>
   )

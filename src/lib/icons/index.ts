@@ -30,6 +30,7 @@ import { Plus } from 'pixelarticons/react/Plus'
 import { PenSquare } from 'pixelarticons/react/PenSquare'
 import { StickyNoteSharp } from 'pixelarticons/react/StickyNoteSharp'
 import { PlusBox } from 'pixelarticons/react/PlusBox'
+import { PlusBoxSharp } from 'pixelarticons/react/PlusBoxSharp'
 import { SettingsCog } from 'pixelarticons/react/SettingsCog'
 import { Trash } from 'pixelarticons/react/Trash'
 import { createIcon } from './createIcon'
@@ -68,5 +69,6 @@ export const IconPlus = createIcon(Plus)
 export const IconPenSquare = createIcon(PenSquare)
 export const IconStickyNoteSharp = createIcon(StickyNoteSharp)
 export const IconPlusBox = createIcon(PlusBox)
+export const IconPlusBoxSharp = createIcon(PlusBoxSharp)
 export const IconSettings = createIcon(SettingsCog)
 export const IconTrash = createIcon(Trash)

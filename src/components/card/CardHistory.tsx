@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { IconChevronDown, IconChevronRight } from '@/lib/icons'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { useSrsLogs } from '@/hooks/srs/useSrsLogs'
@@ -7,6 +6,10 @@ import { useAddManualComment } from '@/hooks/srs/useAddManualComment'
 import { useActivityLog } from '@/hooks/activityLog/useActivityLog'
 import { useSprints } from '@/hooks/sprints/useSprints'
 import { COLUMN_LABELS } from '@/lib/board'
+
+const PAGE_SIZE = 5
+
+type HistoryTab = 'movimentacao' | 'desempenho'
 
 type CardHistoryProps = {
   taskId: string
@@ -24,16 +27,22 @@ function formatDisplayDateTime(isoStr: string | null): string {
 }
 
 export function CardHistory({ taskId }: CardHistoryProps) {
-  const [isOpen, setIsOpen] = useState(false)
+  const [tab, setTab] = useState<HistoryTab>('movimentacao')
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE)
+  const [draft, setDraft] = useState('')
   const { data: logs } = useSrsLogs(taskId)
   const { data: activity } = useActivityLog(taskId)
   const { data: sprints } = useSprints()
   const { mutate: addComment, isPending } = useAddManualComment()
-  const [draft, setDraft] = useState('')
 
   function formatSprintValue(value: string | null): string {
     if (!value) return 'Backlog'
     return sprints?.find((s) => s.id === value)?.name ?? value
+  }
+
+  function handleTabChange(next: HistoryTab) {
+    setTab(next)
+    setVisibleCount(PAGE_SIZE)
   }
 
   function handleAddComment() {
@@ -42,32 +51,101 @@ export function CardHistory({ taskId }: CardHistoryProps) {
     addComment({ taskId, comment: trimmed }, { onSuccess: () => setDraft('') })
   }
 
+  function renderToggle(total: number) {
+    const canExpand = total > visibleCount
+    if (!canExpand && visibleCount <= PAGE_SIZE) return null
+
+    return (
+      <div className="flex justify-center">
+        <button
+          type="button"
+          className="text-xs text-[--text-muted] underline underline-offset-2 hover:text-[--text-primary]"
+          onClick={
+            canExpand
+              ? () => setVisibleCount((n) => n + PAGE_SIZE)
+              : () => setVisibleCount(PAGE_SIZE)
+          }
+        >
+          {canExpand ? 'Mostrar mais' : 'Mostrar menos'}
+        </button>
+      </div>
+    )
+  }
+
+  const visibleActivity = activity?.slice(0, visibleCount) ?? []
+  const visibleLogs = logs?.slice(0, visibleCount) ?? []
+  const totalActivity = activity?.length ?? 0
+  const totalLogs = logs?.length ?? 0
+
   return (
     <div className="flex flex-col gap-3">
-      <button
-        type="button"
-        onClick={() => setIsOpen((open) => !open)}
-        className="flex w-fit items-center gap-1 text-sm font-medium text-[--text-primary]"
-      >
-        {isOpen ? (
-          <IconChevronDown size={12} />
-        ) : (
-          <IconChevronRight size={12} />
-        )}
+      <span className="text-sm font-medium text-[--text-primary]">
         Histórico
-      </button>
+      </span>
 
-      {isOpen && (
-        <div className="flex flex-col gap-3 pl-6">
-          <span className="text-xs font-medium text-[--text-muted]">
-            Desempenho
-          </span>
-          {logs && logs.length > 0 ? (
+      <div className="flex gap-2">
+        <Button
+          type="button"
+          size="sm"
+          variant={tab === 'movimentacao' ? 'selected' : 'outline'}
+          onClick={() => handleTabChange('movimentacao')}
+        >
+          Movimentação
+        </Button>
+        <Button
+          type="button"
+          size="sm"
+          variant={tab === 'desempenho' ? 'selected' : 'outline'}
+          onClick={() => handleTabChange('desempenho')}
+        >
+          Desempenho
+        </Button>
+      </div>
+
+      {tab === 'movimentacao' && (
+        <>
+          {visibleActivity.length > 0 ? (
             <div className="flex flex-col gap-2">
-              {logs.map((log) => (
+              {visibleActivity.map((entry) => (
+                <div
+                  key={entry.id}
+                  className="rounded-md border border-border bg-(--bg-card) p-2 text-sm"
+                >
+                  <div className="flex flex-wrap items-center gap-2 text-xs text-[--text-muted]">
+                    <span>{formatDisplayDateTime(entry.created_at)}</span>
+                    <span>·</span>
+                    <span>
+                      {entry.event_type === 'status_change'
+                        ? 'Status'
+                        : 'Sprint'}
+                    </span>
+                  </div>
+                  <p className="mt-1 text-[--text-primary]">
+                    {entry.event_type === 'status_change'
+                      ? `${COLUMN_LABELS[entry.old_value ?? ''] ?? entry.old_value} → ${COLUMN_LABELS[entry.new_value ?? ''] ?? entry.new_value}`
+                      : `${formatSprintValue(entry.old_value)} → ${formatSprintValue(entry.new_value)}`}
+                  </p>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <span className="text-sm text-[--text-muted]">
+              — nenhuma movimentação registrada ainda —
+            </span>
+          )}
+
+          {renderToggle(totalActivity)}
+        </>
+      )}
+
+      {tab === 'desempenho' && (
+        <>
+          {visibleLogs.length > 0 ? (
+            <div className="flex flex-col gap-2">
+              {visibleLogs.map((log) => (
                 <div
                   key={log.id}
-                  className="rounded-(--radius-md) border border-border bg-(--bg-card) p-2 text-sm"
+                  className="rounded-md border border-border bg-(--bg-card) p-2 text-sm"
                 >
                   <div className="flex flex-wrap items-center gap-2 text-xs text-[--text-muted]">
                     <span>{formatDisplayDate(log.session_date)}</span>
@@ -98,6 +176,8 @@ export function CardHistory({ taskId }: CardHistoryProps) {
             </span>
           )}
 
+          {renderToggle(totalLogs)}
+
           <div className="flex flex-col gap-1.5">
             <Textarea
               value={draft}
@@ -114,40 +194,7 @@ export function CardHistory({ taskId }: CardHistoryProps) {
               Adicionar observação
             </Button>
           </div>
-
-          <span className="text-xs font-medium text-[--text-muted]">
-            Movimentação
-          </span>
-          {activity && activity.length > 0 ? (
-            <div className="flex flex-col gap-2">
-              {activity.map((entry) => (
-                <div
-                  key={entry.id}
-                  className="rounded-(--radius-md) border border-border bg-(--bg-card) p-2 text-sm"
-                >
-                  <div className="flex flex-wrap items-center gap-2 text-xs text-[--text-muted]">
-                    <span>{formatDisplayDateTime(entry.created_at)}</span>
-                    <span>·</span>
-                    <span>
-                      {entry.event_type === 'status_change'
-                        ? 'Status'
-                        : 'Sprint'}
-                    </span>
-                  </div>
-                  <p className="mt-1 text-[--text-primary]">
-                    {entry.event_type === 'status_change'
-                      ? `${COLUMN_LABELS[entry.old_value ?? ''] ?? entry.old_value} → ${COLUMN_LABELS[entry.new_value ?? ''] ?? entry.new_value}`
-                      : `${formatSprintValue(entry.old_value)} → ${formatSprintValue(entry.new_value)}`}
-                  </p>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <span className="text-sm text-[--text-muted]">
-              — nenhuma movimentação registrada ainda —
-            </span>
-          )}
-        </div>
+        </>
       )}
     </div>
   )

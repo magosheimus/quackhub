@@ -1,4 +1,4 @@
-import { IconPlusBox } from '@/lib/icons'
+import { IconPlusBoxSharp } from '@/lib/icons'
 import { useEffect, useRef, useState } from 'react'
 import {
   Dialog,
@@ -68,7 +68,7 @@ export function ProjectCreateModal() {
           />
         }
       >
-        <IconPlusBox size={16} aria-hidden="true" />
+        <IconPlusBoxSharp size={16} aria-hidden="true" />
       </DialogTrigger>
 
       <DialogContent>
