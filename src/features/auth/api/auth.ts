@@ -1,8 +1,7 @@
 import { supabase } from '@/shared/api/supabase'
 import { UserFacingError } from '@/shared/lib/errors'
 import { getAuthErrorMessage } from '@/features/auth/lib/authErrors'
-
-export const LOGIN_PATH = '/login'
+import { LOGIN_PATH } from '@/features/auth/lib/redirect'
 
 export async function signInWithPassword(
   email: string,
