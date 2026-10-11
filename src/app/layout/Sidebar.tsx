@@ -22,6 +22,8 @@ import { GlobalSearch } from '@/features/search/components/GlobalSearch'
 import { LoadingText } from '@/components/ui/loading-text'
 import { useInboxItems } from '@/features/inbox/hooks/useInboxItems'
 import type { Project } from '@/shared/types/entities'
+import { COMMON_TEXTS } from '@/shared/constants/texts'
+import { APP_TEXTS } from '@/app/constants/texts'
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
   `flex h-10 items-center gap-3 border px-3 py-2 rounded-(--radius-md) text-base ${
@@ -65,9 +67,9 @@ export function Sidebar() {
     <aside className="h-full w-55 shrink-0 overflow-y-auto border-r border-border bg-(--bg-surface) p-4 flex flex-col">
       <div className="mb-6 px-1">
         <div className="glow-heading font-heading text-3xl text-accent">
-          QUACKHUB
+          {APP_TEXTS.brand}
         </div>
-        <div className="text-xs text-(--text-muted)">[ pato ]</div>
+        <div className="text-xs text-(--text-muted)">{APP_TEXTS.mascot}</div>
       </div>
 
       <div className="mb-4">
@@ -96,16 +98,16 @@ export function Sidebar() {
           )}
         </NavItem>
         <NavItem to="/board" icon={IconGrid}>
-          Sprint atual
+          {COMMON_TEXTS.currentSprint}
         </NavItem>
         <NavItem to="/backlog" icon={IconBulletlist}>
-          Backlog
+          {COMMON_TEXTS.backlog}
         </NavItem>
         <NavItem to="/sprints" icon={IconClock}>
-          Histórico
+          {COMMON_TEXTS.history}
         </NavItem>
         <NavItem to="/analytics" icon={IconChartBar}>
-          Analytics
+          {APP_TEXTS.analytics}
         </NavItem>
         <div className={navLinkClass({ isActive: false })}>
           <button
@@ -119,7 +121,7 @@ export function Sidebar() {
               aria-hidden="true"
               className={`transition-transform ${isProjectsOpen ? 'rotate-90' : ''}`}
             />
-            Projetos
+            {APP_TEXTS.projects}
           </button>
           <ProjectCreateModal />
         </div>
@@ -143,7 +145,7 @@ export function Sidebar() {
                   type="button"
                   onClick={() => setEditingProject(project)}
                   className="p-2 text-(--text-muted) opacity-0 group-hover:opacity-100"
-                  aria-label={`Editar projeto ${project.name}`}
+                  aria-label={APP_TEXTS.editProject(project.name)}
                 >
                   <IconPencil size={12} />
                 </button>
@@ -155,7 +157,7 @@ export function Sidebar() {
 
       <div className="mt-auto flex flex-col gap-1 pt-4">
         <NavItem to="/configuracoes" icon={IconSettings}>
-          Configurações
+          {APP_TEXTS.settings}
         </NavItem>
       </div>
 

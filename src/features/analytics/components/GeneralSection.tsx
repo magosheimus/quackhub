@@ -13,6 +13,9 @@ import type {
   CompletionByProjectItem,
   CompletionRateOverTimeItem,
 } from '@/features/analytics/api/analytics'
+import { COMMON_TEXTS } from '@/shared/constants/texts'
+import { SPRINTS_TEXTS } from '@/features/sprints/constants/texts'
+import { ANALYTICS_TEXTS } from '@/features/analytics/constants/texts'
 
 type GeneralSectionProps = {
   isAll: boolean
@@ -29,9 +32,9 @@ export function GeneralSection({
 }: GeneralSectionProps) {
   return (
     <section className="flex flex-col gap-4">
-      <SectionTitle>Geral</SectionTitle>
+      <SectionTitle>{ANALYTICS_TEXTS.general}</SectionTitle>
 
-      <ChartCard title="CARDS CONCLUÍDOS POR PROJETO">
+      <ChartCard title={ANALYTICS_TEXTS.doneByProject}>
         {projects.length > 0 ? (
           <div className="flex flex-col gap-4">
             {projects.map((project) => {
@@ -49,7 +52,7 @@ export function GeneralSection({
                   </span>
                   <SegmentedProgress
                     value={percent}
-                    label={`Progresso de ${project.projectName}`}
+                    label={COMMON_TEXTS.progressOf(project.projectName)}
                   />
                   <span className="text-xs text-(--text-muted)">
                     {project.completed} de {project.total}
@@ -60,13 +63,13 @@ export function GeneralSection({
           </div>
         ) : (
           <div className="text-sm text-(--text-muted)">
-            — nenhum card nesta sprint —
+            {ANALYTICS_TEXTS.noCards}
           </div>
         )}
       </ChartCard>
 
       {!isAll && (
-        <ChartCard title="CARDS POR STATUS">
+        <ChartCard title={ANALYTICS_TEXTS.cardsByStatus}>
           <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
             {statusCounts.map((status) => (
               <div
@@ -86,7 +89,7 @@ export function GeneralSection({
       )}
 
       {isAll && (
-        <ChartCard title="TAXA DE CONCLUSÃO POR SPRINT">
+        <ChartCard title={ANALYTICS_TEXTS.completionBySprint}>
           {completionRateOverTime.length > 0 ? (
             <ResponsiveContainer width="100%" height={200}>
               <LineChart data={completionRateOverTime}>
@@ -114,7 +117,7 @@ export function GeneralSection({
             </ResponsiveContainer>
           ) : (
             <div className="text-sm text-(--text-muted)">
-              — nenhuma sprint encerrada ainda —
+              {SPRINTS_TEXTS.noClosedSprints}
             </div>
           )}
         </ChartCard>

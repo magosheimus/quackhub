@@ -20,6 +20,9 @@ import type {
   TaskPriority,
   TaskUpdate,
 } from '@/shared/types/entities'
+import { COMMON_TEXTS } from '@/shared/constants/texts'
+import { PROJECT_TYPE_LABELS } from '@/features/projects/constants/texts'
+import { TASKS_TEXTS } from '@/features/tasks/constants/texts'
 
 const NONE_EPIC = '__none__'
 const NONE_SPRINT = '__none__'
@@ -62,21 +65,25 @@ export function CardDetailsSection({
   return (
     <div className="flex flex-col gap-3 rounded-md border border-border bg-(--bg-card) p-3">
       <span className="text-sm font-medium text-(--text-primary)">
-        Detalhes
+        {TASKS_TEXTS.details}
       </span>
 
       <div className="grid grid-cols-2 gap-4 pl-6">
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-1.5">
-            <span className="text-xs text-(--text-muted)">Tipo:</span>
+            <span className="text-xs text-(--text-muted)">
+              {TASKS_TEXTS.typeLabel}
+            </span>
             <span className="text-sm text-(--text-primary)">
-              {projectType === 'study' ? 'Estudo' : 'Geral'}
+              {projectType === 'study'
+                ? PROJECT_TYPE_LABELS.study
+                : PROJECT_TYPE_LABELS.general}
             </span>
           </div>
 
           <div className="flex items-center gap-1.5">
             <span id="epic-label" className="text-xs text-(--text-muted)">
-              Épico:
+              {TASKS_TEXTS.epicLabel}
             </span>
             <Select
               value={epicId ?? NONE_EPIC}
@@ -88,10 +95,10 @@ export function CardDetailsSection({
                 aria-labelledby="epic-label"
                 className={INLINE_TRIGGER_CLASS}
               >
-                <SelectValue>{epicName ?? 'Nenhum'}</SelectValue>
+                <SelectValue>{epicName ?? TASKS_TEXTS.none}</SelectValue>
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value={NONE_EPIC}>Nenhum</SelectItem>
+                <SelectItem value={NONE_EPIC}>{TASKS_TEXTS.none}</SelectItem>
                 {epics?.map((e) => (
                   <SelectItem key={e.id} value={e.id}>
                     {e.name}
@@ -103,7 +110,7 @@ export function CardDetailsSection({
 
           <div className="flex items-center gap-1.5">
             <span id="sprint-label" className="text-xs text-(--text-muted)">
-              Sprint:
+              {TASKS_TEXTS.sprintLabel}
             </span>
             <Select
               value={sprintId ?? NONE_SPRINT}
@@ -115,10 +122,12 @@ export function CardDetailsSection({
                 aria-labelledby="sprint-label"
                 className={INLINE_TRIGGER_CLASS}
               >
-                <SelectValue>{sprintName ?? 'Backlog'}</SelectValue>
+                <SelectValue>{sprintName ?? COMMON_TEXTS.backlog}</SelectValue>
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value={NONE_SPRINT}>Backlog</SelectItem>
+                <SelectItem value={NONE_SPRINT}>
+                  {COMMON_TEXTS.backlog}
+                </SelectItem>
                 {sprints?.map((s) => (
                   <SelectItem key={s.id} value={s.id}>
                     {s.name}
@@ -130,7 +139,7 @@ export function CardDetailsSection({
 
           <div className="flex items-center gap-1.5">
             <span id="priority-label" className="text-xs text-(--text-muted)">
-              Prioridade:
+              {TASKS_TEXTS.priorityLabel}
             </span>
             <Select
               value={priority}
@@ -158,7 +167,7 @@ export function CardDetailsSection({
 
           <div className="flex items-center gap-2">
             <span id="flagged-label" className="text-xs text-(--text-muted)">
-              Urgente:
+              {TASKS_TEXTS.urgentLabel}
             </span>
             <Checkbox
               checked={flagged}
@@ -172,7 +181,9 @@ export function CardDetailsSection({
 
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-1.5">
-            <span className="text-xs text-(--text-muted)">Situação:</span>
+            <span className="text-xs text-(--text-muted)">
+              {TASKS_TEXTS.statusLabel}
+            </span>
             <span
               className={`rounded-(--radius-sm) px-2 py-0.5 text-xs font-medium text-(--bg-page) ${
                 STATUS_BADGE_CLASS[status]
@@ -183,7 +194,9 @@ export function CardDetailsSection({
           </div>
 
           <div className="flex items-center gap-1.5">
-            <span className="text-xs text-(--text-muted)">Tags:</span>
+            <span className="text-xs text-(--text-muted)">
+              {TASKS_TEXTS.tagsLabel}
+            </span>
             <TagInput
               tags={tags}
               onChange={onTagsChange}

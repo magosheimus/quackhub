@@ -13,6 +13,7 @@ import { useProjects } from '@/features/projects/hooks/useProjects'
 import { useAllEpics } from '@/features/epics/hooks/useAllEpics'
 import { STATUS_LABELS } from '@/features/tasks/lib/taskStatus'
 import { LoadingText } from '@/components/ui/loading-text'
+import { SEARCH_TEXTS } from '@/features/search/constants/texts'
 
 export function GlobalSearch() {
   const [open, setOpen] = useState(false)
@@ -59,26 +60,26 @@ export function GlobalSearch() {
         onClick={() => setOpen(true)}
         className="flex w-full items-center justify-between rounded-md border border-border px-2 py-1.5 text-left text-sm text-(--text-muted)"
       >
-        Buscar...
-        <span className="text-xs">Ctrl+K</span>
+        {SEARCH_TEXTS.trigger}
+        <span className="text-xs">{SEARCH_TEXTS.shortcut}</span>
       </button>
 
       <Dialog open={open} onOpenChange={handleOpenChange} dismissible>
         <DialogContent className="top-20! left-1/2! -translate-x-1/2! translate-y-0! sm:max-w-lg">
           <DialogHeader>
-            <DialogTitle>Buscar</DialogTitle>
+            <DialogTitle>{SEARCH_TEXTS.title}</DialogTitle>
           </DialogHeader>
           <Input
             ref={inputRef}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Buscar por título, descrição ou tag..."
+            placeholder={SEARCH_TEXTS.placeholder}
           />
           <div className="flex max-h-80 flex-col gap-1 overflow-y-auto">
             {isLoading && <LoadingText />}
             {!isLoading && debouncedQuery.trim() && results?.length === 0 && (
               <span className="text-sm text-(--text-muted)">
-                — nenhum resultado —
+                {SEARCH_TEXTS.noResults}
               </span>
             )}
             {results?.map((task) => {

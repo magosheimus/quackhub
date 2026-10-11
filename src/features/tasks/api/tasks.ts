@@ -10,6 +10,7 @@ import type {
   TaskStatus,
   TaskUpdate,
 } from '@/shared/types/entities'
+import { TASKS_TEXTS } from '@/features/tasks/constants/texts'
 
 export async function createTask(data: NewTask): Promise<Task> {
   const { data: task, error } = await supabase
@@ -93,9 +94,10 @@ export async function updateTaskStatus(
     const incomplete = await getIncompleteDependencies(id)
     if (incomplete.length > 0) {
       throw new UserFacingError(
-        `Não é possível concluir — ${incomplete.length} dependência(s) pendente(s): ${incomplete
-          .map((t) => t.title)
-          .join(', ')}`,
+        TASKS_TEXTS.pendingDependencies(
+          incomplete.length,
+          incomplete.map((t) => t.title).join(', '),
+        ),
       )
     }
   }

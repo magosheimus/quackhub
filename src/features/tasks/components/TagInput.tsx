@@ -3,6 +3,7 @@ import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { IconPlus, IconClose } from '@/shared/lib/icons'
+import { TASKS_TEXTS } from '@/features/tasks/constants/texts'
 
 type TagInputProps = {
   tags: string[]
@@ -61,7 +62,7 @@ export function TagInput({ tags, onChange, suggestions }: TagInputProps) {
             <button
               type="button"
               onClick={() => removeTag(tag)}
-              aria-label={`Remover tag ${tag}`}
+              aria-label={TASKS_TEXTS.removeTag(tag)}
             >
               <IconClose size={12} />
             </button>
@@ -73,7 +74,7 @@ export function TagInput({ tags, onChange, suggestions }: TagInputProps) {
             variant="ghost"
             size="icon-sm"
             onClick={() => setIsAdding(true)}
-            aria-label="Adicionar tag"
+            aria-label={TASKS_TEXTS.addTag}
           >
             <IconPlus size={12} />
           </Button>
@@ -87,7 +88,7 @@ export function TagInput({ tags, onChange, suggestions }: TagInputProps) {
           onChange={(e) => setDraft(e.target.value)}
           onKeyDown={handleKeyDown}
           onBlur={handleBlur}
-          placeholder="Adicionar tag e Enter"
+          placeholder={TASKS_TEXTS.tagPlaceholder}
         />
       )}
 

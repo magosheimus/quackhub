@@ -16,6 +16,8 @@ import { LoadingText } from '@/components/ui/loading-text'
 import { Button } from '@/components/ui/button'
 import { EpicManageModal } from '@/features/epics/components/EpicManageModal'
 import { PageTitle } from '@/components/ui/page-title'
+import { COMMON_TEXTS } from '@/shared/constants/texts'
+import { BACKLOG_TEXTS } from '@/features/backlog/constants/texts'
 
 const NONE_VALUE = '__all__'
 
@@ -55,14 +57,14 @@ export function BacklogPage() {
   return (
     <div className="flex flex-col gap-4">
       <PageTitle
-        title="Backlog"
+        title={BACKLOG_TEXTS.title}
         icon={IconBulletlist}
         count={filteredTasks.length}
       />
       <div className="flex flex-wrap gap-2">
         <Button variant="outline" onClick={() => setIsEpicModalOpen(true)}>
           <IconPlus size={16} aria-hidden="true" />
-          Criar épico
+          {COMMON_TEXTS.createEpic}
         </Button>
 
         {isEpicModalOpen && (
@@ -80,12 +82,14 @@ export function BacklogPage() {
           <SelectTrigger>
             <SelectValue>
               {projectFilter
-                ? (selectedProject?.name ?? 'Projeto')
-                : 'Todos os projetos'}
+                ? (selectedProject?.name ?? BACKLOG_TEXTS.project)
+                : COMMON_TEXTS.allProjects}
             </SelectValue>
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value={NONE_VALUE}>Todos os projetos</SelectItem>
+            <SelectItem value={NONE_VALUE}>
+              {COMMON_TEXTS.allProjects}
+            </SelectItem>
             {projects?.map((project) => (
               <SelectItem key={project.id} value={project.id}>
                 {project.name}
@@ -97,11 +101,15 @@ export function BacklogPage() {
         <Select value={statusFilter ?? NONE_VALUE} onValueChange={selectStatus}>
           <SelectTrigger>
             <SelectValue>
-              {statusFilter ? STATUS_LABELS[statusFilter] : 'Todos os status'}
+              {statusFilter
+                ? STATUS_LABELS[statusFilter]
+                : BACKLOG_TEXTS.allStatuses}
             </SelectValue>
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value={NONE_VALUE}>Todos os status</SelectItem>
+            <SelectItem value={NONE_VALUE}>
+              {BACKLOG_TEXTS.allStatuses}
+            </SelectItem>
             {TASK_STATUSES.map((status) => (
               <SelectItem key={status} value={status}>
                 {STATUS_LABELS[status]}
@@ -118,11 +126,13 @@ export function BacklogPage() {
             <SelectValue>
               {priorityFilter
                 ? PRIORITY_CONFIG[priorityFilter].text
-                : 'Todas as prioridades'}
+                : BACKLOG_TEXTS.allPriorities}
             </SelectValue>
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value={NONE_VALUE}>Todas as prioridades</SelectItem>
+            <SelectItem value={NONE_VALUE}>
+              {BACKLOG_TEXTS.allPriorities}
+            </SelectItem>
             {TASK_PRIORITIES.map((priority) => (
               <SelectItem key={priority} value={priority}>
                 {PRIORITY_CONFIG[priority].text}
@@ -137,10 +147,14 @@ export function BacklogPage() {
             onValueChange={(v) => selectEpic(v === NONE_VALUE ? null : v)}
           >
             <SelectTrigger>
-              <SelectValue>{selectedEpicName ?? 'Todos os épicos'}</SelectValue>
+              <SelectValue>
+                {selectedEpicName ?? BACKLOG_TEXTS.allEpics}
+              </SelectValue>
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value={NONE_VALUE}>Todos os épicos</SelectItem>
+              <SelectItem value={NONE_VALUE}>
+                {BACKLOG_TEXTS.allEpics}
+              </SelectItem>
               {epics?.map((epic) => (
                 <SelectItem key={epic.id} value={epic.id}>
                   {epic.name}
@@ -155,7 +169,7 @@ export function BacklogPage() {
         {isLoadingTasks && <LoadingText />}
         {!isLoadingTasks && filteredTasks.length === 0 && (
           <div className="text-sm text-(--text-muted)">
-            — nenhum card no backlog —
+            {BACKLOG_TEXTS.empty}
           </div>
         )}
         {projectGroups.map((group) => {
@@ -185,7 +199,7 @@ export function BacklogPage() {
                   {canAddToSprint && (
                     <Button size="sm" onClick={() => addAllToSprint(group)}>
                       <IconPlus size={12} aria-hidden="true" />
-                      Adicionar todos
+                      {BACKLOG_TEXTS.addAll}
                     </Button>
                   )}
                 </div>

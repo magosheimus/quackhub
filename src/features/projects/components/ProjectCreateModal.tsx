@@ -24,6 +24,11 @@ import {
 } from '@/features/projects/lib/project'
 import { isProjectType } from '@/shared/lib/enums'
 import type { ProjectType } from '@/shared/types/entities'
+import { COMMON_TEXTS } from '@/shared/constants/texts'
+import {
+  PROJECTS_TEXTS,
+  PROJECT_TYPE_LABELS,
+} from '@/features/projects/constants/texts'
 
 export function ProjectCreateModal() {
   const [open, setOpen] = useState(false)
@@ -74,7 +79,7 @@ export function ProjectCreateModal() {
 
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Novo projeto</DialogTitle>
+          <DialogTitle>{PROJECTS_TEXTS.newProject}</DialogTitle>
         </DialogHeader>
 
         <div className="flex flex-col gap-4">
@@ -83,14 +88,14 @@ export function ProjectCreateModal() {
               htmlFor="project-name"
               className="text-xs text-(--text-muted)"
             >
-              Nome
+              {COMMON_TEXTS.name}
             </label>
             <Input
               id="project-name"
               ref={nameInputRef}
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="Nome do projeto"
+              placeholder={PROJECTS_TEXTS.namePlaceholder}
             />
           </div>
 
@@ -99,13 +104,13 @@ export function ProjectCreateModal() {
               htmlFor="project-prefix"
               className="text-xs text-(--text-muted)"
             >
-              Prefixo
+              {PROJECTS_TEXTS.prefix}
             </label>
             <Input
               id="project-prefix"
               value={prefix}
               onChange={(e) => setPrefix(e.target.value.toUpperCase())}
-              placeholder="Ex: QH"
+              placeholder={PROJECTS_TEXTS.prefixPlaceholder}
               maxLength={6}
             />
           </div>
@@ -115,7 +120,7 @@ export function ProjectCreateModal() {
               id="project-type-label"
               className="text-xs text-(--text-muted)"
             >
-              Tipo
+              {PROJECTS_TEXTS.type}
             </span>
             <Select
               value={type}
@@ -127,12 +132,18 @@ export function ProjectCreateModal() {
             >
               <SelectTrigger aria-labelledby="project-type-label">
                 <SelectValue>
-                  {type === 'general' ? 'Geral' : 'Estudo'}
+                  {type === 'general'
+                    ? PROJECT_TYPE_LABELS.general
+                    : PROJECT_TYPE_LABELS.study}
                 </SelectValue>
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="general">Geral</SelectItem>
-                <SelectItem value="study">Estudo</SelectItem>
+                <SelectItem value="general">
+                  {PROJECT_TYPE_LABELS.general}
+                </SelectItem>
+                <SelectItem value="study">
+                  {PROJECT_TYPE_LABELS.study}
+                </SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -142,7 +153,7 @@ export function ProjectCreateModal() {
               id="project-color-label"
               className="text-xs text-(--text-muted)"
             >
-              Cor
+              {PROJECTS_TEXTS.color}
             </span>
             <div
               className="flex gap-2"
@@ -160,7 +171,7 @@ export function ProjectCreateModal() {
                     outline: color === c ? '2px solid var(--accent)' : 'none',
                     outlineOffset: 2,
                   }}
-                  aria-label={`Selecionar cor ${c}`}
+                  aria-label={COMMON_TEXTS.selectColor(c)}
                 />
               ))}
             </div>
@@ -169,13 +180,13 @@ export function ProjectCreateModal() {
 
         <DialogFooter>
           <Button variant="outline" onClick={() => setOpen(false)}>
-            Cancelar
+            {COMMON_TEXTS.cancel}
           </Button>
           <Button
             onClick={handleSubmit}
             disabled={!name.trim() || !prefix.trim() || isPending}
           >
-            {isPending ? 'Criando...' : 'Criar'}
+            {isPending ? COMMON_TEXTS.creating : COMMON_TEXTS.create}
           </Button>
         </DialogFooter>
       </DialogContent>

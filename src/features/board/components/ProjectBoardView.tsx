@@ -14,6 +14,8 @@ import {
   type ProjectBucket,
 } from '@/features/board/lib/projectBoard'
 import type { Project, Task } from '@/shared/types/entities'
+import { COMMON_TEXTS } from '@/shared/constants/texts'
+import { BOARD_TEXTS } from '@/features/board/constants/texts'
 
 type ProjectBoardViewProps = {
   project: Project
@@ -75,8 +77,8 @@ export function ProjectBoardView({
           <div className="flex flex-wrap items-center gap-2">
             <span className="text-xs text-(--text-muted)">
               {activeSprintName
-                ? `Sprint ativa: ${activeSprintName}`
-                : 'Sem sprint ativa'}
+                ? BOARD_TEXTS.activeSprint(activeSprintName)
+                : BOARD_TEXTS.noActiveSprint}
             </span>
             <Button
               variant="outline"
@@ -84,7 +86,7 @@ export function ProjectBoardView({
               onClick={() => setIsCardModalOpen(true)}
             >
               <IconPlus size={12} aria-hidden="true" />
-              Novo card
+              {BOARD_TEXTS.newCard}
             </Button>
             <Button
               variant="outline"
@@ -92,13 +94,16 @@ export function ProjectBoardView({
               onClick={() => setIsEpicModalOpen(true)}
             >
               <IconPlus size={12} aria-hidden="true" />
-              Criar épico
+              {COMMON_TEXTS.createEpic}
             </Button>
           </div>
         </div>
 
         <div className="grid gap-4 lg:grid-cols-[2fr_1fr_1fr]">
-          <Section title="SPRINT ATUAL" count={sprintTasks.length}>
+          <Section
+            title={BOARD_TEXTS.currentSprintSection}
+            count={sprintTasks.length}
+          >
             <Droppable droppableId="sprint" isDropDisabled={!activeSprintId}>
               {(provided) => (
                 <div
@@ -120,7 +125,10 @@ export function ProjectBoardView({
             </Droppable>
           </Section>
 
-          <Section title="BACKLOG" count={buckets.backlog.length}>
+          <Section
+            title={BOARD_TEXTS.backlogSection}
+            count={buckets.backlog.length}
+          >
             <Droppable droppableId="backlog" isDropDisabled>
               {(provided) => (
                 <div
@@ -142,7 +150,7 @@ export function ProjectBoardView({
             </Droppable>
           </Section>
 
-          <Section title="CONCLUÍDOS" count={buckets.done.length}>
+          <Section title={BOARD_TEXTS.doneSection} count={buckets.done.length}>
             <div className="flex flex-col gap-2">
               {buckets.done.map((task) => (
                 <StaticBoardCard
@@ -194,7 +202,7 @@ function Section({
       </div>
       {count === 0 && (
         <span className="px-1 text-xs text-(--text-muted)">
-          — nenhum card —
+          {BOARD_TEXTS.noCards}
         </span>
       )}
       {children}

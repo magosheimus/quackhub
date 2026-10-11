@@ -21,6 +21,8 @@ import { getClosedSprintsByRecency } from '@/features/sprints/lib/sprint'
 import { ALL_COLUMNS } from '@/features/board/lib/board'
 import { getStatusLabel } from '@/features/tasks/lib/taskStatus'
 import type { Sprint } from '@/shared/types/entities'
+import { COMMON_TEXTS } from '@/shared/constants/texts'
+import { ANALYTICS_TEXTS } from '@/features/analytics/constants/texts'
 
 type SprintSnapshot = {
   completionByProject: CompletionByProjectItem[]
@@ -32,12 +34,14 @@ function getScopeLabel(
   selectedSprint: Sprint | null,
 ): string {
   if (scope === CURRENT_SCOPE) {
-    return activeSprint ? `Sprint atual (${activeSprint.name})` : 'Sprint atual'
+    return activeSprint
+      ? ANALYTICS_TEXTS.currentSprintNamed(activeSprint.name)
+      : COMMON_TEXTS.currentSprint
   }
   if (scope === ALL_SCOPE) {
-    return 'Todos os projetos'
+    return COMMON_TEXTS.allProjects
   }
-  return selectedSprint?.name ?? 'Sprint'
+  return selectedSprint?.name ?? ANALYTICS_TEXTS.sprint
 }
 
 export function useAnalyticsPage() {

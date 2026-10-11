@@ -6,6 +6,8 @@ import { useSprints } from '@/features/sprints/hooks/useSprints'
 import { SegmentedProgress } from '@/components/ui/segmented-progress'
 import { formatFullDate } from '@/shared/lib/date'
 import type { Sprint, Task } from '@/shared/types/entities'
+import { COMMON_TEXTS } from '@/shared/constants/texts'
+import { SPRINTS_TEXTS } from '@/features/sprints/constants/texts'
 
 type SprintHeaderProps = {
   activeSprint: Sprint | null
@@ -42,9 +44,12 @@ export function SprintHeader({ activeSprint, tasks }: SprintHeaderProps) {
         </div>
         <div className="flex flex-col items-center gap-1">
           <span className="text-xs text-(--text-muted)">
-            {progress}% concluído ({done}/{total})
+            {SPRINTS_TEXTS.progress(progress, done, total)}
           </span>
-          <SegmentedProgress value={progress} label="Progresso da sprint" />
+          <SegmentedProgress
+            value={progress}
+            label={SPRINTS_TEXTS.progressLabel}
+          />
         </div>
         <SprintCloseModal sprint={activeSprint} tasks={tasks} />
       </div>
@@ -55,13 +60,13 @@ export function SprintHeader({ activeSprint, tasks }: SprintHeaderProps) {
     return (
       <div className="flex items-center justify-between rounded-md border border-border bg-(--bg-card) p-4">
         <span className="text-sm text-(--text-primary)">
-          {plannedSprint.name} — pronta pra começar
+          {SPRINTS_TEXTS.readyToStart(plannedSprint.name)}
         </span>
         <Button
           onClick={() => startSprint(plannedSprint.id)}
           disabled={isPending}
         >
-          {isPending ? 'Iniciando...' : 'Iniciar Sprint'}
+          {isPending ? COMMON_TEXTS.startingSprint : COMMON_TEXTS.startSprint}
         </Button>
       </div>
     )
@@ -70,7 +75,7 @@ export function SprintHeader({ activeSprint, tasks }: SprintHeaderProps) {
   return (
     <div className="flex items-center justify-between rounded-md border border-(--bg-surface) bg-(--bg-page) p-4">
       <span className="text-sm text-(--text-muted)">
-        — Nenhuma Sprint neste projeto —
+        {SPRINTS_TEXTS.noSprints}
       </span>
       <SprintCreateModal />
     </div>

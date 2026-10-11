@@ -23,6 +23,11 @@ import {
 } from '@/features/projects/lib/project'
 import { isProjectType } from '@/shared/lib/enums'
 import type { Project, ProjectType } from '@/shared/types/entities'
+import { COMMON_TEXTS } from '@/shared/constants/texts'
+import {
+  PROJECTS_TEXTS,
+  PROJECT_TYPE_LABELS,
+} from '@/features/projects/constants/texts'
 
 type ProjectEditModalProps = {
   project: Project | null
@@ -37,7 +42,7 @@ export function ProjectEditModal({
     <Dialog open={project !== null} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Editar projeto</DialogTitle>
+          <DialogTitle>{PROJECTS_TEXTS.editProject}</DialogTitle>
         </DialogHeader>
 
         {project && (
@@ -86,7 +91,7 @@ function ProjectEditForm({ project, onClose }: ProjectEditFormProps) {
   }
 
   function handleArchive() {
-    if (!window.confirm(`Arquivar o projeto "${project.name}"?`)) return
+    if (!window.confirm(PROJECTS_TEXTS.confirmArchive(project.name))) return
     archiveProject(project.id, { onSuccess: onClose })
   }
 
@@ -98,7 +103,7 @@ function ProjectEditForm({ project, onClose }: ProjectEditFormProps) {
             htmlFor="project-edit-name"
             className="text-xs text-(--text-muted)"
           >
-            Nome
+            {COMMON_TEXTS.name}
           </label>
           <Input
             id="project-edit-name"
@@ -112,13 +117,13 @@ function ProjectEditForm({ project, onClose }: ProjectEditFormProps) {
             htmlFor="project-edit-prefix"
             className="text-xs text-(--text-muted)"
           >
-            Prefixo
+            {PROJECTS_TEXTS.prefix}
           </label>
           <Input
             id="project-edit-prefix"
             value={prefix}
             onChange={(e) => setPrefix(e.target.value.toUpperCase())}
-            placeholder="Ex: QH"
+            placeholder={PROJECTS_TEXTS.prefixPlaceholder}
             maxLength={6}
           />
         </div>
@@ -128,7 +133,7 @@ function ProjectEditForm({ project, onClose }: ProjectEditFormProps) {
             id="project-edit-type-label"
             className="text-xs text-(--text-muted)"
           >
-            Tipo
+            {PROJECTS_TEXTS.type}
           </span>
           <Select
             value={type}
@@ -140,12 +145,16 @@ function ProjectEditForm({ project, onClose }: ProjectEditFormProps) {
           >
             <SelectTrigger aria-labelledby="project-edit-type-label">
               <SelectValue>
-                {type === 'general' ? 'Geral' : 'Estudo'}
+                {type === 'general'
+                  ? PROJECT_TYPE_LABELS.general
+                  : PROJECT_TYPE_LABELS.study}
               </SelectValue>
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="general">Geral</SelectItem>
-              <SelectItem value="study">Estudo</SelectItem>
+              <SelectItem value="general">
+                {PROJECT_TYPE_LABELS.general}
+              </SelectItem>
+              <SelectItem value="study">{PROJECT_TYPE_LABELS.study}</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -155,7 +164,7 @@ function ProjectEditForm({ project, onClose }: ProjectEditFormProps) {
             id="project-edit-color-label"
             className="text-xs text-(--text-muted)"
           >
-            Cor
+            {PROJECTS_TEXTS.color}
           </span>
           <div
             className="flex gap-2"
@@ -173,7 +182,7 @@ function ProjectEditForm({ project, onClose }: ProjectEditFormProps) {
                   outline: color === c ? '2px solid var(--accent)' : 'none',
                   outlineOffset: 2,
                 }}
-                aria-label={`Selecionar cor ${c}`}
+                aria-label={COMMON_TEXTS.selectColor(c)}
               />
             ))}
           </div>
@@ -187,17 +196,17 @@ function ProjectEditForm({ project, onClose }: ProjectEditFormProps) {
           disabled={isArchiving}
           className="text-(--signal-danger) border-(--signal-danger)"
         >
-          {isArchiving ? 'Arquivando...' : 'Arquivar'}
+          {isArchiving ? PROJECTS_TEXTS.archiving : PROJECTS_TEXTS.archive}
         </Button>
         <div className="flex gap-2">
           <Button variant="outline" onClick={onClose}>
-            Cancelar
+            {COMMON_TEXTS.cancel}
           </Button>
           <Button
             onClick={handleSave}
             disabled={!name.trim() || !prefix.trim() || isUpdating}
           >
-            {isUpdating ? 'Salvando...' : 'Salvar'}
+            {isUpdating ? COMMON_TEXTS.saving : COMMON_TEXTS.save}
           </Button>
         </div>
       </DialogFooter>

@@ -6,6 +6,8 @@ import { LoadingText } from '@/components/ui/loading-text'
 import { useSprintHistoryPage } from '@/features/sprints/hooks/useSprintHistoryPage'
 import { getCompletionPercent } from '@/features/sprints/lib/sprint'
 import { formatDayMonth } from '@/shared/lib/date'
+import { COMMON_TEXTS } from '@/shared/constants/texts'
+import { SPRINTS_TEXTS } from '@/features/sprints/constants/texts'
 
 export function SprintHistoryPage() {
   const { isLoading, closedSprints, isSprintOpen, toggleSprint } =
@@ -18,9 +20,9 @@ export function SprintHistoryPage() {
   if (closedSprints.length === 0) {
     return (
       <div className="flex flex-col gap-4">
-        <PageTitle title="Histórico" icon={IconClock} count={0} />
+        <PageTitle title={COMMON_TEXTS.history} icon={IconClock} count={0} />
         <div className="text-sm text-(--text-muted)">
-          — nenhuma sprint encerrada ainda —
+          {SPRINTS_TEXTS.noClosedSprints}
         </div>
       </div>
     )
@@ -29,7 +31,7 @@ export function SprintHistoryPage() {
   return (
     <div className="flex flex-col gap-4">
       <PageTitle
-        title="Histórico"
+        title={COMMON_TEXTS.history}
         icon={IconClock}
         count={closedSprints.length}
       />
@@ -61,11 +63,14 @@ export function SprintHistoryPage() {
                 </div>
                 <div className="flex flex-col items-end gap-1">
                   <span className="text-xs text-(--text-muted)">
-                    {sprint.completed_tasks ?? 0} de {sprint.total_tasks ?? 0}
+                    {SPRINTS_TEXTS.completedOf(
+                      sprint.completed_tasks ?? 0,
+                      sprint.total_tasks ?? 0,
+                    )}
                   </span>
                   <SegmentedProgress
                     value={percent}
-                    label={`Progresso de ${sprint.name}`}
+                    label={COMMON_TEXTS.progressOf(sprint.name)}
                   />
                 </div>
                 <IconChevronRight

@@ -6,6 +6,7 @@ import { useAddDependency } from '@/features/tasks/hooks/dependencies/useAddDepe
 import { useRemoveDependency } from '@/features/tasks/hooks/dependencies/useRemoveDependency'
 import { useSimilarCards } from '@/features/tasks/hooks/useSimilarCards'
 import { useDebouncedValue } from '@/shared/hooks/useDebouncedValue'
+import { TASKS_TEXTS } from '@/features/tasks/constants/texts'
 
 type CardDependenciesProps = {
   taskId: string
@@ -29,7 +30,7 @@ export function CardDependencies({ taskId, projectId }: CardDependenciesProps) {
   return (
     <div className="flex flex-col gap-2">
       <span className="text-sm font-medium text-(--text-primary)">
-        Depende de
+        {TASKS_TEXTS.dependsOn}
       </span>
 
       {dependencies && dependencies.length > 0 && (
@@ -53,7 +54,7 @@ export function CardDependencies({ taskId, projectId }: CardDependenciesProps) {
                 onClick={() =>
                   removeDependency({ taskId, dependsOnTaskId: dep.id })
                 }
-                aria-label={`Remover dependência de "${dep.title}"`}
+                aria-label={TASKS_TEXTS.removeDependency(dep.title)}
               >
                 <IconClose size={12} className="text-(--text-muted)" />
               </button>
@@ -65,8 +66,8 @@ export function CardDependencies({ taskId, projectId }: CardDependenciesProps) {
       <Input
         value={search}
         onChange={(e) => setSearch(e.target.value)}
-        placeholder="Buscar card pra adicionar como dependência..."
-        aria-label="Buscar dependência"
+        placeholder={TASKS_TEXTS.dependencyPlaceholder}
+        aria-label={TASKS_TEXTS.dependencySearch}
       />
 
       {search.trim().length >= 3 && filteredCandidates.length > 0 && (

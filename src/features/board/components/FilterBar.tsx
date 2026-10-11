@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button'
 import type { BoardFilters } from '@/features/board/lib/board'
 import type { Epic, Project } from '@/shared/types/entities'
+import { BOARD_TEXTS } from '@/features/board/constants/texts'
 
 type FilterBarProps = {
   filters: BoardFilters
@@ -30,7 +31,7 @@ export function FilterBar({
   return (
     <div className="flex flex-wrap items-center gap-2">
       <span className="text-sm font-medium uppercase tracking-wide text-(--text-primary)">
-        Filtros rápidos:
+        {BOARD_TEXTS.quickFilters}
       </span>
 
       {epics.map((epic) => (

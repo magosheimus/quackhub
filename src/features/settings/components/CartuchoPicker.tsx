@@ -6,17 +6,16 @@ import {
   saveSettings,
   type Settings,
 } from '@/features/settings/lib/settings'
+import {
+  CARTUCHO_LABELS,
+  SETTINGS_TEXTS,
+} from '@/features/settings/constants/texts'
 
 type CartuchoValue = Settings['cartucho']
 
-const CARTUCHO_OPTIONS: { value: CartuchoValue; label: string }[] = [
-  { value: 'sage', label: 'Sage' },
-  { value: 'amber', label: 'Amber' },
-  { value: 'slate', label: 'Slate' },
-  { value: 'earth', label: 'Earth' },
-  { value: 'sage-dark', label: 'Sage Dark' },
-  { value: 'amber-dark', label: 'Amber Dark' },
-]
+const CARTUCHO_OPTIONS = (Object.keys(CARTUCHO_LABELS) as CartuchoValue[]).map(
+  (value) => ({ value, label: CARTUCHO_LABELS[value] }),
+)
 
 export function CartuchoPicker() {
   const [cartucho, setCartucho] = useState<CartuchoValue>(
@@ -89,7 +88,9 @@ export function CartuchoPicker() {
         type="button"
         onClick={() => setIsOpen((open) => !open)}
         aria-expanded={isOpen}
-        aria-label={isOpen ? 'Fechar cartuchos' : 'Abrir cartuchos'}
+        aria-label={
+          isOpen ? SETTINGS_TEXTS.closeCartuchos : SETTINGS_TEXTS.openCartuchos
+        }
         className="flex size-8 items-center justify-center rounded-md border-2 border-border-strong bg-(--bg-surface) shadow-[2px_2px_0_0_var(--border-strong)] motion-safe:transition-transform motion-safe:hover:-translate-x-0.5"
       >
         {isOpen ? (

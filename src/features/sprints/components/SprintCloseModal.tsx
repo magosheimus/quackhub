@@ -12,6 +12,8 @@ import { useCloseSprint } from '@/features/sprints/hooks/useCloseSprint'
 import type { CarryoverDecision } from '@/features/sprints/lib/sprint'
 import { useSprints } from '@/features/sprints/hooks/useSprints'
 import type { Sprint, Task } from '@/shared/types/entities'
+import { COMMON_TEXTS } from '@/shared/constants/texts'
+import { SPRINTS_TEXTS } from '@/features/sprints/constants/texts'
 
 type SprintCloseModalProps = {
   sprint: Sprint
@@ -55,18 +57,18 @@ export function SprintCloseModal({ sprint, tasks }: SprintCloseModalProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger render={<Button variant="outline" size="sm" />}>
-        Encerrar Sprint
+        {SPRINTS_TEXTS.close}
       </DialogTrigger>
 
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Encerrar {sprint.name}</DialogTitle>
+          <DialogTitle>{SPRINTS_TEXTS.closeTitle(sprint.name)}</DialogTitle>
         </DialogHeader>
 
         <div className="flex max-h-96 flex-col gap-4 overflow-y-auto">
           <div>
             <p className="mb-1 text-xs text-(--text-muted)">
-              CONCLUÍDOS ({done.length})
+              {SPRINTS_TEXTS.doneSection(done.length)}
             </p>
             {done.map((task) => (
               <p key={task.id} className="text-sm text-(--text-primary)">
@@ -78,8 +80,7 @@ export function SprintCloseModal({ sprint, tasks }: SprintCloseModalProps) {
           {toReview.length > 0 && (
             <div>
               <p className="mb-1 text-xs text-(--text-muted)">
-                A REVISAR — voltam ao Backlog automaticamente ({toReview.length}
-                )
+                {SPRINTS_TEXTS.toReviewSection(toReview.length)}
               </p>
               {toReview.map((task) => (
                 <p key={task.id} className="text-sm text-(--text-primary)">
@@ -92,7 +93,7 @@ export function SprintCloseModal({ sprint, tasks }: SprintCloseModalProps) {
           {pending.length > 0 && (
             <div className="flex flex-col gap-2">
               <p className="text-xs text-(--text-muted)">
-                NÃO CONCLUÍDOS — decida cada um ({pending.length})
+                {SPRINTS_TEXTS.pendingSection(pending.length)}
               </p>
               {pending.map((task) => (
                 <div
@@ -110,7 +111,7 @@ export function SprintCloseModal({ sprint, tasks }: SprintCloseModalProps) {
                       size="sm"
                       onClick={() => handleDecisionChange(task.id, 'backlog')}
                     >
-                      Backlog
+                      {COMMON_TEXTS.backlog}
                     </Button>
                     <Button
                       variant={
@@ -124,15 +125,14 @@ export function SprintCloseModal({ sprint, tasks }: SprintCloseModalProps) {
                         handleDecisionChange(task.id, 'next_sprint')
                       }
                     >
-                      Próxima Sprint
+                      {SPRINTS_TEXTS.nextSprint}
                     </Button>
                   </div>
                 </div>
               ))}
               {!nextSprint && (
                 <p className="text-xs text-(--text-muted)">
-                  Sem próxima Sprint criada ainda — todos vão pro Backlog por
-                  padrão.
+                  {SPRINTS_TEXTS.noNextSprint}
                 </p>
               )}
             </div>
@@ -141,10 +141,10 @@ export function SprintCloseModal({ sprint, tasks }: SprintCloseModalProps) {
 
         <DialogFooter>
           <Button variant="outline" onClick={() => setOpen(false)}>
-            Cancelar
+            {COMMON_TEXTS.cancel}
           </Button>
           <Button onClick={handleClose} disabled={isPending}>
-            {isPending ? 'Encerrando...' : 'Encerrar Sprint'}
+            {isPending ? SPRINTS_TEXTS.closing : SPRINTS_TEXTS.close}
           </Button>
         </DialogFooter>
       </DialogContent>

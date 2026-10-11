@@ -1,5 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query'
 import { Button } from '@/components/ui/button'
+import { SETTINGS_TEXTS } from '@/features/settings/constants/texts'
 
 export function ClearCacheButton() {
   const queryClient = useQueryClient()
@@ -12,7 +13,7 @@ export function ClearCacheButton() {
 
   return (
     <Button variant="ghost" size="sm" onClick={handleClearCache}>
-      Limpar cache
+      {SETTINGS_TEXTS.clearCache}
     </Button>
   )
 }

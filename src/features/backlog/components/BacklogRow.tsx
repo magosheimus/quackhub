@@ -5,6 +5,8 @@ import { STATUS_LABELS } from '@/features/tasks/lib/taskStatus'
 import { PRIORITY_CONFIG } from '@/features/tasks/lib/taskPriority'
 import { Button } from '@/components/ui/button'
 import type { Task } from '@/shared/types/entities'
+import { COMMON_TEXTS } from '@/shared/constants/texts'
+import { BACKLOG_TEXTS } from '@/features/backlog/constants/texts'
 
 type BacklogRowProps = {
   task: Task
@@ -41,7 +43,7 @@ export function BacklogRow({
             <IconFlag
               size={12}
               className="text-(--signal-danger)"
-              aria-label="Urgente"
+              aria-label={COMMON_TEXTS.urgent}
             />
           )}
           <span title={priority.ariaLabel} className="inline-flex">
@@ -78,7 +80,7 @@ export function BacklogRow({
         {onAddToSprint && (
           <Button variant="outline" size="sm" onClick={onAddToSprint}>
             <IconPlus size={12} aria-hidden="true" />
-            Adicionar à Sprint
+            {BACKLOG_TEXTS.addToSprint}
           </Button>
         )}
       </div>

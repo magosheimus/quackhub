@@ -34,6 +34,8 @@ import { TagInput } from './TagInput'
 import { useProjectTags } from '@/features/tasks/hooks/tags/useProjectTags'
 import { useSprints } from '@/features/sprints/hooks/useSprints'
 import type { Task, TaskPriority } from '@/shared/types/entities'
+import { COMMON_TEXTS } from '@/shared/constants/texts'
+import { TASKS_TEXTS } from '@/features/tasks/constants/texts'
 
 const NONE_VALUE = '__backlog__'
 
@@ -192,13 +194,13 @@ export function CardCreateModal({
       {!hideTrigger && (
         <DialogTrigger render={<Button size="sm" />}>
           <IconPlus size={12} aria-hidden="true" />
-          Novo Card
+          {TASKS_TEXTS.newCardTitle}
         </DialogTrigger>
       )}
 
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Novo card</DialogTitle>
+          <DialogTitle>{TASKS_TEXTS.newCard}</DialogTitle>
         </DialogHeader>
 
         <div className="flex flex-col gap-4">
@@ -207,7 +209,7 @@ export function CardCreateModal({
               id="card-project-label"
               className="text-xs text-(--text-muted)"
             >
-              Projeto
+              {TASKS_TEXTS.project}
             </span>
             <Select
               value={projectId ?? ''}
@@ -218,7 +220,7 @@ export function CardCreateModal({
             >
               <SelectTrigger aria-labelledby="card-project-label">
                 <SelectValue>
-                  {project?.name ?? 'Selecionar projeto'}
+                  {project?.name ?? TASKS_TEXTS.selectProject}
                 </SelectValue>
               </SelectTrigger>
               <SelectContent>
@@ -233,14 +235,14 @@ export function CardCreateModal({
 
           <div className="flex flex-col gap-1.5">
             <label htmlFor="card-title" className="text-xs text-(--text-muted)">
-              Título
+              {TASKS_TEXTS.title}
             </label>
             <Input
               id="card-title"
               ref={titleInputRef}
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="Nome do card"
+              placeholder={TASKS_TEXTS.titlePlaceholder}
               disabled={!projectId}
             />
             <SimilarCardsHint cards={similarCards ?? []} />
@@ -251,7 +253,7 @@ export function CardCreateModal({
               {recurrenceDetected && (
                 <div className="flex flex-col gap-2 rounded-md border border-accent bg-(--bg-surface) p-2 text-sm">
                   <span className="text-(--text-primary)">
-                    ↻ Este card parece recorrente
+                    {TASKS_TEXTS.looksRecurring}
                   </span>
                   <div className="flex flex-wrap gap-1">
                     <Button
@@ -259,7 +261,7 @@ export function CardCreateModal({
                       size="sm"
                       onClick={() => setRecurrenceBannerDismissed(true)}
                     >
-                      Criar mesmo assim
+                      {TASKS_TEXTS.createAnyway}
                     </Button>
                     <Button
                       size="sm"
@@ -273,7 +275,7 @@ export function CardCreateModal({
                         setRecurrenceBannerDismissed(true)
                       }}
                     >
-                      Criar como recorrência
+                      {TASKS_TEXTS.createAsRecurring}
                     </Button>
                   </div>
                 </div>
@@ -285,7 +287,9 @@ export function CardCreateModal({
           )}
 
           <div className="flex flex-col gap-1.5">
-            <span className="text-xs text-(--text-muted)">Épico</span>
+            <span className="text-xs text-(--text-muted)">
+              {TASKS_TEXTS.epic}
+            </span>
             {projectId ? (
               <EpicSelector
                 projectId={projectId}
@@ -294,7 +298,7 @@ export function CardCreateModal({
               />
             ) : (
               <span className="text-xs text-(--text-muted)">
-                Selecione um projeto primeiro
+                {TASKS_TEXTS.selectProjectFirst}
               </span>
             )}
           </div>
@@ -304,7 +308,7 @@ export function CardCreateModal({
               id="card-sprint-label"
               className="text-xs text-(--text-muted)"
             >
-              Sprint (opcional)
+              {TASKS_TEXTS.sprintOptional}
             </span>
             <Select
               value={sprintId ?? NONE_VALUE}
@@ -314,12 +318,14 @@ export function CardCreateModal({
                 <SelectValue>
                   {sprintId
                     ? (eligibleSprints?.find((s) => s.id === sprintId)?.name ??
-                      'Sprint')
-                    : 'Backlog (padrão)'}
+                      TASKS_TEXTS.sprint)
+                    : TASKS_TEXTS.backlogDefault}
                 </SelectValue>
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value={NONE_VALUE}>Backlog (padrão)</SelectItem>
+                <SelectItem value={NONE_VALUE}>
+                  {TASKS_TEXTS.backlogDefault}
+                </SelectItem>
                 {eligibleSprints?.map((sprint) => (
                   <SelectItem key={sprint.id} value={sprint.id}>
                     {sprint.name}
@@ -330,7 +336,9 @@ export function CardCreateModal({
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <span className="text-xs text-(--text-muted)">Tags</span>
+            <span className="text-xs text-(--text-muted)">
+              {TASKS_TEXTS.tags}
+            </span>
             <TagInput
               tags={tags}
               onChange={setTags}
@@ -339,8 +347,14 @@ export function CardCreateModal({
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <span className="text-xs text-(--text-muted)">Prioridade</span>
-            <div className="flex gap-1" role="group" aria-label="Prioridade">
+            <span className="text-xs text-(--text-muted)">
+              {TASKS_TEXTS.priority}
+            </span>
+            <div
+              className="flex gap-1"
+              role="group"
+              aria-label={TASKS_TEXTS.priority}
+            >
               {TASK_PRIORITIES.map((option) => (
                 <Button
                   key={option}
@@ -364,7 +378,7 @@ export function CardCreateModal({
               checked={flagged}
               onCheckedChange={(checked) => setFlagged(checked === true)}
             />
-            Marcar como urgente
+            {TASKS_TEXTS.markUrgent}
           </label>
 
           <div className="flex flex-col gap-1.5">
@@ -372,33 +386,33 @@ export function CardCreateModal({
               htmlFor="card-description"
               className="text-xs text-(--text-muted)"
             >
-              Descrição (opcional)
+              {TASKS_TEXTS.descriptionOptional}
             </label>
             <Textarea
               id="card-description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Adicionar contexto..."
+              placeholder={TASKS_TEXTS.descriptionPlaceholder}
             />
           </div>
         </div>
 
         <DialogFooter>
           <Button variant="outline" onClick={() => handleOpenChange(false)}>
-            Cancelar
+            {COMMON_TEXTS.cancel}
           </Button>
           <Button
             variant="outline"
             onClick={handleSubmitAndAddAnother}
             disabled={!projectId || !title.trim() || isPending}
           >
-            Criar e adicionar outro
+            {TASKS_TEXTS.createAndAddAnother}
           </Button>
           <Button
             onClick={handleSubmit}
             disabled={!projectId || !title.trim() || isPending}
           >
-            {isPending ? 'Criando...' : 'Criar'}
+            {isPending ? COMMON_TEXTS.creating : COMMON_TEXTS.create}
           </Button>
         </DialogFooter>
       </DialogContent>

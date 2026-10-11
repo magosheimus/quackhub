@@ -13,6 +13,7 @@ import {
 import { ChartCard } from './ChartCard'
 import { SectionTitle } from '@/components/ui/section-title'
 import type { ReviewsByEpicItem } from '@/features/analytics/api/analytics'
+import { ANALYTICS_TEXTS } from '@/features/analytics/constants/texts'
 
 type StudySectionProps = {
   totalReviews: number
@@ -29,12 +30,12 @@ export function StudySection({
 }: StudySectionProps) {
   return (
     <section className="flex flex-col gap-4">
-      <SectionTitle>Estudo</SectionTitle>
+      <SectionTitle>{ANALYTICS_TEXTS.study}</SectionTitle>
 
       <div className="grid grid-cols-2 gap-4">
         <div className="flex flex-col gap-1 rounded-md border border-border bg-(--bg-card) p-5">
           <span className="text-xs font-medium uppercase tracking-wide text-(--text-primary)">
-            Revisões
+            {ANALYTICS_TEXTS.reviews}
           </span>
           <span className="glow-heading font-heading text-4xl text-(--text-primary)">
             {totalReviews}
@@ -42,7 +43,7 @@ export function StudySection({
         </div>
         <div className="flex flex-col gap-1 rounded-md border border-border bg-(--bg-card) p-5">
           <span className="text-xs font-medium uppercase tracking-wide text-(--text-primary)">
-            Taxa de acerto
+            {ANALYTICS_TEXTS.accuracy}
           </span>
           <span className="glow-heading font-heading text-4xl text-(--text-primary)">
             {accuracyPercent}%
@@ -50,7 +51,7 @@ export function StudySection({
         </div>
       </div>
 
-      <ChartCard title="QUALIDADE MÉDIA POR SEMANA">
+      <ChartCard title={ANALYTICS_TEXTS.qualityByWeek}>
         {accuracyChartData.length > 0 ? (
           <ResponsiveContainer width="100%" height={200}>
             <LineChart data={accuracyChartData}>
@@ -78,12 +79,12 @@ export function StudySection({
           </ResponsiveContainer>
         ) : (
           <div className="text-sm text-(--text-muted)">
-            — sem dados suficientes —
+            {ANALYTICS_TEXTS.notEnoughData}
           </div>
         )}
       </ChartCard>
 
-      <ChartCard title="REVISÕES POR ÉPICO">
+      <ChartCard title={ANALYTICS_TEXTS.reviewsByEpic}>
         {epicData.length > 0 ? (
           <div className="grid grid-cols-1 items-center gap-4 md:grid-cols-2">
             <ResponsiveContainer width="100%" height={220}>
@@ -120,7 +121,7 @@ export function StudySection({
           </div>
         ) : (
           <div className="text-sm text-(--text-muted)">
-            — nenhuma revisão nesta sprint —
+            {ANALYTICS_TEXTS.noReviews}
           </div>
         )}
       </ChartCard>

@@ -7,6 +7,8 @@ import { useActivityLog } from '@/features/tasks/hooks/activityLog/useActivityLo
 import { useSprints } from '@/features/sprints/hooks/useSprints'
 import { getStatusLabel } from '@/features/tasks/lib/taskStatus'
 import { formatFullDate } from '@/shared/lib/date'
+import { COMMON_TEXTS } from '@/shared/constants/texts'
+import { TASKS_TEXTS } from '@/features/tasks/constants/texts'
 
 const PAGE_SIZE = 5
 
@@ -32,7 +34,7 @@ export function CardHistory({ taskId }: CardHistoryProps) {
   const { mutate: addComment, isPending } = useAddManualComment()
 
   function formatSprintValue(value: string | null): string {
-    if (!value) return 'Backlog'
+    if (!value) return COMMON_TEXTS.backlog
     return sprints?.find((s) => s.id === value)?.name ?? value
   }
 
@@ -62,7 +64,7 @@ export function CardHistory({ taskId }: CardHistoryProps) {
               : () => setVisibleCount(PAGE_SIZE)
           }
         >
-          {canExpand ? 'Mostrar mais' : 'Mostrar menos'}
+          {canExpand ? TASKS_TEXTS.showMore : TASKS_TEXTS.showLess}
         </button>
       </div>
     )
@@ -76,7 +78,7 @@ export function CardHistory({ taskId }: CardHistoryProps) {
   return (
     <div className="flex flex-col gap-3">
       <span className="text-sm font-medium text-(--text-primary)">
-        Histórico
+        {COMMON_TEXTS.history}
       </span>
 
       <div className="flex gap-2">
@@ -86,7 +88,7 @@ export function CardHistory({ taskId }: CardHistoryProps) {
           variant={tab === 'movimentacao' ? 'selected' : 'outline'}
           onClick={() => handleTabChange('movimentacao')}
         >
-          Movimentação
+          {TASKS_TEXTS.activityTab}
         </Button>
         <Button
           type="button"
@@ -94,7 +96,7 @@ export function CardHistory({ taskId }: CardHistoryProps) {
           variant={tab === 'desempenho' ? 'selected' : 'outline'}
           onClick={() => handleTabChange('desempenho')}
         >
-          Desempenho
+          {TASKS_TEXTS.performanceTab}
         </Button>
       </div>
 
@@ -112,8 +114,8 @@ export function CardHistory({ taskId }: CardHistoryProps) {
                     <span>·</span>
                     <span>
                       {entry.event_type === 'status_change'
-                        ? 'Status'
-                        : 'Sprint'}
+                        ? TASKS_TEXTS.statusEvent
+                        : TASKS_TEXTS.sprintEvent}
                     </span>
                   </div>
                   <p className="mt-1 text-(--text-primary)">
@@ -126,7 +128,7 @@ export function CardHistory({ taskId }: CardHistoryProps) {
             </div>
           ) : (
             <span className="text-sm text-(--text-muted)">
-              — nenhuma movimentação registrada ainda —
+              {TASKS_TEXTS.noActivity}
             </span>
           )}
 
@@ -146,16 +148,20 @@ export function CardHistory({ taskId }: CardHistoryProps) {
                   <div className="flex flex-wrap items-center gap-2 text-xs text-(--text-muted)">
                     <span>{formatFullDate(log.session_date)}</span>
                     <span>·</span>
-                    <span>{log.log_type === 'srs' ? 'SRS' : 'Manual'}</span>
+                    <span>
+                      {log.log_type === 'srs'
+                        ? TASKS_TEXTS.srsLog
+                        : TASKS_TEXTS.manualLog}
+                    </span>
                     {log.log_type === 'srs' && (
                       <>
                         <span>·</span>
-                        <span>Nota {log.nota}</span>
+                        <span>{TASKS_TEXTS.logScore(log.nota)}</span>
                         <span>·</span>
-                        <span>Confiança {log.confianca}</span>
+                        <span>{TASKS_TEXTS.logConfidence(log.confianca)}</span>
                         <span>·</span>
                         <span>
-                          próxima revisão em {log.new_interval} dia(s)
+                          {TASKS_TEXTS.logNextReview(log.new_interval)}
                         </span>
                       </>
                     )}
@@ -168,7 +174,7 @@ export function CardHistory({ taskId }: CardHistoryProps) {
             </div>
           ) : (
             <span className="text-sm text-(--text-muted)">
-              — nenhum registro ainda —
+              {TASKS_TEXTS.noLogs}
             </span>
           )}
 
@@ -178,7 +184,7 @@ export function CardHistory({ taskId }: CardHistoryProps) {
             <Textarea
               value={draft}
               onChange={(e) => setDraft(e.target.value)}
-              placeholder="Adicionar observação..."
+              placeholder={TASKS_TEXTS.commentPlaceholder}
             />
             <Button
               type="button"
@@ -187,7 +193,7 @@ export function CardHistory({ taskId }: CardHistoryProps) {
               onClick={handleAddComment}
               disabled={isPending || !draft.trim()}
             >
-              Adicionar observação
+              {TASKS_TEXTS.addComment}
             </Button>
           </div>
         </>

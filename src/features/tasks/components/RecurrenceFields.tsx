@@ -9,6 +9,11 @@ import {
 import { Input } from '@/components/ui/input'
 import { isRecurrenceType } from '@/shared/lib/enums'
 import type { RecurrenceType } from '@/shared/types/entities'
+import {
+  MONTH_NAMES,
+  RECURRENCE_TYPE_LABELS,
+  TASKS_TEXTS,
+} from '@/features/tasks/constants/texts'
 
 export type RecurrenceValue = {
   type: RecurrenceType | null
@@ -21,28 +26,6 @@ type RecurrenceFieldsProps = {
   value: RecurrenceValue
   onChange: (value: RecurrenceValue) => void
 }
-
-const TYPE_LABELS: Record<RecurrenceType, string> = {
-  daily: 'Diária',
-  weekly: 'Semanal',
-  monthly: 'Mensal',
-  yearly: 'Anual',
-}
-
-const MONTH_NAMES = [
-  'Janeiro',
-  'Fevereiro',
-  'Março',
-  'Abril',
-  'Maio',
-  'Junho',
-  'Julho',
-  'Agosto',
-  'Setembro',
-  'Outubro',
-  'Novembro',
-  'Dezembro',
-]
 
 function toEndOfMonthDate(yearMonth: string): string {
   const [year, monthNumber] = yearMonth.split('-').map(Number)
@@ -58,7 +41,7 @@ export function RecurrenceFields({ value, onChange }: RecurrenceFieldsProps) {
         onClick={() => onChange({ ...value, type: 'monthly', interval: 1 })}
         className="text-left text-sm text-(--text-muted)"
       >
-        [ Não recorrente ▾ ]
+        {TASKS_TEXTS.notRecurring}
       </button>
     )
   }
@@ -68,7 +51,9 @@ export function RecurrenceFields({ value, onChange }: RecurrenceFieldsProps) {
   return (
     <div className="flex flex-col gap-2 rounded-md border border-border p-3">
       <div className="flex items-center justify-between">
-        <span className="text-xs text-(--text-muted)">Recorrência</span>
+        <span className="text-xs text-(--text-muted)">
+          {TASKS_TEXTS.recurrence}
+        </span>
         <button
           type="button"
           onClick={() =>
@@ -94,13 +79,19 @@ export function RecurrenceFields({ value, onChange }: RecurrenceFieldsProps) {
         }}
       >
         <SelectTrigger>
-          <SelectValue>{TYPE_LABELS[value.type]}</SelectValue>
+          <SelectValue>{RECURRENCE_TYPE_LABELS[value.type]}</SelectValue>
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="daily">Diária</SelectItem>
-          <SelectItem value="weekly">Semanal</SelectItem>
-          <SelectItem value="monthly">Mensal</SelectItem>
-          <SelectItem value="yearly">Anual</SelectItem>
+          <SelectItem value="daily">{RECURRENCE_TYPE_LABELS.daily}</SelectItem>
+          <SelectItem value="weekly">
+            {RECURRENCE_TYPE_LABELS.weekly}
+          </SelectItem>
+          <SelectItem value="monthly">
+            {RECURRENCE_TYPE_LABELS.monthly}
+          </SelectItem>
+          <SelectItem value="yearly">
+            {RECURRENCE_TYPE_LABELS.yearly}
+          </SelectItem>
         </SelectContent>
       </Select>
 
@@ -110,7 +101,7 @@ export function RecurrenceFields({ value, onChange }: RecurrenceFieldsProps) {
             htmlFor="recurrence-day-of-month"
             className="text-xs text-(--text-muted)"
           >
-            Dia do mês
+            {TASKS_TEXTS.dayOfMonth}
           </label>
           <Input
             id="recurrence-day-of-month"
@@ -130,7 +121,7 @@ export function RecurrenceFields({ value, onChange }: RecurrenceFieldsProps) {
 
       <div className="flex flex-col gap-1.5">
         <span className="text-xs text-(--text-muted)">
-          Repetir até (opcional)
+          {TASKS_TEXTS.repeatUntilOptional}
         </span>
         {isMonthPrecision ? (
           <MonthYearField
@@ -140,7 +131,7 @@ export function RecurrenceFields({ value, onChange }: RecurrenceFieldsProps) {
         ) : (
           <Input
             type="date"
-            aria-label="Repetir até"
+            aria-label={TASKS_TEXTS.repeatUntil}
             value={value.endDate ?? ''}
             onChange={(e) =>
               onChange({ ...value, endDate: e.target.value || null })
@@ -178,8 +169,10 @@ function MonthYearField({ endDate, onChange }: MonthYearFieldProps) {
   return (
     <div className="flex gap-2">
       <Select value={month} onValueChange={(v) => update(v ?? '', year)}>
-        <SelectTrigger className="flex-1" aria-label="Mês">
-          <SelectValue>{MONTH_NAMES[Number(month) - 1] ?? 'Mês'}</SelectValue>
+        <SelectTrigger className="flex-1" aria-label={TASKS_TEXTS.month}>
+          <SelectValue>
+            {MONTH_NAMES[Number(month) - 1] ?? TASKS_TEXTS.month}
+          </SelectValue>
         </SelectTrigger>
         <SelectContent>
           {MONTH_NAMES.map((name, index) => {
@@ -194,8 +187,8 @@ function MonthYearField({ endDate, onChange }: MonthYearFieldProps) {
       </Select>
 
       <Select value={year} onValueChange={(v) => update(month, v ?? '')}>
-        <SelectTrigger className="w-28" aria-label="Ano">
-          <SelectValue>{year || 'Ano'}</SelectValue>
+        <SelectTrigger className="w-28" aria-label={TASKS_TEXTS.year}>
+          <SelectValue>{year || TASKS_TEXTS.year}</SelectValue>
         </SelectTrigger>
         <SelectContent>
           {yearOptions.map((option) => (

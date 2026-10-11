@@ -1,6 +1,7 @@
 import { useSyncExternalStore } from 'react'
 import { IconClose } from '@/shared/lib/icons'
 import { dismissToast, getToasts, subscribeToasts } from '@/shared/lib/toast'
+import { COMMON_TEXTS } from '@/shared/constants/texts'
 
 export function Toaster() {
   const toasts = useSyncExternalStore(subscribeToasts, getToasts)
@@ -20,7 +21,7 @@ export function Toaster() {
           <span>{toast.message}</span>
           <button
             type="button"
-            aria-label="Fechar"
+            aria-label={COMMON_TEXTS.close}
             onClick={() => dismissToast(toast.id)}
             className="text-(--text-muted)"
           >

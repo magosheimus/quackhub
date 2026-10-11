@@ -6,6 +6,8 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { ALL_SCOPE, CURRENT_SCOPE } from '@/features/analytics/lib/analytics'
+import { COMMON_TEXTS } from '@/shared/constants/texts'
+import { ANALYTICS_TEXTS } from '@/features/analytics/constants/texts'
 
 type AnalyticsScopeSelectProps = {
   scope: string
@@ -25,17 +27,19 @@ export function AnalyticsScopeSelect({
       value={scope}
       onValueChange={(value) => onChange(value ?? CURRENT_SCOPE)}
     >
-      <SelectTrigger aria-label="Escopo da análise" className="w-fit">
+      <SelectTrigger aria-label={ANALYTICS_TEXTS.scopeLabel} className="w-fit">
         <SelectValue>{scopeLabel}</SelectValue>
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value={CURRENT_SCOPE}>Sprint atual</SelectItem>
+        <SelectItem value={CURRENT_SCOPE}>
+          {COMMON_TEXTS.currentSprint}
+        </SelectItem>
         {closedSprints.map((sprint) => (
           <SelectItem key={sprint.id} value={sprint.id}>
             {sprint.name}
           </SelectItem>
         ))}
-        <SelectItem value={ALL_SCOPE}>Todos os projetos</SelectItem>
+        <SelectItem value={ALL_SCOPE}>{COMMON_TEXTS.allProjects}</SelectItem>
       </SelectContent>
     </Select>
   )

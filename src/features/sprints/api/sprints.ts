@@ -18,6 +18,7 @@ import {
   getConfidenceDistribution,
 } from '@/features/analytics/api/analytics'
 import type { NewSprint, Sprint, SprintUpdate } from '@/shared/types/entities'
+import { SPRINT_ERRORS } from '@/features/sprints/constants/texts'
 
 export async function getSprints(): Promise<Sprint[]> {
   const { data, error } = await supabase
@@ -72,7 +73,7 @@ export async function activateSprint(id: string): Promise<Sprint> {
     .single()
   if (error) {
     if (error.code === '23505') {
-      throw new UserFacingError('Já existe uma Sprint ativa.')
+      throw new UserFacingError(SPRINT_ERRORS.alreadyActive)
     }
     throw new Error(`Falha ao iniciar sprint: ${error.message}`)
   }

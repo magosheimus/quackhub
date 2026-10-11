@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { useCaptureDraft } from '@/features/drafts/hooks/useCaptureDraft'
+import { COMMON_TEXTS } from '@/shared/constants/texts'
+import { DRAFTS_TEXTS } from '@/features/drafts/constants/texts'
 
 export function DraftsCapture() {
   const [content, setContent] = useState('')
@@ -23,12 +25,12 @@ export function DraftsCapture() {
         onKeyDown={(e) => {
           if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) handleSubmit()
         }}
-        placeholder="Capturar rapidamente..."
+        placeholder={DRAFTS_TEXTS.capturePlaceholder}
         className="min-h-16 px-2 py-1.5 focus-visible:ring-0"
       />
       <div className="flex items-center justify-between">
         <span className="text-xs text-(--text-muted)">
-          Ctrl + Enter para adicionar
+          {DRAFTS_TEXTS.captureHint}
         </span>
         <Button
           type="button"
@@ -36,7 +38,7 @@ export function DraftsCapture() {
           onClick={handleSubmit}
           disabled={!canSubmit}
         >
-          Adicionar
+          {COMMON_TEXTS.add}
         </Button>
       </div>
     </div>

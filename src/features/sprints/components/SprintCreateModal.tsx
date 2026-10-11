@@ -14,6 +14,8 @@ import { Button } from '@/components/ui/button'
 import { useCreateSprint } from '@/features/sprints/hooks/useCreateSprint'
 import { useSprints } from '@/features/sprints/hooks/useSprints'
 import { todayLocal } from '@/features/srs/lib/srs'
+import { COMMON_TEXTS } from '@/shared/constants/texts'
+import { SPRINTS_TEXTS } from '@/features/sprints/constants/texts'
 
 const SPRINT_DURATION_DAYS = 14
 
@@ -39,7 +41,7 @@ export function SprintCreateModal() {
   function handleOpenChange(nextOpen: boolean) {
     if (nextOpen) {
       // RN-SP06 — sugere o próximo número toda vez que abre
-      setName(`Sprint ${(sprints?.length ?? 0) + 1}`)
+      setName(SPRINTS_TEXTS.defaultName((sprints?.length ?? 0) + 1))
     } else {
       setStartDate(todayLocal())
       setEndDate(addDays(todayLocal(), SPRINT_DURATION_DAYS))
@@ -66,12 +68,12 @@ export function SprintCreateModal() {
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger render={<Button variant="outline" size="sm" />}>
         <IconPlus size={12} aria-hidden="true" />
-        Nova Sprint
+        {SPRINTS_TEXTS.newSprint}
       </DialogTrigger>
 
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Nova Sprint</DialogTitle>
+          <DialogTitle>{SPRINTS_TEXTS.newSprint}</DialogTitle>
         </DialogHeader>
 
         <div className="flex flex-col gap-4">
@@ -80,7 +82,7 @@ export function SprintCreateModal() {
               htmlFor="sprint-name"
               className="text-xs text-(--text-muted)"
             >
-              Nome
+              {COMMON_TEXTS.name}
             </label>
             <Input
               id="sprint-name"
@@ -95,7 +97,7 @@ export function SprintCreateModal() {
                 htmlFor="sprint-start"
                 className="text-xs text-(--text-muted)"
               >
-                Início
+                {SPRINTS_TEXTS.start}
               </label>
               <Input
                 id="sprint-start"
@@ -109,7 +111,7 @@ export function SprintCreateModal() {
                 htmlFor="sprint-end"
                 className="text-xs text-(--text-muted)"
               >
-                Fim
+                {SPRINTS_TEXTS.end}
               </label>
               <Input
                 id="sprint-end"
@@ -125,23 +127,23 @@ export function SprintCreateModal() {
               htmlFor="sprint-goal"
               className="text-xs text-(--text-muted)"
             >
-              Goal (opcional)
+              {SPRINTS_TEXTS.goal}
             </label>
             <Textarea
               id="sprint-goal"
               value={goal}
               onChange={(e) => setGoal(e.target.value)}
-              placeholder="O que essa sprint quer alcançar..."
+              placeholder={SPRINTS_TEXTS.goalPlaceholder}
             />
           </div>
         </div>
 
         <DialogFooter>
           <Button variant="outline" onClick={() => handleOpenChange(false)}>
-            Cancelar
+            {COMMON_TEXTS.cancel}
           </Button>
           <Button onClick={handleSubmit} disabled={!name.trim() || isPending}>
-            {isPending ? 'Criando...' : 'Criar'}
+            {isPending ? COMMON_TEXTS.creating : COMMON_TEXTS.create}
           </Button>
         </DialogFooter>
       </DialogContent>
