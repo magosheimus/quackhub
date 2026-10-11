@@ -1,10 +1,6 @@
 import { describe, it, expect } from 'vitest'
+import { makeTask } from '@/test/factories'
 import { getProjectBucket, sortByStatusOrder } from './projectBoard'
-import type { Task } from '@/shared/types/entities'
-
-function makeTask(overrides: Partial<Task>): Task {
-  return { status: 'todo', sprint_id: null, ...overrides } as Task
-}
 
 describe('getProjectBucket', () => {
   it('card não concluído na sprint ativa vai para sprint', () => {
