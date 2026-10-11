@@ -18,8 +18,5 @@ export function useRemoveDependency() {
         queryKey: queryKeys.dependencies.byTask(taskId),
       })
     },
-    onError: (error) => {
-      window.alert(error.message)
-    },
   })
 }

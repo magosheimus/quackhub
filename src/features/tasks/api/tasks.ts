@@ -1,4 +1,5 @@
 import { supabase } from '@/shared/api/supabase'
+import { UserFacingError } from '@/shared/lib/errors'
 import {
   calculateNextDueDate,
   buildRecurrentCard,
@@ -91,7 +92,7 @@ export async function updateTaskStatus(
   if (status === 'done') {
     const incomplete = await getIncompleteDependencies(id)
     if (incomplete.length > 0) {
-      throw new Error(
+      throw new UserFacingError(
         `Não é possível concluir — ${incomplete.length} dependência(s) pendente(s): ${incomplete
           .map((t) => t.title)
           .join(', ')}`,

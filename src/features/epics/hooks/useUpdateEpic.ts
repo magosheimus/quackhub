@@ -12,8 +12,5 @@ export function useUpdateEpic() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.epics.root })
     },
-    onError: (error) => {
-      console.error(error.message)
-    },
   })
 }

@@ -16,8 +16,5 @@ export function useAddManualComment() {
         queryKey: queryKeys.srsLogs.byTask(taskId),
       })
     },
-    onError: (error) => {
-      console.error(error.message)
-    },
   })
 }

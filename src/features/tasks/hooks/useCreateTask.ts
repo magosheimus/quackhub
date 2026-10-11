@@ -21,8 +21,5 @@ export function useCreateTask() {
       invalidateTaskQueries(queryClient, task.id)
       invalidateTagQueries(queryClient)
     },
-    onError: (error) => {
-      console.error(error.message)
-    },
   })
 }

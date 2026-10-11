@@ -10,8 +10,5 @@ export function useCreateProject() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.projects.root })
     },
-    onError: (error) => {
-      console.error(error.message)
-    },
   })
 }

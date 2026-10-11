@@ -14,12 +14,8 @@ export function useTriageDraft() {
   return useMutation({
     mutationFn: ({ id, decision }: { id: string; decision: TriageDecision }) =>
       triageItem(id, decision),
-    meta: { silent: true },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.drafts.root })
-    },
-    onError: (error) => {
-      console.error(error.message)
     },
   })
 }

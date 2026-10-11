@@ -13,8 +13,5 @@ export function useUploadAttachment() {
         queryKey: queryKeys.attachments.byTask(attachment.task_id),
       })
     },
-    onError: (error) => {
-      console.error(error.message)
-    },
   })
 }

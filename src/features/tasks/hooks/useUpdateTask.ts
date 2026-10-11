@@ -12,8 +12,5 @@ export function useUpdateTask() {
     onSuccess: (task) => {
       invalidateTaskQueries(queryClient, task.id)
     },
-    onError: (error) => {
-      console.error(error.message)
-    },
   })
 }

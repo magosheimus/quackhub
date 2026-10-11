@@ -38,8 +38,7 @@ export function useAddTaskToSprint() {
       return { keys, previous }
     },
 
-    onError: (error, _vars, context) => {
-      window.alert(error.message)
+    onError: (_error, _vars, context) => {
       if (context) {
         context.keys.forEach((key, i) => {
           queryClient.setQueryData(key, context.previous[i])

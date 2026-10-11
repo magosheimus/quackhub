@@ -11,8 +11,5 @@ export function useUpdateDraft() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.drafts.root })
     },
-    onError: (error) => {
-      console.error(error.message)
-    },
   })
 }

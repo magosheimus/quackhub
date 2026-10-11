@@ -27,8 +27,5 @@ export function useRegisterPerformance() {
       })
       invalidateTaskQueries(queryClient, taskId)
     },
-    onError: (error) => {
-      console.error(error.message)
-    },
   })
 }

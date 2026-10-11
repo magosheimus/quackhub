@@ -20,8 +20,5 @@ export function useCloseSprint() {
       queryClient.invalidateQueries({ queryKey: queryKeys.sprints.root })
       invalidateTaskQueries(queryClient)
     },
-    onError: (error) => {
-      console.error(error.message)
-    },
   })
 }

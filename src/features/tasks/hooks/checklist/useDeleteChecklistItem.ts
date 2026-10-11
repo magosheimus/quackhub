@@ -13,8 +13,5 @@ export function useDeleteChecklistItem() {
         queryKey: queryKeys.checklist.byTask(taskId),
       })
     },
-    onError: (error) => {
-      console.error(error.message)
-    },
   })
 }

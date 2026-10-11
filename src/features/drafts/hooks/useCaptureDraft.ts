@@ -7,12 +7,8 @@ export function useCaptureDraft() {
 
   return useMutation({
     mutationFn: (content: string) => captureItem(content),
-    meta: { silent: true },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.drafts.root })
-    },
-    onError: (error) => {
-      console.error(error.message)
     },
   })
 }
