@@ -1,15 +1,15 @@
-import type { DraftsItem } from '@/shared/types/entities'
+import type { NewDraftsItem } from '@/shared/types/entities'
 import { STORAGE_KEYS } from '@/shared/constants/storageKeys'
 
 const QUEUE_KEY = STORAGE_KEYS.draftsQueue
 
-export function enqueue(item: DraftsItem): void {
+export function enqueue(item: NewDraftsItem): void {
   const queue = getQueue()
   queue.push(item)
   localStorage.setItem(QUEUE_KEY, JSON.stringify(queue))
 }
 
-export function getQueue(): DraftsItem[] {
+export function getQueue(): NewDraftsItem[] {
   const raw = localStorage.getItem(QUEUE_KEY)
   return raw ? JSON.parse(raw) : []
 }

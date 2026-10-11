@@ -4,10 +4,14 @@ import {
   getQueue,
   clearQueue,
 } from '@/features/drafts/lib/draftsQueue'
-import type { DraftsItem, DraftTriageTarget } from '@/shared/types/entities'
+import type {
+  NewDraftsItem,
+  DraftsItem,
+  DraftTriageTarget,
+} from '@/shared/types/entities'
 
 export async function captureItem(content: string): Promise<DraftsItem | null> {
-  const item: DraftsItem = {
+  const item: NewDraftsItem = {
     id: crypto.randomUUID(),
     content,
     created_at: new Date().toISOString(),
