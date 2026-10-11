@@ -16,14 +16,14 @@ export function Toaster() {
         <div
           key={toast.id}
           role="alert"
-          className="flex items-center gap-3 border border-(--signal-danger) bg-(--bg-surface) p-3 text-sm text-(--text-primary)"
+          className="flex items-center gap-3 border border-danger bg-surface p-3 text-sm text-fg"
         >
           <span>{toast.message}</span>
           <button
             type="button"
             aria-label={COMMON_TEXTS.close}
             onClick={() => dismissToast(toast.id)}
-            className="text-(--text-muted)"
+            className="text-fg-muted"
           >
             <IconClose size={12} />
           </button>

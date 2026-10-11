@@ -26,12 +26,10 @@ export function PageTitle({
         <Icon size={iconSize} aria-hidden="true" className="text-accent" />
       )}
       {children ?? (
-        <span className="font-heading text-3xl uppercase text-(--text-primary)">
-          {title}
-        </span>
+        <span className="font-heading text-3xl uppercase text-fg">{title}</span>
       )}
       {count !== undefined && (
-        <span className="flex size-6 items-center justify-center rounded-md border border-border text-xs text-(--text-muted)">
+        <span className="flex size-6 items-center justify-center rounded-md border border-border text-xs text-fg-muted">
           {count}
         </span>
       )}

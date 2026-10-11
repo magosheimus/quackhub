@@ -36,7 +36,7 @@ export function AnalyticsPage() {
       </div>
 
       {hasNoActiveSprint ? (
-        <div className="text-sm text-(--text-muted)">
+        <div className="text-sm text-fg-muted">
           {ANALYTICS_TEXTS.noActiveSprint}
         </div>
       ) : (

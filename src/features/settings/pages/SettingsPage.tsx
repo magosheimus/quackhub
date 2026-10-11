@@ -35,8 +35,8 @@ function SettingsCard({
   children: ReactNode
 }) {
   return (
-    <div className="flex flex-col gap-4 rounded-md border border-border bg-(--bg-card) p-5">
-      <span className="text-xs font-medium uppercase tracking-wide text-(--text-primary)">
+    <div className="flex flex-col gap-4 rounded-md border border-border bg-card p-5">
+      <span className="text-xs font-medium uppercase tracking-wide text-fg">
         {title}
       </span>
       {children}
@@ -79,7 +79,7 @@ export function SettingsPage() {
 
           {settings.texture !== 'none' && (
             <div className="flex items-center gap-3">
-              <span className="text-xs text-(--text-muted)">
+              <span className="text-xs text-fg-muted">
                 {SETTINGS_TEXTS.intensity}
               </span>
               <Slider
@@ -87,7 +87,7 @@ export function SettingsPage() {
                 onValueChange={setTextureOpacity}
                 className="flex-1"
               />
-              <span className="w-10 text-xs text-(--text-muted)">
+              <span className="w-10 text-xs text-fg-muted">
                 {textureOpacity}%
               </span>
             </div>
@@ -102,10 +102,7 @@ export function SettingsPage() {
                 }
                 aria-labelledby="scanlines-label"
               />
-              <span
-                id="scanlines-label"
-                className="text-xs text-(--text-muted)"
-              >
+              <span id="scanlines-label" className="text-xs text-fg-muted">
                 {SETTINGS_TEXTS.scanlines}
               </span>
             </div>
@@ -117,7 +114,7 @@ export function SettingsPage() {
                 }
                 aria-labelledby="glow-label"
               />
-              <span id="glow-label" className="text-xs text-(--text-muted)">
+              <span id="glow-label" className="text-xs text-fg-muted">
                 {SETTINGS_TEXTS.glow}
               </span>
             </div>
@@ -126,7 +123,7 @@ export function SettingsPage() {
 
         <SettingsCard title={SETTINGS_TEXTS.preferences}>
           <div className="flex flex-col gap-1.5">
-            <span id="font-label" className="text-xs text-(--text-muted)">
+            <span id="font-label" className="text-xs text-fg-muted">
               {SETTINGS_TEXTS.bodyFont}
             </span>
             <Select value={settings.fontBody} onValueChange={selectFontBody}>
@@ -144,10 +141,7 @@ export function SettingsPage() {
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <span
-              id="date-format-label"
-              className="text-xs text-(--text-muted)"
-            >
+            <span id="date-format-label" className="text-xs text-fg-muted">
               {SETTINGS_TEXTS.dateFormat}
             </span>
             <Select
@@ -168,7 +162,7 @@ export function SettingsPage() {
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <span id="week-start-label" className="text-xs text-(--text-muted)">
+            <span id="week-start-label" className="text-xs text-fg-muted">
               {SETTINGS_TEXTS.weekStart}
             </span>
             <Select
@@ -192,10 +186,8 @@ export function SettingsPage() {
       <SettingsCard title={SETTINGS_TEXTS.data}>
         <div className="flex items-center justify-between gap-4">
           <div className="flex flex-col">
-            <span className="text-sm text-(--text-primary)">
-              {SETTINGS_TEXTS.exportData}
-            </span>
-            <span className="text-xs text-(--text-muted)">
+            <span className="text-sm text-fg">{SETTINGS_TEXTS.exportData}</span>
+            <span className="text-xs text-fg-muted">
               {SETTINGS_TEXTS.exportDescription}
             </span>
           </div>
@@ -212,10 +204,8 @@ export function SettingsPage() {
 
         <div className="flex items-center justify-between gap-4 border-t border-border pt-4">
           <div className="flex flex-col">
-            <span className="text-sm text-(--text-primary)">
-              {SETTINGS_TEXTS.clearCache}
-            </span>
-            <span className="text-xs text-(--text-muted)">
+            <span className="text-sm text-fg">{SETTINGS_TEXTS.clearCache}</span>
+            <span className="text-xs text-fg-muted">
               {SETTINGS_TEXTS.clearCacheDescription}
             </span>
           </div>

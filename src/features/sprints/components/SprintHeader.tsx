@@ -25,25 +25,23 @@ export function SprintHeader({ activeSprint, tasks }: SprintHeaderProps) {
     const progress = total === 0 ? 0 : Math.round((done / total) * 100)
 
     return (
-      <div className="flex items-center justify-between gap-4 rounded-md border border-border bg-(--bg-card) p-4">
+      <div className="flex items-center justify-between gap-4 rounded-md border border-border bg-card p-4">
         <div className="flex flex-col gap-1">
-          <span className="font-heading text-2xl text-(--text-primary)">
+          <span className="font-heading text-2xl text-fg">
             {activeSprint.name}
             {(activeSprint.start_date || activeSprint.end_date) && (
-              <span className="font-body ml-2 text-xs text-(--text-muted)">
+              <span className="font-body ml-2 text-xs text-fg-muted">
                 ({formatFullDate(activeSprint.start_date)} →{' '}
                 {formatFullDate(activeSprint.end_date)})
               </span>
             )}
           </span>
           {activeSprint.goal && (
-            <span className="text-sm text-(--text-muted)">
-              {activeSprint.goal}
-            </span>
+            <span className="text-sm text-fg-muted">{activeSprint.goal}</span>
           )}
         </div>
         <div className="flex flex-col items-center gap-1">
-          <span className="text-xs text-(--text-muted)">
+          <span className="text-xs text-fg-muted">
             {SPRINTS_TEXTS.progress(progress, done, total)}
           </span>
           <SegmentedProgress
@@ -58,8 +56,8 @@ export function SprintHeader({ activeSprint, tasks }: SprintHeaderProps) {
 
   if (plannedSprint) {
     return (
-      <div className="flex items-center justify-between rounded-md border border-border bg-(--bg-card) p-4">
-        <span className="text-sm text-(--text-primary)">
+      <div className="flex items-center justify-between rounded-md border border-border bg-card p-4">
+        <span className="text-sm text-fg">
           {SPRINTS_TEXTS.readyToStart(plannedSprint.name)}
         </span>
         <Button
@@ -73,10 +71,8 @@ export function SprintHeader({ activeSprint, tasks }: SprintHeaderProps) {
   }
 
   return (
-    <div className="flex items-center justify-between rounded-md border border-(--bg-surface) bg-(--bg-page) p-4">
-      <span className="text-sm text-(--text-muted)">
-        {SPRINTS_TEXTS.noSprints}
-      </span>
+    <div className="flex items-center justify-between rounded-md border border-surface bg-page p-4">
+      <span className="text-sm text-fg-muted">{SPRINTS_TEXTS.noSprints}</span>
       <SprintCreateModal />
     </div>
   )

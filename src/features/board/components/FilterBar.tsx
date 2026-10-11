@@ -13,7 +13,7 @@ type FilterBarProps = {
   projects: Project[]
 }
 
-const CHIP_CLASS = 'bg-(--bg-card) hover:bg-(--bg-hover)'
+const CHIP_CLASS = 'bg-card hover:bg-hover'
 
 function chipProps(active: boolean) {
   return {
@@ -30,7 +30,7 @@ export function FilterBar({
 }: FilterBarProps) {
   return (
     <div className="flex flex-wrap items-center gap-2">
-      <span className="text-sm font-medium uppercase tracking-wide text-(--text-primary)">
+      <span className="text-sm font-medium uppercase tracking-wide text-fg">
         {BOARD_TEXTS.quickFilters}
       </span>
 

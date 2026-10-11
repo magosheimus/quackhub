@@ -13,14 +13,14 @@ export const STATUS_LABELS: Record<TaskStatus, string> = {
 }
 
 export const STATUS_BADGE_CLASS: Record<TaskStatus, string> = {
-  to_study: 'bg-(--text-muted)',
-  todo: 'bg-(--signal-warning)',
-  scheduled: 'bg-(--text-muted)',
-  doing: 'bg-(--accent)',
-  studying: 'bg-(--accent)',
-  to_review: 'bg-(--accent)',
-  blocked: 'bg-(--signal-danger)',
-  done: 'bg-(--signal-success)',
+  to_study: 'bg-fg-muted',
+  todo: 'bg-warning',
+  scheduled: 'bg-fg-muted',
+  doing: 'bg-accent',
+  studying: 'bg-accent',
+  to_review: 'bg-accent',
+  blocked: 'bg-danger',
+  done: 'bg-success',
 }
 
 // Para valores que chegam como texto livre (ex.: histórico de movimentação)

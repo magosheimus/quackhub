@@ -28,10 +28,10 @@ import { INBOX_TEXTS } from '@/features/inbox/constants/texts'
 import { DRAFTS_TEXTS } from '@/features/drafts/constants/texts'
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
-  `flex h-10 items-center gap-3 border px-3 py-2 rounded-(--radius-md) text-base ${
+  `flex h-10 items-center gap-3 border px-3 py-2 rounded-md text-base ${
     isActive
-      ? 'border-(--border) bg-(--bg-selected) text-(--text-primary)'
-      : 'border-transparent text-(--text-primary) hover:bg-(--bg-hover)'
+      ? 'border-border bg-selected text-fg'
+      : 'border-transparent text-fg hover:bg-hover'
   }`
 
 function NavItem({
@@ -66,12 +66,12 @@ export function Sidebar() {
   const [isProjectsOpen, setIsProjectsOpen] = useState(false)
 
   return (
-    <aside className="h-full w-55 shrink-0 overflow-y-auto border-r border-border bg-(--bg-surface) p-4 flex flex-col">
+    <aside className="h-full w-55 shrink-0 overflow-y-auto border-r border-border bg-surface p-4 flex flex-col">
       <div className="mb-6 px-1">
         <div className="glow-heading font-heading text-3xl text-accent">
           {APP_TEXTS.brand}
         </div>
-        <div className="text-xs text-(--text-muted)">{APP_TEXTS.mascot}</div>
+        <div className="text-xs text-fg-muted">{APP_TEXTS.mascot}</div>
       </div>
 
       <div className="mb-4">
@@ -86,17 +86,13 @@ export function Sidebar() {
         <NavItem to="/inbox" icon={IconInbox}>
           {INBOX_TEXTS.title}
           {inboxCount > 0 && (
-            <span className="ml-auto text-xs text-(--text-muted)">
-              {inboxCount}
-            </span>
+            <span className="ml-auto text-xs text-fg-muted">{inboxCount}</span>
           )}
         </NavItem>
         <NavItem to="/rascunhos" icon={IconNotes}>
           {DRAFTS_TEXTS.title}
           {draftsCount > 0 && (
-            <span className="ml-auto text-xs text-(--text-muted)">
-              {draftsCount}
-            </span>
+            <span className="ml-auto text-xs text-fg-muted">{draftsCount}</span>
           )}
         </NavItem>
         <NavItem to="/board" icon={IconGrid}>
@@ -134,11 +130,11 @@ export function Sidebar() {
             {projects?.map((project) => (
               <div
                 key={project.id}
-                className="group flex items-center rounded-md border border-border bg-(--bg-card)"
+                className="group flex items-center rounded-md border border-border bg-card"
               >
                 <NavLink
                   to={`/board?project=${project.id}`}
-                  className="flex flex-1 items-center gap-2 px-3 py-2 text-sm text-(--text-primary)"
+                  className="flex flex-1 items-center gap-2 px-3 py-2 text-sm text-fg"
                 >
                   <IconFolder size={12} aria-hidden="true" />
                   {project.name}
@@ -146,7 +142,7 @@ export function Sidebar() {
                 <button
                   type="button"
                   onClick={() => setEditingProject(project)}
-                  className="p-2 text-(--text-muted) opacity-0 group-hover:opacity-100"
+                  className="p-2 text-fg-muted opacity-0 group-hover:opacity-100"
                   aria-label={APP_TEXTS.editProject(project.name)}
                 >
                   <IconPencil size={12} />

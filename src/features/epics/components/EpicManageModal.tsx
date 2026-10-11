@@ -82,9 +82,7 @@ export function EpicManageModal({
           <div className="flex flex-col gap-2">
             {isLoading && <LoadingText />}
             {epics?.length === 0 && !isLoading && (
-              <div className="text-sm text-(--text-muted)">
-                {EPICS_TEXTS.empty}
-              </div>
+              <div className="text-sm text-fg-muted">{EPICS_TEXTS.empty}</div>
             )}
             {epics?.map((epic) => (
               <EpicRow key={epic.id} epic={epic} />

@@ -57,7 +57,7 @@ export function CardHistory({ taskId }: CardHistoryProps) {
       <div className="flex justify-center">
         <button
           type="button"
-          className="text-xs text-(--text-muted) underline underline-offset-2 hover:text-(--text-primary)"
+          className="text-xs text-fg-muted underline underline-offset-2 hover:text-fg"
           onClick={
             canExpand
               ? () => setVisibleCount((n) => n + PAGE_SIZE)
@@ -77,7 +77,7 @@ export function CardHistory({ taskId }: CardHistoryProps) {
 
   return (
     <div className="flex flex-col gap-3">
-      <span className="text-sm font-medium text-(--text-primary)">
+      <span className="text-sm font-medium text-fg">
         {COMMON_TEXTS.history}
       </span>
 
@@ -107,9 +107,9 @@ export function CardHistory({ taskId }: CardHistoryProps) {
               {visibleActivity.map((entry) => (
                 <div
                   key={entry.id}
-                  className="rounded-md border border-border bg-(--bg-card) p-2 text-sm"
+                  className="rounded-md border border-border bg-card p-2 text-sm"
                 >
-                  <div className="flex flex-wrap items-center gap-2 text-xs text-(--text-muted)">
+                  <div className="flex flex-wrap items-center gap-2 text-xs text-fg-muted">
                     <span>{formatDisplayDateTime(entry.created_at)}</span>
                     <span>·</span>
                     <span>
@@ -118,7 +118,7 @@ export function CardHistory({ taskId }: CardHistoryProps) {
                         : TASKS_TEXTS.sprintEvent}
                     </span>
                   </div>
-                  <p className="mt-1 text-(--text-primary)">
+                  <p className="mt-1 text-fg">
                     {entry.event_type === 'status_change'
                       ? `${getStatusLabel(entry.old_value)} → ${getStatusLabel(entry.new_value)}`
                       : `${formatSprintValue(entry.old_value)} → ${formatSprintValue(entry.new_value)}`}
@@ -127,7 +127,7 @@ export function CardHistory({ taskId }: CardHistoryProps) {
               ))}
             </div>
           ) : (
-            <span className="text-sm text-(--text-muted)">
+            <span className="text-sm text-fg-muted">
               {TASKS_TEXTS.noActivity}
             </span>
           )}
@@ -143,9 +143,9 @@ export function CardHistory({ taskId }: CardHistoryProps) {
               {visibleLogs.map((log) => (
                 <div
                   key={log.id}
-                  className="rounded-md border border-border bg-(--bg-card) p-2 text-sm"
+                  className="rounded-md border border-border bg-card p-2 text-sm"
                 >
-                  <div className="flex flex-wrap items-center gap-2 text-xs text-(--text-muted)">
+                  <div className="flex flex-wrap items-center gap-2 text-xs text-fg-muted">
                     <span>{formatFullDate(log.session_date)}</span>
                     <span>·</span>
                     <span>
@@ -166,16 +166,12 @@ export function CardHistory({ taskId }: CardHistoryProps) {
                       </>
                     )}
                   </div>
-                  {log.comment && (
-                    <p className="mt-1 text-(--text-primary)">{log.comment}</p>
-                  )}
+                  {log.comment && <p className="mt-1 text-fg">{log.comment}</p>}
                 </div>
               ))}
             </div>
           ) : (
-            <span className="text-sm text-(--text-muted)">
-              {TASKS_TEXTS.noLogs}
-            </span>
+            <span className="text-sm text-fg-muted">{TASKS_TEXTS.noLogs}</span>
           )}
 
           {renderToggle(totalLogs)}

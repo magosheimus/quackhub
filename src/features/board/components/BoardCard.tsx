@@ -11,7 +11,7 @@ import type { Task } from '@/shared/types/entities'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
 
 const CARD_CLASS =
-  'flex gap-2 rounded-md border border-l-4 border-border bg-(--bg-card) p-3 text-sm hover:bg-(--bg-card-hover)'
+  'flex gap-2 rounded-md border border-l-4 border-border bg-card p-3 text-sm hover:bg-card-hover'
 
 function getBorderStyle(task: Task) {
   const priority = PRIORITY_CONFIG[task.priority]
@@ -39,7 +39,7 @@ function BoardCardBody({
         {task.flagged && (
           <IconFlag
             size={12}
-            className="text-(--signal-danger)"
+            className="text-danger"
             aria-label={COMMON_TEXTS.urgent}
           />
         )}
@@ -54,20 +54,20 @@ function BoardCardBody({
 
       <div className="flex flex-col gap-1">
         {task.task_number && (
-          <span className="text-xs text-(--text-muted)">
+          <span className="text-xs text-fg-muted">
             {projectPrefix}-{task.task_number}
           </span>
         )}
         <Link
           to={`/cards/${task.id}`}
-          className="line-clamp-3 text-(--text-primary) hover:text-accent hover:underline"
+          className="line-clamp-3 text-fg hover:text-accent hover:underline"
         >
           {task.title}
         </Link>
-        <span className="text-xs text-(--text-muted)">{priority.text}</span>
+        <span className="text-xs text-fg-muted">{priority.text}</span>
         {showStatus && (
           <span
-            className={`w-fit rounded-(--radius-sm) px-2 py-0.5 text-xs font-medium text-(--bg-page) ${
+            className={`w-fit rounded-sm px-2 py-0.5 text-xs font-medium text-page ${
               STATUS_BADGE_CLASS[task.status]
             }`}
           >
@@ -98,7 +98,7 @@ export function BoardCard({ task, index, projectPrefixById }: BoardCardProps) {
             ...getBorderStyle(task),
           }}
           className={`${CARD_CLASS} ${
-            snapshot.isDragging ? 'bg-(--bg-card-hover)' : ''
+            snapshot.isDragging ? 'bg-card-hover' : ''
           }`}
         >
           <BoardCardBody task={task} projectPrefixById={projectPrefixById} />

@@ -17,11 +17,11 @@ export function AppShell({ children }: AppShellProps) {
   }, [])
   const isOnline = useOnlineStatus()
   return (
-    <div className="app-root retro-motion flex h-screen overflow-hidden bg-(--bg-page)">
+    <div className="app-root retro-motion flex h-screen overflow-hidden bg-page">
       <Sidebar />
       <main className="flex-1 overflow-y-auto p-6">
         {!isOnline && (
-          <div className="mb-4 border border-border bg-(--bg-surface) p-2 text-xs text-(--signal-warning)">
+          <div className="mb-4 border border-border bg-surface p-2 text-xs text-warning">
             {APP_TEXTS.offlineBanner}
           </div>
         )}

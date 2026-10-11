@@ -47,14 +47,14 @@ export function GeneralSection({
                   key={project.projectName}
                   className="flex items-center gap-4"
                 >
-                  <span className="w-48 shrink-0 truncate text-sm text-(--text-primary)">
+                  <span className="w-48 shrink-0 truncate text-sm text-fg">
                     {project.projectName}
                   </span>
                   <SegmentedProgress
                     value={percent}
                     label={COMMON_TEXTS.progressOf(project.projectName)}
                   />
-                  <span className="text-xs text-(--text-muted)">
+                  <span className="text-xs text-fg-muted">
                     {project.completed} de {project.total}
                   </span>
                 </div>
@@ -62,9 +62,7 @@ export function GeneralSection({
             })}
           </div>
         ) : (
-          <div className="text-sm text-(--text-muted)">
-            {ANALYTICS_TEXTS.noCards}
-          </div>
+          <div className="text-sm text-fg-muted">{ANALYTICS_TEXTS.noCards}</div>
         )}
       </ChartCard>
 
@@ -74,14 +72,12 @@ export function GeneralSection({
             {statusCounts.map((status) => (
               <div
                 key={status.name}
-                className="flex flex-col gap-1 rounded-md border border-border bg-(--bg-page) p-4"
+                className="flex flex-col gap-1 rounded-md border border-border bg-page p-4"
               >
-                <span className="glow-heading font-heading text-3xl text-(--text-primary)">
+                <span className="glow-heading font-heading text-3xl text-fg">
                   {status.count}
                 </span>
-                <span className="text-xs text-(--text-muted)">
-                  {status.name}
-                </span>
+                <span className="text-xs text-fg-muted">{status.name}</span>
               </div>
             ))}
           </div>
@@ -116,7 +112,7 @@ export function GeneralSection({
               </LineChart>
             </ResponsiveContainer>
           ) : (
-            <div className="text-sm text-(--text-muted)">
+            <div className="text-sm text-fg-muted">
               {SPRINTS_TEXTS.noClosedSprints}
             </div>
           )}

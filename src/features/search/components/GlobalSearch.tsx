@@ -58,7 +58,7 @@ export function GlobalSearch() {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="flex w-full items-center justify-between rounded-md border border-border px-2 py-1.5 text-left text-sm text-(--text-muted)"
+        className="flex w-full items-center justify-between rounded-md border border-border px-2 py-1.5 text-left text-sm text-fg-muted"
       >
         {SEARCH_TEXTS.trigger}
         <span className="text-xs">{SEARCH_TEXTS.shortcut}</span>
@@ -78,7 +78,7 @@ export function GlobalSearch() {
           <div className="flex max-h-80 flex-col gap-1 overflow-y-auto">
             {isLoading && <LoadingText />}
             {!isLoading && debouncedQuery.trim() && results?.length === 0 && (
-              <span className="text-sm text-(--text-muted)">
+              <span className="text-sm text-fg-muted">
                 {SEARCH_TEXTS.noResults}
               </span>
             )}
@@ -90,10 +90,10 @@ export function GlobalSearch() {
                   key={task.id}
                   to={`/cards/${task.id}`}
                   onClick={() => handleOpenChange(false)}
-                  className="flex flex-col gap-0.5 rounded-md p-2 text-sm hover:bg-(--bg-card-hover)"
+                  className="flex flex-col gap-0.5 rounded-md p-2 text-sm hover:bg-card-hover"
                 >
-                  <span className="text-(--text-primary)">{task.title}</span>
-                  <span className="text-xs text-(--text-muted)">
+                  <span className="text-fg">{task.title}</span>
+                  <span className="text-xs text-fg-muted">
                     {project?.name ?? '—'} · {STATUS_LABELS[task.status]}
                     {epic ? ` · ${epic.name}` : ''}
                   </span>

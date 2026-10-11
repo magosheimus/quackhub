@@ -114,15 +114,9 @@ export function DraftsList() {
 
   if (!items || items.length === 0) {
     return (
-      <div className="flex flex-col items-center gap-2 rounded-md border border-(--bg-surface) bg-(--bg-page) px-6 py-8 text-center">
-        <IconNotes
-          size={24}
-          aria-hidden="true"
-          className="text-(--text-muted)"
-        />
-        <span className="text-sm text-(--text-muted)">
-          {DRAFTS_TEXTS.empty}
-        </span>
+      <div className="flex flex-col items-center gap-2 rounded-md border border-surface bg-page px-6 py-8 text-center">
+        <IconNotes size={24} aria-hidden="true" className="text-fg-muted" />
+        <span className="text-sm text-fg-muted">{DRAFTS_TEXTS.empty}</span>
       </div>
     )
   }
@@ -132,7 +126,7 @@ export function DraftsList() {
       {items.map((item) => (
         <div
           key={item.id}
-          className="flex items-center gap-3 rounded-md border border-border bg-(--bg-card) p-4 text-base hover:bg-(--bg-card-hover)"
+          className="flex items-center gap-3 rounded-md border border-border bg-card p-4 text-base hover:bg-card-hover"
         >
           <Checkbox
             checked={checkedIds.has(item.id)}
@@ -150,8 +144,8 @@ export function DraftsList() {
             <span
               className={
                 checkedIds.has(item.id)
-                  ? 'flex-1 text-(--text-muted) line-through'
-                  : 'flex-1 text-(--text-primary)'
+                  ? 'flex-1 text-fg-muted line-through'
+                  : 'flex-1 text-fg'
               }
             >
               {item.content}
@@ -163,7 +157,7 @@ export function DraftsList() {
             variant="ghost"
             onClick={() => setEditing({ id: item.id, text: item.content })}
             aria-label={DRAFTS_TEXTS.edit}
-            className="size-8 rounded-full p-0 hover:bg-(--bg-surface)! hover:text-(--text-primary)!"
+            className="size-8 rounded-full p-0 hover:bg-surface! hover:text-fg!"
           >
             <IconPencil size={16} />
           </Button>
@@ -173,7 +167,7 @@ export function DraftsList() {
             variant="ghost"
             onClick={() => handleDiscard(item)}
             aria-label={DRAFTS_TEXTS.discard}
-            className="size-8 rounded-full p-0 hover:bg-(--bg-surface)! hover:text-(--text-primary)!"
+            className="size-8 rounded-full p-0 hover:bg-surface! hover:text-fg!"
           >
             <IconTrash size={16} />
           </Button>
@@ -183,7 +177,7 @@ export function DraftsList() {
             variant="ghost"
             onClick={() => setCreatingCardFor(item)}
             aria-label={DRAFTS_TEXTS.toCard}
-            className="size-8 rounded-full p-0 hover:bg-(--bg-surface)! hover:text-(--text-primary)!"
+            className="size-8 rounded-full p-0 hover:bg-surface! hover:text-fg!"
           >
             <IconStickyNoteSharp size={16} />
           </Button>

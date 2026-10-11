@@ -43,14 +43,12 @@ export function CardSidePanel({
 }: CardSidePanelProps) {
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex flex-col gap-1.5 rounded-md border border-border bg-(--bg-card) p-3">
-        <span className="text-sm font-medium text-(--text-primary)">
-          {TASKS_TEXTS.dates}
-        </span>
-        <span className="text-sm text-(--text-primary)">
+      <div className="flex flex-col gap-1.5 rounded-md border border-border bg-card p-3">
+        <span className="text-sm font-medium text-fg">{TASKS_TEXTS.dates}</span>
+        <span className="text-sm text-fg">
           {TASKS_TEXTS.createdAt(formatDate(createdAt))}
         </span>
-        <span className="text-sm text-(--text-primary)">
+        <span className="text-sm text-fg">
           {TASKS_TEXTS.updatedAt(formatDate(updatedAt))}
         </span>
       </div>
@@ -58,10 +56,7 @@ export function CardSidePanel({
       {projectType === 'general' && (
         <>
           <div className="flex flex-col gap-1.5">
-            <label
-              htmlFor="card-due-date"
-              className="text-xs text-(--text-muted)"
-            >
+            <label htmlFor="card-due-date" className="text-xs text-fg-muted">
               {TASKS_TEXTS.dueDate}
             </label>
             <Input
@@ -80,14 +75,12 @@ export function CardSidePanel({
       )}
 
       {canRegisterPerformance(projectType, status) && (
-        <div className="flex flex-col gap-1.5 rounded-md border border-border bg-(--bg-card) p-3">
-          <span className="text-sm font-medium text-(--text-primary)">
-            {TASKS_TEXTS.srs}
-          </span>
-          <span className="text-sm text-(--text-primary)">
+        <div className="flex flex-col gap-1.5 rounded-md border border-border bg-card p-3">
+          <span className="text-sm font-medium text-fg">{TASKS_TEXTS.srs}</span>
+          <span className="text-sm text-fg">
             EF: {(easeFactor ?? 2.5).toFixed(2)}
           </span>
-          <span className="text-sm text-(--text-primary)">
+          <span className="text-sm text-fg">
             Próxima revisão: {nextReview ?? '—'}
           </span>
           <Button type="button" size="sm" onClick={onRegisterPerformance}>

@@ -52,7 +52,7 @@ export function CartuchoPicker() {
   return (
     <div ref={containerRef} className="flex h-24 items-center gap-2">
       {isOpen && (
-        <div className="flex gap-2 rounded-md border-2 border-border-strong bg-(--bg-surface) p-2 shadow-[3px_3px_0_0_var(--border-strong)] motion-safe:animate-[cartucho-deck-in_200ms_ease-out]">
+        <div className="flex gap-2 rounded-md border-2 border-border-strong bg-surface p-2 shadow-[3px_3px_0_0_var(--border-strong)] motion-safe:animate-[cartucho-deck-in_200ms_ease-out]">
           {CARTUCHO_OPTIONS.map((option) => {
             const isActive = option.value === cartucho
             return (
@@ -68,7 +68,7 @@ export function CartuchoPicker() {
                 <div
                   className={`cartucho-${option.value} flex h-20 w-14 flex-col justify-between rounded-sm border-2 border-(--lcd-ink) bg-(--lcd-screen) p-1 shadow-[2px_2px_0_0_var(--lcd-ink)] motion-safe:transition-transform motion-safe:hover:-translate-y-1 ${
                     isActive
-                      ? 'outline-2 outline-offset-2 outline-(--text-primary) motion-safe:animate-[cartucho-pulse_2s_ease-in-out_infinite]'
+                      ? 'outline-2 outline-offset-2 outline-fg motion-safe:animate-[cartucho-pulse_2s_ease-in-out_infinite]'
                       : ''
                   }`}
                 >
@@ -91,7 +91,7 @@ export function CartuchoPicker() {
         aria-label={
           isOpen ? SETTINGS_TEXTS.closeCartuchos : SETTINGS_TEXTS.openCartuchos
         }
-        className="flex size-8 items-center justify-center rounded-md border-2 border-border-strong bg-(--bg-surface) shadow-[2px_2px_0_0_var(--border-strong)] motion-safe:transition-transform motion-safe:hover:-translate-x-0.5"
+        className="flex size-8 items-center justify-center rounded-md border-2 border-border-strong bg-surface shadow-[2px_2px_0_0_var(--border-strong)] motion-safe:transition-transform motion-safe:hover:-translate-x-0.5"
       >
         {isOpen ? (
           <IconChevronRight size={16} aria-hidden="true" />

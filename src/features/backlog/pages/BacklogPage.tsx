@@ -168,9 +168,7 @@ export function BacklogPage() {
       <div className="flex flex-col gap-6">
         {isLoadingTasks && <LoadingText />}
         {!isLoadingTasks && filteredTasks.length === 0 && (
-          <div className="text-sm text-(--text-muted)">
-            {BACKLOG_TEXTS.empty}
-          </div>
+          <div className="text-sm text-fg-muted">{BACKLOG_TEXTS.empty}</div>
         )}
         {projectGroups.map((group) => {
           const { project, tasks } = group
@@ -183,7 +181,7 @@ export function BacklogPage() {
                   type="button"
                   onClick={() => toggleProject(project.id)}
                   aria-expanded={!isCollapsed}
-                  className="flex items-center gap-2 font-heading text-xl uppercase text-(--text-primary)"
+                  className="flex items-center gap-2 font-heading text-xl uppercase text-fg"
                 >
                   <IconChevronRight
                     size={12}
@@ -193,9 +191,7 @@ export function BacklogPage() {
                   {project.name}
                 </button>
                 <div className="flex items-center gap-3">
-                  <span className="text-xs text-(--text-muted)">
-                    {tasks.length}
-                  </span>
+                  <span className="text-xs text-fg-muted">{tasks.length}</span>
                   {canAddToSprint && (
                     <Button size="sm" onClick={() => addAllToSprint(group)}>
                       <IconPlus size={12} aria-hidden="true" />

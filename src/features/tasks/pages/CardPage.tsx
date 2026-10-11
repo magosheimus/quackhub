@@ -23,9 +23,7 @@ export function CardPage() {
   }
 
   if (!task) {
-    return (
-      <div className="text-sm text-(--text-muted)">{TASKS_TEXTS.notFound}</div>
-    )
+    return <div className="text-sm text-fg-muted">{TASKS_TEXTS.notFound}</div>
   }
 
   return <CardPageBody key={task.id} task={task} />

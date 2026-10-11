@@ -12,17 +12,15 @@ export function SprintPlanningHeader({ sprint }: SprintPlanningHeaderProps) {
   const { mutate: startSprint, isPending } = useStartSprint()
 
   return (
-    <div className="flex items-center justify-between gap-4 rounded-md border border-border bg-(--bg-card) p-4">
+    <div className="flex items-center justify-between gap-4 rounded-md border border-border bg-card p-4">
       <div className="flex flex-col gap-1">
-        <span className="font-heading text-2xl text-(--text-primary)">
-          {sprint.name}
-        </span>
-        <span className="text-xs text-(--text-muted)">
+        <span className="font-heading text-2xl text-fg">{sprint.name}</span>
+        <span className="text-xs text-fg-muted">
           {formatDayMonth(sprint.start_date)} -{' '}
           {formatDayMonth(sprint.end_date)}
         </span>
         {sprint.goal && (
-          <span className="text-sm text-(--text-muted)">{sprint.goal}</span>
+          <span className="text-sm text-fg-muted">{sprint.goal}</span>
         )}
       </div>
       <Button

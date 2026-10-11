@@ -36,13 +36,13 @@ export function BacklogRow({
     >
       <div
         style={{ borderLeftColor: `var(${priority.colorVar})` }}
-        className="flex items-center gap-3 rounded-md border border-l-4 border-border bg-(--bg-card) p-3 text-sm"
+        className="flex items-center gap-3 rounded-md border border-l-4 border-border bg-card p-3 text-sm"
       >
         <div className="flex w-4 shrink-0 flex-col items-center gap-1">
           {task.flagged && (
             <IconFlag
               size={12}
-              className="text-(--signal-danger)"
+              className="text-danger"
               aria-label={COMMON_TEXTS.urgent}
             />
           )}
@@ -57,25 +57,23 @@ export function BacklogRow({
 
         <div className="flex flex-1 flex-col gap-0.5">
           {task.task_number && (
-            <span className="text-xs text-(--text-muted)">
+            <span className="text-xs text-fg-muted">
               {projectPrefix}-{task.task_number}
             </span>
           )}
           <Link
             to={`/cards/${task.id}`}
-            className="text-(--text-primary) hover:text-accent hover:underline"
+            className="text-fg hover:text-accent hover:underline"
           >
             {task.title}
           </Link>
         </div>
 
-        <span className="text-xs text-(--text-muted)">
+        <span className="text-xs text-fg-muted">
           {STATUS_LABELS[task.status]}
         </span>
 
-        {epicName && (
-          <span className="text-xs text-(--text-muted)">{epicName}</span>
-        )}
+        {epicName && <span className="text-xs text-fg-muted">{epicName}</span>}
 
         {onAddToSprint && (
           <Button variant="outline" size="sm" onClick={onAddToSprint}>

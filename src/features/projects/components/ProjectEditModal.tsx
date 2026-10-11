@@ -99,10 +99,7 @@ function ProjectEditForm({ project, onClose }: ProjectEditFormProps) {
     <>
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-1.5">
-          <label
-            htmlFor="project-edit-name"
-            className="text-xs text-(--text-muted)"
-          >
+          <label htmlFor="project-edit-name" className="text-xs text-fg-muted">
             {COMMON_TEXTS.name}
           </label>
           <Input
@@ -115,7 +112,7 @@ function ProjectEditForm({ project, onClose }: ProjectEditFormProps) {
         <div className="flex flex-col gap-1.5">
           <label
             htmlFor="project-edit-prefix"
-            className="text-xs text-(--text-muted)"
+            className="text-xs text-fg-muted"
           >
             {PROJECTS_TEXTS.prefix}
           </label>
@@ -129,10 +126,7 @@ function ProjectEditForm({ project, onClose }: ProjectEditFormProps) {
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <span
-            id="project-edit-type-label"
-            className="text-xs text-(--text-muted)"
-          >
+          <span id="project-edit-type-label" className="text-xs text-fg-muted">
             {PROJECTS_TEXTS.type}
           </span>
           <Select
@@ -160,10 +154,7 @@ function ProjectEditForm({ project, onClose }: ProjectEditFormProps) {
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <span
-            id="project-edit-color-label"
-            className="text-xs text-(--text-muted)"
-          >
+          <span id="project-edit-color-label" className="text-xs text-fg-muted">
             {PROJECTS_TEXTS.color}
           </span>
           <div
@@ -194,7 +185,7 @@ function ProjectEditForm({ project, onClose }: ProjectEditFormProps) {
           variant="outline"
           onClick={handleArchive}
           disabled={isArchiving}
-          className="text-(--signal-danger) border-(--signal-danger)"
+          className="text-danger border-danger"
         >
           {isArchiving ? PROJECTS_TEXTS.archiving : PROJECTS_TEXTS.archive}
         </Button>
