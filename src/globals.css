@@ -12,7 +12,7 @@
   --bg-surface: #b4ba96;
   --bg-card: #e6e8d5;
   --bg-card-hover: #f0f1e3;
-  --bg-selected: #c5d8bd;
+  --bg-selected: #c0d1a7;
   --bg-input: #f3f4e7;
 
   --border-card-empty: var(--border);
@@ -123,7 +123,7 @@
   --bg-surface: #c0cdd3;
   --bg-card: #edf2f4;
   --bg-card-hover: #f7fafb;
-  --bg-selected: #c8dbec;
+  --bg-selected: #b9c9d7;
   --bg-input: #f8fbfc;
 
   --text-primary: var(--lcd-ink);
@@ -173,7 +173,7 @@
   --bg-surface: #17281a;
   --bg-card: #2a442f;
   --bg-card-hover: #304f37;
-  --bg-selected: #5e6542;
+  --bg-selected: #253c1c;
   --bg-input: #1c2f22;
   --bg-card-empty: var(--bg-surface);
 
@@ -200,7 +200,7 @@
   --bg-surface: #2d1a0b;
   --bg-card: #3c2713;
   --bg-card-hover: #49321b;
-  --bg-selected: #584020;
+  --bg-selected: rgb(58, 37, 10);
   --bg-input: #160b04;
   --bg-card-empty: var(--bg-surface);
 
