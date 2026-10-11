@@ -2,7 +2,6 @@ import { useEffect, type ReactNode } from 'react'
 import { Sidebar } from './Sidebar'
 import { syncDraftsQueue } from '@/features/drafts/api/drafts'
 import { useOnlineStatus } from '@/shared/hooks/useOnlineStatus'
-import { Toaster } from '@/components/ui/toaster'
 import { CartuchoPicker } from '@/features/settings/components/CartuchoPicker'
 import { APP_TEXTS } from '@/app/constants/texts'
 
@@ -30,7 +29,6 @@ export function AppShell({ children }: AppShellProps) {
       <div className="fixed right-4 bottom-4 z-40">
         <CartuchoPicker />
       </div>
-      <Toaster />
     </div>
   )
 }

@@ -1,5 +1,6 @@
 // Textos reaproveitados por várias features
 export const COMMON_TEXTS = {
+  brand: 'QUACKHUB',
   cancel: 'Cancelar',
   confirm: 'Confirmar',
   create: 'Criar',

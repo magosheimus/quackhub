@@ -1,5 +1,4 @@
 export const APP_TEXTS = {
-  brand: 'QUACKHUB',
   mascot: '[ pato ]',
   projects: 'Projetos',
   analytics: 'Analytics',

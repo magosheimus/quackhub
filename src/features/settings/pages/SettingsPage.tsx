@@ -25,6 +25,7 @@ import {
   WEEK_START_LABELS,
 } from '@/features/settings/constants/texts'
 import { Panel } from '@/components/ui/panel'
+import { AUTH_TEXTS } from '@/features/auth/constants/texts'
 
 const TEXTURES: Settings['texture'][] = ['none', 'grid', 'dots']
 
@@ -56,6 +57,9 @@ export function SettingsPage() {
     selectWeekStart,
     isExporting,
     exportData,
+    accountEmail,
+    signOut,
+    isSigningOut,
   } = useSettingsPage()
 
   return (
@@ -207,6 +211,23 @@ export function SettingsPage() {
             </span>
           </div>
           <ClearCacheButton />
+        </div>
+      </SettingsCard>
+
+      <SettingsCard title={AUTH_TEXTS.account}>
+        <div className="flex items-center justify-between gap-4">
+          <span className="text-sm text-fg">
+            {AUTH_TEXTS.signedInAs(accountEmail)}
+          </span>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={signOut}
+            disabled={isSigningOut}
+          >
+            {isSigningOut ? AUTH_TEXTS.signingOut : AUTH_TEXTS.signOut}
+          </Button>
         </div>
       </SettingsCard>
     </div>
