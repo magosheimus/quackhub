@@ -99,7 +99,7 @@ function ProjectEditForm({ project, onClose }: ProjectEditFormProps) {
     <>
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-1.5">
-          <label htmlFor="project-edit-name" className="text-xs text-fg-muted">
+          <label htmlFor="project-edit-name" className="text-caption">
             {COMMON_TEXTS.name}
           </label>
           <Input
@@ -110,10 +110,7 @@ function ProjectEditForm({ project, onClose }: ProjectEditFormProps) {
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <label
-            htmlFor="project-edit-prefix"
-            className="text-xs text-fg-muted"
-          >
+          <label htmlFor="project-edit-prefix" className="text-caption">
             {PROJECTS_TEXTS.prefix}
           </label>
           <Input
@@ -126,7 +123,7 @@ function ProjectEditForm({ project, onClose }: ProjectEditFormProps) {
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <span id="project-edit-type-label" className="text-xs text-fg-muted">
+          <span id="project-edit-type-label" className="text-caption">
             {PROJECTS_TEXTS.type}
           </span>
           <Select
@@ -154,7 +151,7 @@ function ProjectEditForm({ project, onClose }: ProjectEditFormProps) {
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <span id="project-edit-color-label" className="text-xs text-fg-muted">
+          <span id="project-edit-color-label" className="text-caption">
             {PROJECTS_TEXTS.color}
           </span>
           <div

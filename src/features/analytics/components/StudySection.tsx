@@ -14,6 +14,8 @@ import { ChartCard } from './ChartCard'
 import { SectionTitle } from '@/components/ui/section-title'
 import type { ReviewsByEpicItem } from '@/features/analytics/api/analytics'
 import { ANALYTICS_TEXTS } from '@/features/analytics/constants/texts'
+import { EmptyMessage } from '@/components/ui/empty-message'
+import { Panel } from '@/components/ui/panel'
 
 type StudySectionProps = {
   totalReviews: number
@@ -33,22 +35,22 @@ export function StudySection({
       <SectionTitle>{ANALYTICS_TEXTS.study}</SectionTitle>
 
       <div className="grid grid-cols-2 gap-4">
-        <div className="flex flex-col gap-1 rounded-md border border-border bg-card p-5">
+        <Panel className="flex flex-col gap-1 p-5">
           <span className="text-xs font-medium uppercase tracking-wide text-fg">
             {ANALYTICS_TEXTS.reviews}
           </span>
           <span className="glow-heading font-heading text-4xl text-fg">
             {totalReviews}
           </span>
-        </div>
-        <div className="flex flex-col gap-1 rounded-md border border-border bg-card p-5">
+        </Panel>
+        <Panel className="flex flex-col gap-1 p-5">
           <span className="text-xs font-medium uppercase tracking-wide text-fg">
             {ANALYTICS_TEXTS.accuracy}
           </span>
           <span className="glow-heading font-heading text-4xl text-fg">
             {accuracyPercent}%
           </span>
-        </div>
+        </Panel>
       </div>
 
       <ChartCard title={ANALYTICS_TEXTS.qualityByWeek}>
@@ -78,9 +80,7 @@ export function StudySection({
             </LineChart>
           </ResponsiveContainer>
         ) : (
-          <div className="text-sm text-fg-muted">
-            {ANALYTICS_TEXTS.notEnoughData}
-          </div>
+          <EmptyMessage>{ANALYTICS_TEXTS.notEnoughData}</EmptyMessage>
         )}
       </ChartCard>
 
@@ -120,9 +120,7 @@ export function StudySection({
             </ul>
           </div>
         ) : (
-          <div className="text-sm text-fg-muted">
-            {ANALYTICS_TEXTS.noReviews}
-          </div>
+          <EmptyMessage>{ANALYTICS_TEXTS.noReviews}</EmptyMessage>
         )}
       </ChartCard>
     </section>

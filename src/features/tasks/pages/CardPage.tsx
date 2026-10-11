@@ -13,6 +13,7 @@ import { LoadingText } from '@/components/ui/loading-text'
 import { CardDescription } from '@/features/tasks/components/cardPage/CardDescription'
 import type { Task } from '@/shared/types/entities'
 import { TASKS_TEXTS } from '@/features/tasks/constants/texts'
+import { EmptyMessage } from '@/components/ui/empty-message'
 
 export function CardPage() {
   const { id } = useParams<{ id: string }>()
@@ -23,7 +24,7 @@ export function CardPage() {
   }
 
   if (!task) {
-    return <div className="text-sm text-fg-muted">{TASKS_TEXTS.notFound}</div>
+    return <EmptyMessage>{TASKS_TEXTS.notFound}</EmptyMessage>
   }
 
   return <CardPageBody key={task.id} task={task} />

@@ -23,6 +23,7 @@ import type {
 import { COMMON_TEXTS } from '@/shared/constants/texts'
 import { PROJECT_TYPE_LABELS } from '@/features/projects/constants/texts'
 import { TASKS_TEXTS } from '@/features/tasks/constants/texts'
+import { Panel } from '@/components/ui/panel'
 
 const NONE_EPIC = '__none__'
 const NONE_SPRINT = '__none__'
@@ -63,15 +64,13 @@ export function CardDetailsSection({
   const sprintName = sprints?.find((s) => s.id === sprintId)?.name
 
   return (
-    <div className="flex flex-col gap-3 rounded-md border border-border bg-card p-3">
+    <Panel className="flex flex-col gap-3 p-3">
       <span className="text-sm font-medium text-fg">{TASKS_TEXTS.details}</span>
 
       <div className="grid grid-cols-2 gap-4 pl-6">
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-1.5">
-            <span className="text-xs text-fg-muted">
-              {TASKS_TEXTS.typeLabel}
-            </span>
+            <span className="text-caption">{TASKS_TEXTS.typeLabel}</span>
             <span className="text-sm text-fg">
               {projectType === 'study'
                 ? PROJECT_TYPE_LABELS.study
@@ -80,7 +79,7 @@ export function CardDetailsSection({
           </div>
 
           <div className="flex items-center gap-1.5">
-            <span id="epic-label" className="text-xs text-fg-muted">
+            <span id="epic-label" className="text-caption">
               {TASKS_TEXTS.epicLabel}
             </span>
             <Select
@@ -107,7 +106,7 @@ export function CardDetailsSection({
           </div>
 
           <div className="flex items-center gap-1.5">
-            <span id="sprint-label" className="text-xs text-fg-muted">
+            <span id="sprint-label" className="text-caption">
               {TASKS_TEXTS.sprintLabel}
             </span>
             <Select
@@ -136,7 +135,7 @@ export function CardDetailsSection({
           </div>
 
           <div className="flex items-center gap-1.5">
-            <span id="priority-label" className="text-xs text-fg-muted">
+            <span id="priority-label" className="text-caption">
               {TASKS_TEXTS.priorityLabel}
             </span>
             <Select
@@ -164,7 +163,7 @@ export function CardDetailsSection({
           </div>
 
           <div className="flex items-center gap-2">
-            <span id="flagged-label" className="text-xs text-fg-muted">
+            <span id="flagged-label" className="text-caption">
               {TASKS_TEXTS.urgentLabel}
             </span>
             <Checkbox
@@ -179,9 +178,7 @@ export function CardDetailsSection({
 
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-1.5">
-            <span className="text-xs text-fg-muted">
-              {TASKS_TEXTS.statusLabel}
-            </span>
+            <span className="text-caption">{TASKS_TEXTS.statusLabel}</span>
             <span
               className={`rounded-sm px-2 py-0.5 text-xs font-medium text-page ${
                 STATUS_BADGE_CLASS[status]
@@ -192,9 +189,7 @@ export function CardDetailsSection({
           </div>
 
           <div className="flex items-center gap-1.5">
-            <span className="text-xs text-fg-muted">
-              {TASKS_TEXTS.tagsLabel}
-            </span>
+            <span className="text-caption">{TASKS_TEXTS.tagsLabel}</span>
             <TagInput
               tags={tags}
               onChange={onTagsChange}
@@ -203,6 +198,6 @@ export function CardDetailsSection({
           </div>
         </div>
       </div>
-    </div>
+    </Panel>
   )
 }

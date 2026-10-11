@@ -54,7 +54,7 @@ function BoardCardBody({
 
       <div className="flex flex-col gap-1">
         {task.task_number && (
-          <span className="text-xs text-fg-muted">
+          <span className="text-caption">
             {projectPrefix}-{task.task_number}
           </span>
         )}
@@ -64,7 +64,7 @@ function BoardCardBody({
         >
           {task.title}
         </Link>
-        <span className="text-xs text-fg-muted">{priority.text}</span>
+        <span className="text-caption">{priority.text}</span>
         {showStatus && (
           <span
             className={`w-fit rounded-sm px-2 py-0.5 text-xs font-medium text-page ${

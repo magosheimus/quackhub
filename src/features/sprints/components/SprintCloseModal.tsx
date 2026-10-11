@@ -67,7 +67,7 @@ export function SprintCloseModal({ sprint, tasks }: SprintCloseModalProps) {
 
         <div className="flex max-h-96 flex-col gap-4 overflow-y-auto">
           <div>
-            <p className="mb-1 text-xs text-fg-muted">
+            <p className="mb-1 text-caption">
               {SPRINTS_TEXTS.doneSection(done.length)}
             </p>
             {done.map((task) => (
@@ -79,7 +79,7 @@ export function SprintCloseModal({ sprint, tasks }: SprintCloseModalProps) {
 
           {toReview.length > 0 && (
             <div>
-              <p className="mb-1 text-xs text-fg-muted">
+              <p className="mb-1 text-caption">
                 {SPRINTS_TEXTS.toReviewSection(toReview.length)}
               </p>
               {toReview.map((task) => (
@@ -92,7 +92,7 @@ export function SprintCloseModal({ sprint, tasks }: SprintCloseModalProps) {
 
           {pending.length > 0 && (
             <div className="flex flex-col gap-2">
-              <p className="text-xs text-fg-muted">
+              <p className="text-caption">
                 {SPRINTS_TEXTS.pendingSection(pending.length)}
               </p>
               {pending.map((task) => (
@@ -131,9 +131,7 @@ export function SprintCloseModal({ sprint, tasks }: SprintCloseModalProps) {
                 </div>
               ))}
               {!nextSprint && (
-                <p className="text-xs text-fg-muted">
-                  {SPRINTS_TEXTS.noNextSprint}
-                </p>
+                <p className="text-caption">{SPRINTS_TEXTS.noNextSprint}</p>
               )}
             </div>
           )}

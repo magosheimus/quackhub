@@ -8,6 +8,7 @@ import { getCompletionPercent } from '@/features/sprints/lib/sprint'
 import { formatDayMonth } from '@/shared/lib/date'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
 import { SPRINTS_TEXTS } from '@/features/sprints/constants/texts'
+import { EmptyMessage } from '@/components/ui/empty-message'
 
 export function SprintHistoryPage() {
   const { isLoading, closedSprints, isSprintOpen, toggleSprint } =
@@ -21,9 +22,7 @@ export function SprintHistoryPage() {
     return (
       <div className="flex flex-col gap-4">
         <PageTitle title={COMMON_TEXTS.history} icon={IconClock} count={0} />
-        <div className="text-sm text-fg-muted">
-          {SPRINTS_TEXTS.noClosedSprints}
-        </div>
+        <EmptyMessage>{SPRINTS_TEXTS.noClosedSprints}</EmptyMessage>
       </div>
     )
   }
@@ -50,17 +49,17 @@ export function SprintHistoryPage() {
                 <div className="flex flex-1 flex-col gap-1">
                   <span className="text-base text-fg">
                     {sprint.name}
-                    <span className="ml-2 text-xs text-fg-muted">
+                    <span className="ml-2 text-caption">
                       ({formatDayMonth(sprint.start_date)} -{' '}
                       {formatDayMonth(sprint.end_date)})
                     </span>
                   </span>
                   {sprint.goal && (
-                    <span className="text-sm text-fg-muted">{sprint.goal}</span>
+                    <span className="text-subtle">{sprint.goal}</span>
                   )}
                 </div>
                 <div className="flex flex-col items-end gap-1">
-                  <span className="text-xs text-fg-muted">
+                  <span className="text-caption">
                     {SPRINTS_TEXTS.completedOf(
                       sprint.completed_tasks ?? 0,
                       sprint.total_tasks ?? 0,

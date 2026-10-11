@@ -8,6 +8,7 @@ import { canRegisterPerformance } from '@/features/srs/lib/srs'
 import type { ProjectType, Task } from '@/shared/types/entities'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
 import { TASKS_TEXTS } from '@/features/tasks/constants/texts'
+import { Panel } from '@/components/ui/panel'
 
 function formatDate(value: string | null): string {
   if (!value) return '—'
@@ -43,7 +44,7 @@ export function CardSidePanel({
 }: CardSidePanelProps) {
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex flex-col gap-1.5 rounded-md border border-border bg-card p-3">
+      <Panel className="flex flex-col gap-1.5 p-3">
         <span className="text-sm font-medium text-fg">{TASKS_TEXTS.dates}</span>
         <span className="text-sm text-fg">
           {TASKS_TEXTS.createdAt(formatDate(createdAt))}
@@ -51,12 +52,12 @@ export function CardSidePanel({
         <span className="text-sm text-fg">
           {TASKS_TEXTS.updatedAt(formatDate(updatedAt))}
         </span>
-      </div>
+      </Panel>
 
       {projectType === 'general' && (
         <>
           <div className="flex flex-col gap-1.5">
-            <label htmlFor="card-due-date" className="text-xs text-fg-muted">
+            <label htmlFor="card-due-date" className="text-caption">
               {TASKS_TEXTS.dueDate}
             </label>
             <Input
@@ -75,7 +76,7 @@ export function CardSidePanel({
       )}
 
       {canRegisterPerformance(projectType, status) && (
-        <div className="flex flex-col gap-1.5 rounded-md border border-border bg-card p-3">
+        <Panel className="flex flex-col gap-1.5 p-3">
           <span className="text-sm font-medium text-fg">{TASKS_TEXTS.srs}</span>
           <span className="text-sm text-fg">
             EF: {(easeFactor ?? 2.5).toFixed(2)}
@@ -86,7 +87,7 @@ export function CardSidePanel({
           <Button type="button" size="sm" onClick={onRegisterPerformance}>
             {COMMON_TEXTS.registerPerformance}
           </Button>
-        </div>
+        </Panel>
       )}
     </div>
   )

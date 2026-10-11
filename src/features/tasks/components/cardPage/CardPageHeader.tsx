@@ -40,7 +40,7 @@ export function CardPageHeader({
       <PageTitle icon={IconFolder} iconSize={48} withAccentBar={false}>
         <div className="flex flex-col gap-0.5">
           {taskNumber && (
-            <span className="px-2 text-xs text-fg-muted">
+            <span className="px-2 text-caption">
               {epicName ? `${epicName}/` : ''}
               {projectPrefix}-{taskNumber}
             </span>

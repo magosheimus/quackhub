@@ -9,6 +9,8 @@ import { getStatusLabel } from '@/features/tasks/lib/taskStatus'
 import { formatFullDate } from '@/shared/lib/date'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
 import { TASKS_TEXTS } from '@/features/tasks/constants/texts'
+import { EmptyMessage } from '@/components/ui/empty-message'
+import { Panel } from '@/components/ui/panel'
 
 const PAGE_SIZE = 5
 
@@ -57,7 +59,7 @@ export function CardHistory({ taskId }: CardHistoryProps) {
       <div className="flex justify-center">
         <button
           type="button"
-          className="text-xs text-fg-muted underline underline-offset-2 hover:text-fg"
+          className="text-caption underline underline-offset-2 hover:text-fg"
           onClick={
             canExpand
               ? () => setVisibleCount((n) => n + PAGE_SIZE)
@@ -105,11 +107,8 @@ export function CardHistory({ taskId }: CardHistoryProps) {
           {visibleActivity.length > 0 ? (
             <div className="flex flex-col gap-2">
               {visibleActivity.map((entry) => (
-                <div
-                  key={entry.id}
-                  className="rounded-md border border-border bg-card p-2 text-sm"
-                >
-                  <div className="flex flex-wrap items-center gap-2 text-xs text-fg-muted">
+                <Panel key={entry.id} className="p-2 text-sm">
+                  <div className="flex flex-wrap items-center gap-2 text-caption">
                     <span>{formatDisplayDateTime(entry.created_at)}</span>
                     <span>·</span>
                     <span>
@@ -123,13 +122,11 @@ export function CardHistory({ taskId }: CardHistoryProps) {
                       ? `${getStatusLabel(entry.old_value)} → ${getStatusLabel(entry.new_value)}`
                       : `${formatSprintValue(entry.old_value)} → ${formatSprintValue(entry.new_value)}`}
                   </p>
-                </div>
+                </Panel>
               ))}
             </div>
           ) : (
-            <span className="text-sm text-fg-muted">
-              {TASKS_TEXTS.noActivity}
-            </span>
+            <EmptyMessage>{TASKS_TEXTS.noActivity}</EmptyMessage>
           )}
 
           {renderToggle(totalActivity)}
@@ -141,11 +138,8 @@ export function CardHistory({ taskId }: CardHistoryProps) {
           {visibleLogs.length > 0 ? (
             <div className="flex flex-col gap-2">
               {visibleLogs.map((log) => (
-                <div
-                  key={log.id}
-                  className="rounded-md border border-border bg-card p-2 text-sm"
-                >
-                  <div className="flex flex-wrap items-center gap-2 text-xs text-fg-muted">
+                <Panel key={log.id} className="p-2 text-sm">
+                  <div className="flex flex-wrap items-center gap-2 text-caption">
                     <span>{formatFullDate(log.session_date)}</span>
                     <span>·</span>
                     <span>
@@ -167,11 +161,11 @@ export function CardHistory({ taskId }: CardHistoryProps) {
                     )}
                   </div>
                   {log.comment && <p className="mt-1 text-fg">{log.comment}</p>}
-                </div>
+                </Panel>
               ))}
             </div>
           ) : (
-            <span className="text-sm text-fg-muted">{TASKS_TEXTS.noLogs}</span>
+            <EmptyMessage>{TASKS_TEXTS.noLogs}</EmptyMessage>
           )}
 
           {renderToggle(totalLogs)}

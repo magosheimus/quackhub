@@ -28,6 +28,7 @@ import { IconTrash } from '@/shared/lib/icons'
 import type { Epic } from '@/shared/types/entities'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
 import { EPICS_TEXTS } from '@/features/epics/constants/texts'
+import { EmptyMessage } from '@/components/ui/empty-message'
 
 type EpicManageModalProps = {
   initialProjectId: string | null
@@ -82,7 +83,7 @@ export function EpicManageModal({
           <div className="flex flex-col gap-2">
             {isLoading && <LoadingText />}
             {epics?.length === 0 && !isLoading && (
-              <div className="text-sm text-fg-muted">{EPICS_TEXTS.empty}</div>
+              <EmptyMessage>{EPICS_TEXTS.empty}</EmptyMessage>
             )}
             {epics?.map((epic) => (
               <EpicRow key={epic.id} epic={epic} />
