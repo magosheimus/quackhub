@@ -14,6 +14,7 @@ import { useUpdateDraft } from '@/features/drafts/hooks/useUpdateDraft'
 import { CardCreateModal } from '@/features/tasks/components/CardCreateModal'
 import { LoadingText } from '@/components/ui/loading-text'
 import type { DraftsItem } from '@/shared/types/entities'
+import { DRAFTS_TEXTS } from '@/features/drafts/constants/texts'
 
 const CHECKED_KEY = 'quackhub-drafts-checked'
 
@@ -119,7 +120,7 @@ export function DraftsList() {
           className="text-(--text-muted)"
         />
         <span className="text-sm text-(--text-muted)">
-          Nada por aqui. Capture uma ideia acima.
+          {DRAFTS_TEXTS.empty}
         </span>
       </div>
     )
@@ -135,7 +136,7 @@ export function DraftsList() {
           <Checkbox
             checked={checkedIds.has(item.id)}
             onCheckedChange={() => toggleChecked(item.id)}
-            aria-label="Item pendente"
+            aria-label={DRAFTS_TEXTS.pendingItem}
           />
           {editing?.id === item.id ? (
             <DraftEditInput
@@ -157,30 +158,30 @@ export function DraftsList() {
           )}
           <Button
             type="button"
-            title="Editar rascunho"
+            title={DRAFTS_TEXTS.edit}
             variant="ghost"
             onClick={() => setEditing({ id: item.id, text: item.content })}
-            aria-label="Editar rascunho"
+            aria-label={DRAFTS_TEXTS.edit}
             className="size-8 rounded-full p-0 hover:bg-(--bg-surface)! hover:text-(--text-primary)!"
           >
             <IconPencil size={16} />
           </Button>
           <Button
             type="button"
-            title="Descartar"
+            title={DRAFTS_TEXTS.discard}
             variant="ghost"
             onClick={() => handleDiscard(item)}
-            aria-label="Descartar"
+            aria-label={DRAFTS_TEXTS.discard}
             className="size-8 rounded-full p-0 hover:bg-(--bg-surface)! hover:text-(--text-primary)!"
           >
             <IconTrash size={16} />
           </Button>
           <Button
             type="button"
-            title="Transformar em card"
+            title={DRAFTS_TEXTS.toCard}
             variant="ghost"
             onClick={() => setCreatingCardFor(item)}
-            aria-label="Transformar em card"
+            aria-label={DRAFTS_TEXTS.toCard}
             className="size-8 rounded-full p-0 hover:bg-(--bg-surface)! hover:text-(--text-primary)!"
           >
             <IconStickyNoteSharp size={16} />

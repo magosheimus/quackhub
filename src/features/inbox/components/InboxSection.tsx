@@ -3,19 +3,20 @@ import { Button } from '@/components/ui/button'
 import { StaticBoardCard } from '@/features/board/components/BoardCard'
 import { todayLocal } from '@/features/srs/lib/srs'
 import type { Project, Task } from '@/shared/types/entities'
+import { COMMON_TEXTS } from '@/shared/constants/texts'
+import { INBOX_TEXTS } from '@/features/inbox/constants/texts'
 
 const SRS_ELIGIBLE_STATUSES = ['studying', 'to_review', 'scheduled']
 
 function describeReview(nextReview: string | null, today: string): string {
-  if (!nextReview) return 'revisão sem data'
+  if (!nextReview) return INBOX_TEXTS.reviewWithoutDate
   const days = Math.round(
     (Date.parse(today) - Date.parse(nextReview)) / 86_400_000,
   )
-  if (days === 0) return 'revisar hoje'
-  if (days > 0)
-    return `revisão vencida há ${days} ${days === 1 ? 'dia' : 'dias'}`
+  if (days === 0) return INBOX_TEXTS.reviewToday
+  if (days > 0) return INBOX_TEXTS.reviewOverdue(COMMON_TEXTS.dayCount(days))
   const ahead = -days
-  return `revisar em ${ahead} ${ahead === 1 ? 'dia' : 'dias'}`
+  return INBOX_TEXTS.reviewIn(COMMON_TEXTS.dayCount(ahead))
 }
 
 type InboxSectionProps = {
@@ -70,7 +71,7 @@ export function InboxSection({
                     onClick={() => onRegisterPerformance(task)}
                   >
                     <IconBookOpen size={12} aria-hidden="true" />
-                    Registrar Desempenho
+                    {COMMON_TEXTS.registerPerformance}
                   </Button>
                 </div>
               ) : (
@@ -80,7 +81,7 @@ export function InboxSection({
                   size="sm"
                   onClick={() => onComplete(task.id)}
                 >
-                  ✓ Concluir
+                  {INBOX_TEXTS.complete}
                 </Button>
               )
             }

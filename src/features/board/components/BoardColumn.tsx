@@ -3,6 +3,7 @@ import { type BoardColumnKey } from '@/features/board/lib/board'
 import { BoardCard } from './BoardCard'
 import { IconLayout } from '@/shared/lib/icons'
 import type { Task } from '@/shared/types/entities'
+import { BOARD_TEXTS } from '@/features/board/constants/texts'
 
 type BoardColumnProps = {
   column: BoardColumnKey
@@ -38,7 +39,9 @@ export function BoardColumn({
             {tasks.length === 0 && (
               <div className="flex h-21 flex-col items-center justify-center gap-1 rounded-md border border-(--border-card-empty) bg-(--bg-card-empty) px-2 text-xs text-(--text-muted)">
                 <IconLayout size={24} aria-hidden="true" />
-                <span className="whitespace-nowrap">— vazio —</span>
+                <span className="whitespace-nowrap">
+                  {BOARD_TEXTS.emptyColumn}
+                </span>
               </div>
             )}
             {tasks.map((task, index) => (

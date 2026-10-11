@@ -18,6 +18,7 @@ import { useAttachments } from '@/features/tasks/hooks/attachments/useAttachment
 import { useUploadAttachment } from '@/features/tasks/hooks/attachments/useUploadAttachment'
 import { useDeleteAttachment } from '@/features/tasks/hooks/attachments/useDeleteAttachment'
 import { getAttachmentUrl } from '@/features/tasks/api/attachments'
+import { TASKS_TEXTS } from '@/features/tasks/constants/texts'
 
 type CardAttachmentsProps = {
   taskId: string
@@ -89,14 +90,14 @@ export function CardAttachments({ taskId }: CardAttachmentsProps) {
     <div className="flex flex-col gap-2">
       <div className="flex items-center gap-1.5">
         <span className="text-sm font-medium text-(--text-primary)">
-          Anexos
+          {TASKS_TEXTS.attachments}
         </span>
         <Button
           type="button"
           variant="ghost"
           size="icon-sm"
           onClick={() => fileInputRef.current?.click()}
-          aria-label="Adicionar anexo"
+          aria-label={TASKS_TEXTS.addAttachment}
           disabled={isPending}
         >
           <IconAttachment size={16} />
@@ -157,7 +158,9 @@ export function CardAttachments({ taskId }: CardAttachmentsProps) {
                       taskId,
                     })
                   }
-                  aria-label={`Remover anexo ${attachment.file_name}`}
+                  aria-label={TASKS_TEXTS.removeAttachment(
+                    attachment.file_name,
+                  )}
                   className="absolute top-0.5 right-0.5 hidden rounded-full bg-(--bg-page) p-0.5 group-hover:block"
                 >
                   <IconClose size={12} />
@@ -183,7 +186,7 @@ export function CardAttachments({ taskId }: CardAttachmentsProps) {
                     variant="ghost"
                     size="icon-sm"
                     onClick={showPrev}
-                    aria-label="Anexo anterior"
+                    aria-label={TASKS_TEXTS.previousAttachment}
                   >
                     <IconChevronLeft size={16} />
                   </Button>
@@ -207,7 +210,7 @@ export function CardAttachments({ taskId }: CardAttachmentsProps) {
                     variant="ghost"
                     size="icon-sm"
                     onClick={showNext}
-                    aria-label="Próximo anexo"
+                    aria-label={TASKS_TEXTS.nextAttachment}
                   >
                     <IconChevronRight size={16} />
                   </Button>

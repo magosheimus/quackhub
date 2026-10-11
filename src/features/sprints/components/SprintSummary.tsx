@@ -7,6 +7,7 @@ import {
   LabelList,
 } from 'recharts'
 import type { Sprint } from '@/shared/types/entities'
+import { SPRINTS_TEXTS } from '@/features/sprints/constants/texts'
 
 type ProjectCompletion = {
   project_id: string
@@ -49,19 +50,25 @@ export function SprintSummary({ sprint }: SprintSummaryProps) {
 
       <div className="grid grid-cols-3 gap-4 border-t border-border pt-4">
         <div>
-          <div className="text-xs text-(--text-muted)">ISSUES TOTAL</div>
+          <div className="text-xs text-(--text-muted)">
+            {SPRINTS_TEXTS.totalIssues}
+          </div>
           <div className="font-heading text-3xl text-(--text-primary)">
             {sprint.total_tasks ?? 0}
           </div>
         </div>
         <div>
-          <div className="text-xs text-(--text-muted)">ISSUES CONCLUÍDAS</div>
+          <div className="text-xs text-(--text-muted)">
+            {SPRINTS_TEXTS.completedIssues}
+          </div>
           <div className="font-heading text-3xl text-(--text-primary)">
             {sprint.completed_tasks ?? 0}
           </div>
         </div>
         <div>
-          <div className="text-xs text-(--text-muted)">TAXA DE CONCLUSÃO</div>
+          <div className="text-xs text-(--text-muted)">
+            {SPRINTS_TEXTS.completionRate}
+          </div>
           <div className="font-heading text-3xl text-(--text-primary)">
             {Math.round((sprint.completion_rate ?? 0) * 100)}%
           </div>
@@ -71,7 +78,7 @@ export function SprintSummary({ sprint }: SprintSummaryProps) {
       {chartData.length > 0 && (
         <div className="border-t border-border pt-4">
           <div className="mb-2 text-xs text-(--text-muted)">
-            COMPLETION BY PROJECT
+            {SPRINTS_TEXTS.completionByProject}
           </div>
           <ResponsiveContainer width="100%" height={chartData.length * 40 + 20}>
             <BarChart
@@ -102,12 +109,14 @@ export function SprintSummary({ sprint }: SprintSummaryProps) {
       )}
 
       <div className="border-t border-border pt-4">
-        <div className="mb-2 text-xs text-(--text-muted)">CARRY-OVER</div>
-        <div className="text-sm text-(--text-primary)">
-          {sprint.carried_to_next ?? 0} cards → próxima Sprint
+        <div className="mb-2 text-xs text-(--text-muted)">
+          {SPRINTS_TEXTS.carryOver}
         </div>
         <div className="text-sm text-(--text-primary)">
-          {sprint.carried_to_backlog ?? 0} cards → Backlog
+          {SPRINTS_TEXTS.carriedToNext(sprint.carried_to_next ?? 0)}
+        </div>
+        <div className="text-sm text-(--text-primary)">
+          {SPRINTS_TEXTS.carriedToBacklog(sprint.carried_to_backlog ?? 0)}
         </div>
       </div>
     </div>

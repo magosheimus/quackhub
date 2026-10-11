@@ -15,8 +15,7 @@ import {
   exportAllData,
 } from '@/features/settings/api/exportData'
 import { reportError } from '@/shared/lib/errors'
-
-const EXPORT_ERROR_MESSAGE = 'Falha ao exportar dados'
+import { SETTINGS_TEXTS } from '@/features/settings/constants/texts'
 
 export function useSettingsPage() {
   const [settings, setSettings] = useState<Settings>(() => loadSettings())
@@ -58,7 +57,7 @@ export function useSettingsPage() {
       const snapshot = await exportAllData()
       downloadSnapshotAsJson(snapshot)
     } catch (error) {
-      reportError(error, EXPORT_ERROR_MESSAGE)
+      reportError(error, SETTINGS_TEXTS.exportError)
     } finally {
       setIsExporting(false)
     }

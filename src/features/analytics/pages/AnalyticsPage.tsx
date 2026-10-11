@@ -4,6 +4,7 @@ import { AnalyticsScopeSelect } from '@/features/analytics/components/AnalyticsS
 import { StudySection } from '@/features/analytics/components/StudySection'
 import { GeneralSection } from '@/features/analytics/components/GeneralSection'
 import { useAnalyticsPage } from '@/features/analytics/hooks/useAnalyticsPage'
+import { ANALYTICS_TEXTS } from '@/features/analytics/constants/texts'
 
 export function AnalyticsPage() {
   const {
@@ -25,7 +26,7 @@ export function AnalyticsPage() {
   return (
     <div className="flex flex-col gap-8">
       <div className="flex items-center justify-between gap-4">
-        <PageTitle title="Analytics" icon={IconChartBar} />
+        <PageTitle title={ANALYTICS_TEXTS.title} icon={IconChartBar} />
         <AnalyticsScopeSelect
           scope={scope}
           scopeLabel={scopeLabel}
@@ -36,7 +37,7 @@ export function AnalyticsPage() {
 
       {hasNoActiveSprint ? (
         <div className="text-sm text-(--text-muted)">
-          — nenhuma sprint ativa para analisar —
+          {ANALYTICS_TEXTS.noActiveSprint}
         </div>
       ) : (
         <>

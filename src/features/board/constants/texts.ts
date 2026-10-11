@@ -1,0 +1,13 @@
+export const BOARD_TEXTS = {
+  quickFilters: 'Filtros rápidos:',
+  emptyColumn: '— vazio —',
+  newCard: 'Novo card',
+  noCards: '— nenhum card —',
+  currentSprintSection: 'SPRINT ATUAL',
+  backlogSection: 'BACKLOG',
+  doneSection: 'CONCLUÍDOS',
+  noActiveSprint: 'Sem sprint ativa',
+  activeSprint: (name: string) => `Sprint ativa: ${name}`,
+  emptyTitle: 'Nenhuma sprint ativa',
+  emptyDescription: 'Crie uma sprint para começar a planejar o board.',
+} as const

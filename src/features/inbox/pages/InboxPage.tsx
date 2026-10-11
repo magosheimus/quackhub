@@ -7,6 +7,8 @@ import { LoadingText } from '@/components/ui/loading-text'
 import { Link } from 'react-router-dom'
 import { buttonVariants } from '@/components/ui/button'
 import { PageTitle } from '@/components/ui/page-title'
+import { COMMON_TEXTS } from '@/shared/constants/texts'
+import { INBOX_TEXTS } from '@/features/inbox/constants/texts'
 
 export function InboxPage() {
   const {
@@ -34,15 +36,19 @@ export function InboxPage() {
       {sprintBanner && <Marquee>{sprintBanner}</Marquee>}
 
       <div className="flex flex-col gap-1">
-        <PageTitle title="Inbox" icon={IconInbox} count={totalCount} />
+        <PageTitle
+          title={INBOX_TEXTS.title}
+          icon={IconInbox}
+          count={totalCount}
+        />
         <span className="pl-4 text-xs text-(--text-muted)">{todayLabel}</span>
       </div>
 
       <div className="grid grid-cols-3 gap-3">
         {[
-          { value: dueToday.length, label: 'tarefas' },
-          { value: srsOverdue.length, label: 'revisões' },
-          { value: urgent.length, label: 'urgentes' },
+          { value: dueToday.length, label: INBOX_TEXTS.tasksCounter },
+          { value: srsOverdue.length, label: INBOX_TEXTS.reviewsCounter },
+          { value: urgent.length, label: INBOX_TEXTS.urgentCounter },
         ].map((counter) => (
           <div
             key={counter.label}
@@ -65,10 +71,10 @@ export function InboxPage() {
           />
           <div className="flex flex-col gap-1">
             <span className="font-heading text-2xl text-(--text-primary)">
-              Sem pendências para hoje
+              {INBOX_TEXTS.emptyTitle}
             </span>
             <span className="text-sm text-(--text-muted)">
-              Use o board ou o Backlog para planejar.
+              {INBOX_TEXTS.emptyDescription}
             </span>
           </div>
           <div className="flex gap-3 pt-2">
@@ -76,34 +82,34 @@ export function InboxPage() {
               to="/board"
               className={buttonVariants({ variant: 'outline', size: 'sm' })}
             >
-              Sprint atual
+              {COMMON_TEXTS.currentSprint}
             </Link>
             <Link
               to="/backlog"
               className={buttonVariants({ variant: 'outline', size: 'sm' })}
             >
-              Ir para o Backlog
+              {COMMON_TEXTS.goToBacklog}
             </Link>
           </div>
         </div>
       ) : (
         <>
           <InboxSection
-            title="Urgentes"
+            title={INBOX_TEXTS.urgentSection}
             tasks={urgent}
             projects={projects}
             onComplete={completeTask}
             onRegisterPerformance={startRegistering}
           />
           <InboxSection
-            title="SRS vencido"
+            title={INBOX_TEXTS.srsOverdueSection}
             tasks={srsOverdue}
             projects={projects}
             onComplete={completeTask}
             onRegisterPerformance={startRegistering}
           />
           <InboxSection
-            title="Prazo hoje"
+            title={INBOX_TEXTS.dueTodaySection}
             tasks={dueToday}
             projects={projects}
             onComplete={completeTask}

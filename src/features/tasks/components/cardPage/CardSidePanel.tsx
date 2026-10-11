@@ -5,6 +5,8 @@ import {
   type RecurrenceValue,
 } from '@/features/tasks/components/RecurrenceFields'
 import type { Task } from '@/shared/types/entities'
+import { COMMON_TEXTS } from '@/shared/constants/texts'
+import { TASKS_TEXTS } from '@/features/tasks/constants/texts'
 
 const SRS_ELIGIBLE_STATUSES: Task['status'][] = [
   'studying',
@@ -47,12 +49,14 @@ export function CardSidePanel({
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-1.5 rounded-md border border-border bg-(--bg-card) p-3">
-        <span className="text-sm font-medium text-(--text-primary)">Datas</span>
-        <span className="text-sm text-(--text-primary)">
-          Criado: {formatDate(createdAt)}
+        <span className="text-sm font-medium text-(--text-primary)">
+          {TASKS_TEXTS.dates}
         </span>
         <span className="text-sm text-(--text-primary)">
-          Atualizado: {formatDate(updatedAt)}
+          {TASKS_TEXTS.createdAt(formatDate(createdAt))}
+        </span>
+        <span className="text-sm text-(--text-primary)">
+          {TASKS_TEXTS.updatedAt(formatDate(updatedAt))}
         </span>
       </div>
 
@@ -63,7 +67,7 @@ export function CardSidePanel({
               htmlFor="card-due-date"
               className="text-xs text-(--text-muted)"
             >
-              Due Date
+              {TASKS_TEXTS.dueDate}
             </label>
             <Input
               id="card-due-date"
@@ -82,7 +86,9 @@ export function CardSidePanel({
 
       {projectType === 'study' && SRS_ELIGIBLE_STATUSES.includes(status) && (
         <div className="flex flex-col gap-1.5 rounded-md border border-border bg-(--bg-card) p-3">
-          <span className="text-sm font-medium text-(--text-primary)">SRS</span>
+          <span className="text-sm font-medium text-(--text-primary)">
+            {TASKS_TEXTS.srs}
+          </span>
           <span className="text-sm text-(--text-primary)">
             EF: {(easeFactor ?? 2.5).toFixed(2)}
           </span>
@@ -90,7 +96,7 @@ export function CardSidePanel({
             Próxima revisão: {nextReview ?? '—'}
           </span>
           <Button type="button" size="sm" onClick={onRegisterPerformance}>
-            Registrar Desempenho
+            {COMMON_TEXTS.registerPerformance}
           </Button>
         </div>
       )}

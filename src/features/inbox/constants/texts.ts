@@ -1,0 +1,16 @@
+export const INBOX_TEXTS = {
+  title: 'Inbox',
+  urgentSection: 'Urgentes',
+  srsOverdueSection: 'SRS vencido',
+  dueTodaySection: 'Prazo hoje',
+  tasksCounter: 'tarefas',
+  reviewsCounter: 'revisões',
+  urgentCounter: 'urgentes',
+  emptyTitle: 'Sem pendências para hoje',
+  emptyDescription: 'Use o board ou o Backlog para planejar.',
+  complete: '✓ Concluir',
+  reviewWithoutDate: 'revisão sem data',
+  reviewToday: 'revisar hoje',
+  reviewOverdue: (dayCount: string) => `revisão vencida há ${dayCount}`,
+  reviewIn: (dayCount: string) => `revisar em ${dayCount}`,
+} as const

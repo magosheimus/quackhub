@@ -8,6 +8,7 @@ import {
 import { PRIORITY_CONFIG } from '@/features/tasks/lib/taskPriority'
 import type { ReactNode } from 'react'
 import type { Task } from '@/shared/types/entities'
+import { COMMON_TEXTS } from '@/shared/constants/texts'
 
 const CARD_CLASS =
   'flex gap-2 rounded-md border border-l-4 border-border bg-(--bg-card) p-3 text-sm hover:bg-(--bg-card-hover)'
@@ -39,7 +40,7 @@ function BoardCardBody({
           <IconFlag
             size={12}
             className="text-(--signal-danger)"
-            aria-label="Urgente"
+            aria-label={COMMON_TEXTS.urgent}
           />
         )}
         <span title={priority.ariaLabel} className="inline-flex">

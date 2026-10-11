@@ -17,6 +17,8 @@ import {
   addDaysToToday,
 } from '@/features/srs/lib/srs'
 import type { Task } from '@/shared/types/entities'
+import { COMMON_TEXTS } from '@/shared/constants/texts'
+import { SRS_TEXTS } from '@/features/srs/constants/texts'
 
 const CONFIANCA_OPTIONS = [1, 2, 3, 4, 5]
 
@@ -64,13 +66,13 @@ export function RegisterPerformanceModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Registrar Desempenho</DialogTitle>
+          <DialogTitle>{COMMON_TEXTS.registerPerformance}</DialogTitle>
         </DialogHeader>
 
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-1.5">
             <label htmlFor="srs-nota" className="text-xs text-(--text-muted)">
-              Nota (0–10)
+              {SRS_TEXTS.score}
             </label>
             <Input
               id="srs-nota"
@@ -85,7 +87,7 @@ export function RegisterPerformanceModal({
 
           <div className="flex flex-col gap-1.5">
             <span id="confianca-label" className="text-xs text-(--text-muted)">
-              Confiança
+              {SRS_TEXTS.confidence}
             </span>
             <div
               className="flex gap-1"
@@ -111,29 +113,29 @@ export function RegisterPerformanceModal({
               htmlFor="srs-comment"
               className="text-xs text-(--text-muted)"
             >
-              Observação (opcional)
+              {SRS_TEXTS.comment}
             </label>
             <Textarea
               id="srs-comment"
               value={comment}
               onChange={(e) => setComment(e.target.value)}
-              placeholder="Adicionar observação..."
+              placeholder={SRS_TEXTS.commentPlaceholder}
             />
           </div>
 
           <div className="rounded-md border border-border bg-(--bg-card) p-3 text-xs text-(--text-muted)">
-            <p>Qualidade calculada: {quality.toFixed(2)}</p>
-            <p>Novo intervalo: {newInterval} dia(s)</p>
-            <p>Próxima revisão: {nextReviewDate}</p>
+            <p>{SRS_TEXTS.quality(quality.toFixed(2))}</p>
+            <p>{SRS_TEXTS.newInterval(newInterval)}</p>
+            <p>{SRS_TEXTS.nextReview(nextReviewDate)}</p>
           </div>
         </div>
 
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Cancelar
+            {COMMON_TEXTS.cancel}
           </Button>
           <Button onClick={handleConfirm} disabled={isPending}>
-            Confirmar
+            {COMMON_TEXTS.confirm}
           </Button>
         </DialogFooter>
       </DialogContent>

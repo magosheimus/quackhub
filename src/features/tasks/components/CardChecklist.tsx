@@ -12,6 +12,7 @@ import { useChecklistItems } from '@/features/tasks/hooks/checklist/useChecklist
 import { useCreateChecklistItem } from '@/features/tasks/hooks/checklist/useCreateChecklistItem'
 import { useUpdateChecklistItem } from '@/features/tasks/hooks/checklist/useUpdateChecklistItem'
 import { useDeleteChecklistItem } from '@/features/tasks/hooks/checklist/useDeleteChecklistItem'
+import { TASKS_TEXTS } from '@/features/tasks/constants/texts'
 
 type CardChecklistProps = {
   taskId: string
@@ -47,7 +48,7 @@ export function CardChecklist({ taskId }: CardChecklistProps) {
   return (
     <div className="flex flex-col gap-2">
       <span className="text-sm font-medium text-(--text-primary)">
-        Checklist
+        {TASKS_TEXTS.checklist}
       </span>
 
       <DragDropContext onDragEnd={handleDragEnd}>
@@ -75,7 +76,7 @@ export function CardChecklist({ taskId }: CardChecklistProps) {
                             data: { done: checked === true },
                           })
                         }
-                        aria-label={`Marcar "${item.content}" como concluído`}
+                        aria-label={TASKS_TEXTS.markDone(item.content)}
                       />
                       <span
                         className={
@@ -89,7 +90,7 @@ export function CardChecklist({ taskId }: CardChecklistProps) {
                       <button
                         type="button"
                         onClick={() => deleteItem({ id: item.id, taskId })}
-                        aria-label={`Remover "${item.content}"`}
+                        aria-label={TASKS_TEXTS.removeItem(item.content)}
                       >
                         <IconClose size={12} className="text-(--text-muted)" />
                       </button>
@@ -108,13 +109,13 @@ export function CardChecklist({ taskId }: CardChecklistProps) {
           value={draft}
           onChange={(e) => setDraft(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && handleAdd()}
-          placeholder="Adicionar item"
-          aria-label="Novo item do checklist"
+          placeholder={TASKS_TEXTS.addItem}
+          aria-label={TASKS_TEXTS.newChecklistItem}
         />
         <button
           type="button"
           onClick={handleAdd}
-          aria-label="Adicionar item"
+          aria-label={TASKS_TEXTS.addItem}
           className="flex size-8 items-center justify-center text-(--text-muted) hover:text-(--text-primary) motion-safe:transition-transform motion-safe:hover:scale-110"
         >
           <IconPlusBoxSharp size={16} aria-hidden="true" />

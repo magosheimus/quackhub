@@ -6,6 +6,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { useEpics } from '@/features/epics/hooks/useEpics'
+import { EPICS_TEXTS } from '@/features/epics/constants/texts'
 
 type EpicSelectorProps = {
   projectId: string
@@ -32,11 +33,11 @@ export function EpicSelector({
         <SelectValue>
           {value
             ? epics?.find((e) => e.id === value)?.name
-            : 'Selecionar épico'}
+            : EPICS_TEXTS.selectEpic}
         </SelectValue>
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value={NONE_VALUE}>Sem épico</SelectItem>
+        <SelectItem value={NONE_VALUE}>{EPICS_TEXTS.noEpic}</SelectItem>
         {epics?.map((epic) => (
           <SelectItem key={epic.id} value={epic.id}>
             {epic.name}

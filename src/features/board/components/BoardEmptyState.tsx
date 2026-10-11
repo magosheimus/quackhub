@@ -2,6 +2,8 @@ import { IconHourglass } from '@/shared/lib/icons'
 import { Link } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { SprintCreateModal } from '@/features/sprints/components/SprintCreateModal'
+import { COMMON_TEXTS } from '@/shared/constants/texts'
+import { BOARD_TEXTS } from '@/features/board/constants/texts'
 
 export function BoardEmptyState() {
   return (
@@ -13,15 +15,15 @@ export function BoardEmptyState() {
       />
       <div className="flex flex-col gap-1">
         <span className="font-heading text-2xl text-(--text-primary)">
-          Nenhuma sprint ativa
+          {BOARD_TEXTS.emptyTitle}
         </span>
         <span className="text-sm text-(--text-muted)">
-          Crie uma sprint para começar a planejar o board.
+          {BOARD_TEXTS.emptyDescription}
         </span>
       </div>
       <div className="flex gap-3 pt-2">
         <Button variant="outline" size="sm" render={<Link to="/backlog" />}>
-          Ir para o Backlog
+          {COMMON_TEXTS.goToBacklog}
         </Button>
         <SprintCreateModal />
       </div>

@@ -18,22 +18,14 @@ import {
 } from '@/features/settings/lib/settings'
 import { useSettingsPage } from '@/features/settings/hooks/useSettingsPage'
 import { PageTitle } from '@/components/ui/page-title'
+import {
+  FONT_LABELS,
+  SETTINGS_TEXTS,
+  TEXTURE_LABELS,
+  WEEK_START_LABELS,
+} from '@/features/settings/constants/texts'
 
-const TEXTURE_OPTIONS: { value: Settings['texture']; label: string }[] = [
-  { value: 'none', label: 'Nenhuma' },
-  { value: 'grid', label: 'Grade' },
-  { value: 'dots', label: 'Pontos' },
-]
-
-const FONT_LABELS: Record<Settings['fontBody'], string> = {
-  jetbrains: 'JetBrains Mono',
-  'ibm-plex': 'IBM Plex Mono',
-}
-
-const WEEK_START_LABELS: Record<Settings['weekStartsOn'], string> = {
-  0: 'Domingo',
-  1: 'Segunda',
-}
+const TEXTURES: Settings['texture'][] = ['none', 'grid', 'dots']
 
 function SettingsCard({
   title,
@@ -67,29 +59,29 @@ export function SettingsPage() {
 
   return (
     <div className="flex flex-col gap-6">
-      <PageTitle title="Configurações" icon={IconSettings} />
+      <PageTitle title={SETTINGS_TEXTS.title} icon={IconSettings} />
 
       <div className="grid gap-6 lg:grid-cols-2">
-        <SettingsCard title="Aparência">
+        <SettingsCard title={SETTINGS_TEXTS.appearance}>
           <div className="flex flex-wrap gap-2">
-            {TEXTURE_OPTIONS.map((option) => (
+            {TEXTURES.map((texture) => (
               <Button
-                key={option.value}
+                key={texture}
                 type="button"
                 size="sm"
-                variant={
-                  settings.texture === option.value ? 'selected' : 'outline'
-                }
-                onClick={() => update({ texture: option.value })}
+                variant={settings.texture === texture ? 'selected' : 'outline'}
+                onClick={() => update({ texture })}
               >
-                {option.label}
+                {TEXTURE_LABELS[texture]}
               </Button>
             ))}
           </div>
 
           {settings.texture !== 'none' && (
             <div className="flex items-center gap-3">
-              <span className="text-xs text-(--text-muted)">Intensidade</span>
+              <span className="text-xs text-(--text-muted)">
+                {SETTINGS_TEXTS.intensity}
+              </span>
               <Slider
                 value={[textureOpacity]}
                 onValueChange={setTextureOpacity}
@@ -114,7 +106,7 @@ export function SettingsPage() {
                 id="scanlines-label"
                 className="text-xs text-(--text-muted)"
               >
-                Scanlines
+                {SETTINGS_TEXTS.scanlines}
               </span>
             </div>
             <div className="flex items-center gap-2">
@@ -126,16 +118,16 @@ export function SettingsPage() {
                 aria-labelledby="glow-label"
               />
               <span id="glow-label" className="text-xs text-(--text-muted)">
-                Glow
+                {SETTINGS_TEXTS.glow}
               </span>
             </div>
           </div>
         </SettingsCard>
 
-        <SettingsCard title="Preferências">
+        <SettingsCard title={SETTINGS_TEXTS.preferences}>
           <div className="flex flex-col gap-1.5">
             <span id="font-label" className="text-xs text-(--text-muted)">
-              Fonte do corpo
+              {SETTINGS_TEXTS.bodyFont}
             </span>
             <Select value={settings.fontBody} onValueChange={selectFontBody}>
               <SelectTrigger aria-labelledby="font-label">
@@ -156,7 +148,7 @@ export function SettingsPage() {
               id="date-format-label"
               className="text-xs text-(--text-muted)"
             >
-              Formato de data
+              {SETTINGS_TEXTS.dateFormat}
             </span>
             <Select
               value={settings.dateFormat}
@@ -177,7 +169,7 @@ export function SettingsPage() {
 
           <div className="flex flex-col gap-1.5">
             <span id="week-start-label" className="text-xs text-(--text-muted)">
-              Primeiro dia da semana
+              {SETTINGS_TEXTS.weekStart}
             </span>
             <Select
               value={String(settings.weekStartsOn)}
@@ -189,22 +181,22 @@ export function SettingsPage() {
                 </SelectValue>
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="0">Domingo</SelectItem>
-                <SelectItem value="1">Segunda</SelectItem>
+                <SelectItem value="0">{WEEK_START_LABELS[0]}</SelectItem>
+                <SelectItem value="1">{WEEK_START_LABELS[1]}</SelectItem>
               </SelectContent>
             </Select>
           </div>
         </SettingsCard>
       </div>
 
-      <SettingsCard title="Dados">
+      <SettingsCard title={SETTINGS_TEXTS.data}>
         <div className="flex items-center justify-between gap-4">
           <div className="flex flex-col">
             <span className="text-sm text-(--text-primary)">
-              Exportar dados
+              {SETTINGS_TEXTS.exportData}
             </span>
             <span className="text-xs text-(--text-muted)">
-              Baixa um .json com todas as suas informações.
+              {SETTINGS_TEXTS.exportDescription}
             </span>
           </div>
           <Button
@@ -214,15 +206,17 @@ export function SettingsPage() {
             onClick={exportData}
             disabled={isExporting}
           >
-            {isExporting ? 'Exportando...' : 'Exportar'}
+            {isExporting ? SETTINGS_TEXTS.exporting : SETTINGS_TEXTS.export}
           </Button>
         </div>
 
         <div className="flex items-center justify-between gap-4 border-t border-border pt-4">
           <div className="flex flex-col">
-            <span className="text-sm text-(--text-primary)">Limpar cache</span>
+            <span className="text-sm text-(--text-primary)">
+              {SETTINGS_TEXTS.clearCache}
+            </span>
             <span className="text-xs text-(--text-muted)">
-              Remove os dados salvos no navegador e recarrega a página.
+              {SETTINGS_TEXTS.clearCacheDescription}
             </span>
           </div>
           <ClearCacheButton />

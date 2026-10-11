@@ -26,6 +26,8 @@ import { LoadingText } from '@/components/ui/loading-text'
 import { useSoftDeleteEpic } from '@/features/epics/hooks/useSoftDeleteEpic'
 import { IconTrash } from '@/shared/lib/icons'
 import type { Epic } from '@/shared/types/entities'
+import { COMMON_TEXTS } from '@/shared/constants/texts'
+import { EPICS_TEXTS } from '@/features/epics/constants/texts'
 
 type EpicManageModalProps = {
   initialProjectId: string | null
@@ -57,14 +59,14 @@ export function EpicManageModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Épicos</DialogTitle>
+          <DialogTitle>{EPICS_TEXTS.title}</DialogTitle>
         </DialogHeader>
 
         <Select value={projectId} onValueChange={setProjectId}>
-          <SelectTrigger aria-label="Projeto do épico">
+          <SelectTrigger aria-label={EPICS_TEXTS.projectLabel}>
             <SelectValue>
               {projects?.find((p) => p.id === projectId)?.name ??
-                'Selecione o projeto'}
+                EPICS_TEXTS.selectProject}
             </SelectValue>
           </SelectTrigger>
           <SelectContent>
@@ -81,7 +83,7 @@ export function EpicManageModal({
             {isLoading && <LoadingText />}
             {epics?.length === 0 && !isLoading && (
               <div className="text-sm text-(--text-muted)">
-                — nenhum épico ainda —
+                {EPICS_TEXTS.empty}
               </div>
             )}
             {epics?.map((epic) => (
@@ -91,7 +93,11 @@ export function EpicManageModal({
         )}
 
         <div className="flex flex-col gap-2 pt-2 border-t border-border">
-          <div className="flex gap-2" role="group" aria-label="Cor do épico">
+          <div
+            className="flex gap-2"
+            role="group"
+            aria-label={EPICS_TEXTS.colorLabel}
+          >
             {PROJECT_COLORS.map((c) => (
               <button
                 key={c}
@@ -103,7 +109,7 @@ export function EpicManageModal({
                   outline: color === c ? '2px solid var(--accent)' : 'none',
                   outlineOffset: 2,
                 }}
-                aria-label={`Selecionar cor ${c}`}
+                aria-label={COMMON_TEXTS.selectColor(c)}
               />
             ))}
           </div>
@@ -111,8 +117,8 @@ export function EpicManageModal({
             <Input
               value={newEpicName}
               onChange={(e) => setNewEpicName(e.target.value)}
-              placeholder="Nome do novo épico"
-              aria-label="Nome do novo épico"
+              placeholder={EPICS_TEXTS.namePlaceholder}
+              aria-label={EPICS_TEXTS.namePlaceholder}
               disabled={!projectId}
               onKeyDown={(e) => e.key === 'Enter' && handleCreate()}
             />
@@ -120,7 +126,7 @@ export function EpicManageModal({
               onClick={handleCreate}
               disabled={!projectId || !newEpicName.trim() || isCreating}
             >
-              Adicionar
+              {COMMON_TEXTS.add}
             </Button>
           </div>
         </div>
@@ -144,11 +150,7 @@ function EpicRow({ epic }: { epic: Epic }) {
   }
 
   function handleDelete() {
-    if (
-      !window.confirm(
-        `Excluir o épico "${epic.name}"? Os cards vinculados ficam sem épico.`,
-      )
-    ) {
+    if (!window.confirm(EPICS_TEXTS.confirmDelete(epic.name))) {
       return
     }
     softDeleteEpic(epic.id)
@@ -161,7 +163,7 @@ function EpicRow({ epic }: { epic: Epic }) {
         onChange={(e) => setName(e.target.value)}
         onBlur={handleBlur}
         disabled={isPending}
-        aria-label={`Renomear épico ${epic.name}`}
+        aria-label={EPICS_TEXTS.rename(epic.name)}
         className="text-sm"
       />
       <span
@@ -174,7 +176,7 @@ function EpicRow({ epic }: { epic: Epic }) {
         size="icon-sm"
         onClick={handleDelete}
         disabled={isDeleting}
-        aria-label={`Excluir épico ${epic.name}`}
+        aria-label={EPICS_TEXTS.delete(epic.name)}
       >
         <IconTrash size={12} />
       </Button>

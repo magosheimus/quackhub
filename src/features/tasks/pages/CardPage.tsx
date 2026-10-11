@@ -12,6 +12,7 @@ import { RegisterPerformanceModal } from '@/features/srs/components/RegisterPerf
 import { LoadingText } from '@/components/ui/loading-text'
 import { CardDescription } from '@/features/tasks/components/cardPage/CardDescription'
 import type { Task } from '@/shared/types/entities'
+import { TASKS_TEXTS } from '@/features/tasks/constants/texts'
 
 export function CardPage() {
   const { id } = useParams<{ id: string }>()
@@ -23,7 +24,7 @@ export function CardPage() {
 
   if (!task) {
     return (
-      <div className="text-sm text-(--text-muted)">— Card não encontrado —</div>
+      <div className="text-sm text-(--text-muted)">{TASKS_TEXTS.notFound}</div>
     )
   }
 

@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button'
 import { useStartSprint } from '@/features/sprints/hooks/useStartSprint'
 import { formatDayMonth } from '@/shared/lib/date'
 import type { Sprint } from '@/shared/types/entities'
+import { COMMON_TEXTS } from '@/shared/constants/texts'
 
 type SprintPlanningHeaderProps = {
   sprint: Sprint
@@ -29,7 +30,7 @@ export function SprintPlanningHeader({ sprint }: SprintPlanningHeaderProps) {
         onClick={() => startSprint(sprint.id)}
         disabled={isPending}
       >
-        {isPending ? 'Iniciando...' : 'Iniciar sprint'}
+        {isPending ? COMMON_TEXTS.startingSprint : COMMON_TEXTS.startSprint}
       </Button>
     </div>
   )

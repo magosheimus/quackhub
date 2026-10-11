@@ -4,6 +4,7 @@ import { syncDraftsQueue } from '@/features/drafts/api/drafts'
 import { useOnlineStatus } from '@/shared/hooks/useOnlineStatus'
 import { Toaster } from '@/components/ui/toaster'
 import { CartuchoPicker } from '@/features/settings/components/CartuchoPicker'
+import { APP_TEXTS } from '@/app/constants/texts'
 
 interface AppShellProps {
   children: ReactNode
@@ -21,7 +22,7 @@ export function AppShell({ children }: AppShellProps) {
       <main className="flex-1 overflow-y-auto p-6">
         {!isOnline && (
           <div className="mb-4 border border-border bg-(--bg-surface) p-2 text-xs text-(--signal-warning)">
-            Modo offline — Inbox disponível
+            {APP_TEXTS.offlineBanner}
           </div>
         )}
         {children}
