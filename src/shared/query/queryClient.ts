@@ -2,6 +2,7 @@ import { MutationCache, QueryCache, QueryClient } from '@tanstack/react-query'
 import { persistQueryClient } from '@tanstack/react-query-persist-client'
 import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister'
 import { ERROR_MESSAGES, reportError } from '@/shared/lib/errors'
+import { STORAGE_KEYS } from '@/shared/constants/storageKeys'
 
 export const queryClient = new QueryClient({
   queryCache: new QueryCache({
@@ -28,7 +29,7 @@ export const queryClient = new QueryClient({
 
 const persister = createAsyncStoragePersister({
   storage: window.localStorage,
-  key: 'quackhub-query-cache',
+  key: STORAGE_KEYS.queryCache,
 })
 
 persistQueryClient({ queryClient, persister, maxAge: 1000 * 60 * 60 * 24 })

@@ -1,6 +1,7 @@
 import type { DraftsItem } from '@/shared/types/entities'
+import { STORAGE_KEYS } from '@/shared/constants/storageKeys'
 
-const QUEUE_KEY = 'quackhub-drafts-queue'
+const QUEUE_KEY = STORAGE_KEYS.draftsQueue
 
 export function enqueue(item: DraftsItem): void {
   const queue = getQueue()

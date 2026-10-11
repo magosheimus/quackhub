@@ -1,6 +1,7 @@
 import { createEnumGuard } from '@/shared/lib/enums'
+import { STORAGE_KEYS } from '@/shared/constants/storageKeys'
 
-const SETTINGS_KEY = 'quackhub-settings'
+const SETTINGS_KEY = STORAGE_KEYS.settings
 
 export type Settings = {
   cartucho: 'sage' | 'amber' | 'slate' | 'earth' | 'sage-dark' | 'amber-dark'
