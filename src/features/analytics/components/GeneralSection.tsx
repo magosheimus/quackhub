@@ -75,7 +75,7 @@ export function GeneralSection({
                 key={status.name}
                 className="flex flex-col gap-1 rounded-md border border-border bg-page p-4"
               >
-                <span className="glow-heading font-heading text-3xl text-fg">
+                <span className="font-heading text-3xl text-fg">
                   {status.count}
                 </span>
                 <span className="text-caption">{status.name}</span>

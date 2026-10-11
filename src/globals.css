@@ -29,6 +29,7 @@
   /* Accent */
   --accent: #004e3c;
   --on-accent: #f4f5e9;
+  --glow-color: oklch(from var(--accent) 0.65 0.17 h);
 
   /* Signal */
   --signal-danger: #a52d25;
@@ -48,7 +49,7 @@
   --control-height: 1.75rem;
 
   /* Efeitos */
-  --glow: none;
+  --glow: 0 0 #0000;
   --scanline-opacity: 0;
 
   /* Tipografia */
@@ -143,14 +144,19 @@
 .cartucho-earth {
   --lcd-screen: #f1dca7;
   --lcd-ink: #3d2f22;
+  
   --bg-surface: #d9ae94;
   --bg-card: #f8ecd7;
   --bg-card-hover: #fff5df;
   --bg-selected: #d8dcad;
   --bg-input: #fff3db;
+  
+  --text-primary: var(--lcd-ink);
   --text-muted: #705537;
+  
   --border: #b99a6b;
   --border-strong: #896c46;
+  
   --accent: #59632d;
   --on-accent: #fff5dc;
 
@@ -179,6 +185,7 @@
 
   --accent: #9dc94b;
   --on-accent: #211d0c;
+  --glow-color: var(--accent);
 
   /* Signal */
   --signal-danger: #ff8567;
@@ -205,16 +212,12 @@
 
   --accent: #e8a33d;
   --on-accent: #261405;
+  --glow-color: var(--accent);
 
   /* Signal */
   --signal-danger: #ff9974;
   --signal-warning: #f2c362;
   --signal-success: #b7d77b;
-}
-
-.theme-dark {
-  --glow: 0 0 6px color-mix(in srgb, var(--lcd-ink) 55%, transparent);
-  --scanline-opacity: 1;
 }
 
 .scanlines-on {
@@ -223,8 +226,10 @@
 
 .glow-on {
   --glow:
-    0 0 1px color-mix(in srgb, var(--accent) 70%, transparent),
-    0 0 8px color-mix(in srgb, var(--accent) 55%, transparent);
+    0 0 1px color-mix(in oklch, var(--glow-color) 70%, transparent),
+    0 0 6px color-mix(in oklch, var(--glow-color) 50%, transparent),
+    0 0 16px color-mix(in oklch, var(--glow-color) 35%, transparent),
+    0 0 32px color-mix(in oklch, var(--glow-color) 15%, transparent);
 }
 
 .font-ibm-plex {
@@ -279,25 +284,21 @@
   opacity: var(--scanline-opacity, 0);
 }
 
-.glow-heading {
+.font-heading,
+[aria-current='page'],
+.glow-active {
   text-shadow: var(--glow);
 }
 
-.glow-active {
-  text-shadow: 0 0 10px color-mix(in srgb, var(--lcd-ink) 80%, transparent);
-}
-
-.card-hover {
-  box-shadow:
-    0 0 0 1px var(--border),
-    0 0 8px color-mix(in srgb, var(--lcd-ink) 20%, transparent);
-}
-
-.theme-dark .glow-heading {
+.theme-dark .font-heading {
   text-shadow:
     -0.5px 0 0 color-mix(in srgb, var(--lcd-ink) 40%, transparent),
     0.5px 0 0 color-mix(in srgb, var(--lcd-ink) 35%, transparent),
     var(--glow);
+}
+
+.glow-on.theme-dark .font-heading.text-accent {
+  color: color-mix(in oklch, var(--accent) 60%, white);
 }
 
 /* ==========================================================================

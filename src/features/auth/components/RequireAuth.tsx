@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
 import { LoadingText } from '@/components/ui/loading-text'
-import { LOGIN_PATH } from '@/features/auth/api/auth'
 import { useAuth } from '@/features/auth/hooks/useAuth'
+import { LOGIN_PATH } from '@/features/auth/lib/redirect'
 
 export type RedirectState = {
   from?: string

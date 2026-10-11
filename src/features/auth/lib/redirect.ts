@@ -1,4 +1,5 @@
 export const HOME_PATH = '/inbox'
+export const LOGIN_PATH = '/login'
 
 // Só caminhos internos: evita redirecionamento aberto para "//site.com"
 export function getRedirectTarget(state: unknown): string {

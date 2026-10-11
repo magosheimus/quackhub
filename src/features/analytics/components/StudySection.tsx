@@ -39,15 +39,13 @@ export function StudySection({
           <span className="text-xs font-medium uppercase tracking-wide text-fg">
             {ANALYTICS_TEXTS.reviews}
           </span>
-          <span className="glow-heading font-heading text-4xl text-fg">
-            {totalReviews}
-          </span>
+          <span className="font-heading text-4xl text-fg">{totalReviews}</span>
         </Panel>
         <Panel className="flex flex-col gap-1 p-5">
           <span className="text-xs font-medium uppercase tracking-wide text-fg">
             {ANALYTICS_TEXTS.accuracy}
           </span>
-          <span className="glow-heading font-heading text-4xl text-fg">
+          <span className="font-heading text-4xl text-fg">
             {accuracyPercent}%
           </span>
         </Panel>

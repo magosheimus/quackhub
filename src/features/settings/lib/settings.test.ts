@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import {
+  applySettings,
   loadSettings,
   saveSettings,
   isDarkCartucho,
@@ -70,5 +71,26 @@ describe('opacidade da textura', () => {
     expect(getTextureOpacity(grid)).toBe(DEFAULT_SETTINGS.gridOpacity)
     expect(textureOpacityUpdate(dots, 30)).toEqual({ dotsOpacity: 30 })
     expect(textureOpacityUpdate(grid, 30)).toEqual({ gridOpacity: 30 })
+  })
+})
+
+describe('applySettings', () => {
+  it('marca os cartuchos escuros com theme-dark', () => {
+    applySettings({ ...DEFAULT_SETTINGS, cartucho: 'amber-dark' })
+    expect(document.documentElement).toHaveClass(
+      'cartucho-amber-dark',
+      'theme-dark',
+    )
+
+    applySettings({ ...DEFAULT_SETTINGS, cartucho: 'amber' })
+    expect(document.documentElement).not.toHaveClass('theme-dark')
+  })
+
+  it('liga glow e scanlines só pelos toggles', () => {
+    applySettings({ ...DEFAULT_SETTINGS, cartucho: 'sage-dark' })
+    expect(document.documentElement).not.toHaveClass('glow-on', 'scanlines-on')
+
+    applySettings({ ...DEFAULT_SETTINGS, glow: true, scanlines: true })
+    expect(document.documentElement).toHaveClass('glow-on', 'scanlines-on')
   })
 })

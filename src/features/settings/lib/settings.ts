@@ -121,6 +121,7 @@ export function applySettings(s: Settings): void {
     FONT_CLASS[s.fontBody],
     s.scanlines ? 'scanlines-on' : '',
     s.glow ? 'glow-on' : '',
+    isDarkCartucho(s.cartucho) ? 'theme-dark' : '',
   ]
     .filter(Boolean)
     .join(' ')
