@@ -1,12 +1,10 @@
 import { IconBookOpen } from '@/shared/lib/icons'
 import { Button } from '@/components/ui/button'
 import { StaticBoardCard } from '@/features/board/components/BoardCard'
-import { todayLocal } from '@/features/srs/lib/srs'
+import { canRegisterPerformance, todayLocal } from '@/features/srs/lib/srs'
 import type { Project, Task } from '@/shared/types/entities'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
 import { INBOX_TEXTS } from '@/features/inbox/constants/texts'
-
-const SRS_ELIGIBLE_STATUSES = ['studying', 'to_review', 'scheduled']
 
 function describeReview(nextReview: string | null, today: string): string {
   if (!nextReview) return INBOX_TEXTS.reviewWithoutDate
@@ -49,9 +47,7 @@ export function InboxSection({
       </div>
       {tasks.map((task) => {
         const project = projects.find((p) => p.id === task.project_id)
-        const isSrsEligible =
-          project?.type === 'study' &&
-          SRS_ELIGIBLE_STATUSES.includes(task.status)
+        const isSrsEligible = canRegisterPerformance(project?.type, task.status)
 
         return (
           <StaticBoardCard

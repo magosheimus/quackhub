@@ -1,5 +1,10 @@
 import { describe, it, expect } from 'vitest'
-import { calculateQuality, calculateNewEF, calculateNextInterval } from './srs'
+import {
+  calculateQuality,
+  calculateNewEF,
+  calculateNextInterval,
+  canRegisterPerformance,
+} from './srs'
 
 describe('calculateQuality', () => {
   it('nota 0 e confiança 1 (pior caso) retorna 0', () => {
@@ -61,5 +66,23 @@ describe('calculateNextInterval', () => {
 
     const third = calculateNextInterval(second, 2.5, 4)
     expect(third).toBe(Math.round(3 * 2.5))
+  })
+})
+
+describe('canRegisterPerformance', () => {
+  it('libera em projetos de estudo nos status do ciclo SRS', () => {
+    expect(canRegisterPerformance('study', 'studying')).toBe(true)
+    expect(canRegisterPerformance('study', 'to_review')).toBe(true)
+    expect(canRegisterPerformance('study', 'scheduled')).toBe(true)
+  })
+
+  it('bloqueia antes de estudar e depois de concluir', () => {
+    expect(canRegisterPerformance('study', 'to_study')).toBe(false)
+    expect(canRegisterPerformance('study', 'done')).toBe(false)
+  })
+
+  it('bloqueia projetos gerais e projeto desconhecido', () => {
+    expect(canRegisterPerformance('general', 'studying')).toBe(false)
+    expect(canRegisterPerformance(undefined, 'studying')).toBe(false)
   })
 })
