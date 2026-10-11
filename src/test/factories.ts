@@ -2,6 +2,7 @@ import type { Epic, Project, Sprint, Task } from '@/shared/types/entities'
 
 export function makeTask(overrides: Partial<Task> = {}): Task {
   return {
+    user_id: 'user-1',
     id: 'task-1',
     project_id: 'project-1',
     epic_id: null,
@@ -33,6 +34,7 @@ export function makeTask(overrides: Partial<Task> = {}): Task {
 
 export function makeProject(overrides: Partial<Project> = {}): Project {
   return {
+    user_id: 'user-1',
     id: 'project-1',
     name: 'Projeto',
     type: 'general',
@@ -47,6 +49,7 @@ export function makeProject(overrides: Partial<Project> = {}): Project {
 
 export function makeSprint(overrides: Partial<Sprint> = {}): Sprint {
   return {
+    user_id: 'user-1',
     id: 'sprint-1',
     name: 'Sprint 1',
     status: 'planned',
@@ -68,6 +71,7 @@ export function makeSprint(overrides: Partial<Sprint> = {}): Sprint {
 
 export function makeEpic(overrides: Partial<Epic> = {}): Epic {
   return {
+    user_id: 'user-1',
     id: 'epic-1',
     project_id: 'project-1',
     name: 'Épico',

@@ -22,6 +22,7 @@ export type Database = {
           triaged_at: string | null
           triaged_task_id: string | null
           triaged_to: Database['public']['Enums']['draft_triage_target'] | null
+          user_id: string
         }
         Insert: {
           content: string
@@ -30,6 +31,7 @@ export type Database = {
           triaged_at?: string | null
           triaged_task_id?: string | null
           triaged_to?: Database['public']['Enums']['draft_triage_target'] | null
+          user_id?: string
         }
         Update: {
           content?: string
@@ -38,6 +40,7 @@ export type Database = {
           triaged_at?: string | null
           triaged_task_id?: string | null
           triaged_to?: Database['public']['Enums']['draft_triage_target'] | null
+          user_id?: string
         }
         Relationships: [
           {
@@ -57,6 +60,7 @@ export type Database = {
           id: string
           name: string
           project_id: string
+          user_id: string
         }
         Insert: {
           color?: string | null
@@ -65,6 +69,7 @@ export type Database = {
           id?: string
           name: string
           project_id: string
+          user_id?: string
         }
         Update: {
           color?: string | null
@@ -73,6 +78,7 @@ export type Database = {
           id?: string
           name?: string
           project_id?: string
+          user_id?: string
         }
         Relationships: [
           {
@@ -94,6 +100,7 @@ export type Database = {
           name: string
           prefix: string | null
           type: Database['public']['Enums']['project_type']
+          user_id: string
         }
         Insert: {
           color?: string | null
@@ -104,6 +111,7 @@ export type Database = {
           name: string
           prefix?: string | null
           type: Database['public']['Enums']['project_type']
+          user_id?: string
         }
         Update: {
           color?: string | null
@@ -114,6 +122,7 @@ export type Database = {
           name?: string
           prefix?: string | null
           type?: Database['public']['Enums']['project_type']
+          user_id?: string
         }
         Relationships: []
       }
@@ -134,6 +143,7 @@ export type Database = {
           start_date: string | null
           status: Database['public']['Enums']['sprint_status']
           total_tasks: number | null
+          user_id: string
         }
         Insert: {
           analytics_snapshot?: Json | null
@@ -151,6 +161,7 @@ export type Database = {
           start_date?: string | null
           status?: Database['public']['Enums']['sprint_status']
           total_tasks?: number | null
+          user_id?: string
         }
         Update: {
           analytics_snapshot?: Json | null
@@ -168,6 +179,7 @@ export type Database = {
           start_date?: string | null
           status?: Database['public']['Enums']['sprint_status']
           total_tasks?: number | null
+          user_id?: string
         }
         Relationships: []
       }
@@ -185,6 +197,7 @@ export type Database = {
           session_date: string
           sprint_id: string | null
           task_id: string
+          user_id: string
         }
         Insert: {
           comment?: string | null
@@ -199,6 +212,7 @@ export type Database = {
           session_date: string
           sprint_id?: string | null
           task_id: string
+          user_id?: string
         }
         Update: {
           comment?: string | null
@@ -213,6 +227,7 @@ export type Database = {
           session_date?: string
           sprint_id?: string | null
           task_id?: string
+          user_id?: string
         }
         Relationships: [
           {
@@ -425,6 +440,7 @@ export type Database = {
           task_number: number | null
           title: string
           updated_at: string
+          user_id: string
         }
         Insert: {
           created_at?: string | null
@@ -453,6 +469,7 @@ export type Database = {
           task_number?: number | null
           title: string
           updated_at?: string
+          user_id?: string
         }
         Update: {
           created_at?: string | null
@@ -481,6 +498,7 @@ export type Database = {
           task_number?: number | null
           title?: string
           updated_at?: string
+          user_id?: string
         }
         Relationships: [
           {
