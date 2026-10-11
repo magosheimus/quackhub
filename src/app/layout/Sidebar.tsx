@@ -26,6 +26,7 @@ import { COMMON_TEXTS } from '@/shared/constants/texts'
 import { APP_TEXTS } from '@/app/constants/texts'
 import { INBOX_TEXTS } from '@/features/inbox/constants/texts'
 import { DRAFTS_TEXTS } from '@/features/drafts/constants/texts'
+import { Panel } from '@/components/ui/panel'
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
   `flex h-10 items-center gap-3 border px-3 py-2 rounded-md text-base ${
@@ -71,7 +72,7 @@ export function Sidebar() {
         <div className="glow-heading font-heading text-3xl text-accent">
           {APP_TEXTS.brand}
         </div>
-        <div className="text-xs text-fg-muted">{APP_TEXTS.mascot}</div>
+        <div className="text-caption">{APP_TEXTS.mascot}</div>
       </div>
 
       <div className="mb-4">
@@ -86,13 +87,13 @@ export function Sidebar() {
         <NavItem to="/inbox" icon={IconInbox}>
           {INBOX_TEXTS.title}
           {inboxCount > 0 && (
-            <span className="ml-auto text-xs text-fg-muted">{inboxCount}</span>
+            <span className="ml-auto text-caption">{inboxCount}</span>
           )}
         </NavItem>
         <NavItem to="/rascunhos" icon={IconNotes}>
           {DRAFTS_TEXTS.title}
           {draftsCount > 0 && (
-            <span className="ml-auto text-xs text-fg-muted">{draftsCount}</span>
+            <span className="ml-auto text-caption">{draftsCount}</span>
           )}
         </NavItem>
         <NavItem to="/board" icon={IconGrid}>
@@ -128,10 +129,7 @@ export function Sidebar() {
           <div className="flex flex-col gap-1">
             {isLoading && <LoadingText />}
             {projects?.map((project) => (
-              <div
-                key={project.id}
-                className="group flex items-center rounded-md border border-border bg-card"
-              >
+              <Panel key={project.id} className="group flex items-center p-0">
                 <NavLink
                   to={`/board?project=${project.id}`}
                   className="flex flex-1 items-center gap-2 px-3 py-2 text-sm text-fg"
@@ -147,7 +145,7 @@ export function Sidebar() {
                 >
                   <IconPencil size={12} />
                 </button>
-              </div>
+              </Panel>
             ))}
           </div>
         )}

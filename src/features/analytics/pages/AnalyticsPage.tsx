@@ -5,6 +5,7 @@ import { StudySection } from '@/features/analytics/components/StudySection'
 import { GeneralSection } from '@/features/analytics/components/GeneralSection'
 import { useAnalyticsPage } from '@/features/analytics/hooks/useAnalyticsPage'
 import { ANALYTICS_TEXTS } from '@/features/analytics/constants/texts'
+import { EmptyMessage } from '@/components/ui/empty-message'
 
 export function AnalyticsPage() {
   const {
@@ -36,9 +37,7 @@ export function AnalyticsPage() {
       </div>
 
       {hasNoActiveSprint ? (
-        <div className="text-sm text-fg-muted">
-          {ANALYTICS_TEXTS.noActiveSprint}
-        </div>
+        <EmptyMessage>{ANALYTICS_TEXTS.noActiveSprint}</EmptyMessage>
       ) : (
         <>
           <GeneralSection

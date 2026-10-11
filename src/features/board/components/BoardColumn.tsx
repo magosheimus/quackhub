@@ -22,7 +22,7 @@ export function BoardColumn({
     <div className="flex flex-1 min-w-0 flex-col gap-2">
       <div className="flex items-center justify-between px-1">
         <span className="font-heading text-xl text-fg">{label}</span>
-        <span className="flex size-6 items-center justify-center rounded-md border border-(--border-card-empty) bg-card-empty text-xs text-fg-muted">
+        <span className="flex size-6 items-center justify-center rounded-md border border-(--border-card-empty) bg-card-empty text-caption">
           {tasks.length}
         </span>
       </div>
@@ -35,7 +35,7 @@ export function BoardColumn({
             className="flex min-h-16 flex-col gap-1"
           >
             {tasks.length === 0 && (
-              <div className="flex h-21 flex-col items-center justify-center gap-1 rounded-md border border-(--border-card-empty) bg-card-empty px-2 text-xs text-fg-muted">
+              <div className="flex h-21 flex-col items-center justify-center gap-1 rounded-md border border-(--border-card-empty) bg-card-empty px-2 text-caption">
                 <IconLayout size={24} aria-hidden="true" />
                 <span className="whitespace-nowrap">
                   {BOARD_TEXTS.emptyColumn}

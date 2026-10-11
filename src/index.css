@@ -82,6 +82,14 @@
   --radius-lg: 6px;
 }
 
+@utility text-caption {
+  @apply text-xs text-fg-muted;
+}
+
+@utility text-subtle {
+  @apply text-sm text-fg-muted;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

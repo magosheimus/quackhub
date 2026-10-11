@@ -19,6 +19,7 @@ import {
 import type { Task } from '@/shared/types/entities'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
 import { SRS_TEXTS } from '@/features/srs/constants/texts'
+import { Panel } from '@/components/ui/panel'
 
 const CONFIANCA_OPTIONS = [1, 2, 3, 4, 5]
 
@@ -71,7 +72,7 @@ export function RegisterPerformanceModal({
 
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-1.5">
-            <label htmlFor="srs-nota" className="text-xs text-fg-muted">
+            <label htmlFor="srs-nota" className="text-caption">
               {SRS_TEXTS.score}
             </label>
             <Input
@@ -86,7 +87,7 @@ export function RegisterPerformanceModal({
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <span id="confianca-label" className="text-xs text-fg-muted">
+            <span id="confianca-label" className="text-caption">
               {SRS_TEXTS.confidence}
             </span>
             <div
@@ -109,7 +110,7 @@ export function RegisterPerformanceModal({
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <label htmlFor="srs-comment" className="text-xs text-fg-muted">
+            <label htmlFor="srs-comment" className="text-caption">
               {SRS_TEXTS.comment}
             </label>
             <Textarea
@@ -120,11 +121,11 @@ export function RegisterPerformanceModal({
             />
           </div>
 
-          <div className="rounded-md border border-border bg-card p-3 text-xs text-fg-muted">
+          <Panel className="p-3 text-caption">
             <p>{SRS_TEXTS.quality(quality.toFixed(2))}</p>
             <p>{SRS_TEXTS.newInterval(newInterval)}</p>
             <p>{SRS_TEXTS.nextReview(nextReviewDate)}</p>
-          </div>
+          </Panel>
         </div>
 
         <DialogFooter>

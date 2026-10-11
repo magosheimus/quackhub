@@ -19,6 +19,7 @@ import { useUploadAttachment } from '@/features/tasks/hooks/attachments/useUploa
 import { useDeleteAttachment } from '@/features/tasks/hooks/attachments/useDeleteAttachment'
 import { getAttachmentUrl } from '@/features/tasks/api/attachments'
 import { TASKS_TEXTS } from '@/features/tasks/constants/texts'
+import { Panel } from '@/components/ui/panel'
 
 type CardAttachmentsProps = {
   taskId: string
@@ -116,9 +117,9 @@ export function CardAttachments({ taskId }: CardAttachmentsProps) {
             const url = getAttachmentUrl(attachment.storage_path)
             const isImage = attachment.mime_type.startsWith('image/')
             return (
-              <div
+              <Panel
                 key={attachment.id}
-                className="group relative flex h-28 w-28 items-center justify-center overflow-hidden rounded-md border border-border bg-card"
+                className="group relative flex h-28 w-28 items-center justify-center overflow-hidden p-0"
               >
                 {isImage ? (
                   <button
@@ -165,7 +166,7 @@ export function CardAttachments({ taskId }: CardAttachmentsProps) {
                 >
                   <IconClose size={12} />
                 </button>
-              </div>
+              </Panel>
             )
           })}
         </div>

@@ -16,6 +16,8 @@ import { LoadingText } from '@/components/ui/loading-text'
 import type { DraftsItem } from '@/shared/types/entities'
 import { DRAFTS_TEXTS } from '@/features/drafts/constants/texts'
 import { STORAGE_KEYS } from '@/shared/constants/storageKeys'
+import { EmptyMessage } from '@/components/ui/empty-message'
+import { Panel } from '@/components/ui/panel'
 
 const CHECKED_KEY = STORAGE_KEYS.draftsChecked
 
@@ -116,7 +118,7 @@ export function DraftsList() {
     return (
       <div className="flex flex-col items-center gap-2 rounded-md border border-surface bg-page px-6 py-8 text-center">
         <IconNotes size={24} aria-hidden="true" className="text-fg-muted" />
-        <span className="text-sm text-fg-muted">{DRAFTS_TEXTS.empty}</span>
+        <EmptyMessage>{DRAFTS_TEXTS.empty}</EmptyMessage>
       </div>
     )
   }
@@ -124,9 +126,9 @@ export function DraftsList() {
   return (
     <div className="flex flex-col gap-2">
       {items.map((item) => (
-        <div
+        <Panel
           key={item.id}
-          className="flex items-center gap-3 rounded-md border border-border bg-card p-4 text-base hover:bg-card-hover"
+          className="flex items-center gap-3 text-base hover:bg-card-hover"
         >
           <Checkbox
             checked={checkedIds.has(item.id)}
@@ -181,7 +183,7 @@ export function DraftsList() {
           >
             <IconStickyNoteSharp size={16} />
           </Button>
-        </div>
+        </Panel>
       ))}
 
       <CardCreateModal

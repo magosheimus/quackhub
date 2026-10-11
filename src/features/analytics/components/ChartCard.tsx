@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { Panel } from '@/components/ui/panel'
 
 export function ChartCard({
   title,
@@ -8,11 +9,11 @@ export function ChartCard({
   children: ReactNode
 }) {
   return (
-    <div className="flex flex-col gap-4 rounded-md border border-border bg-card p-5">
+    <Panel className="flex flex-col gap-4 p-5">
       <span className="text-xs font-medium uppercase tracking-wide text-fg">
         {title}
       </span>
       {children}
-    </div>
+    </Panel>
   )
 }

@@ -16,6 +16,7 @@ import type {
 import { COMMON_TEXTS } from '@/shared/constants/texts'
 import { SPRINTS_TEXTS } from '@/features/sprints/constants/texts'
 import { ANALYTICS_TEXTS } from '@/features/analytics/constants/texts'
+import { EmptyMessage } from '@/components/ui/empty-message'
 
 type GeneralSectionProps = {
   isAll: boolean
@@ -54,7 +55,7 @@ export function GeneralSection({
                     value={percent}
                     label={COMMON_TEXTS.progressOf(project.projectName)}
                   />
-                  <span className="text-xs text-fg-muted">
+                  <span className="text-caption">
                     {project.completed} de {project.total}
                   </span>
                 </div>
@@ -62,7 +63,7 @@ export function GeneralSection({
             })}
           </div>
         ) : (
-          <div className="text-sm text-fg-muted">{ANALYTICS_TEXTS.noCards}</div>
+          <EmptyMessage>{ANALYTICS_TEXTS.noCards}</EmptyMessage>
         )}
       </ChartCard>
 
@@ -77,7 +78,7 @@ export function GeneralSection({
                 <span className="glow-heading font-heading text-3xl text-fg">
                   {status.count}
                 </span>
-                <span className="text-xs text-fg-muted">{status.name}</span>
+                <span className="text-caption">{status.name}</span>
               </div>
             ))}
           </div>
@@ -112,9 +113,7 @@ export function GeneralSection({
               </LineChart>
             </ResponsiveContainer>
           ) : (
-            <div className="text-sm text-fg-muted">
-              {SPRINTS_TEXTS.noClosedSprints}
-            </div>
+            <EmptyMessage>{SPRINTS_TEXTS.noClosedSprints}</EmptyMessage>
           )}
         </ChartCard>
       )}

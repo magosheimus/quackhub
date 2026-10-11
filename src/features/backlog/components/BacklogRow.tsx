@@ -57,7 +57,7 @@ export function BacklogRow({
 
         <div className="flex flex-1 flex-col gap-0.5">
           {task.task_number && (
-            <span className="text-xs text-fg-muted">
+            <span className="text-caption">
               {projectPrefix}-{task.task_number}
             </span>
           )}
@@ -69,11 +69,9 @@ export function BacklogRow({
           </Link>
         </div>
 
-        <span className="text-xs text-fg-muted">
-          {STATUS_LABELS[task.status]}
-        </span>
+        <span className="text-caption">{STATUS_LABELS[task.status]}</span>
 
-        {epicName && <span className="text-xs text-fg-muted">{epicName}</span>}
+        {epicName && <span className="text-caption">{epicName}</span>}
 
         {onAddToSprint && (
           <Button variant="outline" size="sm" onClick={onAddToSprint}>

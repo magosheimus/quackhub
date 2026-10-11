@@ -9,6 +9,7 @@ import { buttonVariants } from '@/components/ui/button'
 import { PageTitle } from '@/components/ui/page-title'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
 import { INBOX_TEXTS } from '@/features/inbox/constants/texts'
+import { Panel } from '@/components/ui/panel'
 
 export function InboxPage() {
   const {
@@ -41,7 +42,7 @@ export function InboxPage() {
           icon={IconInbox}
           count={totalCount}
         />
-        <span className="pl-4 text-xs text-fg-muted">{todayLabel}</span>
+        <span className="pl-4 text-caption">{todayLabel}</span>
       </div>
 
       <div className="grid grid-cols-3 gap-3">
@@ -50,15 +51,12 @@ export function InboxPage() {
           { value: srsOverdue.length, label: INBOX_TEXTS.reviewsCounter },
           { value: urgent.length, label: INBOX_TEXTS.urgentCounter },
         ].map((counter) => (
-          <div
-            key={counter.label}
-            className="flex flex-col gap-1 rounded-md border border-border bg-card px-4 py-3"
-          >
+          <Panel key={counter.label} className="flex flex-col gap-1 px-4 py-3">
             <span className="font-heading text-3xl text-fg">
               {counter.value}
             </span>
-            <span className="text-xs text-fg-muted">{counter.label}</span>
-          </div>
+            <span className="text-caption">{counter.label}</span>
+          </Panel>
         ))}
       </div>
 
@@ -73,9 +71,7 @@ export function InboxPage() {
             <span className="font-heading text-2xl text-fg">
               {INBOX_TEXTS.emptyTitle}
             </span>
-            <span className="text-sm text-fg-muted">
-              {INBOX_TEXTS.emptyDescription}
-            </span>
+            <span className="text-subtle">{INBOX_TEXTS.emptyDescription}</span>
           </div>
           <div className="flex gap-3 pt-2">
             <Link

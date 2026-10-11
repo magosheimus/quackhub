@@ -41,7 +41,7 @@ export function InboxSection({
     <div className="flex flex-col gap-2">
       <div className="flex items-center justify-between px-1">
         <span className="font-heading text-xl uppercase text-fg">{title}</span>
-        <span className="text-xs text-fg-muted">{tasks.length}</span>
+        <span className="text-caption">{tasks.length}</span>
       </div>
       {tasks.map((task) => {
         const project = projects.find((p) => p.id === task.project_id)
@@ -55,7 +55,7 @@ export function InboxSection({
             actions={
               isSrsEligible ? (
                 <div className="flex flex-col items-end gap-1">
-                  <span className="text-xs text-fg-muted">
+                  <span className="text-caption">
                     {describeReview(task.next_review, today)}
                   </span>
                   <Button

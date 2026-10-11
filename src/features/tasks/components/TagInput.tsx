@@ -99,7 +99,7 @@ export function TagInput({ tags, onChange, suggestions }: TagInputProps) {
               key={suggestion}
               type="button"
               onClick={() => addTag(suggestion)}
-              className="rounded-sm border border-border px-2 py-0.5 text-xs text-fg-muted"
+              className="rounded-sm border border-border px-2 py-0.5 text-caption"
             >
               {suggestion}
             </button>

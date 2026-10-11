@@ -14,6 +14,7 @@ import { useAllEpics } from '@/features/epics/hooks/useAllEpics'
 import { STATUS_LABELS } from '@/features/tasks/lib/taskStatus'
 import { LoadingText } from '@/components/ui/loading-text'
 import { SEARCH_TEXTS } from '@/features/search/constants/texts'
+import { EmptyMessage } from '@/components/ui/empty-message'
 
 export function GlobalSearch() {
   const [open, setOpen] = useState(false)
@@ -58,7 +59,7 @@ export function GlobalSearch() {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="flex w-full items-center justify-between rounded-md border border-border px-2 py-1.5 text-left text-sm text-fg-muted"
+        className="flex w-full items-center justify-between rounded-md border border-border px-2 py-1.5 text-left text-subtle"
       >
         {SEARCH_TEXTS.trigger}
         <span className="text-xs">{SEARCH_TEXTS.shortcut}</span>
@@ -78,9 +79,7 @@ export function GlobalSearch() {
           <div className="flex max-h-80 flex-col gap-1 overflow-y-auto">
             {isLoading && <LoadingText />}
             {!isLoading && debouncedQuery.trim() && results?.length === 0 && (
-              <span className="text-sm text-fg-muted">
-                {SEARCH_TEXTS.noResults}
-              </span>
+              <EmptyMessage>{SEARCH_TEXTS.noResults}</EmptyMessage>
             )}
             {results?.map((task) => {
               const project = projects?.find((p) => p.id === task.project_id)
@@ -93,7 +92,7 @@ export function GlobalSearch() {
                   className="flex flex-col gap-0.5 rounded-md p-2 text-sm hover:bg-card-hover"
                 >
                   <span className="text-fg">{task.title}</span>
-                  <span className="text-xs text-fg-muted">
+                  <span className="text-caption">
                     {project?.name ?? '—'} · {STATUS_LABELS[task.status]}
                     {epic ? ` · ${epic.name}` : ''}
                   </span>

@@ -205,7 +205,7 @@ export function CardCreateModal({
 
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-1.5">
-            <span id="card-project-label" className="text-xs text-fg-muted">
+            <span id="card-project-label" className="text-caption">
               {TASKS_TEXTS.project}
             </span>
             <Select
@@ -231,7 +231,7 @@ export function CardCreateModal({
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <label htmlFor="card-title" className="text-xs text-fg-muted">
+            <label htmlFor="card-title" className="text-caption">
               {TASKS_TEXTS.title}
             </label>
             <Input
@@ -282,7 +282,7 @@ export function CardCreateModal({
           )}
 
           <div className="flex flex-col gap-1.5">
-            <span className="text-xs text-fg-muted">{TASKS_TEXTS.epic}</span>
+            <span className="text-caption">{TASKS_TEXTS.epic}</span>
             {projectId ? (
               <EpicSelector
                 projectId={projectId}
@@ -290,14 +290,14 @@ export function CardCreateModal({
                 onChange={setEpicId}
               />
             ) : (
-              <span className="text-xs text-fg-muted">
+              <span className="text-caption">
                 {TASKS_TEXTS.selectProjectFirst}
               </span>
             )}
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <span id="card-sprint-label" className="text-xs text-fg-muted">
+            <span id="card-sprint-label" className="text-caption">
               {TASKS_TEXTS.sprintOptional}
             </span>
             <Select
@@ -326,7 +326,7 @@ export function CardCreateModal({
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <span className="text-xs text-fg-muted">{TASKS_TEXTS.tags}</span>
+            <span className="text-caption">{TASKS_TEXTS.tags}</span>
             <TagInput
               tags={tags}
               onChange={setTags}
@@ -335,9 +335,7 @@ export function CardCreateModal({
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <span className="text-xs text-fg-muted">
-              {TASKS_TEXTS.priority}
-            </span>
+            <span className="text-caption">{TASKS_TEXTS.priority}</span>
             <div
               className="flex gap-1"
               role="group"
@@ -370,7 +368,7 @@ export function CardCreateModal({
           </label>
 
           <div className="flex flex-col gap-1.5">
-            <label htmlFor="card-description" className="text-xs text-fg-muted">
+            <label htmlFor="card-description" className="text-caption">
               {TASKS_TEXTS.descriptionOptional}
             </label>
             <Textarea

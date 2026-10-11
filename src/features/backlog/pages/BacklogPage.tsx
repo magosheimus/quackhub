@@ -18,6 +18,7 @@ import { EpicManageModal } from '@/features/epics/components/EpicManageModal'
 import { PageTitle } from '@/components/ui/page-title'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
 import { BACKLOG_TEXTS } from '@/features/backlog/constants/texts'
+import { EmptyMessage } from '@/components/ui/empty-message'
 
 const NONE_VALUE = '__all__'
 
@@ -168,7 +169,7 @@ export function BacklogPage() {
       <div className="flex flex-col gap-6">
         {isLoadingTasks && <LoadingText />}
         {!isLoadingTasks && filteredTasks.length === 0 && (
-          <div className="text-sm text-fg-muted">{BACKLOG_TEXTS.empty}</div>
+          <EmptyMessage>{BACKLOG_TEXTS.empty}</EmptyMessage>
         )}
         {projectGroups.map((group) => {
           const { project, tasks } = group
@@ -191,7 +192,7 @@ export function BacklogPage() {
                   {project.name}
                 </button>
                 <div className="flex items-center gap-3">
-                  <span className="text-xs text-fg-muted">{tasks.length}</span>
+                  <span className="text-caption">{tasks.length}</span>
                   {canAddToSprint && (
                     <Button size="sm" onClick={() => addAllToSprint(group)}>
                       <IconPlus size={12} aria-hidden="true" />
