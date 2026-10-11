@@ -1,4 +1,5 @@
 import { supabase } from '@/shared/api/supabase'
+import { UserFacingError } from '@/shared/lib/errors'
 import type { Json } from '@/shared/types/database.types'
 import {
   getTasksBySprintId,
@@ -71,7 +72,7 @@ export async function activateSprint(id: string): Promise<Sprint> {
     .single()
   if (error) {
     if (error.code === '23505') {
-      throw new Error('Já existe uma Sprint ativa (RN-P03)')
+      throw new UserFacingError('Já existe uma Sprint ativa.')
     }
     throw new Error(`Falha ao iniciar sprint: ${error.message}`)
   }

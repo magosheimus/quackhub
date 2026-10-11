@@ -11,8 +11,5 @@ export function useRemoveTaskTag() {
     onSuccess: () => {
       invalidateTagQueries(queryClient)
     },
-    onError: (error) => {
-      console.error(error.message)
-    },
   })
 }

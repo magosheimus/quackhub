@@ -14,8 +14,5 @@ export function useUpdateSprint() {
         queryKey: queryKeys.sprints.root,
       })
     },
-    onError: (error) => {
-      console.error(error.message)
-    },
   })
 }

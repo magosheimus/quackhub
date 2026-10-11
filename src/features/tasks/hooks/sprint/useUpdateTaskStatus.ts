@@ -37,8 +37,7 @@ export function useUpdateTaskStatus() {
       return { previousTasks, queryKey }
     },
 
-    onError: (error, _vars, context) => {
-      window.alert(error.message)
+    onError: (_error, _vars, context) => {
       if (context) {
         queryClient.setQueryData(context.queryKey, context.previousTasks)
       }

@@ -1,19 +1,17 @@
-import { MutationCache, QueryClient } from '@tanstack/react-query'
+import { MutationCache, QueryCache, QueryClient } from '@tanstack/react-query'
 import { persistQueryClient } from '@tanstack/react-query-persist-client'
 import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister'
-import { showErrorToast } from '@/shared/lib/toast'
+import { ERROR_MESSAGES, reportError } from '@/shared/lib/errors'
 
 export const queryClient = new QueryClient({
+  queryCache: new QueryCache({
+    onError: (error) => {
+      reportError(error, ERROR_MESSAGES.loadFailed)
+    },
+  }),
   mutationCache: new MutationCache({
-    onError: (_error, _variables, _context, mutation) => {
-      if (mutation.meta?.silent) {
-        return
-      }
-      showErrorToast(
-        navigator.onLine
-          ? 'Algo deu errado. Tente novamente.'
-          : 'Sem conexão. A operação não foi concluída.',
-      )
+    onError: (error) => {
+      reportError(error)
     },
   }),
   defaultOptions: {

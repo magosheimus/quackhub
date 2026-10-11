@@ -12,8 +12,5 @@ export function useCreateChecklistItem() {
         queryKey: queryKeys.checklist.byTask(item.task_id),
       })
     },
-    onError: (error) => {
-      console.error(error.message)
-    },
   })
 }

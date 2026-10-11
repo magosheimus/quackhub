@@ -10,8 +10,5 @@ export function useCompleteTask() {
     onSuccess: (task) => {
       invalidateTaskQueries(queryClient, task.id)
     },
-    onError: (error) => {
-      window.alert(error.message)
-    },
   })
 }

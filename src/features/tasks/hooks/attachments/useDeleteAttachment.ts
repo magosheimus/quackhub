@@ -19,8 +19,5 @@ export function useDeleteAttachment() {
         queryKey: queryKeys.attachments.byTask(taskId),
       })
     },
-    onError: (error) => {
-      console.error(error.message)
-    },
   })
 }

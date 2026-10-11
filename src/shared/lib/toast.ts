@@ -27,6 +27,10 @@ export function dismissToast(id: number) {
 }
 
 export function showErrorToast(message: string) {
+  // Várias queries podem falhar juntas com a mesma mensagem
+  if (toasts.some((toast) => toast.message === message)) {
+    return
+  }
   const id = nextId++
   toasts = [...toasts, { id, message }]
   emit()
