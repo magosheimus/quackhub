@@ -39,7 +39,7 @@ export function RecurrenceFields({ value, onChange }: RecurrenceFieldsProps) {
       <button
         type="button"
         onClick={() => onChange({ ...value, type: 'monthly', interval: 1 })}
-        className="text-left text-sm text-(--text-muted)"
+        className="text-left text-sm text-fg-muted"
       >
         {TASKS_TEXTS.notRecurring}
       </button>
@@ -51,9 +51,7 @@ export function RecurrenceFields({ value, onChange }: RecurrenceFieldsProps) {
   return (
     <div className="flex flex-col gap-2 rounded-md border border-border p-3">
       <div className="flex items-center justify-between">
-        <span className="text-xs text-(--text-muted)">
-          {TASKS_TEXTS.recurrence}
-        </span>
+        <span className="text-xs text-fg-muted">{TASKS_TEXTS.recurrence}</span>
         <button
           type="button"
           onClick={() =>
@@ -64,7 +62,7 @@ export function RecurrenceFields({ value, onChange }: RecurrenceFieldsProps) {
               endDate: null,
             })
           }
-          className="text-xs text-(--text-muted) underline"
+          className="text-xs text-fg-muted underline"
         >
           remover
         </button>
@@ -99,7 +97,7 @@ export function RecurrenceFields({ value, onChange }: RecurrenceFieldsProps) {
         <div className="flex flex-col gap-1.5">
           <label
             htmlFor="recurrence-day-of-month"
-            className="text-xs text-(--text-muted)"
+            className="text-xs text-fg-muted"
           >
             {TASKS_TEXTS.dayOfMonth}
           </label>
@@ -120,7 +118,7 @@ export function RecurrenceFields({ value, onChange }: RecurrenceFieldsProps) {
       )}
 
       <div className="flex flex-col gap-1.5">
-        <span className="text-xs text-(--text-muted)">
+        <span className="text-xs text-fg-muted">
           {TASKS_TEXTS.repeatUntilOptional}
         </span>
         {isMonthPrecision ? (

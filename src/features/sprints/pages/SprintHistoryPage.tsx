@@ -21,7 +21,7 @@ export function SprintHistoryPage() {
     return (
       <div className="flex flex-col gap-4">
         <PageTitle title={COMMON_TEXTS.history} icon={IconClock} count={0} />
-        <div className="text-sm text-(--text-muted)">
+        <div className="text-sm text-fg-muted">
           {SPRINTS_TEXTS.noClosedSprints}
         </div>
       </div>
@@ -45,24 +45,22 @@ export function SprintHistoryPage() {
                 type="button"
                 onClick={() => toggleSprint(sprint.id)}
                 aria-expanded={isOpen}
-                className="flex items-center gap-4 rounded-md border border-border bg-(--bg-card) p-4 text-left hover:bg-(--bg-card-hover)"
+                className="flex items-center gap-4 rounded-md border border-border bg-card p-4 text-left hover:bg-card-hover"
               >
                 <div className="flex flex-1 flex-col gap-1">
-                  <span className="text-base text-(--text-primary)">
+                  <span className="text-base text-fg">
                     {sprint.name}
-                    <span className="ml-2 text-xs text-(--text-muted)">
+                    <span className="ml-2 text-xs text-fg-muted">
                       ({formatDayMonth(sprint.start_date)} -{' '}
                       {formatDayMonth(sprint.end_date)})
                     </span>
                   </span>
                   {sprint.goal && (
-                    <span className="text-sm text-(--text-muted)">
-                      {sprint.goal}
-                    </span>
+                    <span className="text-sm text-fg-muted">{sprint.goal}</span>
                   )}
                 </div>
                 <div className="flex flex-col items-end gap-1">
-                  <span className="text-xs text-(--text-muted)">
+                  <span className="text-xs text-fg-muted">
                     {SPRINTS_TEXTS.completedOf(
                       sprint.completed_tasks ?? 0,
                       sprint.total_tasks ?? 0,
@@ -76,7 +74,7 @@ export function SprintHistoryPage() {
                 <IconChevronRight
                   size={12}
                   aria-hidden="true"
-                  className={`text-(--text-muted) transition-transform ${isOpen ? 'rotate-90' : ''}`}
+                  className={`text-fg-muted transition-transform ${isOpen ? 'rotate-90' : ''}`}
                 />
               </button>
               {isOpen && <SprintSummary sprint={sprint} />}

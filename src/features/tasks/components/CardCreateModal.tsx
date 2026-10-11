@@ -205,10 +205,7 @@ export function CardCreateModal({
 
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-1.5">
-            <span
-              id="card-project-label"
-              className="text-xs text-(--text-muted)"
-            >
+            <span id="card-project-label" className="text-xs text-fg-muted">
               {TASKS_TEXTS.project}
             </span>
             <Select
@@ -234,7 +231,7 @@ export function CardCreateModal({
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <label htmlFor="card-title" className="text-xs text-(--text-muted)">
+            <label htmlFor="card-title" className="text-xs text-fg-muted">
               {TASKS_TEXTS.title}
             </label>
             <Input
@@ -251,10 +248,8 @@ export function CardCreateModal({
           {project?.type === 'general' && (
             <div className="flex flex-col gap-2">
               {recurrenceDetected && (
-                <div className="flex flex-col gap-2 rounded-md border border-accent bg-(--bg-surface) p-2 text-sm">
-                  <span className="text-(--text-primary)">
-                    {TASKS_TEXTS.looksRecurring}
-                  </span>
+                <div className="flex flex-col gap-2 rounded-md border border-accent bg-surface p-2 text-sm">
+                  <span className="text-fg">{TASKS_TEXTS.looksRecurring}</span>
                   <div className="flex flex-wrap gap-1">
                     <Button
                       variant="outline"
@@ -287,9 +282,7 @@ export function CardCreateModal({
           )}
 
           <div className="flex flex-col gap-1.5">
-            <span className="text-xs text-(--text-muted)">
-              {TASKS_TEXTS.epic}
-            </span>
+            <span className="text-xs text-fg-muted">{TASKS_TEXTS.epic}</span>
             {projectId ? (
               <EpicSelector
                 projectId={projectId}
@@ -297,17 +290,14 @@ export function CardCreateModal({
                 onChange={setEpicId}
               />
             ) : (
-              <span className="text-xs text-(--text-muted)">
+              <span className="text-xs text-fg-muted">
                 {TASKS_TEXTS.selectProjectFirst}
               </span>
             )}
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <span
-              id="card-sprint-label"
-              className="text-xs text-(--text-muted)"
-            >
+            <span id="card-sprint-label" className="text-xs text-fg-muted">
               {TASKS_TEXTS.sprintOptional}
             </span>
             <Select
@@ -336,9 +326,7 @@ export function CardCreateModal({
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <span className="text-xs text-(--text-muted)">
-              {TASKS_TEXTS.tags}
-            </span>
+            <span className="text-xs text-fg-muted">{TASKS_TEXTS.tags}</span>
             <TagInput
               tags={tags}
               onChange={setTags}
@@ -347,7 +335,7 @@ export function CardCreateModal({
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <span className="text-xs text-(--text-muted)">
+            <span className="text-xs text-fg-muted">
               {TASKS_TEXTS.priority}
             </span>
             <div
@@ -371,7 +359,7 @@ export function CardCreateModal({
 
           <label
             htmlFor="card-flagged"
-            className="flex items-center gap-2 text-sm text-(--text-primary)"
+            className="flex items-center gap-2 text-sm text-fg"
           >
             <Checkbox
               id="card-flagged"
@@ -382,10 +370,7 @@ export function CardCreateModal({
           </label>
 
           <div className="flex flex-col gap-1.5">
-            <label
-              htmlFor="card-description"
-              className="text-xs text-(--text-muted)"
-            >
+            <label htmlFor="card-description" className="text-xs text-fg-muted">
               {TASKS_TEXTS.descriptionOptional}
             </label>
             <Textarea

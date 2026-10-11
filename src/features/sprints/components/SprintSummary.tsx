@@ -32,46 +32,42 @@ export function SprintSummary({ sprint }: SprintSummaryProps) {
   }))
 
   return (
-    <div className="flex flex-col gap-6 rounded-md border border-border bg-(--bg-card) p-6">
+    <div className="flex flex-col gap-6 rounded-md border border-border bg-card p-6">
       <div>
-        <span className="font-heading text-3xl text-(--text-primary)">
-          {sprint.name}
-        </span>
+        <span className="font-heading text-3xl text-fg">{sprint.name}</span>
         {(sprint.start_date || sprint.end_date) && (
-          <div className="text-sm text-(--text-muted)">
+          <div className="text-sm text-fg-muted">
             {formatFullDate(sprint.start_date)} →{' '}
             {formatFullDate(sprint.end_date)}
           </div>
         )}
         {sprint.goal && (
-          <div className="mt-2 text-sm text-(--text-primary)">
-            {sprint.goal}
-          </div>
+          <div className="mt-2 text-sm text-fg">{sprint.goal}</div>
         )}
       </div>
 
       <div className="grid grid-cols-3 gap-4 border-t border-border pt-4">
         <div>
-          <div className="text-xs text-(--text-muted)">
+          <div className="text-xs text-fg-muted">
             {SPRINTS_TEXTS.totalIssues}
           </div>
-          <div className="font-heading text-3xl text-(--text-primary)">
+          <div className="font-heading text-3xl text-fg">
             {sprint.total_tasks ?? 0}
           </div>
         </div>
         <div>
-          <div className="text-xs text-(--text-muted)">
+          <div className="text-xs text-fg-muted">
             {SPRINTS_TEXTS.completedIssues}
           </div>
-          <div className="font-heading text-3xl text-(--text-primary)">
+          <div className="font-heading text-3xl text-fg">
             {sprint.completed_tasks ?? 0}
           </div>
         </div>
         <div>
-          <div className="text-xs text-(--text-muted)">
+          <div className="text-xs text-fg-muted">
             {SPRINTS_TEXTS.completionRate}
           </div>
-          <div className="font-heading text-3xl text-(--text-primary)">
+          <div className="font-heading text-3xl text-fg">
             {Math.round((sprint.completion_rate ?? 0) * 100)}%
           </div>
         </div>
@@ -79,7 +75,7 @@ export function SprintSummary({ sprint }: SprintSummaryProps) {
 
       {chartData.length > 0 && (
         <div className="border-t border-border pt-4">
-          <div className="mb-2 text-xs text-(--text-muted)">
+          <div className="mb-2 text-xs text-fg-muted">
             {SPRINTS_TEXTS.completionByProject}
           </div>
           <ResponsiveContainer width="100%" height={chartData.length * 40 + 20}>
@@ -111,13 +107,13 @@ export function SprintSummary({ sprint }: SprintSummaryProps) {
       )}
 
       <div className="border-t border-border pt-4">
-        <div className="mb-2 text-xs text-(--text-muted)">
+        <div className="mb-2 text-xs text-fg-muted">
           {SPRINTS_TEXTS.carryOver}
         </div>
-        <div className="text-sm text-(--text-primary)">
+        <div className="text-sm text-fg">
           {SPRINTS_TEXTS.carriedToNext(sprint.carried_to_next ?? 0)}
         </div>
-        <div className="text-sm text-(--text-primary)">
+        <div className="text-sm text-fg">
           {SPRINTS_TEXTS.carriedToBacklog(sprint.carried_to_backlog ?? 0)}
         </div>
       </div>

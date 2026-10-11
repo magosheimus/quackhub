@@ -40,7 +40,7 @@ export function CardPageHeader({
       <PageTitle icon={IconFolder} iconSize={48} withAccentBar={false}>
         <div className="flex flex-col gap-0.5">
           {taskNumber && (
-            <span className="px-2 text-xs text-(--text-muted)">
+            <span className="px-2 text-xs text-fg-muted">
               {epicName ? `${epicName}/` : ''}
               {projectPrefix}-{taskNumber}
             </span>
@@ -52,7 +52,7 @@ export function CardPageHeader({
             onFocus={onTitleFocus}
             onBlur={onTitleBlur}
             aria-label={TASKS_TEXTS.titleLabel}
-            className={`h-8 rounded-md px-2 py-0 font-heading text-3xl leading-tight text-(--text-primary) outline-none ${
+            className={`h-8 rounded-md px-2 py-0 font-heading text-3xl leading-tight text-fg outline-none ${
               isEditingTitle
                 ? 'border border-border bg-transparent shadow-[inset_1px_1px_2px_color-mix(in_srgb,var(--lcd-ink)_20%,transparent),inset_-1px_-1px_0_color-mix(in_srgb,var(--lcd-screen)_40%,transparent)]'
                 : 'border! border-transparent! bg-transparent! shadow-none!'

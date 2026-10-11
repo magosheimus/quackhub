@@ -18,7 +18,7 @@ export function DraftsCapture() {
   }
 
   return (
-    <div className="flex flex-col gap-2 rounded-md border border-border bg-(--bg-card) p-3">
+    <div className="flex flex-col gap-2 rounded-md border border-border bg-card p-3">
       <Textarea
         value={content}
         onChange={(e) => setContent(e.target.value)}
@@ -29,7 +29,7 @@ export function DraftsCapture() {
         className="min-h-16 px-2 py-1.5 focus-visible:ring-0"
       />
       <div className="flex items-center justify-between">
-        <span className="text-xs text-(--text-muted)">
+        <span className="text-xs text-fg-muted">
           {DRAFTS_TEXTS.captureHint}
         </span>
         <Button

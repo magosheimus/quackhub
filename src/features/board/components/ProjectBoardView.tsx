@@ -71,11 +71,9 @@ export function ProjectBoardView({
     <DragDropContext onDragEnd={handleDragEnd}>
       <div className="flex flex-col gap-4">
         <div className="flex flex-wrap items-baseline justify-between gap-2">
-          <span className="font-heading text-3xl text-(--text-primary)">
-            {project.name}
-          </span>
+          <span className="font-heading text-3xl text-fg">{project.name}</span>
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-xs text-(--text-muted)">
+            <span className="text-xs text-fg-muted">
               {activeSprintName
                 ? BOARD_TEXTS.activeSprint(activeSprintName)
                 : BOARD_TEXTS.noActiveSprint}
@@ -195,13 +193,11 @@ function Section({
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-center justify-between px-1">
-        <span className="font-heading text-xl text-(--text-primary)">
-          {title}
-        </span>
-        <span className="text-xs text-(--text-muted)">{count}</span>
+        <span className="font-heading text-xl text-fg">{title}</span>
+        <span className="text-xs text-fg-muted">{count}</span>
       </div>
       {count === 0 && (
-        <span className="px-1 text-xs text-(--text-muted)">
+        <span className="px-1 text-xs text-fg-muted">
           {BOARD_TEXTS.noCards}
         </span>
       )}

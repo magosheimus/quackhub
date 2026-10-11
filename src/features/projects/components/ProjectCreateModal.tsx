@@ -70,7 +70,7 @@ export function ProjectCreateModal() {
         render={
           <Button
             variant="ghost"
-            className="size-7 rounded-md p-0 text-(--text-muted) motion-safe:transition-transform motion-safe:hover:scale-110"
+            className="size-7 rounded-md p-0 text-fg-muted motion-safe:transition-transform motion-safe:hover:scale-110"
           />
         }
       >
@@ -84,10 +84,7 @@ export function ProjectCreateModal() {
 
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-1.5">
-            <label
-              htmlFor="project-name"
-              className="text-xs text-(--text-muted)"
-            >
+            <label htmlFor="project-name" className="text-xs text-fg-muted">
               {COMMON_TEXTS.name}
             </label>
             <Input
@@ -100,10 +97,7 @@ export function ProjectCreateModal() {
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <label
-              htmlFor="project-prefix"
-              className="text-xs text-(--text-muted)"
-            >
+            <label htmlFor="project-prefix" className="text-xs text-fg-muted">
               {PROJECTS_TEXTS.prefix}
             </label>
             <Input
@@ -116,10 +110,7 @@ export function ProjectCreateModal() {
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <span
-              id="project-type-label"
-              className="text-xs text-(--text-muted)"
-            >
+            <span id="project-type-label" className="text-xs text-fg-muted">
               {PROJECTS_TEXTS.type}
             </span>
             <Select
@@ -149,10 +140,7 @@ export function ProjectCreateModal() {
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <span
-              id="project-color-label"
-              className="text-xs text-(--text-muted)"
-            >
+            <span id="project-color-label" className="text-xs text-fg-muted">
               {PROJECTS_TEXTS.color}
             </span>
             <div

@@ -24,7 +24,7 @@ export function SegmentedProgress({
         <span
           key={index}
           className={`h-2.5 w-2 ${
-            index < filledSegments ? 'bg-accent' : 'bg-(--bg-surface)'
+            index < filledSegments ? 'bg-accent' : 'bg-surface'
           }`}
         />
       ))}

@@ -67,11 +67,11 @@ export function SprintCloseModal({ sprint, tasks }: SprintCloseModalProps) {
 
         <div className="flex max-h-96 flex-col gap-4 overflow-y-auto">
           <div>
-            <p className="mb-1 text-xs text-(--text-muted)">
+            <p className="mb-1 text-xs text-fg-muted">
               {SPRINTS_TEXTS.doneSection(done.length)}
             </p>
             {done.map((task) => (
-              <p key={task.id} className="text-sm text-(--text-primary)">
+              <p key={task.id} className="text-sm text-fg">
                 ✓ {task.title}
               </p>
             ))}
@@ -79,11 +79,11 @@ export function SprintCloseModal({ sprint, tasks }: SprintCloseModalProps) {
 
           {toReview.length > 0 && (
             <div>
-              <p className="mb-1 text-xs text-(--text-muted)">
+              <p className="mb-1 text-xs text-fg-muted">
                 {SPRINTS_TEXTS.toReviewSection(toReview.length)}
               </p>
               {toReview.map((task) => (
-                <p key={task.id} className="text-sm text-(--text-primary)">
+                <p key={task.id} className="text-sm text-fg">
                   {task.title}
                 </p>
               ))}
@@ -92,7 +92,7 @@ export function SprintCloseModal({ sprint, tasks }: SprintCloseModalProps) {
 
           {pending.length > 0 && (
             <div className="flex flex-col gap-2">
-              <p className="text-xs text-(--text-muted)">
+              <p className="text-xs text-fg-muted">
                 {SPRINTS_TEXTS.pendingSection(pending.length)}
               </p>
               {pending.map((task) => (
@@ -100,7 +100,7 @@ export function SprintCloseModal({ sprint, tasks }: SprintCloseModalProps) {
                   key={task.id}
                   className="flex items-center justify-between gap-2 text-sm"
                 >
-                  <span className="text-(--text-primary)">{task.title}</span>
+                  <span className="text-fg">{task.title}</span>
                   <div className="flex gap-1">
                     <Button
                       variant={
@@ -131,7 +131,7 @@ export function SprintCloseModal({ sprint, tasks }: SprintCloseModalProps) {
                 </div>
               ))}
               {!nextSprint && (
-                <p className="text-xs text-(--text-muted)">
+                <p className="text-xs text-fg-muted">
                   {SPRINTS_TEXTS.noNextSprint}
                 </p>
               )}

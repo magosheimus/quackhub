@@ -33,19 +33,19 @@ export function StudySection({
       <SectionTitle>{ANALYTICS_TEXTS.study}</SectionTitle>
 
       <div className="grid grid-cols-2 gap-4">
-        <div className="flex flex-col gap-1 rounded-md border border-border bg-(--bg-card) p-5">
-          <span className="text-xs font-medium uppercase tracking-wide text-(--text-primary)">
+        <div className="flex flex-col gap-1 rounded-md border border-border bg-card p-5">
+          <span className="text-xs font-medium uppercase tracking-wide text-fg">
             {ANALYTICS_TEXTS.reviews}
           </span>
-          <span className="glow-heading font-heading text-4xl text-(--text-primary)">
+          <span className="glow-heading font-heading text-4xl text-fg">
             {totalReviews}
           </span>
         </div>
-        <div className="flex flex-col gap-1 rounded-md border border-border bg-(--bg-card) p-5">
-          <span className="text-xs font-medium uppercase tracking-wide text-(--text-primary)">
+        <div className="flex flex-col gap-1 rounded-md border border-border bg-card p-5">
+          <span className="text-xs font-medium uppercase tracking-wide text-fg">
             {ANALYTICS_TEXTS.accuracy}
           </span>
-          <span className="glow-heading font-heading text-4xl text-(--text-primary)">
+          <span className="glow-heading font-heading text-4xl text-fg">
             {accuracyPercent}%
           </span>
         </div>
@@ -78,7 +78,7 @@ export function StudySection({
             </LineChart>
           </ResponsiveContainer>
         ) : (
-          <div className="text-sm text-(--text-muted)">
+          <div className="text-sm text-fg-muted">
             {ANALYTICS_TEXTS.notEnoughData}
           </div>
         )}
@@ -107,7 +107,7 @@ export function StudySection({
                 <Tooltip />
               </PieChart>
             </ResponsiveContainer>
-            <ul className="flex flex-col gap-2 text-sm text-(--text-primary)">
+            <ul className="flex flex-col gap-2 text-sm text-fg">
               {epicData.map((epic) => (
                 <li key={epic.epicName} className="flex items-center gap-2">
                   <span
@@ -120,7 +120,7 @@ export function StudySection({
             </ul>
           </div>
         ) : (
-          <div className="text-sm text-(--text-muted)">
+          <div className="text-sm text-fg-muted">
             {ANALYTICS_TEXTS.noReviews}
           </div>
         )}

@@ -14,10 +14,7 @@ export function CardDescription({
 }: CardDescriptionProps) {
   return (
     <div className="flex flex-col gap-1.5">
-      <label
-        htmlFor="card-description"
-        className="text-sm font-medium text-(--text-primary)"
-      >
+      <label htmlFor="card-description" className="text-sm font-medium text-fg">
         {TASKS_TEXTS.description}
       </label>
       <Textarea

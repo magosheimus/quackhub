@@ -29,7 +29,7 @@ export function CardDependencies({ taskId, projectId }: CardDependenciesProps) {
 
   return (
     <div className="flex flex-col gap-2">
-      <span className="text-sm font-medium text-(--text-primary)">
+      <span className="text-sm font-medium text-fg">
         {TASKS_TEXTS.dependsOn}
       </span>
 
@@ -43,8 +43,8 @@ export function CardDependencies({ taskId, projectId }: CardDependenciesProps) {
               <span
                 className={
                   dep.status === 'done'
-                    ? 'text-(--text-muted) line-through'
-                    : 'text-(--text-primary)'
+                    ? 'text-fg-muted line-through'
+                    : 'text-fg'
                 }
               >
                 {dep.status === 'done' ? '✓' : '○'} {dep.title}
@@ -56,7 +56,7 @@ export function CardDependencies({ taskId, projectId }: CardDependenciesProps) {
                 }
                 aria-label={TASKS_TEXTS.removeDependency(dep.title)}
               >
-                <IconClose size={12} className="text-(--text-muted)" />
+                <IconClose size={12} className="text-fg-muted" />
               </button>
             </div>
           ))}
@@ -80,7 +80,7 @@ export function CardDependencies({ taskId, projectId }: CardDependenciesProps) {
                 addDependency({ taskId, dependsOnTaskId: candidate.id })
                 setSearch('')
               }}
-              className="rounded-md border border-border p-2 text-left text-sm text-(--text-primary)"
+              className="rounded-md border border-border p-2 text-left text-sm text-fg"
             >
               {candidate.title}
             </button>

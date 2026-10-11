@@ -41,7 +41,7 @@ export function InboxPage() {
           icon={IconInbox}
           count={totalCount}
         />
-        <span className="pl-4 text-xs text-(--text-muted)">{todayLabel}</span>
+        <span className="pl-4 text-xs text-fg-muted">{todayLabel}</span>
       </div>
 
       <div className="grid grid-cols-3 gap-3">
@@ -52,28 +52,28 @@ export function InboxPage() {
         ].map((counter) => (
           <div
             key={counter.label}
-            className="flex flex-col gap-1 rounded-md border border-border bg-(--bg-card) px-4 py-3"
+            className="flex flex-col gap-1 rounded-md border border-border bg-card px-4 py-3"
           >
-            <span className="font-heading text-3xl text-(--text-primary)">
+            <span className="font-heading text-3xl text-fg">
               {counter.value}
             </span>
-            <span className="text-xs text-(--text-muted)">{counter.label}</span>
+            <span className="text-xs text-fg-muted">{counter.label}</span>
           </div>
         ))}
       </div>
 
       {isEmpty ? (
-        <div className="flex flex-col items-center gap-4 rounded-md border border-(--bg-surface) bg-(--bg-page) px-6 py-12 text-center">
+        <div className="flex flex-col items-center gap-4 rounded-md border border-surface bg-page px-6 py-12 text-center">
           <IconCalendar
             size={24}
             aria-hidden="true"
-            className="text-(--text-muted)"
+            className="text-fg-muted"
           />
           <div className="flex flex-col gap-1">
-            <span className="font-heading text-2xl text-(--text-primary)">
+            <span className="font-heading text-2xl text-fg">
               {INBOX_TEXTS.emptyTitle}
             </span>
-            <span className="text-sm text-(--text-muted)">
+            <span className="text-sm text-fg-muted">
               {INBOX_TEXTS.emptyDescription}
             </span>
           </div>

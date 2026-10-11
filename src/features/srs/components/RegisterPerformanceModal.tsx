@@ -71,7 +71,7 @@ export function RegisterPerformanceModal({
 
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-1.5">
-            <label htmlFor="srs-nota" className="text-xs text-(--text-muted)">
+            <label htmlFor="srs-nota" className="text-xs text-fg-muted">
               {SRS_TEXTS.score}
             </label>
             <Input
@@ -86,7 +86,7 @@ export function RegisterPerformanceModal({
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <span id="confianca-label" className="text-xs text-(--text-muted)">
+            <span id="confianca-label" className="text-xs text-fg-muted">
               {SRS_TEXTS.confidence}
             </span>
             <div
@@ -109,10 +109,7 @@ export function RegisterPerformanceModal({
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <label
-              htmlFor="srs-comment"
-              className="text-xs text-(--text-muted)"
-            >
+            <label htmlFor="srs-comment" className="text-xs text-fg-muted">
               {SRS_TEXTS.comment}
             </label>
             <Textarea
@@ -123,7 +120,7 @@ export function RegisterPerformanceModal({
             />
           </div>
 
-          <div className="rounded-md border border-border bg-(--bg-card) p-3 text-xs text-(--text-muted)">
+          <div className="rounded-md border border-border bg-card p-3 text-xs text-fg-muted">
             <p>{SRS_TEXTS.quality(quality.toFixed(2))}</p>
             <p>{SRS_TEXTS.newInterval(newInterval)}</p>
             <p>{SRS_TEXTS.nextReview(nextReviewDate)}</p>

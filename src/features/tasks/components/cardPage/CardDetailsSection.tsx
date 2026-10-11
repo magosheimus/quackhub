@@ -27,7 +27,7 @@ import { TASKS_TEXTS } from '@/features/tasks/constants/texts'
 const NONE_EPIC = '__none__'
 const NONE_SPRINT = '__none__'
 const INLINE_TRIGGER_CLASS =
-  'h-auto! w-fit! border! border-transparent! bg-transparent! p-0! shadow-none! data-[popup-open]:border-(--border)! data-[popup-open]:bg-(--bg-input)! data-[popup-open]:px-2! data-[popup-open]:py-1!'
+  'h-auto! w-fit! border! border-transparent! bg-transparent! p-0! shadow-none! data-[popup-open]:border-border! data-[popup-open]:bg-input! data-[popup-open]:px-2! data-[popup-open]:py-1!'
 
 type CardDetailsSectionProps = {
   projectType?: string | null
@@ -63,18 +63,16 @@ export function CardDetailsSection({
   const sprintName = sprints?.find((s) => s.id === sprintId)?.name
 
   return (
-    <div className="flex flex-col gap-3 rounded-md border border-border bg-(--bg-card) p-3">
-      <span className="text-sm font-medium text-(--text-primary)">
-        {TASKS_TEXTS.details}
-      </span>
+    <div className="flex flex-col gap-3 rounded-md border border-border bg-card p-3">
+      <span className="text-sm font-medium text-fg">{TASKS_TEXTS.details}</span>
 
       <div className="grid grid-cols-2 gap-4 pl-6">
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-1.5">
-            <span className="text-xs text-(--text-muted)">
+            <span className="text-xs text-fg-muted">
               {TASKS_TEXTS.typeLabel}
             </span>
-            <span className="text-sm text-(--text-primary)">
+            <span className="text-sm text-fg">
               {projectType === 'study'
                 ? PROJECT_TYPE_LABELS.study
                 : PROJECT_TYPE_LABELS.general}
@@ -82,7 +80,7 @@ export function CardDetailsSection({
           </div>
 
           <div className="flex items-center gap-1.5">
-            <span id="epic-label" className="text-xs text-(--text-muted)">
+            <span id="epic-label" className="text-xs text-fg-muted">
               {TASKS_TEXTS.epicLabel}
             </span>
             <Select
@@ -109,7 +107,7 @@ export function CardDetailsSection({
           </div>
 
           <div className="flex items-center gap-1.5">
-            <span id="sprint-label" className="text-xs text-(--text-muted)">
+            <span id="sprint-label" className="text-xs text-fg-muted">
               {TASKS_TEXTS.sprintLabel}
             </span>
             <Select
@@ -138,7 +136,7 @@ export function CardDetailsSection({
           </div>
 
           <div className="flex items-center gap-1.5">
-            <span id="priority-label" className="text-xs text-(--text-muted)">
+            <span id="priority-label" className="text-xs text-fg-muted">
               {TASKS_TEXTS.priorityLabel}
             </span>
             <Select
@@ -166,7 +164,7 @@ export function CardDetailsSection({
           </div>
 
           <div className="flex items-center gap-2">
-            <span id="flagged-label" className="text-xs text-(--text-muted)">
+            <span id="flagged-label" className="text-xs text-fg-muted">
               {TASKS_TEXTS.urgentLabel}
             </span>
             <Checkbox
@@ -181,11 +179,11 @@ export function CardDetailsSection({
 
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-1.5">
-            <span className="text-xs text-(--text-muted)">
+            <span className="text-xs text-fg-muted">
               {TASKS_TEXTS.statusLabel}
             </span>
             <span
-              className={`rounded-(--radius-sm) px-2 py-0.5 text-xs font-medium text-(--bg-page) ${
+              className={`rounded-sm px-2 py-0.5 text-xs font-medium text-page ${
                 STATUS_BADGE_CLASS[status]
               }`}
             >
@@ -194,7 +192,7 @@ export function CardDetailsSection({
           </div>
 
           <div className="flex items-center gap-1.5">
-            <span className="text-xs text-(--text-muted)">
+            <span className="text-xs text-fg-muted">
               {TASKS_TEXTS.tagsLabel}
             </span>
             <TagInput

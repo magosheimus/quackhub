@@ -47,7 +47,7 @@ export function CardChecklist({ taskId }: CardChecklistProps) {
 
   return (
     <div className="flex flex-col gap-2">
-      <span className="text-sm font-medium text-(--text-primary)">
+      <span className="text-sm font-medium text-fg">
         {TASKS_TEXTS.checklist}
       </span>
 
@@ -81,8 +81,8 @@ export function CardChecklist({ taskId }: CardChecklistProps) {
                       <span
                         className={
                           item.done
-                            ? 'flex-1 text-(--text-muted) line-through'
-                            : 'flex-1 text-(--text-primary)'
+                            ? 'flex-1 text-fg-muted line-through'
+                            : 'flex-1 text-fg'
                         }
                       >
                         {item.content}
@@ -92,7 +92,7 @@ export function CardChecklist({ taskId }: CardChecklistProps) {
                         onClick={() => deleteItem({ id: item.id, taskId })}
                         aria-label={TASKS_TEXTS.removeItem(item.content)}
                       >
-                        <IconClose size={12} className="text-(--text-muted)" />
+                        <IconClose size={12} className="text-fg-muted" />
                       </button>
                     </div>
                   )}
@@ -116,7 +116,7 @@ export function CardChecklist({ taskId }: CardChecklistProps) {
           type="button"
           onClick={handleAdd}
           aria-label={TASKS_TEXTS.addItem}
-          className="flex size-8 items-center justify-center text-(--text-muted) hover:text-(--text-primary) motion-safe:transition-transform motion-safe:hover:scale-110"
+          className="flex size-8 items-center justify-center text-fg-muted hover:text-fg motion-safe:transition-transform motion-safe:hover:scale-110"
         >
           <IconPlusBoxSharp size={16} aria-hidden="true" />
         </button>
