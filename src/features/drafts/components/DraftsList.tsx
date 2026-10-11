@@ -15,8 +15,9 @@ import { CardCreateModal } from '@/features/tasks/components/CardCreateModal'
 import { LoadingText } from '@/components/ui/loading-text'
 import type { DraftsItem } from '@/shared/types/entities'
 import { DRAFTS_TEXTS } from '@/features/drafts/constants/texts'
+import { STORAGE_KEYS } from '@/shared/constants/storageKeys'
 
-const CHECKED_KEY = 'quackhub-drafts-checked'
+const CHECKED_KEY = STORAGE_KEYS.draftsChecked
 
 function loadCheckedIds(): Set<string> {
   try {
