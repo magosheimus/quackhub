@@ -1,3 +1,5 @@
+import type { Task } from '@/shared/types/entities'
+
 export function startOfWeek(dateStr: string): string {
   const [year, month, day] = dateStr.split('-').map(Number)
   const date = new Date(year, month - 1, day)
@@ -37,4 +39,52 @@ export function groupQualityByWeek(rows: QualityLog[]): AccuracyOverTimeItem[] {
       week,
       averageQuality: sum / count,
     }))
+}
+
+// Escopo da tela de Analytics: sprint atual, uma sprint encerrada (id) ou tudo
+export const CURRENT_SCOPE = 'current'
+export const ALL_SCOPE = 'all'
+
+const MAX_QUALITY = 5
+
+export function resolveLiveSprintId(
+  scope: string,
+  activeSprintId: string | null,
+): string | null {
+  if (scope === CURRENT_SCOPE) {
+    return activeSprintId
+  }
+  if (scope === ALL_SCOPE) {
+    return null
+  }
+  return scope
+}
+
+export function getAccuracyPercent(weeks: AccuracyOverTimeItem[]): number {
+  if (weeks.length === 0) {
+    return 0
+  }
+  const total = weeks.reduce((sum, week) => sum + week.averageQuality, 0)
+  return Math.round((total / weeks.length / MAX_QUALITY) * 100)
+}
+
+export function toAccuracyChartData(weeks: AccuracyOverTimeItem[]) {
+  return weeks.map((week) => ({
+    week: week.week,
+    quality: Number(week.averageQuality.toFixed(2)),
+  }))
+}
+
+export function sumCounts(items: { count: number }[]): number {
+  return items.reduce((sum, item) => sum + item.count, 0)
+}
+
+export function countTasksByStatus(
+  tasks: Task[],
+  statuses: string[],
+): { status: string; count: number }[] {
+  return statuses.map((status) => ({
+    status,
+    count: tasks.filter((task) => task.status === status).length,
+  }))
 }

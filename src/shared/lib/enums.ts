@@ -7,7 +7,7 @@ export const TASK_PRIORITIES = DB_ENUMS.task_priority
 export const PROJECT_TYPES = DB_ENUMS.project_type
 export const RECURRENCE_TYPES = DB_ENUMS.recurrence_type
 
-function createEnumGuard<T extends string>(values: readonly T[]) {
+export function createEnumGuard<T extends string>(values: readonly T[]) {
   return (value: unknown): value is T =>
     typeof value === 'string' && (values as readonly string[]).includes(value)
 }

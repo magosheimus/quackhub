@@ -4,13 +4,8 @@ import { SprintCreateModal } from './SprintCreateModal'
 import { SprintCloseModal } from './SprintCloseModal'
 import { useSprints } from '@/features/sprints/hooks/useSprints'
 import { SegmentedProgress } from '@/components/ui/segmented-progress'
+import { formatFullDate } from '@/shared/lib/date'
 import type { Sprint, Task } from '@/shared/types/entities'
-
-function formatShortDate(date: string | null): string {
-  if (!date) return '?'
-  const [year, month, day] = date.split('-')
-  return `${day}/${month}/${year}`
-}
 
 type SprintHeaderProps = {
   activeSprint: Sprint | null
@@ -34,8 +29,8 @@ export function SprintHeader({ activeSprint, tasks }: SprintHeaderProps) {
             {activeSprint.name}
             {(activeSprint.start_date || activeSprint.end_date) && (
               <span className="font-body ml-2 text-xs text-(--text-muted)">
-                ({formatShortDate(activeSprint.start_date)} →{' '}
-                {formatShortDate(activeSprint.end_date)})
+                ({formatFullDate(activeSprint.start_date)} →{' '}
+                {formatFullDate(activeSprint.end_date)})
               </span>
             )}
           </span>

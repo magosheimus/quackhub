@@ -1,4 +1,5 @@
-import type { Task } from '@/shared/types/entities'
+import { formatDayMonth } from '@/shared/lib/date'
+import type { Sprint, Task } from '@/shared/types/entities'
 
 export type CarryoverDecision = 'next_sprint' | 'backlog'
 
@@ -76,4 +77,21 @@ export function computeSprintMetrics(
     completion_rate: rate,
     completion_by_project,
   }
+}
+
+export function getClosedSprintsByRecency(sprints: Sprint[]): Sprint[] {
+  return sprints
+    .filter((sprint) => sprint.status === 'closed')
+    .sort((a, b) => (b.end_date ?? '').localeCompare(a.end_date ?? ''))
+}
+
+export function getCompletionPercent(sprint: Sprint): number {
+  return Math.round((sprint.completion_rate ?? 0) * 100)
+}
+
+// "Sprint 8 — meta (05/10 - 11/10)"
+export function formatSprintBanner(sprint: Sprint): string {
+  const goal = sprint.goal ? ` — ${sprint.goal}` : ''
+  const period = `${formatDayMonth(sprint.start_date)} - ${formatDayMonth(sprint.end_date)}`
+  return `${sprint.name}${goal} (${period})`
 }

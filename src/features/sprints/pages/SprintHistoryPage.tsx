@@ -1,38 +1,21 @@
 import { IconClock, IconChevronRight } from '@/shared/lib/icons'
-import { useState } from 'react'
-import { useSprints } from '@/features/sprints/hooks/useSprints'
 import { PageTitle } from '@/components/ui/page-title'
 import { SegmentedProgress } from '@/components/ui/segmented-progress'
 import { SprintSummary } from '@/features/sprints/components/SprintSummary'
 import { LoadingText } from '@/components/ui/loading-text'
-
-function formatShortDate(date: string | null): string {
-  if (!date) return '?'
-  const [, month, day] = date.split('-')
-  return `${day}/${month}`
-}
+import { useSprintHistoryPage } from '@/features/sprints/hooks/useSprintHistoryPage'
+import { getCompletionPercent } from '@/features/sprints/lib/sprint'
+import { formatDayMonth } from '@/shared/lib/date'
 
 export function SprintHistoryPage() {
-  const { data: sprints, isLoading } = useSprints()
-  const [openSprintIds, setOpenSprintIds] = useState<Set<string>>(new Set())
-  const closedSprints = sprints
-    ?.filter((s) => s.status === 'closed')
-    .sort((a, b) => (b.end_date ?? '').localeCompare(a.end_date ?? ''))
-
-  function toggleSprint(id: string) {
-    setOpenSprintIds((prev) => {
-      const next = new Set(prev)
-      if (next.has(id)) next.delete(id)
-      else next.add(id)
-      return next
-    })
-  }
+  const { isLoading, closedSprints, isSprintOpen, toggleSprint } =
+    useSprintHistoryPage()
 
   if (isLoading) {
     return <LoadingText />
   }
 
-  if (!closedSprints || closedSprints.length === 0) {
+  if (closedSprints.length === 0) {
     return (
       <div className="flex flex-col gap-4">
         <PageTitle title="Histórico" icon={IconClock} count={0} />
@@ -52,8 +35,8 @@ export function SprintHistoryPage() {
       />
       <div className="flex flex-col gap-2">
         {closedSprints.map((sprint) => {
-          const isOpen = openSprintIds.has(sprint.id)
-          const percent = Math.round((sprint.completion_rate ?? 0) * 100)
+          const isOpen = isSprintOpen(sprint.id)
+          const percent = getCompletionPercent(sprint)
           return (
             <div key={sprint.id} className="flex flex-col gap-2">
               <button
@@ -66,8 +49,8 @@ export function SprintHistoryPage() {
                   <span className="text-base text-(--text-primary)">
                     {sprint.name}
                     <span className="ml-2 text-xs text-(--text-muted)">
-                      ({formatShortDate(sprint.start_date)} -{' '}
-                      {formatShortDate(sprint.end_date)})
+                      ({formatDayMonth(sprint.start_date)} -{' '}
+                      {formatDayMonth(sprint.end_date)})
                     </span>
                   </span>
                   {sprint.goal && (

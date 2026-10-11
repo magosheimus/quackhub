@@ -1,5 +1,12 @@
 import { describe, it, expect } from 'vitest'
-import { applyCarryover, computeSprintMetrics } from './sprint'
+import {
+  applyCarryover,
+  computeSprintMetrics,
+  getClosedSprintsByRecency,
+  formatSprintBanner,
+  getCompletionPercent,
+} from './sprint'
+import { makeSprint } from '@/test/factories'
 import type { Task } from '@/shared/types/entities'
 
 function makeTask(overrides: Partial<Task>): Task {
@@ -133,5 +140,51 @@ describe('computeSprintMetrics', () => {
         },
       ]),
     )
+  })
+})
+
+describe('getClosedSprintsByRecency', () => {
+  it('mantém só as encerradas, da mais recente para a mais antiga', () => {
+    const sprints = [
+      makeSprint({ id: 's1', status: 'closed', end_date: '2026-01-11' }),
+      makeSprint({ id: 's2', status: 'active', end_date: '2026-03-01' }),
+      makeSprint({ id: 's3', status: 'closed', end_date: '2026-02-08' }),
+    ]
+
+    expect(getClosedSprintsByRecency(sprints).map((s) => s.id)).toEqual([
+      's3',
+      's1',
+    ])
+  })
+})
+
+describe('getCompletionPercent', () => {
+  it('converte a taxa em porcentagem arredondada', () => {
+    expect(getCompletionPercent(makeSprint({ completion_rate: 0.666 }))).toBe(
+      67,
+    )
+  })
+
+  it('trata taxa ausente como zero', () => {
+    expect(getCompletionPercent(makeSprint({ completion_rate: null }))).toBe(0)
+  })
+})
+
+describe('formatSprintBanner', () => {
+  it('inclui nome, meta e período', () => {
+    const sprint = makeSprint({
+      name: 'Sprint 8',
+      goal: 'Revisar GO',
+      start_date: '2026-10-05',
+      end_date: '2026-10-11',
+    })
+    expect(formatSprintBanner(sprint)).toBe(
+      'Sprint 8 — Revisar GO (05/10 - 11/10)',
+    )
+  })
+
+  it('omite a meta quando vazia', () => {
+    const sprint = makeSprint({ name: 'Sprint 8', goal: null })
+    expect(formatSprintBanner(sprint)).toBe('Sprint 8 (05/01 - 11/01)')
   })
 })

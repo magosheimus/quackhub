@@ -1,62 +1,40 @@
 import { IconInbox, IconCalendar } from '@/shared/lib/icons'
-import { useState } from 'react'
 import { Marquee } from '@/components/ui/marquee'
-import { useInboxItems } from '@/features/inbox/hooks/useInboxItems'
-import { useCompleteTask } from '@/features/inbox/hooks/useCompleteTask'
-import { useActiveSprint } from '@/features/sprints/hooks/useActiveSprint'
-import { useProjects } from '@/features/projects/hooks/useProjects'
+import { useInboxPage } from '@/features/inbox/hooks/useInboxPage'
 import { InboxSection } from '@/features/inbox/components/InboxSection'
 import { RegisterPerformanceModal } from '@/features/srs/components/RegisterPerformanceModal'
 import { LoadingText } from '@/components/ui/loading-text'
 import { Link } from 'react-router-dom'
 import { buttonVariants } from '@/components/ui/button'
 import { PageTitle } from '@/components/ui/page-title'
-import type { Task } from '@/shared/types/entities'
-
-function formatShortDate(date: string | null): string {
-  if (!date) return '?'
-  const [, month, day] = date.split('-')
-  return `${day}/${month}`
-}
 
 export function InboxPage() {
-  const { data: inbox, isLoading } = useInboxItems()
-  const { data: activeSprint } = useActiveSprint()
-  const { data: projects } = useProjects()
-  const { mutate: completeTask } = useCompleteTask()
-  const [registeringTask, setRegisteringTask] = useState<Task | null>(null)
+  const {
+    isLoading,
+    urgent,
+    srsOverdue,
+    dueToday,
+    totalCount,
+    isEmpty,
+    todayLabel,
+    sprintBanner,
+    projects,
+    completeTask,
+    registeringTask,
+    startRegistering,
+    stopRegistering,
+  } = useInboxPage()
 
   if (isLoading) {
     return <LoadingText />
   }
 
-  const urgent = inbox?.urgent ?? []
-  const srsOverdue = inbox?.srsOverdue ?? []
-  const dueToday = inbox?.dueToday ?? []
-  const isEmpty =
-    urgent.length === 0 && srsOverdue.length === 0 && dueToday.length === 0
-  const todayLabel = new Intl.DateTimeFormat('pt-BR', {
-    weekday: 'short',
-    day: '2-digit',
-    month: '2-digit',
-  })
-    .format(new Date())
-    .toUpperCase()
-
   return (
     <div className="flex flex-col gap-4">
-      {activeSprint && (
-        <Marquee>
-          {`${activeSprint.name}${activeSprint.goal ? ` — ${activeSprint.goal}` : ''} (${formatShortDate(activeSprint.start_date)} - ${formatShortDate(activeSprint.end_date)})`}
-        </Marquee>
-      )}
+      {sprintBanner && <Marquee>{sprintBanner}</Marquee>}
 
       <div className="flex flex-col gap-1">
-        <PageTitle
-          title="Inbox"
-          icon={IconInbox}
-          count={urgent.length + srsOverdue.length + dueToday.length}
-        />
+        <PageTitle title="Inbox" icon={IconInbox} count={totalCount} />
         <span className="pl-4 text-xs text-(--text-muted)">{todayLabel}</span>
       </div>
 
@@ -113,23 +91,23 @@ export function InboxPage() {
           <InboxSection
             title="Urgentes"
             tasks={urgent}
-            projects={projects ?? []}
+            projects={projects}
             onComplete={completeTask}
-            onRegisterPerformance={setRegisteringTask}
+            onRegisterPerformance={startRegistering}
           />
           <InboxSection
             title="SRS vencido"
             tasks={srsOverdue}
-            projects={projects ?? []}
+            projects={projects}
             onComplete={completeTask}
-            onRegisterPerformance={setRegisteringTask}
+            onRegisterPerformance={startRegistering}
           />
           <InboxSection
             title="Prazo hoje"
             tasks={dueToday}
-            projects={projects ?? []}
+            projects={projects}
             onComplete={completeTask}
-            onRegisterPerformance={setRegisteringTask}
+            onRegisterPerformance={startRegistering}
           />
         </>
       )}
@@ -138,7 +116,7 @@ export function InboxPage() {
         <RegisterPerformanceModal
           task={registeringTask}
           open={registeringTask !== null}
-          onOpenChange={(open) => !open && setRegisteringTask(null)}
+          onOpenChange={(open) => !open && stopRegistering()}
         />
       )}
     </div>

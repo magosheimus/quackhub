@@ -1,4 +1,7 @@
+import { createEnumGuard } from '@/shared/lib/enums'
 import type {
+  Epic,
+  Project,
   ProjectType,
   Task,
   TaskPriority,
@@ -139,4 +142,49 @@ export function applyBoardFilters(
     }
     return true
   })
+}
+
+export const isBoardColumnKey = createEnumGuard(BOARD_COLUMNS)
+
+// Rótulos de estudo só quando todos os projetos filtrados são de estudo
+export function getLabelScope(
+  filteredProjectIds: string[],
+  projectTypeById: Map<string, ProjectType>,
+): ProjectType | null {
+  const types = filteredProjectIds.map((id) => projectTypeById.get(id))
+  return types.length > 0 && types.every((type) => type === 'study')
+    ? 'study'
+    : null
+}
+
+export function getProjectsInTasks(
+  projects: Project[],
+  tasks: Task[],
+): Project[] {
+  const projectIds = new Set(tasks.map((task) => task.project_id))
+  return projects.filter((project) => projectIds.has(project.id))
+}
+
+export function getEpicsInTasks(epics: Epic[], tasks: Task[]): Epic[] {
+  const epicIds = new Set(tasks.map((task) => task.epic_id))
+  return epics.filter((epic) => epicIds.has(epic.id))
+}
+
+export function groupTasksByColumn(
+  tasks: Task[],
+): Record<BoardColumnKey, Task[]> {
+  const groups: Record<BoardColumnKey, Task[]> = {
+    todo: [],
+    doing: [],
+    to_review: [],
+    blocked: [],
+    done: [],
+  }
+  for (const task of tasks) {
+    const column = getBoardColumnKey(task.status)
+    if (column) {
+      groups[column].push(task)
+    }
+  }
+  return groups
 }

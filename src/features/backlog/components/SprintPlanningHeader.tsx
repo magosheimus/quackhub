@@ -1,15 +1,10 @@
 import { Button } from '@/components/ui/button'
 import { useStartSprint } from '@/features/sprints/hooks/useStartSprint'
+import { formatDayMonth } from '@/shared/lib/date'
 import type { Sprint } from '@/shared/types/entities'
 
 type SprintPlanningHeaderProps = {
   sprint: Sprint
-}
-
-function formatShortDate(date: string | null): string {
-  if (!date) return '?'
-  const [, month, day] = date.split('-')
-  return `${day}/${month}`
 }
 
 export function SprintPlanningHeader({ sprint }: SprintPlanningHeaderProps) {
@@ -22,8 +17,8 @@ export function SprintPlanningHeader({ sprint }: SprintPlanningHeaderProps) {
           {sprint.name}
         </span>
         <span className="text-xs text-(--text-muted)">
-          {formatShortDate(sprint.start_date)} -{' '}
-          {formatShortDate(sprint.end_date)}
+          {formatDayMonth(sprint.start_date)} -{' '}
+          {formatDayMonth(sprint.end_date)}
         </span>
         {sprint.goal && (
           <span className="text-sm text-(--text-muted)">{sprint.goal}</span>
