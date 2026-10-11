@@ -8,6 +8,7 @@ import {
 } from 'recharts'
 import type { Sprint } from '@/shared/types/entities'
 import { SPRINTS_TEXTS } from '@/features/sprints/constants/texts'
+import { formatFullDate } from '@/shared/lib/date'
 
 type ProjectCompletion = {
   project_id: string
@@ -38,7 +39,8 @@ export function SprintSummary({ sprint }: SprintSummaryProps) {
         </span>
         {(sprint.start_date || sprint.end_date) && (
           <div className="text-sm text-(--text-muted)">
-            {sprint.start_date ?? '?'} → {sprint.end_date ?? '?'}
+            {formatFullDate(sprint.start_date)} →{' '}
+            {formatFullDate(sprint.end_date)}
           </div>
         )}
         {sprint.goal && (

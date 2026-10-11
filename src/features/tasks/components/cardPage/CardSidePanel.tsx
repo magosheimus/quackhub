@@ -4,15 +4,10 @@ import {
   RecurrenceFields,
   type RecurrenceValue,
 } from '@/features/tasks/components/RecurrenceFields'
-import type { Task } from '@/shared/types/entities'
+import { canRegisterPerformance } from '@/features/srs/lib/srs'
+import type { ProjectType, Task } from '@/shared/types/entities'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
 import { TASKS_TEXTS } from '@/features/tasks/constants/texts'
-
-const SRS_ELIGIBLE_STATUSES: Task['status'][] = [
-  'studying',
-  'to_review',
-  'scheduled',
-]
 
 function formatDate(value: string | null): string {
   if (!value) return '—'
@@ -20,7 +15,7 @@ function formatDate(value: string | null): string {
 }
 
 type CardSidePanelProps = {
-  projectType?: string | null
+  projectType?: ProjectType | null
   status: Task['status']
   createdAt: string | null
   updatedAt: string | null
@@ -84,7 +79,7 @@ export function CardSidePanel({
         </>
       )}
 
-      {projectType === 'study' && SRS_ELIGIBLE_STATUSES.includes(status) && (
+      {canRegisterPerformance(projectType, status) && (
         <div className="flex flex-col gap-1.5 rounded-md border border-border bg-(--bg-card) p-3">
           <span className="text-sm font-medium text-(--text-primary)">
             {TASKS_TEXTS.srs}

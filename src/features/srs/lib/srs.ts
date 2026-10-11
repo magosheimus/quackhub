@@ -1,3 +1,5 @@
+import type { ProjectType, TaskStatus } from '@/shared/types/entities'
+
 export function calculateQuality(nota: number, confianca: number): number {
   return (nota / 2) * 0.6 + ((confianca - 1) / 4) * 5 * 0.4
 }
@@ -34,4 +36,17 @@ export function addDaysToToday(days: number): string {
   const date = new Date()
   date.setDate(date.getDate() + days)
   return formatDate(date)
+}
+
+const SRS_ELIGIBLE_STATUSES: TaskStatus[] = [
+  'studying',
+  'to_review',
+  'scheduled',
+]
+
+export function canRegisterPerformance(
+  projectType: ProjectType | null | undefined,
+  status: TaskStatus,
+): boolean {
+  return projectType === 'study' && SRS_ELIGIBLE_STATUSES.includes(status)
 }
