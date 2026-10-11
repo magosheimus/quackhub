@@ -70,7 +70,7 @@ export function Sidebar() {
     <aside className="h-full w-55 shrink-0 overflow-y-auto border-r border-border bg-surface p-4 flex flex-col">
       <div className="mb-6 px-1">
         <div className="glow-heading font-heading text-3xl text-accent">
-          {APP_TEXTS.brand}
+          {COMMON_TEXTS.brand}
         </div>
         <div className="text-caption">{APP_TEXTS.mascot}</div>
       </div>
