@@ -24,6 +24,8 @@ import { useInboxItems } from '@/features/inbox/hooks/useInboxItems'
 import type { Project } from '@/shared/types/entities'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
 import { APP_TEXTS } from '@/app/constants/texts'
+import { INBOX_TEXTS } from '@/features/inbox/constants/texts'
+import { DRAFTS_TEXTS } from '@/features/drafts/constants/texts'
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
   `flex h-10 items-center gap-3 border px-3 py-2 rounded-(--radius-md) text-base ${
@@ -82,7 +84,7 @@ export function Sidebar() {
 
       <nav className="flex flex-col gap-1">
         <NavItem to="/inbox" icon={IconInbox}>
-          Inbox
+          {INBOX_TEXTS.title}
           {inboxCount > 0 && (
             <span className="ml-auto text-xs text-(--text-muted)">
               {inboxCount}
@@ -90,7 +92,7 @@ export function Sidebar() {
           )}
         </NavItem>
         <NavItem to="/rascunhos" icon={IconNotes}>
-          Rascunhos
+          {DRAFTS_TEXTS.title}
           {draftsCount > 0 && (
             <span className="ml-auto text-xs text-(--text-muted)">
               {draftsCount}

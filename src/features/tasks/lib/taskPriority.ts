@@ -4,7 +4,7 @@ import {
   IconArrowBigUp,
   IconChevronUp,
 } from '@/shared/lib/icons'
-import type { TaskPriority } from '@/shared/types/entities'
+import type { Task, TaskPriority } from '@/shared/types/entities'
 
 type PriorityConfig = {
   icon: IconComponent
@@ -36,4 +36,21 @@ export const PRIORITY_CONFIG: Record<TaskPriority, PriorityConfig> = {
     className: 'text-(--signal-success)',
     colorVar: '--signal-success',
   },
+}
+
+const PRIORITY_ORDER: Record<TaskPriority, number> = {
+  high: 0,
+  medium: 1,
+  low: 2,
+}
+
+// Prioridade (alta primeiro) e, no empate, criação mais antiga primeiro
+export function sortByPriorityThenDate(tasks: Task[]): Task[] {
+  return [...tasks].sort((a, b) => {
+    const priorityDiff = PRIORITY_ORDER[a.priority] - PRIORITY_ORDER[b.priority]
+    if (priorityDiff !== 0) {
+      return priorityDiff
+    }
+    return (a.created_at ?? '').localeCompare(b.created_at ?? '')
+  })
 }

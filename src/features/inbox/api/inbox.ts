@@ -1,21 +1,7 @@
 import { supabase } from '@/shared/api/supabase'
 import { todayLocal } from '@/features/srs/lib/srs'
+import { sortByPriorityThenDate } from '@/features/tasks/lib/taskPriority'
 import type { Task } from '@/shared/types/entities'
-
-const PRIORITY_WEIGHT: Record<string, number> = {
-  alta: 0,
-  média: 1,
-  baixa: 2,
-}
-
-function sortByPriorityThenDate(tasks: Task[]): Task[] {
-  return [...tasks].sort((a, b) => {
-    const priorityDiff =
-      (PRIORITY_WEIGHT[a.priority] ?? 99) - (PRIORITY_WEIGHT[b.priority] ?? 99)
-    if (priorityDiff !== 0) return priorityDiff
-    return (a.created_at ?? '').localeCompare(b.created_at ?? '')
-  })
-}
 
 export type InboxData = {
   urgent: Task[]
