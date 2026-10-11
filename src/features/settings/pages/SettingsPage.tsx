@@ -1,5 +1,5 @@
 import { IconSettings } from '@/shared/lib/icons'
-import { useState, type ReactNode } from 'react'
+import type { ReactNode } from 'react'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Slider } from '@/components/ui/slider'
@@ -12,15 +12,11 @@ import {
 } from '@/components/ui/select'
 import { ClearCacheButton } from '@/features/settings/components/ClearCacheButton'
 import {
-  loadSettings,
-  saveSettings,
-  applySettings,
+  DATE_FORMATS,
+  FONT_BODIES,
   type Settings,
 } from '@/features/settings/lib/settings'
-import {
-  exportAllData,
-  downloadSnapshotAsJson,
-} from '@/features/settings/api/exportData'
+import { useSettingsPage } from '@/features/settings/hooks/useSettingsPage'
 import { PageTitle } from '@/components/ui/page-title'
 
 const TEXTURE_OPTIONS: { value: Settings['texture']; label: string }[] = [
@@ -29,10 +25,15 @@ const TEXTURE_OPTIONS: { value: Settings['texture']; label: string }[] = [
   { value: 'dots', label: 'Pontos' },
 ]
 
-const FONT_OPTIONS: { value: Settings['fontBody']; label: string }[] = [
-  { value: 'jetbrains', label: 'JetBrains Mono' },
-  { value: 'ibm-plex', label: 'IBM Plex Mono' },
-]
+const FONT_LABELS: Record<Settings['fontBody'], string> = {
+  jetbrains: 'JetBrains Mono',
+  'ibm-plex': 'IBM Plex Mono',
+}
+
+const WEEK_START_LABELS: Record<Settings['weekStartsOn'], string> = {
+  0: 'Domingo',
+  1: 'Segunda',
+}
 
 function SettingsCard({
   title,
@@ -52,39 +53,17 @@ function SettingsCard({
 }
 
 export function SettingsPage() {
-  const [settings, setSettings] = useState<Settings>(() => loadSettings())
-  const [isExporting, setIsExporting] = useState(false)
-
-  const opacity =
-    settings.texture === 'dots' ? settings.dotsOpacity : settings.gridOpacity
-
-  function update(partial: Partial<Settings>) {
-    const next = saveSettings(partial)
-    setSettings(next)
-    applySettings(next)
-  }
-
-  function handleOpacityChange(value: number) {
-    update(
-      settings.texture === 'dots'
-        ? { dotsOpacity: value }
-        : { gridOpacity: value },
-    )
-  }
-
-  async function handleExport() {
-    setIsExporting(true)
-    try {
-      const snapshot = await exportAllData()
-      downloadSnapshotAsJson(snapshot)
-    } catch (error) {
-      window.alert(
-        error instanceof Error ? error.message : 'Falha ao exportar dados',
-      )
-    } finally {
-      setIsExporting(false)
-    }
-  }
+  const {
+    settings,
+    textureOpacity,
+    update,
+    setTextureOpacity,
+    selectFontBody,
+    selectDateFormat,
+    selectWeekStart,
+    isExporting,
+    exportData,
+  } = useSettingsPage()
 
   return (
     <div className="flex flex-col gap-6">
@@ -112,14 +91,12 @@ export function SettingsPage() {
             <div className="flex items-center gap-3">
               <span className="text-xs text-(--text-muted)">Intensidade</span>
               <Slider
-                value={[opacity]}
-                onValueChange={(v) =>
-                  handleOpacityChange(Array.isArray(v) ? v[0] : v)
-                }
+                value={[textureOpacity]}
+                onValueChange={setTextureOpacity}
                 className="flex-1"
               />
               <span className="w-10 text-xs text-(--text-muted)">
-                {opacity}%
+                {textureOpacity}%
               </span>
             </div>
           )}
@@ -160,24 +137,14 @@ export function SettingsPage() {
             <span id="font-label" className="text-xs text-(--text-muted)">
               Fonte do corpo
             </span>
-            <Select
-              value={settings.fontBody}
-              onValueChange={(v) =>
-                update({ fontBody: v as Settings['fontBody'] })
-              }
-            >
+            <Select value={settings.fontBody} onValueChange={selectFontBody}>
               <SelectTrigger aria-labelledby="font-label">
-                <SelectValue>
-                  {
-                    FONT_OPTIONS.find((o) => o.value === settings.fontBody)
-                      ?.label
-                  }
-                </SelectValue>
+                <SelectValue>{FONT_LABELS[settings.fontBody]}</SelectValue>
               </SelectTrigger>
               <SelectContent>
-                {FONT_OPTIONS.map((option) => (
-                  <SelectItem key={option.value} value={option.value}>
-                    {option.label}
+                {FONT_BODIES.map((font) => (
+                  <SelectItem key={font} value={font}>
+                    {FONT_LABELS[font]}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -193,16 +160,17 @@ export function SettingsPage() {
             </span>
             <Select
               value={settings.dateFormat}
-              onValueChange={(v) =>
-                update({ dateFormat: v as Settings['dateFormat'] })
-              }
+              onValueChange={selectDateFormat}
             >
               <SelectTrigger aria-labelledby="date-format-label">
                 <SelectValue>{settings.dateFormat}</SelectValue>
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="dd/MM/yyyy">dd/MM/yyyy</SelectItem>
-                <SelectItem value="MM/dd/yyyy">MM/dd/yyyy</SelectItem>
+                {DATE_FORMATS.map((format) => (
+                  <SelectItem key={format} value={format}>
+                    {format}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
@@ -213,13 +181,11 @@ export function SettingsPage() {
             </span>
             <Select
               value={String(settings.weekStartsOn)}
-              onValueChange={(v) =>
-                update({ weekStartsOn: Number(v) as 0 | 1 })
-              }
+              onValueChange={selectWeekStart}
             >
               <SelectTrigger aria-labelledby="week-start-label">
                 <SelectValue>
-                  {settings.weekStartsOn === 0 ? 'Domingo' : 'Segunda'}
+                  {WEEK_START_LABELS[settings.weekStartsOn]}
                 </SelectValue>
               </SelectTrigger>
               <SelectContent>
@@ -245,7 +211,7 @@ export function SettingsPage() {
             type="button"
             variant="outline"
             size="sm"
-            onClick={handleExport}
+            onClick={exportData}
             disabled={isExporting}
           >
             {isExporting ? 'Exportando...' : 'Exportar'}

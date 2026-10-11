@@ -6,6 +6,7 @@ import { useAddManualComment } from '@/features/srs/hooks/useAddManualComment'
 import { useActivityLog } from '@/features/tasks/hooks/activityLog/useActivityLog'
 import { useSprints } from '@/features/sprints/hooks/useSprints'
 import { getStatusLabel } from '@/features/tasks/lib/taskStatus'
+import { formatFullDate } from '@/shared/lib/date'
 
 const PAGE_SIZE = 5
 
@@ -13,11 +14,6 @@ type HistoryTab = 'movimentacao' | 'desempenho'
 
 type CardHistoryProps = {
   taskId: string
-}
-
-function formatDisplayDate(dateStr: string): string {
-  const [year, month, day] = dateStr.split('-')
-  return `${day}/${month}/${year}`
 }
 
 function formatDisplayDateTime(isoStr: string | null): string {
@@ -148,7 +144,7 @@ export function CardHistory({ taskId }: CardHistoryProps) {
                   className="rounded-md border border-border bg-(--bg-card) p-2 text-sm"
                 >
                   <div className="flex flex-wrap items-center gap-2 text-xs text-(--text-muted)">
-                    <span>{formatDisplayDate(log.session_date)}</span>
+                    <span>{formatFullDate(log.session_date)}</span>
                     <span>·</span>
                     <span>{log.log_type === 'srs' ? 'SRS' : 'Manual'}</span>
                     {log.log_type === 'srs' && (

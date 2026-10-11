@@ -4,6 +4,11 @@ import {
   saveSettings,
   isDarkCartucho,
   DEFAULT_SETTINGS,
+  getTextureOpacity,
+  isDateFormat,
+  isFontBody,
+  parseWeekStart,
+  textureOpacityUpdate,
 } from './settings'
 
 describe('settings', () => {
@@ -38,5 +43,32 @@ describe('settings', () => {
     expect(isDarkCartucho('amber')).toBe(false)
     expect(isDarkCartucho('slate')).toBe(false)
     expect(isDarkCartucho('earth')).toBe(false)
+  })
+})
+
+describe('valores de Select', () => {
+  it('valida fonte e formato de data', () => {
+    expect(isFontBody('ibm-plex')).toBe(true)
+    expect(isFontBody('comic-sans')).toBe(false)
+    expect(isDateFormat('MM/dd/yyyy')).toBe(true)
+    expect(isDateFormat('yyyy-MM-dd')).toBe(false)
+  })
+
+  it('converte o primeiro dia da semana', () => {
+    expect(parseWeekStart('0')).toBe(0)
+    expect(parseWeekStart('1')).toBe(1)
+    expect(parseWeekStart('2')).toBeNull()
+  })
+})
+
+describe('opacidade da textura', () => {
+  it('usa a opacidade da textura ativa', () => {
+    const dots = { ...DEFAULT_SETTINGS, texture: 'dots' as const }
+    const grid = { ...DEFAULT_SETTINGS, texture: 'grid' as const }
+
+    expect(getTextureOpacity(dots)).toBe(DEFAULT_SETTINGS.dotsOpacity)
+    expect(getTextureOpacity(grid)).toBe(DEFAULT_SETTINGS.gridOpacity)
+    expect(textureOpacityUpdate(dots, 30)).toEqual({ dotsOpacity: 30 })
+    expect(textureOpacityUpdate(grid, 30)).toEqual({ gridOpacity: 30 })
   })
 })

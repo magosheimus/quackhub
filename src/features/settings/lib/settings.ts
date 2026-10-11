@@ -1,3 +1,5 @@
+import { createEnumGuard } from '@/shared/lib/enums'
+
 const SETTINGS_KEY = 'quackhub-settings'
 
 export type Settings = {
@@ -10,6 +12,48 @@ export type Settings = {
   fontBody: 'jetbrains' | 'ibm-plex'
   dateFormat: 'dd/MM/yyyy' | 'MM/dd/yyyy'
   weekStartsOn: 0 | 1
+}
+
+export const FONT_BODIES = [
+  'jetbrains',
+  'ibm-plex',
+] as const satisfies readonly Settings['fontBody'][]
+
+export const DATE_FORMATS = [
+  'dd/MM/yyyy',
+  'MM/dd/yyyy',
+] as const satisfies readonly Settings['dateFormat'][]
+
+export const isFontBody = createEnumGuard(FONT_BODIES)
+export const isDateFormat = createEnumGuard(DATE_FORMATS)
+
+// Valores de Select chegam como texto ('0' | '1')
+export function parseWeekStart(
+  value: unknown,
+): Settings['weekStartsOn'] | null {
+  if (value === '0') {
+    return 0
+  }
+  if (value === '1') {
+    return 1
+  }
+  return null
+}
+
+// O slider de intensidade controla a opacidade da textura ativa
+export function getTextureOpacity(settings: Settings): number {
+  return settings.texture === 'dots'
+    ? settings.dotsOpacity
+    : settings.gridOpacity
+}
+
+export function textureOpacityUpdate(
+  settings: Settings,
+  value: number,
+): Partial<Settings> {
+  return settings.texture === 'dots'
+    ? { dotsOpacity: value }
+    : { gridOpacity: value }
 }
 
 export const DEFAULT_SETTINGS: Settings = {

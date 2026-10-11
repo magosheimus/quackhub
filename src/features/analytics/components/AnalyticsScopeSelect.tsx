@@ -5,9 +5,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-
-export const CURRENT_SCOPE = 'current'
-export const ALL_SCOPE = 'all'
+import { ALL_SCOPE, CURRENT_SCOPE } from '@/features/analytics/lib/analytics'
 
 type AnalyticsScopeSelectProps = {
   scope: string
