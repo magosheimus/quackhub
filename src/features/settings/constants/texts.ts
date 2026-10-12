@@ -46,4 +46,5 @@ export const SETTINGS_TEXTS = {
     'Remove os dados salvos no navegador e recarrega a página.',
   openCartuchos: 'Abrir cartuchos',
   closeCartuchos: 'Fechar cartuchos',
+  syncError: 'Não foi possível sincronizar as preferências.',
 } as const

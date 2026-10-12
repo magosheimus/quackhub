@@ -4,12 +4,14 @@ import { syncDraftsQueue } from '@/features/drafts/api/drafts'
 import { useOnlineStatus } from '@/shared/hooks/useOnlineStatus'
 import { CartuchoPicker } from '@/features/settings/components/CartuchoPicker'
 import { APP_TEXTS } from '@/app/constants/texts'
+import { useSettingsSync } from '@/features/settings/hooks/useSettingsSync'
 
 interface AppShellProps {
   children: ReactNode
 }
 
 export function AppShell({ children }: AppShellProps) {
+  useSettingsSync()
   useEffect(() => {
     window.addEventListener('online', syncDraftsQueue)
     return () => window.removeEventListener('online', syncDraftsQueue)
