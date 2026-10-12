@@ -24,4 +24,5 @@ dist-ssr
 *.sw?
 
 # Supabase CLI local state
-supabase/.tempdeno.lock
+supabase/.temp
+deno.lock
