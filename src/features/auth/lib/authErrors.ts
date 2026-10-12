@@ -6,6 +6,8 @@ const MESSAGE_BY_CODE: Record<string, string> = {
   signup_disabled: AUTH_ERRORS.signupDisabled,
   access_denied: AUTH_ERRORS.accessDenied,
   over_request_rate_limit: AUTH_ERRORS.rateLimited,
+  weak_password: AUTH_ERRORS.weakPassword,
+  same_password: AUTH_ERRORS.samePassword,
 }
 
 export function getAuthErrorMessage(code: string | null | undefined): string {

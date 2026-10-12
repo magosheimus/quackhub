@@ -21,6 +21,13 @@ export const AUTH_TEXTS = {
     'Esta ação não pode ser desfeita. Se quiser guardar uma cópia, use "Exportar dados" antes.',
   deleteAccountConfirmLabel: (email: string) =>
     `Para confirmar, digite ${email}`,
+  setPasswordSubtitle: 'Escolha a senha da sua conta.',
+  newPassword: 'Nova senha',
+  confirmPassword: 'Confirmar senha',
+  passwordHint: 'Mínimo de 8 caracteres, com letras e números.',
+  savePassword: 'Salvar senha',
+  savingPassword: 'Salvando...',
+  backToLogin: 'Ir para o login',
 } as const
 
 export const AUTH_ERRORS = {
@@ -30,4 +37,12 @@ export const AUTH_ERRORS = {
   accessDenied: 'Login cancelado.',
   rateLimited: 'Muitas tentativas. Aguarde alguns minutos e tente de novo.',
   generic: 'Não foi possível entrar. Tente novamente.',
+  invalidLink:
+    'Link inválido ou expirado. Peça um novo convite ou uma nova recuperação de senha.',
+  passwordTooShort: 'A senha precisa ter pelo menos 8 caracteres.',
+  passwordNeedsLetterAndDigit: 'A senha precisa ter letras e números.',
+  passwordMismatch: 'As senhas não são iguais.',
+  weakPassword:
+    'Senha fraca. Use pelo menos 8 caracteres, com letras e números.',
+  samePassword: 'A nova senha precisa ser diferente da atual.',
 } as const

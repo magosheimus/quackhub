@@ -8,7 +8,12 @@ import {
 import { AppShell } from './layout/AppShell'
 import { AuthProvider } from '@/features/auth/components/AuthProvider'
 import { RequireAuth } from '@/features/auth/components/RequireAuth'
-import { HOME_PATH, LOGIN_PATH } from '@/features/auth/lib/redirect'
+import {
+  HOME_PATH,
+  LOGIN_PATH,
+  SET_PASSWORD_PATH,
+} from '@/features/auth/lib/redirect'
+import { SetPasswordPage } from '@/features/auth/pages/SetPasswordPage'
 import { LoginPage } from '@/features/auth/pages/LoginPage'
 import { BoardPage } from '@/features/board/pages/BoardPage'
 import { BacklogPage } from '@/features/backlog/pages/BacklogPage'
@@ -38,6 +43,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path={LOGIN_PATH} element={<LoginPage />} />
+          <Route path={SET_PASSWORD_PATH} element={<SetPasswordPage />} />
           <Route path={PRIVACY_PATH} element={<PrivacyPage />} />
           <Route element={<Layout />}>
             <Route path="/" element={<Navigate to={HOME_PATH} replace />} />
