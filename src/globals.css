@@ -51,7 +51,7 @@
   --glow: 0 0 #0000;
   --glow-filter: none;
   --scanline-opacity: 0;
-  --overlay: color-mix(in srgb, var(--lcd-ink) 20%, transparent);
+  --overlay: color-mix(in srgb, var(--lcd-ink) 65%, transparent);
 
   /* Tipografia */
   --font-heading: 'VT323', monospace;
@@ -328,6 +328,26 @@
 
 .theme-dark {
   --overlay: color-mix(in srgb, black 55%, transparent);
+}
+
+/* Janela de exclusão: inverte a paleta do cartucho (fundo = destaque, texto = sobre destaque) */
+.dialog-inverted {
+  --bg-card: var(--accent);
+  --card: var(--accent);
+  --popover: var(--accent);
+  --bg-surface: color-mix(in oklch, var(--accent) 82%, var(--on-accent));
+  --bg-input: color-mix(in oklch, var(--accent) 88%, var(--on-accent));
+  --input: var(--bg-input);
+  --bg-hover: color-mix(in oklch, var(--accent) 75%, var(--on-accent));
+  --text-primary: var(--on-accent);
+  --text-muted: color-mix(in oklch, var(--on-accent) 78%, var(--accent));
+  --muted-foreground: var(--text-muted);
+  --border: color-mix(in oklch, var(--on-accent) 55%, var(--accent));
+  --border-strong: var(--on-accent);
+  --control-bg: var(--bg-input);
+  --control-border: var(--border);
+  --control-hover: var(--bg-hover);
+  color: var(--text-primary);
 }
 
 .dialog-titlebar::before,

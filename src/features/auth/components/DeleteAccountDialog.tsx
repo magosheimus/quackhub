@@ -12,6 +12,7 @@ import { Input } from '@/components/ui/input'
 import { AUTH_TEXTS } from '@/features/auth/constants/texts'
 import { useDeleteAccountDialog } from '@/features/auth/hooks/useDeleteAccountDialog'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
+import { INVERTED_CONFIRM_CLASS } from '@/components/ui/confirm-dialog'
 
 type DeleteAccountDialogProps = {
   accountEmail: string
@@ -35,7 +36,7 @@ export function DeleteAccountDialog({
       <DialogTrigger render={<Button variant="destructive" size="sm" />}>
         {AUTH_TEXTS.deleteAccount}
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="dialog-inverted">
         <DialogHeader>
           <DialogTitle>{AUTH_TEXTS.deleteAccountTitle}</DialogTitle>
           <DialogDescription>
@@ -63,7 +64,7 @@ export function DeleteAccountDialog({
             {COMMON_TEXTS.cancel}
           </Button>
           <Button
-            variant="destructive"
+            className={INVERTED_CONFIRM_CLASS}
             onClick={confirm}
             disabled={!canConfirm}
           >
