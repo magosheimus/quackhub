@@ -28,6 +28,7 @@ import { INBOX_TEXTS } from '@/features/inbox/constants/texts'
 import { DRAFTS_TEXTS } from '@/features/drafts/constants/texts'
 import { Panel } from '@/components/ui/panel'
 import { LogoMark } from '@/components/ui/logo-mark'
+import { cn } from '@/shared/lib/utils'
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
   `flex h-10 items-center gap-3 border px-3 py-2 rounded-md text-base ${
@@ -55,7 +56,11 @@ function NavItem({
   )
 }
 
-export function Sidebar() {
+type SidebarProps = {
+  className?: string
+}
+
+export function Sidebar({ className }: SidebarProps) {
   const { data: projects, isLoading } = useProjects()
   const { data: draftsItems } = useDraftsItems()
   const draftsCount = draftsItems?.length ?? 0
@@ -68,7 +73,12 @@ export function Sidebar() {
   const [isProjectsOpen, setIsProjectsOpen] = useState(false)
 
   return (
-    <aside className="h-full w-55 shrink-0 overflow-y-auto border-r border-border bg-surface p-4 flex flex-col">
+    <aside
+      className={cn(
+        'flex h-full w-55 shrink-0 flex-col overflow-y-auto border-r border-border bg-surface p-4',
+        className,
+      )}
+    >
       <div className="mb-6 px-1">
         <div className="flex items-center gap-3 font-heading text-3xl text-accent">
           <LogoMark />
@@ -141,7 +151,7 @@ export function Sidebar() {
                 <button
                   type="button"
                   onClick={() => setEditingProject(project)}
-                  className="p-2 text-fg-muted opacity-0 group-hover:opacity-100"
+                  className="p-2 text-fg-muted opacity-0 group-hover:opacity-100 focus-visible:opacity-100 pointer-coarse:opacity-100"
                   aria-label={APP_TEXTS.editProject(project.name)}
                 >
                   <IconPencil size={12} />

@@ -13,7 +13,7 @@ export function SprintPlanningHeader({ sprint }: SprintPlanningHeaderProps) {
   const { mutate: startSprint, isPending } = useStartSprint()
 
   return (
-    <Panel className="flex items-center justify-between gap-4">
+    <Panel className="flex flex-wrap items-center justify-between gap-4">
       <div className="flex flex-col gap-1">
         <span className="font-heading text-2xl text-fg">{sprint.name}</span>
         <span className="text-caption">

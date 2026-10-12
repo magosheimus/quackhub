@@ -52,7 +52,7 @@ function BoardCardBody({
         </span>
       </div>
 
-      <div className="flex flex-col gap-1">
+      <div className="flex min-w-0 flex-1 flex-col gap-1">
         {task.task_number && (
           <span className="text-caption">
             {projectPrefix}-{task.task_number}
@@ -122,7 +122,7 @@ export function StaticBoardCard({
   actions,
 }: StaticBoardCardProps) {
   return (
-    <div style={getBorderStyle(task)} className={CARD_CLASS}>
+    <div style={getBorderStyle(task)} className={`${CARD_CLASS} flex-wrap`}>
       <BoardCardBody
         task={task}
         projectPrefixById={projectPrefixById}

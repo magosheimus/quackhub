@@ -171,7 +171,7 @@ export function CardAttachments({ taskId }: CardAttachmentsProps) {
                   aria-label={TASKS_TEXTS.removeAttachment(
                     attachment.file_name,
                   )}
-                  className="absolute top-0.5 right-0.5 hidden rounded-full bg-page p-0.5 group-hover:block"
+                  className="absolute top-0.5 right-0.5 rounded-full bg-page p-0.5 opacity-0 group-hover:opacity-100 focus-visible:opacity-100 pointer-coarse:opacity-100"
                 >
                   <IconClose size={12} />
                 </button>

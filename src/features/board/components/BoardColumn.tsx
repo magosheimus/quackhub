@@ -19,7 +19,7 @@ export function BoardColumn({
   projectPrefixById,
 }: BoardColumnProps) {
   return (
-    <div className="flex flex-1 min-w-0 flex-col gap-2">
+    <div className="flex w-[78vw] max-w-72 shrink-0 snap-start flex-col gap-2 lg:w-auto lg:max-w-none lg:min-w-0 lg:flex-1 lg:shrink">
       <div className="flex items-center justify-between px-1">
         <span className="font-heading text-xl text-fg">{label}</span>
         <span className="flex size-6 items-center justify-center rounded-md border border-(--border-card-empty) bg-card-empty text-caption">

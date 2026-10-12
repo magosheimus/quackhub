@@ -425,6 +425,18 @@
   outline-offset: 2px;
 }
 
+@media (min-width: 768px) and (max-width: 1023px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1279px) {
+  html {
+    font-size: 15px;
+  }
+}
+
 body {
   background: var(--bg-page);
   color: var(--text-primary);

@@ -116,7 +116,7 @@ export function DraftsList() {
 
   if (!items || items.length === 0) {
     return (
-      <div className="flex flex-col items-center gap-2 rounded-md border border-surface bg-page px-6 py-8 text-center">
+      <div className="flex flex-col items-center gap-2 rounded-md border border-(--border-card-empty) bg-card-empty px-6 py-8 text-center">
         <IconNotes size={24} aria-hidden="true" className="text-fg-muted" />
         <EmptyMessage>{DRAFTS_TEXTS.empty}</EmptyMessage>
       </div>
@@ -146,8 +146,8 @@ export function DraftsList() {
             <span
               className={
                 checkedIds.has(item.id)
-                  ? 'flex-1 text-fg-muted line-through'
-                  : 'flex-1 text-fg'
+                  ? 'min-w-0 flex-1 wrap-break-word text-fg-muted line-through'
+                  : 'min-w-0 flex-1 wrap-break-word text-fg'
               }
             >
               {item.content}
@@ -159,7 +159,7 @@ export function DraftsList() {
             variant="ghost"
             onClick={() => setEditing({ id: item.id, text: item.content })}
             aria-label={DRAFTS_TEXTS.edit}
-            className="size-8 rounded-full p-0 hover:bg-surface! hover:text-fg!"
+            className="size-8 shrink-0 p-0 hover:bg-surface! hover:text-fg!"
           >
             <IconPencil size={16} />
           </Button>
@@ -169,7 +169,7 @@ export function DraftsList() {
             variant="ghost"
             onClick={() => handleDiscard(item)}
             aria-label={DRAFTS_TEXTS.discard}
-            className="size-8 rounded-full p-0 hover:bg-surface! hover:text-fg!"
+            className="size-8 shrink-0 p-0 hover:bg-surface! hover:text-fg!"
           >
             <IconTrash size={16} />
           </Button>
@@ -179,7 +179,7 @@ export function DraftsList() {
             variant="ghost"
             onClick={() => setCreatingCardFor(item)}
             aria-label={DRAFTS_TEXTS.toCard}
-            className="size-8 rounded-full p-0 hover:bg-surface! hover:text-fg!"
+            className="size-8 shrink-0 p-0 hover:bg-surface! hover:text-fg!"
           >
             <IconStickyNoteSharp size={16} />
           </Button>

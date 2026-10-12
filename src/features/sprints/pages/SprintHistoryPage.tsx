@@ -44,9 +44,9 @@ export function SprintHistoryPage() {
                 type="button"
                 onClick={() => toggleSprint(sprint.id)}
                 aria-expanded={isOpen}
-                className="flex items-center gap-4 rounded-md border border-border bg-card p-4 text-left hover:bg-card-hover"
+                className="relative flex flex-col gap-3 rounded-md border border-border bg-card p-4 text-left hover:bg-card-hover sm:flex-row sm:items-center sm:gap-4"
               >
-                <div className="flex flex-1 flex-col gap-1">
+                <div className="flex min-w-0 flex-1 flex-col gap-1 pr-6 sm:pr-0">
                   <span className="text-base text-fg">
                     {sprint.name}
                     <span className="ml-2 text-caption">
@@ -58,7 +58,7 @@ export function SprintHistoryPage() {
                     <span className="text-subtle">{sprint.goal}</span>
                   )}
                 </div>
-                <div className="flex flex-col items-end gap-1">
+                <div className="flex flex-col gap-1 sm:items-end">
                   <span className="text-caption">
                     {SPRINTS_TEXTS.completedOf(
                       sprint.completed_tasks ?? 0,
@@ -73,7 +73,7 @@ export function SprintHistoryPage() {
                 <IconChevronRight
                   size={12}
                   aria-hidden="true"
-                  className={`text-fg-muted transition-transform ${isOpen ? 'rotate-90' : ''}`}
+                  className={`absolute top-4 right-4 text-fg-muted transition-transform sm:static ${isOpen ? 'rotate-90' : ''}`}
                 />
               </button>
               {isOpen && <SprintSummary sprint={sprint} />}

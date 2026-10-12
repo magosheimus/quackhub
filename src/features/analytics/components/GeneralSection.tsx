@@ -46,18 +46,20 @@ export function GeneralSection({
               return (
                 <div
                   key={project.projectName}
-                  className="flex items-center gap-4"
+                  className="flex flex-col gap-1.5 sm:flex-row sm:items-center sm:gap-4"
                 >
-                  <span className="w-48 shrink-0 truncate text-sm text-fg">
+                  <span className="truncate text-sm text-fg sm:w-48 sm:shrink-0">
                     {project.projectName}
                   </span>
-                  <SegmentedProgress
-                    value={percent}
-                    label={COMMON_TEXTS.progressOf(project.projectName)}
-                  />
-                  <span className="text-caption">
-                    {project.completed} de {project.total}
-                  </span>
+                  <div className="flex items-center gap-3">
+                    <SegmentedProgress
+                      value={percent}
+                      label={COMMON_TEXTS.progressOf(project.projectName)}
+                    />
+                    <span className="text-caption">
+                      {project.completed} de {project.total}
+                    </span>
+                  </div>
                 </div>
               )
             })}

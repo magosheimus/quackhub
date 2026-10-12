@@ -67,7 +67,7 @@ export function BoardPage() {
       />
 
       <DragDropContext onDragEnd={handleDragEnd}>
-        <div className="flex gap-4 overflow-x-auto">
+        <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 lg:snap-none">
           {columns.map((column) => (
             <BoardColumn
               key={column.key}

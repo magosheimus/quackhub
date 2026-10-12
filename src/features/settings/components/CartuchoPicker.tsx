@@ -43,9 +43,12 @@ export function CartuchoPicker() {
   }
 
   return (
-    <div ref={containerRef} className="flex h-24 items-center gap-2">
+    <div
+      ref={containerRef}
+      className="flex items-end gap-2 sm:h-24 sm:items-center"
+    >
       {isOpen && (
-        <div className="flex gap-2 rounded-md border-2 border-border-strong bg-surface p-2 shadow-[3px_3px_0_0_var(--border-strong)] motion-safe:animate-[cartucho-deck-in_200ms_ease-out]">
+        <div className="grid grid-cols-3 gap-2 sm:flex rounded-md border-2 border-border-strong bg-surface p-2 shadow-[3px_3px_0_0_var(--border-strong)] motion-safe:animate-[cartucho-deck-in_200ms_ease-out]">
           {CARTUCHO_OPTIONS.map((option) => {
             const isActive = option.value === cartucho
             return (
