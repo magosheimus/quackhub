@@ -44,6 +44,7 @@ export const SETTINGS_TEXTS = {
   clearCache: 'Limpar cache',
   clearCacheDescription:
     'Remove os dados salvos no navegador e recarrega a página.',
+  cartucho: 'Cartucho',
   openCartuchos: 'Abrir cartuchos',
   closeCartuchos: 'Fechar cartuchos',
   syncError: 'Não foi possível sincronizar as preferências.',

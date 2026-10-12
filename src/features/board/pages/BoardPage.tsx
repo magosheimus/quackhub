@@ -25,6 +25,8 @@ export function BoardPage() {
     visibleTasks,
     columns,
     handleDragEnd,
+    moveTask,
+    getMoveOptionsFor,
   } = useBoardPage()
 
   if (isLoading) {
@@ -67,7 +69,7 @@ export function BoardPage() {
       />
 
       <DragDropContext onDragEnd={handleDragEnd}>
-        <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 lg:snap-none">
+        <div className="flex snap-x snap-proximity gap-4 overflow-x-auto pb-2 lg:snap-none">
           {columns.map((column) => (
             <BoardColumn
               key={column.key}
@@ -75,6 +77,8 @@ export function BoardPage() {
               label={column.label}
               tasks={column.tasks}
               projectPrefixById={projectPrefixById}
+              getMoveOptions={getMoveOptionsFor}
+              onMove={moveTask}
             />
           ))}
         </div>

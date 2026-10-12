@@ -1,21 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
 import { IconChevronLeft, IconChevronRight } from '@/shared/lib/icons'
-import type { Settings } from '@/features/settings/lib/settings'
 import { useSettings } from '@/features/settings/hooks/useSettings'
-import {
-  CARTUCHO_LABELS,
-  SETTINGS_TEXTS,
-} from '@/features/settings/constants/texts'
-
-type CartuchoValue = Settings['cartucho']
-
-const CARTUCHO_OPTIONS = (Object.keys(CARTUCHO_LABELS) as CartuchoValue[]).map(
-  (value) => ({ value, label: CARTUCHO_LABELS[value] }),
-)
+import { SETTINGS_TEXTS } from '@/features/settings/constants/texts'
+import { CartuchoOptions } from '@/features/settings/components/CartuchoOptions'
 
 export function CartuchoPicker() {
   const { settings, updateSettings } = useSettings()
-  const cartucho = settings.cartucho
   const [isOpen, setIsOpen] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
 
@@ -38,46 +28,14 @@ export function CartuchoPicker() {
     return () => document.removeEventListener('pointerdown', handlePointerDown)
   }, [isOpen])
 
-  function handleSelect(value: CartuchoValue) {
-    updateSettings({ cartucho: value })
-  }
-
   return (
-    <div
-      ref={containerRef}
-      className="flex items-end gap-2 sm:h-24 sm:items-center"
-    >
+    <div ref={containerRef} className="flex h-24 items-center gap-2">
       {isOpen && (
-        <div className="grid grid-cols-3 gap-2 sm:flex rounded-md border-2 border-border-strong bg-surface p-2 shadow-[3px_3px_0_0_var(--border-strong)] motion-safe:animate-[cartucho-deck-in_200ms_ease-out]">
-          {CARTUCHO_OPTIONS.map((option) => {
-            const isActive = option.value === cartucho
-            return (
-              <button
-                key={option.value}
-                type="button"
-                title={option.label}
-                aria-label={`Cartucho ${option.label}`}
-                aria-pressed={isActive}
-                onClick={() => handleSelect(option.value)}
-                className="rounded-sm p-0.5"
-              >
-                <div
-                  className={`cartucho-${option.value} flex h-20 w-14 flex-col justify-between rounded-sm border-2 border-(--lcd-ink) bg-(--lcd-screen) p-1 shadow-[2px_2px_0_0_var(--lcd-ink)] motion-safe:transition-transform motion-safe:hover:-translate-y-1 ${
-                    isActive
-                      ? 'outline-2 outline-offset-2 outline-fg motion-safe:animate-[cartucho-pulse_2s_ease-in-out_infinite]'
-                      : ''
-                  }`}
-                >
-                  <span className="mx-auto h-1 w-6 rounded-full bg-(--lcd-ink)/30" />
-                  <span className="text-left text-[10px] leading-tight text-(--lcd-ink)">
-                    {option.label}
-                  </span>
-                  <span className="h-1 w-full bg-accent" />
-                </div>
-              </button>
-            )
-          })}
-        </div>
+        <CartuchoOptions
+          selected={settings.cartucho}
+          onSelect={(cartucho) => updateSettings({ cartucho })}
+          className="rounded-md border-2 border-border-strong bg-surface p-2 shadow-[3px_3px_0_0_var(--border-strong)] motion-safe:animate-[cartucho-deck-in_200ms_ease-out]"
+        />
       )}
 
       <button

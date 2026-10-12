@@ -1,6 +1,8 @@
 export const BOARD_TEXTS = {
   quickFilters: 'Filtros rápidos:',
   emptyColumn: '— vazio —',
+  moveCard: (title: string) => `Mover ${title}`,
+  moveTo: 'Mover para',
   newCard: 'Novo card',
   noCards: '— nenhum card —',
   currentSprintSection: 'SPRINT ATUAL',
