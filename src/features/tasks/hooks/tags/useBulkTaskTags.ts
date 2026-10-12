@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { supabase } from '@/shared/api/supabase'
 import { queryKeys } from '@/shared/query/queryKeys'
+import { groupTagsByTask } from '@/features/tasks/lib/taskTags'
 
 export function useBulkTaskTags(taskIds: string[]) {
   return useQuery({
@@ -12,13 +13,7 @@ export function useBulkTaskTags(taskIds: string[]) {
         .in('task_id', taskIds)
       if (error) throw new Error(`Falha ao buscar tags: ${error.message}`)
 
-      const map = new Map<string, string[]>()
-      for (const row of data) {
-        const existing = map.get(row.task_id) ?? []
-        existing.push(row.tag_name)
-        map.set(row.task_id, existing)
-      }
-      return map
+      return groupTagsByTask(data)
     },
     enabled: taskIds.length > 0,
   })

@@ -2,7 +2,8 @@ import { describe, it, expect } from 'vitest'
 import { makeProject, makeTask } from '@/test/factories'
 import { filterBacklogTasks, groupTasksByProject } from './backlog'
 
-const NO_FILTERS = { status: null, priority: null, epicId: null }
+const NO_FILTERS = { status: null, priority: null, epicId: null, tag: null }
+const NO_TAGS = {}
 
 describe('filterBacklogTasks', () => {
   const tasks = [
@@ -12,19 +13,32 @@ describe('filterBacklogTasks', () => {
   ]
 
   it('sem filtros devolve todas as tarefas', () => {
-    expect(filterBacklogTasks(tasks, NO_FILTERS)).toHaveLength(3)
+    expect(filterBacklogTasks(tasks, NO_FILTERS, NO_TAGS)).toHaveLength(3)
   })
 
   it('combina os filtros de status, prioridade e épico', () => {
     const ids = (filters: Parameters<typeof filterBacklogTasks>[1]) =>
-      filterBacklogTasks(tasks, filters).map((task) => task.id)
+      filterBacklogTasks(tasks, filters, NO_TAGS).map((task) => task.id)
 
     expect(ids({ ...NO_FILTERS, status: 'todo' })).toEqual(['t1', 't3'])
     expect(ids({ ...NO_FILTERS, priority: 'low' })).toEqual(['t2', 't3'])
     expect(ids({ ...NO_FILTERS, epicId: 'e2' })).toEqual(['t2'])
-    expect(ids({ status: 'todo', priority: 'low', epicId: null })).toEqual([
+    expect(ids({ ...NO_FILTERS, status: 'todo', priority: 'low' })).toEqual([
       't3',
     ])
+  })
+})
+
+describe('filtro de tag no backlog', () => {
+  const tasks = [makeTask({ id: 't1' }), makeTask({ id: 't2' })]
+
+  it('mantém só os cards com a tag escolhida', () => {
+    const result = filterBacklogTasks(
+      tasks,
+      { ...NO_FILTERS, tag: 'GO' },
+      { t1: ['GO', 'Pediatria'], t2: ['Cirurgia'] },
+    )
+    expect(result.map((task) => task.id)).toEqual(['t1'])
   })
 })
 

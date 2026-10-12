@@ -13,7 +13,7 @@ import { makeEpic, makeProject, makeTask } from '@/test/factories'
 
 describe('applyBoardFilters', () => {
   const today = '2026-09-29'
-  const emptyTags = new Map<string, string[]>()
+  const emptyTags = {}
 
   it('sem filtros ativos, retorna tudo', () => {
     const tasks = [makeTask({ id: 't1' }), makeTask({ id: 't2' })]
@@ -52,7 +52,7 @@ describe('applyBoardFilters', () => {
 
   it('filtra por tag', () => {
     const tasks = [makeTask({ id: 't1' }), makeTask({ id: 't2' })]
-    const tagsMap = new Map([['t1', ['urgente']]])
+    const tagsMap = { t1: ['urgente'] }
     const result = applyBoardFilters(
       tasks,
       { ...DEFAULT_BOARD_FILTERS, tag: 'urgente' },

@@ -1,3 +1,4 @@
+import type { TagsByTask } from '@/features/tasks/lib/taskTags'
 import { createEnumGuard } from '@/shared/lib/enums'
 import type {
   Epic,
@@ -119,7 +120,7 @@ export const DEFAULT_BOARD_FILTERS: BoardFilters = {
 export function applyBoardFilters(
   tasks: Task[],
   filters: BoardFilters,
-  taskTagsMap: Map<string, string[]>,
+  tagsByTask: TagsByTask,
   today: string,
 ): Task[] {
   return tasks.filter((task) => {
@@ -134,7 +135,7 @@ export function applyBoardFilters(
     if (filters.priority && task.priority !== filters.priority) return false
     if (filters.status && task.status !== filters.status) return false
     if (filters.tag) {
-      const tags = taskTagsMap.get(task.id) ?? []
+      const tags = tagsByTask[task.id] ?? []
       if (!tags.includes(filters.tag)) return false
     }
     if (filters.srsOverdue) {
