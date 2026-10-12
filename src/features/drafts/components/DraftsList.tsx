@@ -1,3 +1,5 @@
+import { ErrorState } from '@/components/ui/error-state'
+import { hasLoadError, retryFailedQueries } from '@/shared/query/queryState'
 import { useEffect, useRef, useState } from 'react'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Button } from '@/components/ui/button'
@@ -73,7 +75,8 @@ function DraftEditInput({
 }
 
 export function DraftsList() {
-  const { data: items, isLoading } = useDraftsItems()
+  const itemsQuery = useDraftsItems()
+  const { data: items, isLoading } = itemsQuery
   const { mutate: triage } = useTriageDraft()
   const { mutate: updateDraft } = useUpdateDraft()
   const [creatingCardFor, setCreatingCardFor] = useState<DraftsItem | null>(
@@ -112,6 +115,10 @@ export function DraftsList() {
 
   if (isLoading) {
     return <LoadingText />
+  }
+
+  if (hasLoadError(itemsQuery)) {
+    return <ErrorState onRetry={() => retryFailedQueries(itemsQuery)} />
   }
 
   if (!items || items.length === 0) {

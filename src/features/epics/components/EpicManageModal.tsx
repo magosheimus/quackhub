@@ -23,6 +23,7 @@ import {
   type ProjectColor,
 } from '@/features/projects/lib/project'
 import { LoadingText } from '@/components/ui/loading-text'
+import { ConfirmDialog } from '@/components/ui/confirm-dialog'
 import { useSoftDeleteEpic } from '@/features/epics/hooks/useSoftDeleteEpic'
 import { IconTrash } from '@/shared/lib/icons'
 import type { Epic } from '@/shared/types/entities'
@@ -148,12 +149,7 @@ function EpicRow({ epic }: { epic: Epic }) {
     updateEpic({ id: epic.id, data: { name: trimmed } })
   }
 
-  function handleDelete() {
-    if (!window.confirm(EPICS_TEXTS.confirmDelete(epic.name))) {
-      return
-    }
-    softDeleteEpic(epic.id)
-  }
+  const [isConfirmingDelete, setIsConfirmingDelete] = useState(false)
 
   return (
     <div className="flex items-center gap-2">
@@ -173,12 +169,20 @@ function EpicRow({ epic }: { epic: Epic }) {
       <Button
         variant="outline"
         size="icon-sm"
-        onClick={handleDelete}
+        onClick={() => setIsConfirmingDelete(true)}
         disabled={isDeleting}
         aria-label={EPICS_TEXTS.delete(epic.name)}
       >
         <IconTrash size={12} />
       </Button>
+      <ConfirmDialog
+        open={isConfirmingDelete}
+        onOpenChange={setIsConfirmingDelete}
+        title={EPICS_TEXTS.deleteTitle}
+        description={EPICS_TEXTS.confirmDelete(epic.name)}
+        confirmLabel={EPICS_TEXTS.deleteConfirm}
+        onConfirm={() => softDeleteEpic(epic.id)}
+      />
     </div>
   )
 }

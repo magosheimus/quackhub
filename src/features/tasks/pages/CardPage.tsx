@@ -1,3 +1,5 @@
+import { ErrorState } from '@/components/ui/error-state'
+import { hasLoadError, retryFailedQueries } from '@/shared/query/queryState'
 import { useParams } from 'react-router-dom'
 import { useTaskById } from '@/features/tasks/hooks/useTaskById'
 import { useCardPage } from '@/features/tasks/hooks/useCardPage'
@@ -17,10 +19,15 @@ import { EmptyMessage } from '@/components/ui/empty-message'
 
 export function CardPage() {
   const { id } = useParams<{ id: string }>()
-  const { data: task, isLoading } = useTaskById(id ?? '')
+  const taskQuery = useTaskById(id ?? '')
+  const { data: task, isLoading } = taskQuery
 
   if (isLoading) {
     return <LoadingText />
+  }
+
+  if (hasLoadError(taskQuery)) {
+    return <ErrorState onRetry={() => retryFailedQueries(taskQuery)} />
   }
 
   if (!task) {

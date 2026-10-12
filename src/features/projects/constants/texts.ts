@@ -16,5 +16,7 @@ export const PROJECTS_TEXTS = {
   studyProjectHint: 'Estudo: os cards entram no ciclo de revisão do SM-2.',
   archive: 'Arquivar',
   archiving: 'Arquivando...',
-  confirmArchive: (name: string) => `Arquivar o projeto "${name}"?`,
+  archiveTitle: 'Arquivar projeto',
+  confirmArchive: (name: string) =>
+    `O projeto "${name}" some da sidebar e do board. Os cards continuam salvos.`,
 } as const

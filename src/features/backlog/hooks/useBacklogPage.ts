@@ -1,3 +1,4 @@
+import { hasLoadError, retryFailedQueries } from '@/shared/query/queryState'
 import { useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { useProjects } from '@/features/projects/hooks/useProjects'
@@ -38,9 +39,10 @@ export function useBacklogPage() {
   const [isEpicModalOpen, setIsEpicModalOpen] = useState(false)
   const collapsedProjects = useToggleSet<string>()
 
-  const { data: projects, isLoading: isLoadingProjects } = useProjects()
-  const { data: tasks, isLoading: isLoadingTasks } =
-    useBacklogTasks(projectFilter)
+  const projectsQuery = useProjects()
+  const tasksQuery = useBacklogTasks(projectFilter)
+  const { data: projects, isLoading: isLoadingProjects } = projectsQuery
+  const { data: tasks, isLoading: isLoadingTasks } = tasksQuery
   const { data: epics } = useEpics(projectFilter ?? '')
   const { data: activeSprint } = useActiveSprint()
   const { data: sprints } = useSprints()
@@ -108,6 +110,8 @@ export function useBacklogPage() {
     epics,
     isLoadingProjects,
     isLoadingTasks,
+    hasError: hasLoadError(projectsQuery, tasksQuery),
+    retry: () => retryFailedQueries(projectsQuery, tasksQuery),
     projectFilter,
     statusFilter,
     priorityFilter,
