@@ -7,7 +7,10 @@ export const INBOX_TEXTS = {
   reviewsCounter: 'revisões',
   urgentCounter: 'urgentes',
   emptyTitle: 'Sem pendências para hoje',
-  emptyDescription: 'Use o board ou o Backlog para planejar.',
+  emptyDescription: 'Crie um novo card para começar.',
+  welcomeTitle: 'Bem-vindo ao QuackHub',
+  welcomeDescription:
+    'Comece criando seu primeiro projeto: é nele que seus cards vão ficar.',
   complete: '✓ Concluir',
   reviewWithoutDate: 'revisão sem data',
   reviewToday: 'revisar hoje',

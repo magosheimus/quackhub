@@ -1,4 +1,6 @@
-import { IconInbox, IconCalendar } from '@/shared/lib/icons'
+import { IconCalendar, IconFolder, IconInbox } from '@/shared/lib/icons'
+import { CardCreateModal } from '@/features/tasks/components/CardCreateModal'
+import { ProjectCreateModal } from '@/features/projects/components/ProjectCreateModal'
 import { Marquee } from '@/components/ui/marquee'
 import { useInboxPage } from '@/features/inbox/hooks/useInboxPage'
 import { InboxSection } from '@/features/inbox/components/InboxSection'
@@ -20,6 +22,7 @@ export function InboxPage() {
     todayLabel,
     sprintBanner,
     projects,
+    hasProjects,
     completeTask,
     registeringTask,
     startRegistering,
@@ -59,13 +62,23 @@ export function InboxPage() {
       </div>
 
       {isEmpty ? (
-        <EmptyState
-          icon={IconCalendar}
-          title={INBOX_TEXTS.emptyTitle}
-          description={INBOX_TEXTS.emptyDescription}
-        >
-          {/* os mesmos dois Links/botões que já estão lá dentro */}
-        </EmptyState>
+        hasProjects ? (
+          <EmptyState
+            icon={IconCalendar}
+            title={INBOX_TEXTS.emptyTitle}
+            description={INBOX_TEXTS.emptyDescription}
+          >
+            <CardCreateModal />
+          </EmptyState>
+        ) : (
+          <EmptyState
+            icon={IconFolder}
+            title={INBOX_TEXTS.welcomeTitle}
+            description={INBOX_TEXTS.welcomeDescription}
+          >
+            <ProjectCreateModal triggerVariant="button" />
+          </EmptyState>
+        )
       ) : (
         <>
           <InboxSection
