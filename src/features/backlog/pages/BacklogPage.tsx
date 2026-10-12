@@ -1,4 +1,4 @@
-import { IconPlus, IconBulletlist, IconChevronRight } from '@/shared/lib/icons'
+import { IconBulletlist, IconChevronRight, IconPlus } from '@/shared/lib/icons'
 import {
   Select,
   SelectContent,
@@ -64,8 +64,8 @@ export function BacklogPage() {
       />
       <div className="flex flex-wrap gap-2">
         <Button variant="outline" onClick={() => setIsEpicModalOpen(true)}>
-          <IconPlus size={16} aria-hidden="true" />
-          {COMMON_TEXTS.createEpic}
+          <IconBulletlist size={16} aria-hidden="true" />
+          {COMMON_TEXTS.manageEpics}
         </Button>
 
         {isEpicModalOpen && (

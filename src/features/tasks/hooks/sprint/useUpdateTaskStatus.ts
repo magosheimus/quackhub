@@ -7,7 +7,7 @@ import type { Task, TaskStatus } from '@/shared/types/entities'
 type UpdateTaskStatusVars = {
   id: string
   status: TaskStatus
-  sprintId: string
+  sprintId?: string | null
 }
 
 export function useUpdateTaskStatus() {
@@ -18,6 +18,9 @@ export function useUpdateTaskStatus() {
       updateTaskStatus(id, status),
 
     onMutate: async ({ id, status, sprintId }) => {
+      if (!sprintId) {
+        return undefined
+      }
       const queryKey = queryKeys.tasks.sprint(sprintId)
       await queryClient.cancelQueries({ queryKey })
 

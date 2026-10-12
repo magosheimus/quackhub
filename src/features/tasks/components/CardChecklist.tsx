@@ -1,4 +1,5 @@
-import { IconPlusBoxSharp, IconClose } from '@/shared/lib/icons'
+import { SectionLabel } from '@/components/ui/section-label'
+import { IconChecklist, IconClose, IconPlusBoxSharp } from '@/shared/lib/icons'
 import { useState } from 'react'
 import {
   DragDropContext,
@@ -47,9 +48,7 @@ export function CardChecklist({ taskId }: CardChecklistProps) {
 
   return (
     <div className="flex flex-col gap-2">
-      <span className="text-sm font-medium text-fg">
-        {TASKS_TEXTS.checklist}
-      </span>
+      <SectionLabel icon={IconChecklist}>{TASKS_TEXTS.checklist}</SectionLabel>
 
       <DragDropContext onDragEnd={handleDragEnd}>
         <Droppable droppableId="checklist">

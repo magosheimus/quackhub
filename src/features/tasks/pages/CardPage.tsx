@@ -33,6 +33,7 @@ export function CardPage() {
 function CardPageBody({ task }: { task: Task }) {
   const {
     navigate,
+    changeStatus,
     updateTask,
     project,
     epic,
@@ -84,6 +85,7 @@ function CardPageBody({ task }: { task: Task }) {
             tags={tags ?? []}
             tagSuggestions={tagSuggestions ?? []}
             onUpdate={(data) => updateTask({ id: task.id, data })}
+            onStatusChange={changeStatus}
             onTagsChange={handleTagsChange}
           />
 

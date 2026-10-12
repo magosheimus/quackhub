@@ -20,7 +20,7 @@ import { File } from 'pixelarticons/react/File'
 import { Flag } from 'pixelarticons/react/Flag'
 import { Folder } from 'pixelarticons/react/Folder'
 import { Grid2x3 } from 'pixelarticons/react/Grid2x3'
-import { Hourglass } from 'pixelarticons/react/Hourglass'
+import { HourglassSharp } from 'pixelarticons/react/HourglassSharp'
 import { Inbox } from 'pixelarticons/react/Inbox'
 import { Layout } from 'pixelarticons/react/Layout'
 import { Minus } from 'pixelarticons/react/Minus'
@@ -31,8 +31,13 @@ import { PenSquare } from 'pixelarticons/react/PenSquare'
 import { StickyNoteSharp } from 'pixelarticons/react/StickyNoteSharp'
 import { PlusBox } from 'pixelarticons/react/PlusBox'
 import { PlusBoxSharp } from 'pixelarticons/react/PlusBoxSharp'
+import { RefreshSolid } from 'pixelarticons/react/RefreshSolid'
 import { SettingsCog } from 'pixelarticons/react/SettingsCog'
 import { Trash } from 'pixelarticons/react/Trash'
+import { Article } from 'pixelarticons/react/Article'
+import { CheckboxOn } from 'pixelarticons/react/CheckboxOn'
+import { InfoBox } from 'pixelarticons/react/InfoBox'
+import { Link } from 'pixelarticons/react/Link'
 import { createIcon } from './createIcon'
 
 export type { IconComponent, IconProps, IconSize } from './createIcon'
@@ -59,7 +64,8 @@ export const IconFile = createIcon(File)
 export const IconFlag = createIcon(Flag)
 export const IconFolder = createIcon(Folder)
 export const IconGrid = createIcon(Grid2x3)
-export const IconHourglass = createIcon(Hourglass)
+export const IconRefresh = createIcon(RefreshSolid)
+export const IconHourglass = createIcon(HourglassSharp)
 export const IconInbox = createIcon(Inbox)
 export const IconLayout = createIcon(Layout)
 export const IconMinus = createIcon(Minus)
@@ -72,3 +78,7 @@ export const IconPlusBox = createIcon(PlusBox)
 export const IconPlusBoxSharp = createIcon(PlusBoxSharp)
 export const IconSettings = createIcon(SettingsCog)
 export const IconTrash = createIcon(Trash)
+export const IconArticle = createIcon(Article)
+export const IconChecklist = createIcon(CheckboxOn)
+export const IconInfo = createIcon(InfoBox)
+export const IconLink = createIcon(Link)

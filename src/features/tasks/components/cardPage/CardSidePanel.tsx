@@ -1,3 +1,5 @@
+import { IconCalendar, IconRefresh } from '@/shared/lib/icons'
+import { SectionLabel } from '@/components/ui/section-label'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -45,7 +47,7 @@ export function CardSidePanel({
   return (
     <div className="flex flex-col gap-4">
       <Panel className="flex flex-col gap-1.5 p-3">
-        <span className="text-sm font-medium text-fg">{TASKS_TEXTS.dates}</span>
+        <SectionLabel icon={IconCalendar}>{TASKS_TEXTS.dates}</SectionLabel>
         <span className="text-sm text-fg">
           {TASKS_TEXTS.createdAt(formatDate(createdAt))}
         </span>
@@ -77,7 +79,7 @@ export function CardSidePanel({
 
       {canRegisterPerformance(projectType, status) && (
         <Panel className="flex flex-col gap-1.5 p-3">
-          <span className="text-sm font-medium text-fg">{TASKS_TEXTS.srs}</span>
+          <SectionLabel icon={IconRefresh}>{TASKS_TEXTS.srs}</SectionLabel>
           <span className="text-sm text-fg">
             EF: {(easeFactor ?? 2.5).toFixed(2)}
           </span>

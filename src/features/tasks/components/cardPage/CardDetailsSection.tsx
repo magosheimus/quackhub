@@ -1,4 +1,6 @@
-import { Checkbox } from '@/components/ui/checkbox'
+import { IconInfo } from '@/shared/lib/icons'
+import { SectionLabel } from '@/components/ui/section-label'
+import type { ReactNode } from 'react'
 import {
   Select,
   SelectContent,
@@ -7,23 +9,31 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { TagInput } from '@/features/tasks/components/TagInput'
+import { UrgentToggle } from '@/features/tasks/components/UrgentToggle'
 import {
+  getStatusOptions,
   STATUS_BADGE_CLASS,
   STATUS_LABELS,
 } from '@/features/tasks/lib/taskStatus'
 import { PRIORITY_CONFIG } from '@/features/tasks/lib/taskPriority'
-import { isTaskPriority, TASK_PRIORITIES } from '@/shared/lib/enums'
+import {
+  isTaskPriority,
+  isTaskStatus,
+  TASK_PRIORITIES,
+} from '@/shared/lib/enums'
 import type {
   Epic,
+  ProjectType,
   Sprint,
-  Task,
   TaskPriority,
+  TaskStatus,
   TaskUpdate,
 } from '@/shared/types/entities'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
 import { PROJECT_TYPE_LABELS } from '@/features/projects/constants/texts'
 import { TASKS_TEXTS } from '@/features/tasks/constants/texts'
 import { Panel } from '@/components/ui/panel'
+import { cn } from '@/shared/lib/utils'
 
 const NONE_EPIC = '__none__'
 const NONE_SPRINT = '__none__'
@@ -31,8 +41,8 @@ const INLINE_TRIGGER_CLASS =
   'h-auto! w-fit! border! border-transparent! bg-transparent! p-0! shadow-none! data-[popup-open]:border-border! data-[popup-open]:bg-input! data-[popup-open]:px-2! data-[popup-open]:py-1!'
 
 type CardDetailsSectionProps = {
-  projectType?: string | null
-  status: Task['status']
+  projectType?: ProjectType | null
+  status: TaskStatus
   priority: TaskPriority
   flagged: boolean
   epicId: string | null
@@ -43,7 +53,25 @@ type CardDetailsSectionProps = {
   tags: string[]
   tagSuggestions: string[]
   onUpdate: (data: TaskUpdate) => void
+  onStatusChange: (status: TaskStatus) => void
   onTagsChange: (tags: string[]) => void
+}
+
+type DetailRowProps = {
+  label: string
+  labelId?: string
+  children: ReactNode
+}
+
+function DetailRow({ label, labelId, children }: DetailRowProps) {
+  return (
+    <div className="flex min-w-0 items-center gap-1.5">
+      <span id={labelId} className="shrink-0 text-caption">
+        {label}
+      </span>
+      {children}
+    </div>
+  )
 }
 
 export function CardDetailsSection({
@@ -59,29 +87,23 @@ export function CardDetailsSection({
   tags,
   tagSuggestions,
   onUpdate,
+  onStatusChange,
   onTagsChange,
 }: CardDetailsSectionProps) {
   const sprintName = sprints?.find((s) => s.id === sprintId)?.name
 
   return (
     <Panel className="flex flex-col gap-3 p-3">
-      <span className="text-sm font-medium text-fg">{TASKS_TEXTS.details}</span>
+      <SectionLabel icon={IconInfo}>{TASKS_TEXTS.details}</SectionLabel>
 
-      <div className="grid grid-cols-2 gap-4 pl-6">
+      <div className="grid grid-cols-1 gap-4 pl-6 sm:grid-cols-2">
         <div className="flex flex-col gap-3">
-          <div className="flex items-center gap-1.5">
-            <span className="text-caption">{TASKS_TEXTS.typeLabel}</span>
+          <DetailRow label={TASKS_TEXTS.typeLabel}>
             <span className="text-sm text-fg">
-              {projectType === 'study'
-                ? PROJECT_TYPE_LABELS.study
-                : PROJECT_TYPE_LABELS.general}
+              {PROJECT_TYPE_LABELS[projectType ?? 'general']}
             </span>
-          </div>
-
-          <div className="flex items-center gap-1.5">
-            <span id="epic-label" className="text-caption">
-              {TASKS_TEXTS.epicLabel}
-            </span>
+          </DetailRow>
+          <DetailRow label={TASKS_TEXTS.epicLabel} labelId="epic-label">
             <Select
               value={epicId ?? NONE_EPIC}
               onValueChange={(v) =>
@@ -103,12 +125,8 @@ export function CardDetailsSection({
                 ))}
               </SelectContent>
             </Select>
-          </div>
-
-          <div className="flex items-center gap-1.5">
-            <span id="sprint-label" className="text-caption">
-              {TASKS_TEXTS.sprintLabel}
-            </span>
+          </DetailRow>
+          <DetailRow label={TASKS_TEXTS.sprintLabel} labelId="sprint-label">
             <Select
               value={sprintId ?? NONE_SPRINT}
               onValueChange={(v) =>
@@ -132,12 +150,8 @@ export function CardDetailsSection({
                 ))}
               </SelectContent>
             </Select>
-          </div>
-
-          <div className="flex items-center gap-1.5">
-            <span id="priority-label" className="text-caption">
-              {TASKS_TEXTS.priorityLabel}
-            </span>
+          </DetailRow>
+          <DetailRow label={TASKS_TEXTS.priorityLabel} labelId="priority-label">
             <Select
               value={priority}
               onValueChange={(v) => {
@@ -160,42 +174,54 @@ export function CardDetailsSection({
                 ))}
               </SelectContent>
             </Select>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <span id="flagged-label" className="text-caption">
-              {TASKS_TEXTS.urgentLabel}
-            </span>
-            <Checkbox
-              checked={flagged}
-              onCheckedChange={(checked) =>
-                onUpdate({ flagged: checked === true })
-              }
-              aria-labelledby="flagged-label"
-            />
-          </div>
+          </DetailRow>
+          <UrgentToggle
+            flagged={flagged}
+            onToggle={() => onUpdate({ flagged: !flagged })}
+          />
         </div>
 
         <div className="flex flex-col gap-3">
-          <div className="flex items-center gap-1.5">
-            <span className="text-caption">{TASKS_TEXTS.statusLabel}</span>
-            <span
-              className={`rounded-sm px-2 py-0.5 text-xs font-medium text-page ${
-                STATUS_BADGE_CLASS[status]
-              }`}
+          <DetailRow label={TASKS_TEXTS.statusLabel} labelId="status-label">
+            <Select
+              value={status}
+              onValueChange={(v) => {
+                if (isTaskStatus(v)) {
+                  onStatusChange(v)
+                }
+              }}
             >
-              {STATUS_LABELS[status]}
-            </span>
-          </div>
-
-          <div className="flex items-center gap-1.5">
-            <span className="text-caption">{TASKS_TEXTS.tagsLabel}</span>
+              <SelectTrigger
+                aria-labelledby="status-label"
+                className={INLINE_TRIGGER_CLASS}
+              >
+                <SelectValue>
+                  <span
+                    className={cn(
+                      'rounded-sm px-2 py-0.5 text-xs font-medium text-page',
+                      STATUS_BADGE_CLASS[status],
+                    )}
+                  >
+                    {STATUS_LABELS[status]}
+                  </span>
+                </SelectValue>
+              </SelectTrigger>
+              <SelectContent>
+                {getStatusOptions(projectType).map((option) => (
+                  <SelectItem key={option} value={option}>
+                    {STATUS_LABELS[option]}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </DetailRow>
+          <DetailRow label={TASKS_TEXTS.tagsLabel}>
             <TagInput
               tags={tags}
               onChange={onTagsChange}
               suggestions={tagSuggestions}
             />
-          </div>
+          </DetailRow>
         </div>
       </div>
     </Panel>

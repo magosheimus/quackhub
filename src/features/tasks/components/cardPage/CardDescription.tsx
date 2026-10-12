@@ -1,3 +1,5 @@
+import { IconArticle } from '@/shared/lib/icons'
+import { SectionLabel } from '@/components/ui/section-label'
 import { Textarea } from '@/components/ui/textarea'
 import { TASKS_TEXTS } from '@/features/tasks/constants/texts'
 
@@ -14,9 +16,9 @@ export function CardDescription({
 }: CardDescriptionProps) {
   return (
     <div className="flex flex-col gap-1.5">
-      <label htmlFor="card-description" className="text-sm font-medium text-fg">
+      <SectionLabel icon={IconArticle} htmlFor="card-description">
         {TASKS_TEXTS.description}
-      </label>
+      </SectionLabel>
       <Textarea
         id="card-description"
         value={value}
