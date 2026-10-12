@@ -10,6 +10,7 @@
     "preview": "vite preview",
     "prepare": "husky",
     "test": "vitest",
+    "typecheck": "tsc --noEmit -p tsconfig.app.json",
     "db:types": "set -a && . ./.env.local && set +a && supabase gen types typescript --project-id ${SUPABASE_PROJECT_ID:?defina SUPABASE_PROJECT_ID no .env.local} --schema public > src/shared/types/database.types.ts && prettier --write src/shared/types/database.types.ts"
   },
   "dependencies": {
