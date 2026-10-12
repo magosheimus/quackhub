@@ -1,6 +1,17 @@
 import { Draggable } from '@hello-pangea/dnd'
 import { Link } from 'react-router-dom'
-import { IconFlag } from '@/shared/lib/icons'
+import { IconFlag, IconMove } from '@/shared/lib/icons'
+import { Button } from '@/components/ui/button'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import type { BoardColumnKey, MoveOption } from '@/features/board/lib/board'
+import { BOARD_TEXTS } from '@/features/board/constants/texts'
 import {
   STATUS_BADGE_CLASS,
   STATUS_LABELS,
@@ -83,9 +94,60 @@ type BoardCardProps = {
   task: Task
   index: number
   projectPrefixById: Map<string, string>
+  moveOptions?: MoveOption[]
+  onMove?: (column: BoardColumnKey) => void
 }
 
-export function BoardCard({ task, index, projectPrefixById }: BoardCardProps) {
+type MoveMenuProps = {
+  taskTitle: string
+  options: MoveOption[]
+  onMove: (column: BoardColumnKey) => void
+}
+
+function MoveMenu({ taskTitle, options, onMove }: MoveMenuProps) {
+  if (options.length === 0) {
+    return null
+  }
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger
+        render={
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon-sm"
+            aria-label={BOARD_TEXTS.moveCard(taskTitle)}
+            className="ml-auto hidden shrink-0 self-start pointer-coarse:inline-flex"
+          />
+        }
+      >
+        <IconMove size={16} aria-hidden="true" />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-auto">
+        <DropdownMenuGroup>
+          <DropdownMenuLabel>{BOARD_TEXTS.moveTo}</DropdownMenuLabel>
+          {options.map((option) => (
+            <DropdownMenuItem
+              key={option.column}
+              onClick={() => onMove(option.column)}
+            >
+              {option.label}
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
+}
+
+export function BoardCard({
+  task,
+  index,
+  projectPrefixById,
+  moveOptions,
+  onMove,
+}: BoardCardProps) {
   return (
     <Draggable draggableId={task.id} index={index}>
       {(provided, snapshot) => (
@@ -102,6 +164,13 @@ export function BoardCard({ task, index, projectPrefixById }: BoardCardProps) {
           }`}
         >
           <BoardCardBody task={task} projectPrefixById={projectPrefixById} />
+          {moveOptions && onMove && (
+            <MoveMenu
+              taskTitle={task.title}
+              options={moveOptions}
+              onMove={onMove}
+            />
+          )}
         </div>
       )}
     </Draggable>

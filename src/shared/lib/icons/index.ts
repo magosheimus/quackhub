@@ -40,6 +40,7 @@ import { InfoBox } from 'pixelarticons/react/InfoBox'
 import { Link } from 'pixelarticons/react/Link'
 import { Menu } from 'pixelarticons/react/Menu'
 import { WarningDiamond } from 'pixelarticons/react/WarningDiamond'
+import { Move } from 'pixelarticons/react/Move'
 import { createIcon } from './createIcon'
 
 export type { IconComponent, IconProps, IconSize } from './createIcon'
@@ -86,3 +87,4 @@ export const IconInfo = createIcon(InfoBox)
 export const IconLink = createIcon(Link)
 export const IconMenu = createIcon(Menu)
 export const IconWarning = createIcon(WarningDiamond)
+export const IconMove = createIcon(Move)

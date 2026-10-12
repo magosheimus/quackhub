@@ -20,9 +20,12 @@ import {
   getStatusForColumn,
   groupTasksByColumn,
   isBoardColumnKey,
+  getMoveOptions,
+  type BoardColumnKey,
+  type MoveOption,
 } from '@/features/board/lib/board'
 import { todayLocal } from '@/shared/lib/date'
-import type { ProjectType } from '@/shared/types/entities'
+import type { ProjectType, Task } from '@/shared/types/entities'
 
 export function useBoardPage() {
   const [searchParams] = useSearchParams()
@@ -68,26 +71,33 @@ export function useBoardPage() {
     tasks: tasksByColumn[column],
   }))
 
-  function handleDragEnd(result: DropResult) {
-    const { destination, draggableId } = result
-    if (!activeSprint || !destination) {
+  function moveTask(taskId: string, column: BoardColumnKey) {
+    if (!activeSprint) {
       return
     }
-    if (!isBoardColumnKey(destination.droppableId)) {
-      return
-    }
-
-    const task = sprintTasks.find((t) => t.id === draggableId)
+    const task = sprintTasks.find((t) => t.id === taskId)
     const taskType = task ? projectTypeById.get(task.project_id) : undefined
     if (!taskType) {
       return
     }
-
-    const status = getStatusForColumn(destination.droppableId, taskType)
+    const status = getStatusForColumn(column, taskType)
     if (!status) {
       return
     }
-    updateTaskStatus({ id: draggableId, status, sprintId: activeSprint.id })
+    updateTaskStatus({ id: taskId, status, sprintId: activeSprint.id })
+  }
+
+  function handleDragEnd(result: DropResult) {
+    const { destination, draggableId } = result
+    if (!destination || !isBoardColumnKey(destination.droppableId)) {
+      return
+    }
+    moveTask(draggableId, destination.droppableId)
+  }
+
+  function getMoveOptionsFor(task: Task): MoveOption[] {
+    const taskType = projectTypeById.get(task.project_id)
+    return taskType ? getMoveOptions(task.status, taskType) : []
   }
 
   return {
@@ -108,5 +118,7 @@ export function useBoardPage() {
     visibleTasks,
     columns,
     handleDragEnd,
+    moveTask,
+    getMoveOptionsFor,
   }
 }

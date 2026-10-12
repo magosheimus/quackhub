@@ -27,6 +27,7 @@ import {
 } from '@/features/settings/constants/texts'
 import { Panel } from '@/components/ui/panel'
 import { AUTH_TEXTS } from '@/features/auth/constants/texts'
+import { CartuchoOptions } from '@/features/settings/components/CartuchoOptions'
 import { DeleteAccountDialog } from '@/features/auth/components/DeleteAccountDialog'
 import { PRIVACY_PATH } from '@/features/privacy/constants/paths'
 import { PRIVACY_TEXTS } from '@/features/privacy/constants/texts'
@@ -72,6 +73,15 @@ export function SettingsPage() {
 
       <div className="grid gap-6 lg:grid-cols-2">
         <SettingsCard title={SETTINGS_TEXTS.appearance}>
+          <div className="flex flex-col gap-2 lg:hidden">
+            <span className="text-caption">{SETTINGS_TEXTS.cartucho}</span>
+            <CartuchoOptions
+              selected={settings.cartucho}
+              onSelect={(cartucho) => update({ cartucho })}
+              className="flex-wrap"
+            />
+          </div>
+
           <div className="flex flex-wrap gap-2">
             {TEXTURES.map((texture) => (
               <Button
