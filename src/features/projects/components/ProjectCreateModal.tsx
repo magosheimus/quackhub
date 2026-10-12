@@ -1,5 +1,5 @@
 import { InlineHint } from '@/components/ui/inline-hint'
-import { IconPlusBoxSharp, IconRefresh } from '@/shared/lib/icons'
+import { IconPlus, IconPlusBoxSharp, IconRefresh } from '@/shared/lib/icons'
 import { useEffect, useRef, useState } from 'react'
 import {
   Dialog,
@@ -32,7 +32,13 @@ import {
   PROJECT_TYPE_LABELS,
 } from '@/features/projects/constants/texts'
 
-export function ProjectCreateModal() {
+type ProjectCreateModalProps = {
+  triggerVariant?: 'icon' | 'button'
+}
+
+export function ProjectCreateModal({
+  triggerVariant = 'icon',
+}: ProjectCreateModalProps) {
   const [open, setOpen] = useState(false)
   const [name, setName] = useState('')
   const [prefix, setPrefix] = useState('')
@@ -68,16 +74,24 @@ export function ProjectCreateModal() {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger
-        render={
-          <Button
-            variant="ghost"
-            className="size-7 rounded-md p-0 text-fg-muted motion-safe:transition-transform motion-safe:hover:scale-110"
-          />
-        }
-      >
-        <IconPlusBoxSharp size={16} aria-hidden="true" />
-      </DialogTrigger>
+      {triggerVariant === 'button' ? (
+        <DialogTrigger render={<Button size="sm" />}>
+          <IconPlus size={12} aria-hidden="true" />
+          {PROJECTS_TEXTS.newProject}
+        </DialogTrigger>
+      ) : (
+        <DialogTrigger
+          render={
+            <Button
+              variant="ghost"
+              className="size-7 rounded-md p-0 text-fg-muted motion-safe:transition-transform motion-safe:hover:scale-110"
+              aria-label={PROJECTS_TEXTS.newProject}
+            />
+          }
+        >
+          <IconPlusBoxSharp size={16} aria-hidden="true" />
+        </DialogTrigger>
+      )}
 
       <DialogContent className="sm:max-w-md">
         <DialogHeader>

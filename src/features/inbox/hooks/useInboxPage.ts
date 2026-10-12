@@ -29,6 +29,7 @@ export function useInboxPage() {
     todayLabel: formatWeekdayShort(new Date()),
     sprintBanner: activeSprint ? formatSprintBanner(activeSprint) : null,
     projects: projects ?? [],
+    hasProjects: (projects?.length ?? 0) > 0,
     completeTask,
     registeringTask,
     startRegistering: setRegisteringTask,
