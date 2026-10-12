@@ -30,6 +30,7 @@ export type DraftsItem = Tables<'drafts_items'>
 export type SrsLog = Tables<'srs_logs'>
 export type ActivityLog = Tables<'task_activity_log'>
 export type Attachment = Tables<'task_attachments'>
+export type AttachmentWithUrl = Attachment & { url: string | null }
 export type TimeEntry = Tables<'time_entries'>
 
 export type TaskStatus = Enums<'task_status'>

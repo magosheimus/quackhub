@@ -1,4 +1,9 @@
-import { MutationCache, QueryCache, QueryClient } from '@tanstack/react-query'
+import {
+  defaultShouldDehydrateQuery,
+  MutationCache,
+  QueryCache,
+  QueryClient,
+} from '@tanstack/react-query'
 import { persistQueryClient } from '@tanstack/react-query-persist-client'
 import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister'
 import { ERROR_MESSAGES, reportError } from '@/shared/lib/errors'
@@ -32,4 +37,12 @@ const persister = createAsyncStoragePersister({
   key: STORAGE_KEYS.queryCache,
 })
 
-persistQueryClient({ queryClient, persister, maxAge: 1000 * 60 * 60 * 24 })
+persistQueryClient({
+  queryClient,
+  persister,
+  maxAge: 1000 * 60 * 60 * 24,
+  dehydrateOptions: {
+    shouldDehydrateQuery: (query) =>
+      defaultShouldDehydrateQuery(query) && query.meta?.persist !== false,
+  },
+})

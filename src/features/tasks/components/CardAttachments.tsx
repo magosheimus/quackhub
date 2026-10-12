@@ -17,9 +17,9 @@ import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { useAttachments } from '@/features/tasks/hooks/attachments/useAttachments'
 import { useUploadAttachment } from '@/features/tasks/hooks/attachments/useUploadAttachment'
 import { useDeleteAttachment } from '@/features/tasks/hooks/attachments/useDeleteAttachment'
-import { getAttachmentUrl } from '@/features/tasks/api/attachments'
 import { TASKS_TEXTS } from '@/features/tasks/constants/texts'
 import { Panel } from '@/components/ui/panel'
+import type { AttachmentWithUrl } from '@/shared/types/entities'
 
 type CardAttachmentsProps = {
   taskId: string
@@ -50,6 +50,19 @@ export function CardAttachments({ taskId }: CardAttachmentsProps) {
   function openViewer(index: number) {
     setImageSize(null)
     setViewerIndex(index)
+  }
+
+  function handleRemove(attachment: AttachmentWithUrl) {
+    if (
+      !window.confirm(TASKS_TEXTS.confirmRemoveAttachment(attachment.file_name))
+    ) {
+      return
+    }
+    removeAttachment({
+      id: attachment.id,
+      storagePath: attachment.storage_path,
+      taskId,
+    })
   }
 
   function showPrev() {
@@ -114,7 +127,6 @@ export function CardAttachments({ taskId }: CardAttachmentsProps) {
       {attachments && attachments.length > 0 && (
         <div className="flex flex-wrap gap-2">
           {attachments.map((attachment) => {
-            const url = getAttachmentUrl(attachment.storage_path)
             const isImage = attachment.mime_type.startsWith('image/')
             return (
               <Panel
@@ -132,33 +144,28 @@ export function CardAttachments({ taskId }: CardAttachmentsProps) {
                     className="h-full w-full"
                   >
                     <img
-                      src={url}
+                      src={attachment.url ?? undefined}
                       alt={attachment.file_name}
                       className="h-full w-full object-cover"
                     />
                   </button>
                 ) : (
                   <a
-                    href={url}
+                    title={attachment.file_name}
+                    href={attachment.url ?? undefined}
                     target="_blank"
                     rel="noreferrer"
                     className="flex flex-col items-center gap-1 p-1 text-center"
                   >
                     <IconFile size={16} className="text-fg-muted" />
-                    <span className="line-clamp-2 text-[10px] text-fg-muted">
+                    <span className="line-clamp-2 break-all text-[10px] text-fg-muted">
                       {attachment.file_name}
                     </span>
                   </a>
                 )}
                 <button
                   type="button"
-                  onClick={() =>
-                    removeAttachment({
-                      id: attachment.id,
-                      storagePath: attachment.storage_path,
-                      taskId,
-                    })
-                  }
+                  onClick={() => handleRemove(attachment)}
                   aria-label={TASKS_TEXTS.removeAttachment(
                     attachment.file_name,
                   )}
@@ -194,7 +201,7 @@ export function CardAttachments({ taskId }: CardAttachmentsProps) {
                 </div>
               )}
               <img
-                src={getAttachmentUrl(images[viewerIndex].storage_path)}
+                src={images[viewerIndex].url ?? undefined}
                 alt={images[viewerIndex].file_name}
                 onLoad={handleImageLoad}
                 style={
