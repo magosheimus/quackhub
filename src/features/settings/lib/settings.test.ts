@@ -10,6 +10,7 @@ import {
   isFontBody,
   parseWeekStart,
   textureOpacityUpdate,
+  normalizeSettings,
 } from './settings'
 
 describe('settings', () => {
@@ -92,5 +93,27 @@ describe('applySettings', () => {
 
     applySettings({ ...DEFAULT_SETTINGS, glow: true, scanlines: true })
     expect(document.documentElement).toHaveClass('glow-on', 'scanlines-on')
+  })
+})
+
+describe('normalizeSettings', () => {
+  it('retorna os defaults para valor que não é objeto', () => {
+    expect(normalizeSettings(null)).toEqual(DEFAULT_SETTINGS)
+    expect(normalizeSettings('sage')).toEqual(DEFAULT_SETTINGS)
+  })
+
+  it('mantém campos válidos e troca os inválidos pelo padrão', () => {
+    const result = normalizeSettings({
+      cartucho: 'sage-dark',
+      glow: true,
+      texture: 'neon',
+      gridOpacity: 150,
+      scanlines: 'sim',
+    })
+    expect(result.cartucho).toBe('sage-dark')
+    expect(result.glow).toBe(true)
+    expect(result.texture).toBe(DEFAULT_SETTINGS.texture)
+    expect(result.gridOpacity).toBe(DEFAULT_SETTINGS.gridOpacity)
+    expect(result.scanlines).toBe(DEFAULT_SETTINGS.scanlines)
   })
 })

@@ -1,11 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { IconChevronLeft, IconChevronRight } from '@/shared/lib/icons'
-import {
-  applySettings,
-  loadSettings,
-  saveSettings,
-  type Settings,
-} from '@/features/settings/lib/settings'
+import type { Settings } from '@/features/settings/lib/settings'
+import { useSettings } from '@/features/settings/hooks/useSettings'
 import {
   CARTUCHO_LABELS,
   SETTINGS_TEXTS,
@@ -18,9 +14,8 @@ const CARTUCHO_OPTIONS = (Object.keys(CARTUCHO_LABELS) as CartuchoValue[]).map(
 )
 
 export function CartuchoPicker() {
-  const [cartucho, setCartucho] = useState<CartuchoValue>(
-    () => loadSettings().cartucho,
-  )
+  const { settings, updateSettings } = useSettings()
+  const cartucho = settings.cartucho
   const [isOpen, setIsOpen] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
 
@@ -44,9 +39,7 @@ export function CartuchoPicker() {
   }, [isOpen])
 
   function handleSelect(value: CartuchoValue) {
-    const next = saveSettings({ cartucho: value })
-    setCartucho(next.cartucho)
-    applySettings(next)
+    updateSettings({ cartucho: value })
   }
 
   return (

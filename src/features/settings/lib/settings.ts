@@ -25,8 +25,25 @@ export const DATE_FORMATS = [
   'MM/dd/yyyy',
 ] as const satisfies readonly Settings['dateFormat'][]
 
+export const CARTUCHOS = [
+  'sage',
+  'amber',
+  'slate',
+  'earth',
+  'sage-dark',
+  'amber-dark',
+] as const satisfies readonly Settings['cartucho'][]
+
+export const TEXTURES = [
+  'none',
+  'grid',
+  'dots',
+] as const satisfies readonly Settings['texture'][]
+
 export const isFontBody = createEnumGuard(FONT_BODIES)
 export const isDateFormat = createEnumGuard(DATE_FORMATS)
+export const isCartucho = createEnumGuard(CARTUCHOS)
+export const isTexture = createEnumGuard(TEXTURES)
 
 // Valores de Select chegam como texto ('0' | '1')
 export function parseWeekStart(
@@ -69,6 +86,47 @@ export const DEFAULT_SETTINGS: Settings = {
   weekStartsOn: 0,
 }
 
+function isOpacity(value: unknown): value is number {
+  return typeof value === 'number' && value >= 0 && value <= 100
+}
+
+function pickBoolean(value: unknown, fallback: boolean): boolean {
+  return typeof value === 'boolean' ? value : fallback
+}
+
+export function normalizeSettings(raw: unknown): Settings {
+  if (typeof raw !== 'object' || raw === null) {
+    return DEFAULT_SETTINGS
+  }
+  const source = raw as Partial<Record<keyof Settings, unknown>>
+  return {
+    cartucho: isCartucho(source.cartucho)
+      ? source.cartucho
+      : DEFAULT_SETTINGS.cartucho,
+    texture: isTexture(source.texture)
+      ? source.texture
+      : DEFAULT_SETTINGS.texture,
+    gridOpacity: isOpacity(source.gridOpacity)
+      ? source.gridOpacity
+      : DEFAULT_SETTINGS.gridOpacity,
+    dotsOpacity: isOpacity(source.dotsOpacity)
+      ? source.dotsOpacity
+      : DEFAULT_SETTINGS.dotsOpacity,
+    scanlines: pickBoolean(source.scanlines, DEFAULT_SETTINGS.scanlines),
+    glow: pickBoolean(source.glow, DEFAULT_SETTINGS.glow),
+    fontBody: isFontBody(source.fontBody)
+      ? source.fontBody
+      : DEFAULT_SETTINGS.fontBody,
+    dateFormat: isDateFormat(source.dateFormat)
+      ? source.dateFormat
+      : DEFAULT_SETTINGS.dateFormat,
+    weekStartsOn:
+      source.weekStartsOn === 0 || source.weekStartsOn === 1
+        ? source.weekStartsOn
+        : DEFAULT_SETTINGS.weekStartsOn,
+  }
+}
+
 export function isDarkCartucho(cartucho: Settings['cartucho']): boolean {
   return cartucho === 'sage-dark' || cartucho === 'amber-dark'
 }
@@ -77,7 +135,7 @@ export function loadSettings(): Settings {
   try {
     const raw = localStorage.getItem(SETTINGS_KEY)
     if (!raw) return DEFAULT_SETTINGS
-    return { ...DEFAULT_SETTINGS, ...JSON.parse(raw) }
+    return normalizeSettings(JSON.parse(raw))
   } catch {
     return DEFAULT_SETTINGS
   }
