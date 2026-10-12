@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useUpdateTask } from '@/features/tasks/hooks/useUpdateTask'
+import { useUpdateTaskStatus } from '@/features/tasks/hooks/sprint/useUpdateTaskStatus'
 import { useProjects } from '@/features/projects/hooks/useProjects'
 import { useEpics } from '@/features/epics/hooks/useEpics'
 import { useSprints } from '@/features/sprints/hooks/useSprints'
@@ -9,7 +10,7 @@ import { useAddTaskTag } from '@/features/tasks/hooks/tags/useAddTaskTag'
 import { useRemoveTaskTag } from '@/features/tasks/hooks/tags/useRemoveTaskTag'
 import { useProjectTags } from '@/features/tasks/hooks/tags/useProjectTags'
 import type { RecurrenceValue } from '@/features/tasks/components/RecurrenceFields'
-import type { Task } from '@/shared/types/entities'
+import type { Task, TaskStatus } from '@/shared/types/entities'
 
 export function useCardPage(task: Task) {
   const [title, setTitle] = useState(task.title)
@@ -19,6 +20,7 @@ export function useCardPage(task: Task) {
   const navigate = useNavigate()
 
   const { mutate: updateTask } = useUpdateTask()
+  const { mutate: updateTaskStatus } = useUpdateTaskStatus()
   const { data: projects } = useProjects()
   const project = projects?.find((p) => p.id === task.project_id)
   const { data: epics } = useEpics(task.project_id)
@@ -73,8 +75,16 @@ export function useCardPage(task: Task) {
     })
   }
 
+  function changeStatus(status: TaskStatus) {
+    if (status === task.status) {
+      return
+    }
+    updateTaskStatus({ id: task.id, status, sprintId: task.sprint_id })
+  }
+
   return {
     navigate,
+    changeStatus,
     updateTask,
     projects,
     project,

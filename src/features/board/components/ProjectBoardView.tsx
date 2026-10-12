@@ -1,4 +1,4 @@
-import { IconPlus } from '@/shared/lib/icons'
+import { IconBulletlist, IconPlus } from '@/shared/lib/icons'
 import { useState, type ReactNode } from 'react'
 import { DragDropContext, Droppable, type DropResult } from '@hello-pangea/dnd'
 import { BoardCard, StaticBoardCard } from './BoardCard'
@@ -91,8 +91,8 @@ export function ProjectBoardView({
               size="sm"
               onClick={() => setIsEpicModalOpen(true)}
             >
-              <IconPlus size={12} aria-hidden="true" />
-              {COMMON_TEXTS.createEpic}
+              <IconBulletlist size={12} aria-hidden="true" />
+              {COMMON_TEXTS.manageEpics}
             </Button>
           </div>
         </div>

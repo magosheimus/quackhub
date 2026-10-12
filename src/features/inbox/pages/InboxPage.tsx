@@ -4,12 +4,10 @@ import { useInboxPage } from '@/features/inbox/hooks/useInboxPage'
 import { InboxSection } from '@/features/inbox/components/InboxSection'
 import { RegisterPerformanceModal } from '@/features/srs/components/RegisterPerformanceModal'
 import { LoadingText } from '@/components/ui/loading-text'
-import { Link } from 'react-router-dom'
-import { buttonVariants } from '@/components/ui/button'
 import { PageTitle } from '@/components/ui/page-title'
-import { COMMON_TEXTS } from '@/shared/constants/texts'
 import { INBOX_TEXTS } from '@/features/inbox/constants/texts'
 import { Panel } from '@/components/ui/panel'
+import { EmptyState } from '@/components/ui/empty-state'
 
 export function InboxPage() {
   const {
@@ -61,33 +59,13 @@ export function InboxPage() {
       </div>
 
       {isEmpty ? (
-        <div className="flex flex-col items-center gap-4 rounded-md border border-surface bg-page px-6 py-12 text-center">
-          <IconCalendar
-            size={24}
-            aria-hidden="true"
-            className="text-fg-muted"
-          />
-          <div className="flex flex-col gap-1">
-            <span className="font-heading text-2xl text-fg">
-              {INBOX_TEXTS.emptyTitle}
-            </span>
-            <span className="text-subtle">{INBOX_TEXTS.emptyDescription}</span>
-          </div>
-          <div className="flex gap-3 pt-2">
-            <Link
-              to="/board"
-              className={buttonVariants({ variant: 'outline', size: 'sm' })}
-            >
-              {COMMON_TEXTS.currentSprint}
-            </Link>
-            <Link
-              to="/backlog"
-              className={buttonVariants({ variant: 'outline', size: 'sm' })}
-            >
-              {COMMON_TEXTS.goToBacklog}
-            </Link>
-          </div>
-        </div>
+        <EmptyState
+          icon={IconCalendar}
+          title={INBOX_TEXTS.emptyTitle}
+          description={INBOX_TEXTS.emptyDescription}
+        >
+          {/* os mesmos dois Links/botões que já estão lá dentro */}
+        </EmptyState>
       ) : (
         <>
           <InboxSection

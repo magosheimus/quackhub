@@ -1,3 +1,5 @@
+import { IconClock } from '@/shared/lib/icons'
+import { SectionLabel } from '@/components/ui/section-label'
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
@@ -79,9 +81,7 @@ export function CardHistory({ taskId }: CardHistoryProps) {
 
   return (
     <div className="flex flex-col gap-3">
-      <span className="text-sm font-medium text-fg">
-        {COMMON_TEXTS.history}
-      </span>
+      <SectionLabel icon={IconClock}>{COMMON_TEXTS.history}</SectionLabel>
 
       <div className="flex gap-2">
         <Button

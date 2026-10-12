@@ -1,6 +1,7 @@
+import { SectionLabel } from '@/components/ui/section-label'
 import { useState } from 'react'
 import { Input } from '@/components/ui/input'
-import { IconClose } from '@/shared/lib/icons'
+import { IconClose, IconLink } from '@/shared/lib/icons'
 import { useDependencies } from '@/features/tasks/hooks/dependencies/useDependencies'
 import { useAddDependency } from '@/features/tasks/hooks/dependencies/useAddDependency'
 import { useRemoveDependency } from '@/features/tasks/hooks/dependencies/useRemoveDependency'
@@ -29,9 +30,7 @@ export function CardDependencies({ taskId, projectId }: CardDependenciesProps) {
 
   return (
     <div className="flex flex-col gap-2">
-      <span className="text-sm font-medium text-fg">
-        {TASKS_TEXTS.dependsOn}
-      </span>
+      <SectionLabel icon={IconLink}>{TASKS_TEXTS.dependsOn}</SectionLabel>
 
       {dependencies && dependencies.length > 0 && (
         <div className="flex flex-col gap-1">

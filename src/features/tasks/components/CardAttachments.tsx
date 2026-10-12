@@ -1,3 +1,4 @@
+import { SectionLabel } from '@/components/ui/section-label'
 import {
   useEffect,
   useRef,
@@ -11,6 +12,7 @@ import {
   IconChevronRight,
   IconClose,
   IconFile,
+  IconPlus,
 } from '@/shared/lib/icons'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent } from '@/components/ui/dialog'
@@ -103,9 +105,9 @@ export function CardAttachments({ taskId }: CardAttachmentsProps) {
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-center gap-1.5">
-        <span className="text-sm font-medium text-fg">
+        <SectionLabel icon={IconAttachment}>
           {TASKS_TEXTS.attachments}
-        </span>
+        </SectionLabel>
         <Button
           type="button"
           variant="ghost"
@@ -114,7 +116,7 @@ export function CardAttachments({ taskId }: CardAttachmentsProps) {
           aria-label={TASKS_TEXTS.addAttachment}
           disabled={isPending}
         >
-          <IconAttachment size={16} />
+          <IconPlus size={16} />
         </Button>
         <input
           ref={fileInputRef}

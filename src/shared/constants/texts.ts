@@ -15,7 +15,7 @@ export const COMMON_TEXTS = {
   currentSprint: 'Sprint atual',
   allProjects: 'Todos os projetos',
   goToBacklog: 'Ir para o Backlog',
-  createEpic: 'Criar épico',
+  manageEpics: 'Épicos',
   registerPerformance: 'Registrar Desempenho',
   history: 'Histórico',
   name: 'Nome',

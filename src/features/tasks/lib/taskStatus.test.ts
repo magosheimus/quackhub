@@ -1,5 +1,9 @@
 import { describe, it, expect } from 'vitest'
-import { getInitialStatusForType, getStatusLabel } from './taskStatus'
+import {
+  getInitialStatusForType,
+  getStatusLabel,
+  getStatusOptions,
+} from './taskStatus'
 
 describe('getStatusLabel', () => {
   it('traduz status conhecidos', () => {
@@ -21,5 +25,27 @@ describe('getInitialStatusForType', () => {
   it('usa to_study para projetos de estudo e todo para gerais', () => {
     expect(getInitialStatusForType('study')).toBe('to_study')
     expect(getInitialStatusForType('general')).toBe('todo')
+  })
+})
+
+describe('getStatusOptions', () => {
+  it('projeto de estudo usa as situações de estudo, sem agendado', () => {
+    expect(getStatusOptions('study')).toEqual([
+      'to_study',
+      'studying',
+      'to_review',
+      'blocked',
+      'done',
+    ])
+  })
+
+  it('projeto geral ou desconhecido usa as situações gerais', () => {
+    expect(getStatusOptions('general')).toEqual([
+      'todo',
+      'doing',
+      'blocked',
+      'done',
+    ])
+    expect(getStatusOptions(null)).toEqual(getStatusOptions('general'))
   })
 })

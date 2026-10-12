@@ -1,4 +1,6 @@
-import { IconPlus } from '@/shared/lib/icons'
+import { IconPlus, IconRefresh } from '@/shared/lib/icons'
+import { UrgentToggle } from '@/features/tasks/components/UrgentToggle'
+import { InlineHint } from '@/components/ui/inline-hint'
 import { useRef, useState } from 'react'
 import {
   Dialog,
@@ -36,6 +38,8 @@ import { useSprints } from '@/features/sprints/hooks/useSprints'
 import type { Task, TaskPriority } from '@/shared/types/entities'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
 import { TASKS_TEXTS } from '@/features/tasks/constants/texts'
+import { useCreateEpic } from '@/features/epics/hooks/useCreateEpic'
+import { isStudyProject, PROJECT_COLORS } from '@/features/projects/lib/project'
 
 const NONE_VALUE = '__backlog__'
 
@@ -62,6 +66,7 @@ export function CardCreateModal({
   const [projectId, setProjectId] = useState<string | null>(
     initialProjectId ?? null,
   )
+  const [newEpicName, setNewEpicName] = useState<string | null>(null)
   const [epicId, setEpicId] = useState<string | null>(null)
   const [sprintId, setSprintId] = useState<string | null>(null)
   const [title, setTitle] = useState(initialTitle ?? '')
@@ -69,6 +74,7 @@ export function CardCreateModal({
   const [priority, setPriority] = useState<TaskPriority>('medium')
   const [flagged, setFlagged] = useState(false)
   const [tags, setTags] = useState<string[]>([])
+  const [createAnother, setCreateAnother] = useState(false)
   const titleInputRef = useRef<HTMLInputElement>(null)
   const [recurrence, setRecurrence] = useState<RecurrenceValue>({
     type: null,
@@ -82,6 +88,7 @@ export function CardCreateModal({
   const { data: projects } = useProjects()
   const { data: sprints } = useSprints()
   const { mutate: createTask, isPending } = useCreateTask()
+  const { mutateAsync: createEpic, isPending: isCreatingEpic } = useCreateEpic()
 
   const project = projects?.find((p) => p.id === projectId)
   const debouncedTitle = useDebouncedValue(title, 300)
@@ -97,6 +104,7 @@ export function CardCreateModal({
 
   function resetForm() {
     setProjectId(initialProjectId ?? null)
+    setNewEpicName(null)
     setEpicId(null)
     setSprintId(null)
     setTitle('')
@@ -161,29 +169,42 @@ export function CardCreateModal({
     setRecurrenceBannerDismissed(false)
   }
 
-  function handleSubmit() {
-    const data = buildTaskPayload()
-    if (!data) return
-    createTask(
-      { data, tags },
-      {
-        onSuccess: (task) => {
-          onCreated?.(task)
-          handleOpenChange(false)
-        },
-      },
-    )
+  async function resolveEpicId(): Promise<string | null> {
+    const name = newEpicName?.trim()
+    if (!name || !projectId) {
+      return epicId
+    }
+    const epic = await createEpic({
+      project_id: projectId,
+      name,
+      color: PROJECT_COLORS[0],
+    })
+    setEpicId(epic.id)
+    setNewEpicName(null)
+    return epic.id
   }
 
-  function handleSubmitAndAddAnother() {
+  async function handleSubmit() {
     const data = buildTaskPayload()
     if (!data) return
+    let resolvedEpicId: string | null
+    try {
+      resolvedEpicId = await resolveEpicId()
+    } catch {
+      // erro já exibido pelo MutationCache; não cria o card sem o épico
+      return
+    }
     createTask(
-      { data, tags },
+      { data: { ...data, epic_id: resolvedEpicId }, tags },
       {
-        onSuccess: () => {
-          resetPartial()
-          titleInputRef.current?.focus()
+        onSuccess: (task) => {
+          if (createAnother) {
+            resetPartial()
+            titleInputRef.current?.focus()
+            return
+          }
+          onCreated?.(task)
+          handleOpenChange(false)
         },
       },
     )
@@ -198,37 +219,92 @@ export function CardCreateModal({
         </DialogTrigger>
       )}
 
-      <DialogContent>
+      <DialogContent className="sm:max-w-156">
         <DialogHeader>
           <DialogTitle>{TASKS_TEXTS.newCard}</DialogTitle>
         </DialogHeader>
 
-        <div className="flex flex-col gap-4">
-          <div className="flex flex-col gap-1.5">
-            <span id="card-project-label" className="text-caption">
-              {TASKS_TEXTS.project}
-            </span>
-            <Select
-              value={projectId ?? ''}
-              onValueChange={(v) => {
-                setProjectId(v)
-                setEpicId(null)
-              }}
-            >
-              <SelectTrigger aria-labelledby="card-project-label">
-                <SelectValue>
-                  {project?.name ?? TASKS_TEXTS.selectProject}
-                </SelectValue>
-              </SelectTrigger>
-              <SelectContent>
-                {projects?.map((p) => (
-                  <SelectItem key={p.id} value={p.id}>
-                    {p.name}
+        <div className="-mx-4 flex max-h-[65vh] flex-col gap-4 overflow-y-auto px-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 **:data-[slot=select-trigger]:w-full">
+            <div className="flex min-w-0 flex-col gap-1.5">
+              <span id="card-project-label" className="text-caption">
+                {TASKS_TEXTS.project}
+              </span>
+              <Select
+                value={projectId ?? ''}
+                onValueChange={(v) => {
+                  setProjectId(v)
+                  setNewEpicName(null)
+                  setEpicId(null)
+                }}
+              >
+                <SelectTrigger aria-labelledby="card-project-label">
+                  <SelectValue>
+                    {project?.name ?? TASKS_TEXTS.selectProject}
+                  </SelectValue>
+                </SelectTrigger>
+                <SelectContent>
+                  {projects?.map((p) => (
+                    <SelectItem key={p.id} value={p.id}>
+                      {p.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="flex min-w-0 flex-col gap-1.5">
+              <span className="text-caption">{TASKS_TEXTS.epic}</span>
+              {projectId ? (
+                <EpicSelector
+                  newEpicName={newEpicName}
+                  onNewEpicNameChange={setNewEpicName}
+                  projectId={projectId}
+                  value={epicId}
+                  onChange={setEpicId}
+                />
+              ) : (
+                <Select disabled>
+                  <SelectTrigger aria-label={TASKS_TEXTS.epic}>
+                    <SelectValue>{TASKS_TEXTS.selectProjectFirst}</SelectValue>
+                  </SelectTrigger>
+                </Select>
+              )}
+            </div>
+            <div className="flex min-w-0 flex-col gap-1.5">
+              <span id="card-sprint-label" className="text-caption">
+                {TASKS_TEXTS.sprintOptional}
+              </span>
+              <Select
+                value={sprintId ?? NONE_VALUE}
+                onValueChange={(v) => setSprintId(v === NONE_VALUE ? null : v)}
+              >
+                <SelectTrigger aria-labelledby="card-sprint-label">
+                  <SelectValue>
+                    {sprintId
+                      ? (eligibleSprints?.find((s) => s.id === sprintId)
+                          ?.name ?? TASKS_TEXTS.sprint)
+                      : TASKS_TEXTS.backlogDefault}
+                  </SelectValue>
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value={NONE_VALUE}>
+                    {TASKS_TEXTS.backlogDefault}
                   </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+                  {eligibleSprints?.map((sprint) => (
+                    <SelectItem key={sprint.id} value={sprint.id}>
+                      {sprint.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
+
+          {isStudyProject(project) && (
+            <InlineHint icon={IconRefresh}>
+              {TASKS_TEXTS.studyCardHint}
+            </InlineHint>
+          )}
 
           <div className="flex flex-col gap-1.5">
             <label htmlFor="card-title" className="text-caption">
@@ -281,91 +357,42 @@ export function CardCreateModal({
             </div>
           )}
 
-          <div className="flex flex-col gap-1.5">
-            <span className="text-caption">{TASKS_TEXTS.epic}</span>
-            {projectId ? (
-              <EpicSelector
-                projectId={projectId}
-                value={epicId}
-                onChange={setEpicId}
-              />
-            ) : (
-              <span className="text-caption">
-                {TASKS_TEXTS.selectProjectFirst}
-              </span>
-            )}
-          </div>
-
-          <div className="flex flex-col gap-1.5">
-            <span id="card-sprint-label" className="text-caption">
-              {TASKS_TEXTS.sprintOptional}
-            </span>
-            <Select
-              value={sprintId ?? NONE_VALUE}
-              onValueChange={(v) => setSprintId(v === NONE_VALUE ? null : v)}
-            >
-              <SelectTrigger aria-labelledby="card-sprint-label">
-                <SelectValue>
-                  {sprintId
-                    ? (eligibleSprints?.find((s) => s.id === sprintId)?.name ??
-                      TASKS_TEXTS.sprint)
-                    : TASKS_TEXTS.backlogDefault}
-                </SelectValue>
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value={NONE_VALUE}>
-                  {TASKS_TEXTS.backlogDefault}
-                </SelectItem>
-                {eligibleSprints?.map((sprint) => (
-                  <SelectItem key={sprint.id} value={sprint.id}>
-                    {sprint.name}
-                  </SelectItem>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div className="flex min-w-0 flex-col gap-1.5">
+              <span className="text-caption">{TASKS_TEXTS.priority}</span>
+              <div
+                className="flex gap-1"
+                role="group"
+                aria-label={TASKS_TEXTS.priority}
+              >
+                {TASK_PRIORITIES.map((option) => (
+                  <Button
+                    key={option}
+                    type="button"
+                    variant={priority === option ? 'selected' : 'outline'}
+                    size="sm"
+                    onClick={() => setPriority(option)}
+                  >
+                    {PRIORITY_CONFIG[option].text}
+                  </Button>
                 ))}
-              </SelectContent>
-            </Select>
-          </div>
+              </div>
+              <UrgentToggle
+                flagged={flagged}
+                onToggle={() => setFlagged((current) => !current)}
+                className="pt-1"
+              />
+            </div>
 
-          <div className="flex flex-col gap-1.5">
-            <span className="text-caption">{TASKS_TEXTS.tags}</span>
-            <TagInput
-              tags={tags}
-              onChange={setTags}
-              suggestions={tagSuggestions ?? []}
-            />
-          </div>
-
-          <div className="flex flex-col gap-1.5">
-            <span className="text-caption">{TASKS_TEXTS.priority}</span>
-            <div
-              className="flex gap-1"
-              role="group"
-              aria-label={TASKS_TEXTS.priority}
-            >
-              {TASK_PRIORITIES.map((option) => (
-                <Button
-                  key={option}
-                  type="button"
-                  variant={priority === option ? 'selected' : 'outline'}
-                  size="sm"
-                  onClick={() => setPriority(option)}
-                >
-                  {PRIORITY_CONFIG[option].text}
-                </Button>
-              ))}
+            <div className="flex min-w-0 flex-col gap-1.5">
+              <span className="text-caption">{TASKS_TEXTS.tags}</span>
+              <TagInput
+                tags={tags}
+                onChange={setTags}
+                suggestions={tagSuggestions ?? []}
+              />
             </div>
           </div>
-
-          <label
-            htmlFor="card-flagged"
-            className="flex items-center gap-2 text-sm text-fg"
-          >
-            <Checkbox
-              id="card-flagged"
-              checked={flagged}
-              onCheckedChange={(checked) => setFlagged(checked === true)}
-            />
-            {TASKS_TEXTS.markUrgent}
-          </label>
 
           <div className="flex flex-col gap-1.5">
             <label htmlFor="card-description" className="text-caption">
@@ -381,21 +408,25 @@ export function CardCreateModal({
         </div>
 
         <DialogFooter>
+          <label className="flex items-center gap-2 text-caption sm:mr-auto">
+            <Checkbox
+              checked={createAnother}
+              onCheckedChange={(checked) => setCreateAnother(checked === true)}
+            />
+            {TASKS_TEXTS.createAnother}
+          </label>
           <Button variant="outline" onClick={() => handleOpenChange(false)}>
             {COMMON_TEXTS.cancel}
           </Button>
           <Button
-            variant="outline"
-            onClick={handleSubmitAndAddAnother}
-            disabled={!projectId || !title.trim() || isPending}
-          >
-            {TASKS_TEXTS.createAndAddAnother}
-          </Button>
-          <Button
             onClick={handleSubmit}
-            disabled={!projectId || !title.trim() || isPending}
+            disabled={
+              !projectId || !title.trim() || isPending || isCreatingEpic
+            }
           >
-            {isPending ? COMMON_TEXTS.creating : COMMON_TEXTS.create}
+            {isPending || isCreatingEpic
+              ? COMMON_TEXTS.creating
+              : COMMON_TEXTS.create}
           </Button>
         </DialogFooter>
       </DialogContent>

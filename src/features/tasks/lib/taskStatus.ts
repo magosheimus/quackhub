@@ -34,3 +34,14 @@ export function getStatusLabel(value: string | null | undefined): string {
 export function getInitialStatusForType(type: ProjectType): TaskStatus {
   return type === 'study' ? 'to_study' : 'todo'
 }
+
+const STATUS_OPTIONS: Record<ProjectType, TaskStatus[]> = {
+  study: ['to_study', 'studying', 'to_review', 'blocked', 'done'],
+  general: ['todo', 'doing', 'blocked', 'done'],
+}
+
+export function getStatusOptions(
+  type: ProjectType | null | undefined,
+): TaskStatus[] {
+  return STATUS_OPTIONS[type ?? 'general']
+}
