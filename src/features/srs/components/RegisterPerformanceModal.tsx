@@ -14,8 +14,8 @@ import {
   calculateQuality,
   calculateNewEF,
   calculateNextInterval,
-  addDaysToToday,
-} from '@/features/srs/lib/srs'
+} from '@/features/srs/lib/review'
+import { addDaysToToday } from '@/shared/lib/date'
 import type { Task } from '@/shared/types/entities'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
 import { SRS_TEXTS } from '@/features/srs/constants/texts'

@@ -1,3 +1,4 @@
+import { todayLocal, toDbDate } from '@/shared/lib/date'
 import type { NewTask, Task } from '@/shared/types/entities'
 
 function parseDate(dateStr: string): {
@@ -7,17 +8,6 @@ function parseDate(dateStr: string): {
 } {
   const [year, month, day] = dateStr.split('-').map(Number)
   return { year, month: month - 1, day }
-}
-
-function formatDate(date: Date): string {
-  const year = date.getFullYear()
-  const month = String(date.getMonth() + 1).padStart(2, '0')
-  const day = String(date.getDate()).padStart(2, '0')
-  return `${year}-${month}-${day}`
-}
-
-function todayLocal(): string {
-  return formatDate(new Date())
 }
 
 function lastDayOfMonth(year: number, month: number): number {
@@ -72,7 +62,7 @@ export function buildRecurrentCard(original: Task, nextDue: Date): NewTask {
     description: original.description,
     priority: original.priority,
     status: 'todo',
-    due_date: formatDate(nextDue),
+    due_date: toDbDate(nextDue),
     recurrence_type: original.recurrence_type,
     recurrence_interval: original.recurrence_interval,
     recurrence_day_of_month: original.recurrence_day_of_month,

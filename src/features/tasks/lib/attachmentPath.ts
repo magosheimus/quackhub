@@ -1,4 +1,4 @@
-import { MAX_ATTACHMENT_SIZE_BYTES } from '@/features/tasks/constants/attachments'
+import { MAX_ATTACHMENT_SIZE_BYTES } from '@/features/tasks/constants/attachmentStorage'
 
 function toStorageSafeName(fileName: string): string {
   return fileName

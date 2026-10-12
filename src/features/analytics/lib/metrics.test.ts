@@ -9,7 +9,7 @@ import {
   startOfWeek,
   sumCounts,
   toAccuracyChartData,
-} from './analytics'
+} from './metrics'
 import { makeTask } from '@/test/factories'
 
 describe('startOfWeek', () => {

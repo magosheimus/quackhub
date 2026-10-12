@@ -1,5 +1,5 @@
 import { supabase } from '@/shared/api/supabase'
-import { todayLocal } from '@/features/srs/lib/srs'
+import { todayLocal } from '@/shared/lib/date'
 import { sortByPriorityThenDate } from '@/features/tasks/lib/taskPriority'
 import type { Task } from '@/shared/types/entities'
 

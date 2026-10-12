@@ -4,7 +4,7 @@ import {
   RecurrenceFields,
   type RecurrenceValue,
 } from '@/features/tasks/components/RecurrenceFields'
-import { canRegisterPerformance } from '@/features/srs/lib/srs'
+import { canRegisterPerformance } from '@/features/srs/lib/review'
 import type { ProjectType, Task } from '@/shared/types/entities'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
 import { TASKS_TEXTS } from '@/features/tasks/constants/texts'

@@ -13,7 +13,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
 import { useCreateSprint } from '@/features/sprints/hooks/useCreateSprint'
 import { useSprints } from '@/features/sprints/hooks/useSprints'
-import { todayLocal } from '@/features/srs/lib/srs'
+import { todayLocal } from '@/shared/lib/date'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
 import { SPRINTS_TEXTS } from '@/features/sprints/constants/texts'
 

@@ -1,5 +1,5 @@
 import type { RecurrenceType } from '@/shared/types/entities'
-import { MAX_ATTACHMENT_SIZE_MB } from './attachments'
+import { MAX_ATTACHMENT_SIZE_MB } from '@/features/tasks/constants/attachmentStorage'
 
 export const RECURRENCE_TYPE_LABELS: Record<RecurrenceType, string> = {
   daily: 'Diária',

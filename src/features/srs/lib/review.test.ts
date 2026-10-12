@@ -4,7 +4,7 @@ import {
   calculateNewEF,
   calculateNextInterval,
   canRegisterPerformance,
-} from './srs'
+} from './review'
 
 describe('calculateQuality', () => {
   it('nota 0 e confiança 1 (pior caso) retorna 0', () => {

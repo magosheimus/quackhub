@@ -2,7 +2,7 @@ import { supabase } from '@/shared/api/supabase'
 import {
   groupQualityByWeek,
   type AccuracyOverTimeItem,
-} from '@/features/analytics/lib/analytics'
+} from '@/features/analytics/lib/metrics'
 import type { ProjectCompletion } from '@/features/sprints/lib/sprint'
 
 export type ConfidenceDistributionItem = {

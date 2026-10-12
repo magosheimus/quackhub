@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { formatDayMonth, formatFullDate } from './date'
+import { formatDayMonth, formatFullDate, toDbDate } from './date'
 
 describe('formatDayMonth', () => {
   it('formata como dd/MM', () => {
@@ -18,5 +18,11 @@ describe('formatFullDate', () => {
 
   it('usa ? para data ausente', () => {
     expect(formatFullDate(null)).toBe('?')
+  })
+})
+
+describe('toDbDate', () => {
+  it('formata como yyyy-MM-dd com zero à esquerda', () => {
+    expect(toDbDate(new Date(2026, 0, 5))).toBe('2026-01-05')
   })
 })
