@@ -1,4 +1,5 @@
 import type { RecurrenceType } from '@/shared/types/entities'
+import { MAX_ATTACHMENT_SIZE_MB } from './attachments'
 
 export const RECURRENCE_TYPE_LABELS: Record<RecurrenceType, string> = {
   daily: 'Diária',
@@ -76,6 +77,8 @@ export const TASKS_TEXTS = {
   addAttachment: 'Adicionar anexo',
   previousAttachment: 'Anexo anterior',
   nextAttachment: 'Próximo anexo',
+  attachmentTooLarge: `Arquivo maior que ${MAX_ATTACHMENT_SIZE_MB} MB`,
+  confirmRemoveAttachment: (name: string) => `Excluir o anexo "${name}"?`,
   removeAttachment: (name: string) => `Remover anexo ${name}`,
   similarCards: 'Histórico:',
   // criação

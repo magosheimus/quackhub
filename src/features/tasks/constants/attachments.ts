@@ -1,0 +1,5 @@
+export const ATTACHMENTS_BUCKET = 'task-attachments'
+export const SIGNED_URL_TTL_SECONDS = 60 * 60
+export const SIGNED_URL_REFRESH_MS = (SIGNED_URL_TTL_SECONDS - 5 * 60) * 1000
+export const MAX_ATTACHMENT_SIZE_MB = 10
+export const MAX_ATTACHMENT_SIZE_BYTES = MAX_ATTACHMENT_SIZE_MB * 1024 * 1024
