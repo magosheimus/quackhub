@@ -7,6 +7,7 @@ import {
   getProjectsInTasks,
   groupTasksByColumn,
   isBoardColumnKey,
+  getMoveOptions,
 } from './board'
 import { makeEpic, makeProject, makeTask } from '@/test/factories'
 
@@ -142,5 +143,24 @@ describe('groupTasksByColumn', () => {
     expect(groups.todo.map((t) => t.id)).toEqual(['t1'])
     expect(groups.doing.map((t) => t.id)).toEqual(['t2'])
     expect(Object.values(groups).flat()).toHaveLength(2)
+  })
+})
+
+describe('getMoveOptions', () => {
+  it('lista as outras colunas válidas para o tipo, sem a atual', () => {
+    expect(getMoveOptions('todo', 'general').map((o) => o.column)).toEqual([
+      'doing',
+      'blocked',
+      'done',
+    ])
+  })
+
+  it('projeto de estudo inclui A REVISAR com os rótulos de estudo', () => {
+    expect(getMoveOptions('to_study', 'study')).toEqual([
+      { column: 'doing', label: 'ESTUDANDO' },
+      { column: 'to_review', label: 'A REVISAR' },
+      { column: 'blocked', label: 'IMPEDIDO' },
+      { column: 'done', label: 'FINALIZADO' },
+    ])
   })
 })

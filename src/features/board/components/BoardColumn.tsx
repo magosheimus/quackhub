@@ -1,5 +1,8 @@
 import { Droppable } from '@hello-pangea/dnd'
-import { type BoardColumnKey } from '@/features/board/lib/board'
+import {
+  type BoardColumnKey,
+  type MoveOption,
+} from '@/features/board/lib/board'
 import { BoardCard } from './BoardCard'
 import { IconLayout } from '@/shared/lib/icons'
 import type { Task } from '@/shared/types/entities'
@@ -10,6 +13,8 @@ type BoardColumnProps = {
   label: string
   tasks: Task[]
   projectPrefixById: Map<string, string>
+  getMoveOptions: (task: Task) => MoveOption[]
+  onMove: (taskId: string, column: BoardColumnKey) => void
 }
 
 export function BoardColumn({
@@ -17,6 +22,8 @@ export function BoardColumn({
   label,
   tasks,
   projectPrefixById,
+  getMoveOptions,
+  onMove,
 }: BoardColumnProps) {
   return (
     <div className="flex w-[78vw] max-w-72 shrink-0 snap-start flex-col gap-2 lg:w-auto lg:max-w-none lg:min-w-0 lg:flex-1 lg:shrink">
@@ -48,6 +55,8 @@ export function BoardColumn({
                 task={task}
                 index={index}
                 projectPrefixById={projectPrefixById}
+                moveOptions={getMoveOptions(task)}
+                onMove={(target) => onMove(task.id, target)}
               />
             ))}
             {provided.placeholder}

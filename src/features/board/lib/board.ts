@@ -188,3 +188,22 @@ export function groupTasksByColumn(
   }
   return groups
 }
+
+export type MoveOption = {
+  column: BoardColumnKey
+  label: string
+}
+
+export function getMoveOptions(
+  status: TaskStatus,
+  taskType: ProjectType,
+): MoveOption[] {
+  const currentColumn = getBoardColumnKey(status)
+  return BOARD_COLUMNS.filter(
+    (column) =>
+      column !== currentColumn && getStatusForColumn(column, taskType) !== null,
+  ).map((column) => ({
+    column,
+    label: getBoardColumnLabel(column, taskType),
+  }))
+}
