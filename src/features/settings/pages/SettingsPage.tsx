@@ -1,4 +1,5 @@
 import { IconSettings } from '@/shared/lib/icons'
+import { Link } from 'react-router-dom'
 import type { ReactNode } from 'react'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -26,6 +27,9 @@ import {
 } from '@/features/settings/constants/texts'
 import { Panel } from '@/components/ui/panel'
 import { AUTH_TEXTS } from '@/features/auth/constants/texts'
+import { DeleteAccountDialog } from '@/features/auth/components/DeleteAccountDialog'
+import { PRIVACY_PATH } from '@/features/privacy/constants/paths'
+import { PRIVACY_TEXTS } from '@/features/privacy/constants/texts'
 
 const TEXTURES: Settings['texture'][] = ['none', 'grid', 'dots']
 
@@ -216,7 +220,7 @@ export function SettingsPage() {
 
       <SettingsCard title={AUTH_TEXTS.account}>
         <div className="flex items-center justify-between gap-4">
-          <span className="text-sm text-fg">
+          <span className="min-w-0 flex-1 text-sm text-fg">
             {AUTH_TEXTS.signedInAs(accountEmail)}
           </span>
           <Button
@@ -229,6 +233,18 @@ export function SettingsPage() {
             {isSigningOut ? AUTH_TEXTS.signingOut : AUTH_TEXTS.signOut}
           </Button>
         </div>
+        <div className="flex items-center justify-between gap-4">
+          <span className="min-w-0 flex-1 text-subtle">
+            {AUTH_TEXTS.deleteAccountDescription}
+          </span>
+          <DeleteAccountDialog accountEmail={accountEmail} />
+        </div>
+        <Link
+          to={PRIVACY_PATH}
+          className="text-caption underline hover:text-fg"
+        >
+          {PRIVACY_TEXTS.linkLabel}
+        </Link>
       </SettingsCard>
     </div>
   )

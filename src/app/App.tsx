@@ -19,6 +19,8 @@ import { DraftsPage } from '@/features/drafts/pages/DraftsPage'
 import { SettingsPage } from '@/features/settings/pages/SettingsPage'
 import { AnalyticsPage } from '@/features/analytics/pages/AnalyticsPage'
 import { Toaster } from '@/components/ui/toaster'
+import { PrivacyPage } from '@/features/privacy/pages/PrivacyPage'
+import { PRIVACY_PATH } from '@/features/privacy/constants/paths'
 
 function Layout() {
   return (
@@ -36,6 +38,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path={LOGIN_PATH} element={<LoginPage />} />
+          <Route path={PRIVACY_PATH} element={<PrivacyPage />} />
           <Route element={<Layout />}>
             <Route path="/" element={<Navigate to={HOME_PATH} replace />} />
             <Route path="/inbox" element={<InboxPage />} />

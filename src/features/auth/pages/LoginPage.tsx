@@ -1,4 +1,4 @@
-import { Navigate } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { LoadingText } from '@/components/ui/loading-text'
@@ -7,6 +7,8 @@ import { Separator } from '@/components/ui/separator'
 import { AUTH_TEXTS } from '@/features/auth/constants/texts'
 import { useLoginPage } from '@/features/auth/hooks/useLoginPage'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
+import { PRIVACY_PATH } from '@/features/privacy/constants/paths'
+import { PRIVACY_TEXTS } from '@/features/privacy/constants/texts'
 
 export function LoginPage() {
   const {
@@ -90,6 +92,12 @@ export function LoginPage() {
         >
           {AUTH_TEXTS.google}
         </Button>
+        <Link
+          to={PRIVACY_PATH}
+          className="self-center text-caption underline hover:text-fg"
+        >
+          {PRIVACY_TEXTS.linkLabel}
+        </Link>
       </Panel>
     </main>
   )
