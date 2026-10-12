@@ -36,7 +36,7 @@ export function BacklogRow({
     >
       <div
         style={{ borderLeftColor: `var(${priority.colorVar})` }}
-        className="flex items-center gap-3 rounded-md border border-l-4 border-border bg-card p-3 text-sm"
+        className="flex flex-wrap items-center gap-3 rounded-md border border-l-4 border-border bg-card p-3 text-sm"
       >
         <div className="flex w-4 shrink-0 flex-col items-center gap-1">
           {task.flagged && (
@@ -55,7 +55,7 @@ export function BacklogRow({
           </span>
         </div>
 
-        <div className="flex flex-1 flex-col gap-0.5">
+        <div className="flex min-w-40 flex-1 flex-col gap-0.5">
           {task.task_number && (
             <span className="text-caption">
               {projectPrefix}-{task.task_number}
@@ -63,7 +63,7 @@ export function BacklogRow({
           )}
           <Link
             to={`/cards/${task.id}`}
-            className="text-fg hover:text-accent hover:underline"
+            className="wrap-break-word text-fg hover:text-accent hover:underline"
           >
             {task.title}
           </Link>

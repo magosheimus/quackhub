@@ -1,4 +1,6 @@
 export const APP_TEXTS = {
+  openMenu: 'Abrir menu',
+  navigation: 'Navegação',
   projects: 'Projetos',
   analytics: 'Analytics',
   settings: 'Configurações',

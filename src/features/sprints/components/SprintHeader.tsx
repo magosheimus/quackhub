@@ -27,12 +27,12 @@ export function SprintHeader({ activeSprint, tasks }: SprintHeaderProps) {
     const progress = total === 0 ? 0 : Math.round((done / total) * 100)
 
     return (
-      <Panel className="flex items-center justify-between gap-4">
+      <Panel className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div className="flex flex-col gap-1">
-          <span className="font-heading text-2xl text-fg">
+          <span className="flex flex-wrap items-baseline gap-x-2 font-heading text-2xl text-fg">
             {activeSprint.name}
             {(activeSprint.start_date || activeSprint.end_date) && (
-              <span className="font-body ml-2 text-caption">
+              <span className="font-body text-caption">
                 ({formatFullDate(activeSprint.start_date)} →{' '}
                 {formatFullDate(activeSprint.end_date)})
               </span>
@@ -42,7 +42,7 @@ export function SprintHeader({ activeSprint, tasks }: SprintHeaderProps) {
             <span className="text-subtle">{activeSprint.goal}</span>
           )}
         </div>
-        <div className="flex flex-col items-center gap-1">
+        <div className="flex flex-col gap-1 md:items-center">
           <span className="text-caption">
             {SPRINTS_TEXTS.progress(progress, done, total)}
           </span>
@@ -58,7 +58,7 @@ export function SprintHeader({ activeSprint, tasks }: SprintHeaderProps) {
 
   if (plannedSprint) {
     return (
-      <Panel className="flex items-center justify-between">
+      <Panel className="flex flex-wrap items-center justify-between gap-4">
         <span className="text-sm text-fg">
           {SPRINTS_TEXTS.readyToStart(plannedSprint.name)}
         </span>

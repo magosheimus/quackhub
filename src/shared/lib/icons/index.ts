@@ -38,6 +38,7 @@ import { Article } from 'pixelarticons/react/Article'
 import { CheckboxOn } from 'pixelarticons/react/CheckboxOn'
 import { InfoBox } from 'pixelarticons/react/InfoBox'
 import { Link } from 'pixelarticons/react/Link'
+import { Menu } from 'pixelarticons/react/Menu'
 import { createIcon } from './createIcon'
 
 export type { IconComponent, IconProps, IconSize } from './createIcon'
@@ -82,3 +83,4 @@ export const IconArticle = createIcon(Article)
 export const IconChecklist = createIcon(CheckboxOn)
 export const IconInfo = createIcon(InfoBox)
 export const IconLink = createIcon(Link)
+export const IconMenu = createIcon(Menu)
