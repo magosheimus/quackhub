@@ -27,9 +27,8 @@
   --border-strong: #64694a;
 
   /* Accent */
-  --accent: #004e3c;
+  --accent:   #004e1e;
   --on-accent: #f4f5e9;
-  --glow-color: oklch(from var(--accent) 0.65 0.17 h);
 
   /* Signal */
   --signal-danger: #a52d25;
@@ -50,6 +49,7 @@
 
   /* Efeitos */
   --glow: 0 0 #0000;
+  --glow-filter: none;
   --scanline-opacity: 0;
 
   /* Tipografia */
@@ -230,6 +230,22 @@
     0 0 6px color-mix(in oklch, var(--glow-color) 50%, transparent),
     0 0 16px color-mix(in oklch, var(--glow-color) 35%, transparent),
     0 0 32px color-mix(in oklch, var(--glow-color) 15%, transparent);
+
+  --glow-filter:
+    drop-shadow(0 0 1px color-mix(in oklch, var(--glow-color) 70%, transparent))
+    drop-shadow(0 0 5px color-mix(in oklch, var(--glow-color) 45%, transparent))
+    drop-shadow(0 0 12px color-mix(in oklch, var(--glow-color) 25%, transparent));
+}
+
+.glow-on:not(.theme-dark) {
+  --glow:
+    1px 1px 0 color-mix(in oklch, var(--lcd-ink) 20%, transparent),
+    0 0 3px color-mix(in oklch, var(--accent) 35%, transparent),
+    0 0 8px color-mix(in oklch, var(--accent) 15%, transparent);
+
+  --glow-filter:
+    drop-shadow(2px 2px 0 color-mix(in oklch, var(--lcd-ink) 20%, transparent))
+    drop-shadow(0 0 3px color-mix(in oklch, var(--accent) 30%, transparent));
 }
 
 .font-ibm-plex {
@@ -288,6 +304,10 @@
 [aria-current='page'],
 .glow-active {
   text-shadow: var(--glow);
+}
+
+.logo-mark {
+  filter: var(--glow-filter);
 }
 
 .theme-dark .font-heading {

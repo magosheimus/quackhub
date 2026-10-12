@@ -27,6 +27,7 @@ import { APP_TEXTS } from '@/app/constants/texts'
 import { INBOX_TEXTS } from '@/features/inbox/constants/texts'
 import { DRAFTS_TEXTS } from '@/features/drafts/constants/texts'
 import { Panel } from '@/components/ui/panel'
+import { LogoMark } from '@/components/ui/logo-mark'
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
   `flex h-10 items-center gap-3 border px-3 py-2 rounded-md text-base ${
@@ -69,10 +70,10 @@ export function Sidebar() {
   return (
     <aside className="h-full w-55 shrink-0 overflow-y-auto border-r border-border bg-surface p-4 flex flex-col">
       <div className="mb-6 px-1">
-        <div className="font-heading text-3xl text-accent">
-          {COMMON_TEXTS.brand}
+        <div className="flex items-center gap-3 font-heading text-3xl text-accent">
+          <LogoMark />
+          <span>{COMMON_TEXTS.brand}</span>
         </div>
-        <div className="text-caption">{APP_TEXTS.mascot}</div>
       </div>
 
       <div className="mb-4">
