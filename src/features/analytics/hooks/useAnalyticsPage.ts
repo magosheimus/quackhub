@@ -15,7 +15,7 @@ import {
   resolveLiveSprintId,
   sumCounts,
   toAccuracyChartData,
-} from '@/features/analytics/lib/analytics'
+} from '@/features/analytics/lib/metrics'
 import type { CompletionByProjectItem } from '@/features/analytics/api/analytics'
 import { getClosedSprintsByRecency } from '@/features/sprints/lib/sprint'
 import { ALL_COLUMNS } from '@/features/board/lib/board'

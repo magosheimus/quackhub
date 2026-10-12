@@ -5,7 +5,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { ALL_SCOPE, CURRENT_SCOPE } from '@/features/analytics/lib/analytics'
+import { ALL_SCOPE, CURRENT_SCOPE } from '@/features/analytics/lib/metrics'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
 import { ANALYTICS_TEXTS } from '@/features/analytics/constants/texts'
 

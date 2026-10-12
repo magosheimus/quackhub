@@ -4,7 +4,7 @@ import type { Attachment, AttachmentWithUrl } from '@/shared/types/entities'
 import {
   ATTACHMENTS_BUCKET,
   SIGNED_URL_TTL_SECONDS,
-} from '@/features/tasks/constants/attachments'
+} from '@/features/tasks/constants/attachmentStorage'
 import {
   buildAttachmentPath,
   exceedsAttachmentSizeLimit,

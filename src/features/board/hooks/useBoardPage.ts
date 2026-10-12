@@ -20,7 +20,7 @@ import {
   groupTasksByColumn,
   isBoardColumnKey,
 } from '@/features/board/lib/board'
-import { todayLocal } from '@/features/srs/lib/srs'
+import { todayLocal } from '@/shared/lib/date'
 import type { ProjectType } from '@/shared/types/entities'
 
 export function useBoardPage() {

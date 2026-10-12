@@ -3,9 +3,8 @@ import {
   calculateQuality,
   calculateNewEF,
   calculateNextInterval,
-  todayLocal,
-  addDaysToToday,
-} from '@/features/srs/lib/srs'
+} from '@/features/srs/lib/review'
+import { addDaysToToday, todayLocal } from '@/shared/lib/date'
 import { getTaskById, updateTask } from '@/features/tasks/api/tasks'
 import type { SrsLog } from '@/shared/types/entities'
 

@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { getAttachments } from '@/features/tasks/api/attachments'
 import { queryKeys } from '@/shared/query/queryKeys'
-import { SIGNED_URL_REFRESH_MS } from '@/features/tasks/constants/attachments'
+import { SIGNED_URL_REFRESH_MS } from '@/features/tasks/constants/attachmentStorage'
 
 export function useAttachments(taskId: string) {
   return useQuery({

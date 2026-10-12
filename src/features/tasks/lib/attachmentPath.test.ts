@@ -3,7 +3,7 @@ import {
   buildAttachmentPath,
   exceedsAttachmentSizeLimit,
 } from './attachmentPath'
-import { MAX_ATTACHMENT_SIZE_BYTES } from '@/features/tasks/constants/attachments'
+import { MAX_ATTACHMENT_SIZE_BYTES } from '@/features/tasks/constants/attachmentStorage'
 
 describe('buildAttachmentPath', () => {
   it('começa pela pasta do dono, exigida pela policy do storage', () => {
