@@ -1,3 +1,4 @@
+import type { TagsByTask } from '@/features/tasks/lib/taskTags'
 import type {
   Project,
   Task,
@@ -9,6 +10,7 @@ export type BacklogFilters = {
   status: TaskStatus | null
   priority: TaskPriority | null
   epicId: string | null
+  tag: string | null
 }
 
 export type ProjectTaskGroup = {
@@ -19,12 +21,14 @@ export type ProjectTaskGroup = {
 export function filterBacklogTasks(
   tasks: Task[],
   filters: BacklogFilters,
+  tagsByTask: TagsByTask,
 ): Task[] {
   return tasks.filter(
     (task) =>
       (!filters.status || task.status === filters.status) &&
       (!filters.priority || task.priority === filters.priority) &&
-      (!filters.epicId || task.epic_id === filters.epicId),
+      (!filters.epicId || task.epic_id === filters.epicId) &&
+      (!filters.tag || (tagsByTask[task.id] ?? []).includes(filters.tag)),
   )
 }
 

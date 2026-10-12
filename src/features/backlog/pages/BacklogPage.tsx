@@ -35,11 +35,14 @@ export function BacklogPage() {
     statusFilter,
     priorityFilter,
     epicFilter,
+    tagFilter,
+    tags,
     selectedProject,
     selectedEpicName,
     selectProject,
     selectStatus,
     selectPriority,
+    selectTag,
     selectEpic,
     isEpicModalOpen,
     setIsEpicModalOpen,
@@ -148,6 +151,27 @@ export function BacklogPage() {
             ))}
           </SelectContent>
         </Select>
+
+        {tags.length > 0 && (
+          <Select
+            value={tagFilter ?? NONE_VALUE}
+            onValueChange={(v) => selectTag(v === NONE_VALUE ? null : v)}
+          >
+            <SelectTrigger>
+              <SelectValue>{tagFilter ?? BACKLOG_TEXTS.allTags}</SelectValue>
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value={NONE_VALUE}>
+                {BACKLOG_TEXTS.allTags}
+              </SelectItem>
+              {tags.map((tag) => (
+                <SelectItem key={tag} value={tag}>
+                  {tag}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        )}
 
         {projectFilter && (
           <Select

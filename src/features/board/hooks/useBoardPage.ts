@@ -42,7 +42,7 @@ export function useBoardPage() {
   const { mutate: updateTaskStatus } = useUpdateTaskStatus()
   const { data: epics } = useAllEpics()
   const { filters, updateFilter } = useBoardFilters()
-  const { data: taskTagsMap } = useBulkTaskTags((tasks ?? []).map((t) => t.id))
+  const { data: tagsByTask } = useBulkTaskTags((tasks ?? []).map((t) => t.id))
 
   const sprintTasks = tasks ?? []
   const project = projectId
@@ -61,7 +61,7 @@ export function useBoardPage() {
   const visibleTasks = applyBoardFilters(
     sprintTasks,
     filters,
-    taskTagsMap ?? new Map(),
+    tagsByTask ?? {},
     todayLocal(),
   )
   const tasksByColumn = groupTasksByColumn(visibleTasks)

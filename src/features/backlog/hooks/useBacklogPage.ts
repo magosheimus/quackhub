@@ -15,6 +15,8 @@ import {
 } from '@/features/backlog/lib/backlog'
 import { isTaskPriority, isTaskStatus } from '@/shared/lib/enums'
 import { useToggleSet } from '@/shared/hooks/useToggleSet'
+import { useBulkTaskTags } from '@/features/tasks/hooks/tags/useBulkTaskTags'
+import { collectTags } from '@/features/tasks/lib/taskTags'
 import type {
   Project,
   Task,
@@ -36,6 +38,7 @@ export function useBacklogPage() {
     null,
   )
   const [epicFilter, setEpicFilter] = useState<string | null>(null)
+  const [tagFilter, setTagFilter] = useState<string | null>(null)
   const [isEpicModalOpen, setIsEpicModalOpen] = useState(false)
   const collapsedProjects = useToggleSet<string>()
 
@@ -44,6 +47,7 @@ export function useBacklogPage() {
   const { data: projects, isLoading: isLoadingProjects } = projectsQuery
   const { data: tasks, isLoading: isLoadingTasks } = tasksQuery
   const { data: epics } = useEpics(projectFilter ?? '')
+  const { data: tagsByTask } = useBulkTaskTags((tasks ?? []).map((t) => t.id))
   const { data: activeSprint } = useActiveSprint()
   const { data: sprints } = useSprints()
   const { mutate: addTaskToSprint } = useAddTaskToSprint()
@@ -57,11 +61,16 @@ export function useBacklogPage() {
   )
   const epicNameById = new Map(epics?.map((e) => [e.id, e.name]))
 
-  const filteredTasks = filterBacklogTasks(tasks ?? [], {
-    status: statusFilter,
-    priority: priorityFilter,
-    epicId: epicFilter,
-  })
+  const filteredTasks = filterBacklogTasks(
+    tasks ?? [],
+    {
+      status: statusFilter,
+      priority: priorityFilter,
+      epicId: epicFilter,
+      tag: tagFilter,
+    },
+    tagsByTask ?? {},
+  )
   const projectGroups = groupTasksByProject(projects ?? [], filteredTasks)
 
   const selectedProject = projectFilter
@@ -72,6 +81,7 @@ export function useBacklogPage() {
   function selectProject(projectId: string | null) {
     setProjectFilter(projectId)
     setEpicFilter(null)
+    setTagFilter(null)
   }
 
   function selectStatus(value: unknown) {
@@ -116,11 +126,14 @@ export function useBacklogPage() {
     statusFilter,
     priorityFilter,
     epicFilter,
+    tagFilter,
+    tags: collectTags(tagsByTask ?? {}),
     selectedProject,
     selectedEpicName,
     selectProject,
     selectStatus,
     selectPriority,
+    selectTag: setTagFilter,
     selectEpic: setEpicFilter,
     isEpicModalOpen,
     setIsEpicModalOpen,
