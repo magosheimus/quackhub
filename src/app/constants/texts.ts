@@ -1,5 +1,4 @@
 export const APP_TEXTS = {
-  mascot: '[ pato ]',
   projects: 'Projetos',
   analytics: 'Analytics',
   settings: 'Configurações',
