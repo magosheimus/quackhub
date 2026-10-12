@@ -12,6 +12,15 @@ export const AUTH_TEXTS = {
   signedInAs: (email: string) => `Sessão ativa: ${email}`,
   signOut: 'Sair',
   signingOut: 'Saindo...',
+  deleteAccount: 'Excluir conta',
+  deletingAccount: 'Excluindo...',
+  deleteAccountTitle: 'Excluir conta',
+  deleteAccountDescription:
+    'Apaga a conta e todos os dados: projetos, cards, sprints, revisões e anexos.',
+  deleteAccountWarning:
+    'Esta ação não pode ser desfeita. Se quiser guardar uma cópia, use "Exportar dados" antes.',
+  deleteAccountConfirmLabel: (email: string) =>
+    `Para confirmar, digite ${email}`,
 } as const
 
 export const AUTH_ERRORS = {

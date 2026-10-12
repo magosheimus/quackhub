@@ -1,5 +1,6 @@
 import { useMutation } from '@tanstack/react-query'
 import {
+  deleteAccount,
   signInWithGoogle,
   signInWithPassword,
   signOut,
@@ -23,4 +24,8 @@ export function useSignInWithGoogle() {
 
 export function useSignOut() {
   return useMutation({ mutationFn: signOut })
+}
+
+export function useDeleteAccount() {
+  return useMutation({ mutationFn: deleteAccount })
 }

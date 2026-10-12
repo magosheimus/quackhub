@@ -29,3 +29,13 @@ export async function signOut(): Promise<void> {
     throw new Error(`Falha ao sair: ${error.message}`)
   }
 }
+
+export async function deleteAccount(): Promise<void> {
+  const { error } = await supabase.functions.invoke('delete-account', {
+    method: 'POST',
+  })
+  if (error) {
+    throw new Error(`Falha ao excluir conta: ${error.message}`)
+  }
+  await supabase.auth.signOut({ scope: 'local' })
+}
