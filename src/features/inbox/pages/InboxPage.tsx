@@ -1,4 +1,12 @@
-import { IconCalendar, IconFolder, IconInbox } from '@/shared/lib/icons'
+import { ErrorState } from '@/components/ui/error-state'
+import {
+  IconCalendar,
+  IconFlag,
+  IconFolder,
+  IconInbox,
+} from '@/shared/lib/icons'
+import { cn } from '@/shared/lib/utils'
+import type { InboxCounterTone } from '@/features/inbox/lib/inboxCounters'
 import { CardCreateModal } from '@/features/tasks/components/CardCreateModal'
 import { ProjectCreateModal } from '@/features/projects/components/ProjectCreateModal'
 import { Marquee } from '@/components/ui/marquee'
@@ -11,14 +19,23 @@ import { INBOX_TEXTS } from '@/features/inbox/constants/texts'
 import { Panel } from '@/components/ui/panel'
 import { EmptyState } from '@/components/ui/empty-state'
 
+const COUNTER_TONE_CLASS: Record<InboxCounterTone, string> = {
+  default: 'text-fg',
+  muted: 'text-fg-muted',
+  danger: 'text-danger',
+}
+
 export function InboxPage() {
   const {
     isLoading,
+    hasError,
+    retry,
     urgent,
     srsOverdue,
     dueToday,
     totalCount,
     isEmpty,
+    counters,
     todayLabel,
     sprintBanner,
     projects,
@@ -31,6 +48,10 @@ export function InboxPage() {
 
   if (isLoading) {
     return <LoadingText />
+  }
+
+  if (hasError) {
+    return <ErrorState onRetry={retry} />
   }
 
   return (
@@ -47,14 +68,24 @@ export function InboxPage() {
       </div>
 
       <div className="grid grid-cols-3 gap-3">
-        {[
-          { value: dueToday.length, label: INBOX_TEXTS.tasksCounter },
-          { value: srsOverdue.length, label: INBOX_TEXTS.reviewsCounter },
-          { value: urgent.length, label: INBOX_TEXTS.urgentCounter },
-        ].map((counter) => (
-          <Panel key={counter.label} className="flex flex-col gap-1 px-4 py-3">
-            <span className="font-heading text-3xl text-fg">
+        {counters.map((counter) => (
+          <Panel
+            key={counter.key}
+            className={cn(
+              'flex flex-col gap-1 px-4 py-3',
+              counter.tone === 'danger' && 'border-danger',
+            )}
+          >
+            <span
+              className={cn(
+                'flex items-center gap-2 font-heading text-3xl',
+                COUNTER_TONE_CLASS[counter.tone],
+              )}
+            >
               {counter.value}
+              {counter.tone === 'danger' && (
+                <IconFlag size={16} aria-hidden="true" />
+              )}
             </span>
             <span className="text-caption">{counter.label}</span>
           </Panel>

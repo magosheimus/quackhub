@@ -21,6 +21,7 @@ import { useUploadAttachment } from '@/features/tasks/hooks/attachments/useUploa
 import { useDeleteAttachment } from '@/features/tasks/hooks/attachments/useDeleteAttachment'
 import { TASKS_TEXTS } from '@/features/tasks/constants/texts'
 import { Panel } from '@/components/ui/panel'
+import { ConfirmDialog } from '@/components/ui/confirm-dialog'
 import type { AttachmentWithUrl } from '@/shared/types/entities'
 
 type CardAttachmentsProps = {
@@ -37,6 +38,8 @@ export function CardAttachments({ taskId }: CardAttachmentsProps) {
     height: number
   } | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const [pendingRemoval, setPendingRemoval] =
+    useState<AttachmentWithUrl | null>(null)
 
   const images = (attachments ?? []).filter((a) =>
     a.mime_type.startsWith('image/'),
@@ -54,15 +57,13 @@ export function CardAttachments({ taskId }: CardAttachmentsProps) {
     setViewerIndex(index)
   }
 
-  function handleRemove(attachment: AttachmentWithUrl) {
-    if (
-      !window.confirm(TASKS_TEXTS.confirmRemoveAttachment(attachment.file_name))
-    ) {
+  function confirmRemove() {
+    if (!pendingRemoval) {
       return
     }
     removeAttachment({
-      id: attachment.id,
-      storagePath: attachment.storage_path,
+      id: pendingRemoval.id,
+      storagePath: pendingRemoval.storage_path,
       taskId,
     })
   }
@@ -167,7 +168,7 @@ export function CardAttachments({ taskId }: CardAttachmentsProps) {
                 )}
                 <button
                   type="button"
-                  onClick={() => handleRemove(attachment)}
+                  onClick={() => setPendingRemoval(attachment)}
                   aria-label={TASKS_TEXTS.removeAttachment(
                     attachment.file_name,
                   )}
@@ -230,6 +231,16 @@ export function CardAttachments({ taskId }: CardAttachmentsProps) {
           )}
         </DialogContent>
       </Dialog>
+      <ConfirmDialog
+        open={pendingRemoval !== null}
+        onOpenChange={(open) => !open && setPendingRemoval(null)}
+        title={TASKS_TEXTS.removeAttachmentTitle}
+        description={TASKS_TEXTS.confirmRemoveAttachment(
+          pendingRemoval?.file_name ?? '',
+        )}
+        confirmLabel={TASKS_TEXTS.removeAttachmentConfirm}
+        onConfirm={confirmRemove}
+      />
     </div>
   )
 }

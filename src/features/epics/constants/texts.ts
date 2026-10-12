@@ -8,8 +8,10 @@ export const EPICS_TEXTS = {
   noEpic: 'Sem épico',
   selectEpic: 'Selecionar épico',
   newEpic: '+ Novo épico',
+  deleteTitle: 'Excluir épico',
+  deleteConfirm: 'Excluir',
   confirmDelete: (name: string) =>
-    `Excluir o épico "${name}"? Os cards vinculados ficam sem épico.`,
+    `O épico "${name}" será excluído. Os cards vinculados ficam sem épico.`,
   rename: (name: string) => `Renomear épico ${name}`,
   delete: (name: string) => `Excluir épico ${name}`,
 } as const

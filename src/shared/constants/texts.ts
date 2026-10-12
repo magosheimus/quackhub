@@ -2,6 +2,10 @@
 export const COMMON_TEXTS = {
   brand: 'QUACKHUB',
   cancel: 'Cancelar',
+  loadErrorTitle: 'ERRO DE LEITURA',
+  loadErrorDescription:
+    'Não foi possível carregar os dados. Confira a conexão e tente de novo.',
+  retry: 'Tentar de novo',
   confirm: 'Confirmar',
   create: 'Criar',
   creating: 'Criando...',

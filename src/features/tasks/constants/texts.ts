@@ -77,7 +77,10 @@ export const TASKS_TEXTS = {
   previousAttachment: 'Anexo anterior',
   nextAttachment: 'Próximo anexo',
   attachmentTooLarge: `Arquivo maior que ${MAX_ATTACHMENT_SIZE_MB} MB`,
-  confirmRemoveAttachment: (name: string) => `Excluir o anexo "${name}"?`,
+  removeAttachmentTitle: 'Excluir anexo',
+  confirmRemoveAttachment: (name: string) =>
+    `O arquivo "${name}" será apagado deste card.`,
+  removeAttachmentConfirm: 'Excluir',
   removeAttachment: (name: string) => `Remover anexo ${name}`,
   similarCards: 'Histórico:',
   // criação

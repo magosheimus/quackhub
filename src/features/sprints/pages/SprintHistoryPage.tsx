@@ -1,3 +1,4 @@
+import { ErrorState } from '@/components/ui/error-state'
 import { IconClock, IconChevronRight } from '@/shared/lib/icons'
 import { PageTitle } from '@/components/ui/page-title'
 import { SegmentedProgress } from '@/components/ui/segmented-progress'
@@ -11,11 +12,21 @@ import { SPRINTS_TEXTS } from '@/features/sprints/constants/texts'
 import { EmptyMessage } from '@/components/ui/empty-message'
 
 export function SprintHistoryPage() {
-  const { isLoading, closedSprints, isSprintOpen, toggleSprint } =
-    useSprintHistoryPage()
+  const {
+    isLoading,
+    hasError,
+    retry,
+    closedSprints,
+    isSprintOpen,
+    toggleSprint,
+  } = useSprintHistoryPage()
 
   if (isLoading) {
     return <LoadingText />
+  }
+
+  if (hasError) {
+    return <ErrorState onRetry={retry} />
   }
 
   if (closedSprints.length === 0) {

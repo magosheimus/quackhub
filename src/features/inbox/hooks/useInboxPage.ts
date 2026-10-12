@@ -1,3 +1,5 @@
+import { buildInboxCounters } from '@/features/inbox/lib/inboxCounters'
+import { hasLoadError, retryFailedQueries } from '@/shared/query/queryState'
 import { useState } from 'react'
 import { useInboxItems } from '@/features/inbox/hooks/useInboxItems'
 import { useCompleteTask } from '@/features/inbox/hooks/useCompleteTask'
@@ -8,7 +10,8 @@ import { formatWeekdayShort } from '@/shared/lib/date'
 import type { Task } from '@/shared/types/entities'
 
 export function useInboxPage() {
-  const { data: inbox, isLoading } = useInboxItems()
+  const inboxQuery = useInboxItems()
+  const { data: inbox, isLoading } = inboxQuery
   const { data: activeSprint } = useActiveSprint()
   const { data: projects } = useProjects()
   const { mutate: completeTask } = useCompleteTask()
@@ -21,11 +24,18 @@ export function useInboxPage() {
 
   return {
     isLoading,
+    hasError: hasLoadError(inboxQuery),
+    retry: () => retryFailedQueries(inboxQuery),
     urgent,
     srsOverdue,
     dueToday,
     totalCount,
     isEmpty: totalCount === 0,
+    counters: buildInboxCounters({
+      dueToday: dueToday.length,
+      srsOverdue: srsOverdue.length,
+      urgent: urgent.length,
+    }),
     todayLabel: formatWeekdayShort(new Date()),
     sprintBanner: activeSprint ? formatSprintBanner(activeSprint) : null,
     projects: projects ?? [],

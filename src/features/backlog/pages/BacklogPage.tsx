@@ -1,3 +1,4 @@
+import { ErrorState } from '@/components/ui/error-state'
 import { IconBulletlist, IconChevronRight, IconPlus } from '@/shared/lib/icons'
 import {
   Select,
@@ -28,6 +29,8 @@ export function BacklogPage() {
     epics,
     isLoadingProjects,
     isLoadingTasks,
+    hasError,
+    retry,
     projectFilter,
     statusFilter,
     priorityFilter,
@@ -53,6 +56,10 @@ export function BacklogPage() {
 
   if (isLoadingProjects) {
     return <LoadingText />
+  }
+
+  if (hasError) {
+    return <ErrorState onRetry={retry} />
   }
 
   return (

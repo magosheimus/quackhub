@@ -1,3 +1,4 @@
+import { hasLoadError, retryFailedQueries } from '@/shared/query/queryState'
 import type { DropResult } from '@hello-pangea/dnd'
 import { useSearchParams } from 'react-router-dom'
 import { useProjects } from '@/features/projects/hooks/useProjects'
@@ -27,12 +28,13 @@ export function useBoardPage() {
   const [searchParams] = useSearchParams()
   const projectId = searchParams.get('project')
 
-  const { data: projects, isLoading: isLoadingProjects } = useProjects()
+  const projectsQuery = useProjects()
+  const activeSprintQuery = useActiveSprint()
+  const { data: projects, isLoading: isLoadingProjects } = projectsQuery
   const { data: sprints } = useSprints()
-  const { data: activeSprint, isLoading: isLoadingSprint } = useActiveSprint()
-  const { data: tasks, isLoading: isLoadingTasks } = useTasksBySprintId(
-    activeSprint?.id ?? '',
-  )
+  const { data: activeSprint, isLoading: isLoadingSprint } = activeSprintQuery
+  const tasksQuery = useTasksBySprintId(activeSprint?.id ?? '')
+  const { data: tasks, isLoading: isLoadingTasks } = tasksQuery
   const { data: projectTasks } = useTasksByProjectId(projectId)
   const { mutate: updateTaskStatus } = useUpdateTaskStatus()
   const { data: epics } = useAllEpics()
@@ -91,6 +93,9 @@ export function useBoardPage() {
   return {
     isLoading: isLoadingProjects || isLoadingSprint,
     isLoadingTasks,
+    hasError: hasLoadError(projectsQuery, activeSprintQuery, tasksQuery),
+    retry: () =>
+      retryFailedQueries(projectsQuery, activeSprintQuery, tasksQuery),
     project,
     projectTasks: projectTasks ?? [],
     activeSprint: activeSprint ?? null,

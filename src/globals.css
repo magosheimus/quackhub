@@ -27,7 +27,7 @@
   --border-strong: #64694a;
 
   /* Accent */
-  --accent:   #004e1e;
+  --accent: #004e1e;
   --on-accent: #f4f5e9;
 
   /* Signal */
@@ -145,19 +145,19 @@
 .cartucho-earth {
   --lcd-screen: #f1dca7;
   --lcd-ink: #3d2f22;
-  
+
   --bg-surface: #d9ae94;
   --bg-card: #f8ecd7;
   --bg-card-hover: #fff5df;
   --bg-selected: #d8dcad;
   --bg-input: #fff3db;
-  
+
   --text-primary: var(--lcd-ink);
   --text-muted: #705537;
-  
+
   --border: #b99a6b;
   --border-strong: #896c46;
-  
+
   --accent: #59632d;
   --on-accent: #fff5dc;
 
@@ -232,10 +232,13 @@
     0 0 16px color-mix(in oklch, var(--glow-color) 35%, transparent),
     0 0 32px color-mix(in oklch, var(--glow-color) 15%, transparent);
 
-  --glow-filter:
-    drop-shadow(0 0 1px color-mix(in oklch, var(--glow-color) 70%, transparent))
+  --glow-filter: drop-shadow(
+      0 0 1px color-mix(in oklch, var(--glow-color) 70%, transparent)
+    )
     drop-shadow(0 0 5px color-mix(in oklch, var(--glow-color) 45%, transparent))
-    drop-shadow(0 0 12px color-mix(in oklch, var(--glow-color) 25%, transparent));
+    drop-shadow(
+      0 0 12px color-mix(in oklch, var(--glow-color) 25%, transparent)
+    );
 }
 
 .glow-on:not(.theme-dark) {
@@ -244,8 +247,9 @@
     0 0 3px color-mix(in oklch, var(--accent) 35%, transparent),
     0 0 8px color-mix(in oklch, var(--accent) 15%, transparent);
 
-  --glow-filter:
-    drop-shadow(2px 2px 0 color-mix(in oklch, var(--lcd-ink) 20%, transparent))
+  --glow-filter: drop-shadow(
+      2px 2px 0 color-mix(in oklch, var(--lcd-ink) 20%, transparent)
+    )
     drop-shadow(0 0 3px color-mix(in oklch, var(--accent) 30%, transparent));
 }
 

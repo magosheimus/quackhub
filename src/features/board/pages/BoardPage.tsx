@@ -1,3 +1,4 @@
+import { ErrorState } from '@/components/ui/error-state'
 import { DragDropContext } from '@hello-pangea/dnd'
 import { BoardColumn } from '@/features/board/components/BoardColumn'
 import { BoardEmptyState } from '@/features/board/components/BoardEmptyState'
@@ -13,6 +14,8 @@ export function BoardPage() {
   const {
     isLoading,
     isLoadingTasks,
+    hasError,
+    retry,
     project,
     projectTasks,
     activeSprint,
@@ -29,6 +32,10 @@ export function BoardPage() {
 
   if (isLoading) {
     return <LoadingText />
+  }
+
+  if (hasError) {
+    return <ErrorState onRetry={retry} />
   }
 
   if (project) {

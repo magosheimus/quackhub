@@ -1,3 +1,4 @@
+import { ConfirmDialog } from '@/components/ui/confirm-dialog'
 import { useState } from 'react'
 import {
   Dialog,
@@ -90,10 +91,7 @@ function ProjectEditForm({ project, onClose }: ProjectEditFormProps) {
     )
   }
 
-  function handleArchive() {
-    if (!window.confirm(PROJECTS_TEXTS.confirmArchive(project.name))) return
-    archiveProject(project.id, { onSuccess: onClose })
-  }
+  const [isConfirmingArchive, setIsConfirmingArchive] = useState(false)
 
   return (
     <>
@@ -180,7 +178,7 @@ function ProjectEditForm({ project, onClose }: ProjectEditFormProps) {
       <DialogFooter className="sm:justify-between">
         <Button
           variant="outline"
-          onClick={handleArchive}
+          onClick={() => setIsConfirmingArchive(true)}
           disabled={isArchiving}
           className="text-danger border-danger"
         >
@@ -198,6 +196,15 @@ function ProjectEditForm({ project, onClose }: ProjectEditFormProps) {
           </Button>
         </div>
       </DialogFooter>
+
+      <ConfirmDialog
+        open={isConfirmingArchive}
+        onOpenChange={setIsConfirmingArchive}
+        title={PROJECTS_TEXTS.archiveTitle}
+        description={PROJECTS_TEXTS.confirmArchive(project.name)}
+        confirmLabel={PROJECTS_TEXTS.archive}
+        onConfirm={() => archiveProject(project.id, { onSuccess: onClose })}
+      />
     </>
   )
 }
