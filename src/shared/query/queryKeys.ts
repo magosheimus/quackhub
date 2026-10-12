@@ -1,4 +1,8 @@
 export const queryKeys = {
+  auth: {
+    emailLink: (tokenHash: string) =>
+      ['auth', 'email-link', tokenHash] as const,
+  },
   tasks: {
     root: ['tasks'] as const,
     detail: (taskId: string) => ['tasks', 'detail', taskId] as const,
