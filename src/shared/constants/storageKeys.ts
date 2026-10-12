@@ -2,7 +2,6 @@ export const STORAGE_KEYS = {
   queryCache: 'quackhub-query-cache',
   settings: 'quackhub-settings',
   draftsQueue: 'quackhub-drafts-queue',
-  draftsChecked: 'quackhub-drafts-checked',
 } as const
 
 // Dados do usuário logado: apagados ao sair. As configurações ficam,
@@ -10,5 +9,4 @@ export const STORAGE_KEYS = {
 export const USER_DATA_KEYS = [
   STORAGE_KEYS.queryCache,
   STORAGE_KEYS.draftsQueue,
-  STORAGE_KEYS.draftsChecked,
 ] as const

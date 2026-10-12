@@ -85,3 +85,14 @@ export async function updateDraftContent(
     .eq('id', id)
   if (error) throw new Error(`Falha ao editar rascunho: ${error.message}`)
 }
+
+export async function setDraftChecked(
+  id: string,
+  checked: boolean,
+): Promise<void> {
+  const { error } = await supabase
+    .from('drafts_items')
+    .update({ checked_at: checked ? new Date().toISOString() : null })
+    .eq('id', id)
+  if (error) throw new Error(`Falha ao marcar rascunho: ${error.message}`)
+}

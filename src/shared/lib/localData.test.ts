@@ -23,14 +23,13 @@ describe('dados locais', () => {
     queryClient.setQueryData(['tasks'], [{ id: 't1' }])
   })
 
-  it('limpar cache preserva fila offline, marcados e configurações', () => {
+  it('limpar cache preserva fila offline e configurações', () => {
     clearQueryCache(queryClient)
 
     expect(queryClient.getQueryData(['tasks'])).toBeUndefined()
     expect(storedKeys()).toEqual([
       STORAGE_KEYS.settings,
       STORAGE_KEYS.draftsQueue,
-      STORAGE_KEYS.draftsChecked,
     ])
   })
 
