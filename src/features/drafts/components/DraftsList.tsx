@@ -13,32 +13,13 @@ import {
 import { useDraftsItems } from '@/features/drafts/hooks/useDraftsItems'
 import { useTriageDraft } from '@/features/drafts/hooks/useTriageDraft'
 import { useUpdateDraft } from '@/features/drafts/hooks/useUpdateDraft'
+import { useToggleDraftChecked } from '@/features/drafts/hooks/useToggleDraftChecked'
 import { CardCreateModal } from '@/features/tasks/components/CardCreateModal'
 import { LoadingText } from '@/components/ui/loading-text'
 import type { DraftsItem } from '@/shared/types/entities'
 import { DRAFTS_TEXTS } from '@/features/drafts/constants/texts'
-import { STORAGE_KEYS } from '@/shared/constants/storageKeys'
 import { EmptyMessage } from '@/components/ui/empty-message'
 import { Panel } from '@/components/ui/panel'
-
-const CHECKED_KEY = STORAGE_KEYS.draftsChecked
-
-function loadCheckedIds(): Set<string> {
-  try {
-    const raw = localStorage.getItem(CHECKED_KEY)
-    return raw ? new Set(JSON.parse(raw)) : new Set()
-  } catch {
-    return new Set()
-  }
-}
-
-function saveCheckedIds(ids: Set<string>) {
-  try {
-    localStorage.setItem(CHECKED_KEY, JSON.stringify([...ids]))
-  } catch {
-    // ignore
-  }
-}
 
 type DraftEditInputProps = {
   value: string
@@ -85,24 +66,12 @@ export function DraftsList() {
   const [editing, setEditing] = useState<{ id: string; text: string } | null>(
     null,
   )
-  const [checkedIds, setCheckedIds] = useState<Set<string>>(() =>
-    loadCheckedIds(),
-  )
+  const { mutate: toggleChecked } = useToggleDraftChecked()
 
   function handleDiscard(item: DraftsItem) {
     triage({
       id: item.id,
       decision: { triaged_to: 'discarded', triaged_task_id: null },
-    })
-  }
-
-  function toggleChecked(id: string) {
-    setCheckedIds((prev) => {
-      const next = new Set(prev)
-      if (next.has(id)) next.delete(id)
-      else next.add(id)
-      saveCheckedIds(next)
-      return next
     })
   }
 
@@ -138,8 +107,10 @@ export function DraftsList() {
           className="flex items-center gap-3 text-base hover:bg-card-hover"
         >
           <Checkbox
-            checked={checkedIds.has(item.id)}
-            onCheckedChange={() => toggleChecked(item.id)}
+            checked={item.checked_at !== null}
+            onCheckedChange={(checked) =>
+              toggleChecked({ id: item.id, checked: checked === true })
+            }
             aria-label={DRAFTS_TEXTS.pendingItem}
           />
           {editing?.id === item.id ? (
@@ -152,7 +123,7 @@ export function DraftsList() {
           ) : (
             <span
               className={
-                checkedIds.has(item.id)
+                item.checked_at !== null
                   ? 'min-w-0 flex-1 wrap-break-word text-fg-muted line-through'
                   : 'min-w-0 flex-1 wrap-break-word text-fg'
               }

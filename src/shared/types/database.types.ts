@@ -16,6 +16,7 @@ export type Database = {
     Tables: {
       drafts_items: {
         Row: {
+          checked_at: string | null
           content: string
           created_at: string | null
           id: string
@@ -25,6 +26,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          checked_at?: string | null
           content: string
           created_at?: string | null
           id?: string
@@ -34,6 +36,7 @@ export type Database = {
           user_id?: string
         }
         Update: {
+          checked_at?: string | null
           content?: string
           created_at?: string | null
           id?: string
