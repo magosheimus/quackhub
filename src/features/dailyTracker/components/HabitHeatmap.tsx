@@ -1,17 +1,24 @@
 import type { CSSProperties } from 'react'
 import { cn } from '@/shared/lib/utils'
 import type {
+  DayWindowNav,
   HeatCell,
   HeatDay,
   HeatRow,
 } from '@/features/dailyTracker/hooks/useDailyTrackerPage'
 import { DAILY_TRACKER_TEXTS } from '@/features/dailyTracker/constants/texts'
 import { HabitIcon } from '@/features/dailyTracker/components/HabitIcon'
-import { IconCheck } from '@/shared/lib/icons'
+import { Button } from '@/components/ui/button'
+import {
+  IconCheck,
+  IconChevronLeft,
+  IconChevronRight,
+} from '@/shared/lib/icons'
 
 type HabitHeatmapProps = {
   days: HeatDay[]
   rows: HeatRow[]
+  dayWindow: DayWindowNav
 }
 
 const CELL = 'flex size-7 items-center justify-center rounded-sm text-xs'
@@ -66,6 +73,36 @@ function Cell({ cell }: { cell: HeatCell }) {
   )
 }
 
+function WindowNav({ dayWindow }: { dayWindow: DayWindowNav }) {
+  return (
+    <div className="flex items-center gap-2">
+      <Button
+        type="button"
+        variant="outline"
+        size="icon-sm"
+        onClick={dayWindow.goBack}
+        disabled={!dayWindow.canGoBack}
+        aria-label={DAILY_TRACKER_TEXTS.previousDays}
+        title={DAILY_TRACKER_TEXTS.previousDays}
+      >
+        <IconChevronLeft size={14} aria-hidden="true" />
+      </Button>
+      <span className="text-caption">{dayWindow.rangeLabel}</span>
+      <Button
+        type="button"
+        variant="outline"
+        size="icon-sm"
+        onClick={dayWindow.goForward}
+        disabled={!dayWindow.canGoForward}
+        aria-label={DAILY_TRACKER_TEXTS.nextDays}
+        title={DAILY_TRACKER_TEXTS.nextDays}
+      >
+        <IconChevronRight size={14} aria-hidden="true" />
+      </Button>
+    </div>
+  )
+}
+
 function Legend() {
   const items = [
     {
@@ -97,9 +134,10 @@ function Legend() {
   )
 }
 
-export function HabitHeatmap({ days, rows }: HabitHeatmapProps) {
+export function HabitHeatmap({ days, rows, dayWindow }: HabitHeatmapProps) {
   return (
     <div className="flex flex-col gap-3">
+      {dayWindow.isWindowed && <WindowNav dayWindow={dayWindow} />}
       <div className="overflow-x-auto">
         <table className="border-separate border-spacing-1">
           <thead>

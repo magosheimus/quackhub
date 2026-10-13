@@ -23,6 +23,9 @@ export const DAILY_TRACKER_TEXTS = {
   heatmapTitle: (isSprint: boolean) =>
     isSprint ? 'Hábitos nesta sprint' : 'Hábitos nesta semana',
   doneColumn: 'Feitos',
+  previousDays: 'Dias anteriores',
+  nextDays: 'Próximos dias',
+  visibleRange: (start: string, end: string) => `${start} – ${end}`,
   legendEmpty: 'Sem registro',
   legendOff: 'Fora da agenda',
   legendPartial: 'Parcial',
@@ -87,7 +90,9 @@ export const DAILY_TRACKER_TEXTS = {
   moodRow: (isSprint: boolean) =>
     isSprint ? 'Humor na sprint' : 'Humor na semana',
   noMood: 'sem registro',
-  moodOf: (day: string, mood: string) => `${day}: ${mood}`,
+  moodOf: (day: string, mood: string, comment: string | null) =>
+    comment ? `${day}: ${mood} — ${comment}` : `${day}: ${mood}`,
+  saveComment: 'Salvar comentário',
 } as const
 
 export const WEEKDAY_INITIALS = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'] as const

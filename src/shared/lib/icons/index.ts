@@ -68,6 +68,7 @@ import { RobotFaceSadSharp } from 'pixelarticons/react/RobotFaceSadSharp'
 import { RobotFaceSharp } from 'pixelarticons/react/RobotFaceSharp'
 import { RobotSharp } from 'pixelarticons/react/RobotSharp'
 import { Scale } from 'pixelarticons/react/Scale'
+import { Send } from 'pixelarticons/react/Send'
 import { SettingsCog } from 'pixelarticons/react/SettingsCog'
 import { Sofa } from 'pixelarticons/react/Sofa'
 import { Spray } from 'pixelarticons/react/Spray'
@@ -153,6 +154,7 @@ export const IconPlusBoxSharp = createIcon(PlusBoxSharp)
 export const IconPotion = createIcon(Potion)
 export const IconRefresh = createIcon(RefreshSolid)
 export const IconScale = createIcon(Scale)
+export const IconSend = createIcon(Send)
 export const IconSettings = createIcon(SettingsCog)
 export const IconSofa = createIcon(Sofa)
 export const IconSpray = createIcon(Spray)

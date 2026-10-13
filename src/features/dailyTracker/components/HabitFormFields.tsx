@@ -45,15 +45,26 @@ export function HabitFormFields({
         />
       </label>
 
-      <HabitAppearancePicker
-        idPrefix={idPrefix}
-        icon={values.icon}
-        color={values.color}
-        onIconChange={(icon) => onChange({ icon })}
-        onColorChange={(color) => onChange({ color })}
-      />
+      <div className="grid grid-cols-[minmax(0,2fr)_minmax(0,1fr)_minmax(0,1fr)] items-end gap-3">
+        <div className="flex min-w-0 flex-col gap-1.5">
+          <span className="text-caption">{DAILY_TRACKER_TEXTS.weekdays}</span>
+          <WeekdayPicker
+            order={weekdayOrder}
+            selected={values.weekdays}
+            onToggle={onToggleWeekday}
+            label={DAILY_TRACKER_TEXTS.weekdays}
+          />
+        </div>
+        <HabitAppearancePicker
+          idPrefix={idPrefix}
+          icon={values.icon}
+          color={values.color}
+          onIconChange={(icon) => onChange({ icon })}
+          onColorChange={(color) => onChange({ color })}
+        />
+      </div>
 
-      <div className="grid grid-cols-[minmax(0,1fr)_6rem] gap-3">
+      <div className="grid grid-cols-[minmax(0,1fr)_6rem_6rem] items-end gap-3">
         <div className="flex min-w-0 flex-col gap-1.5">
           <span id={`${idPrefix}-type`} className="text-caption">
             {DAILY_TRACKER_TEXTS.habitType}
@@ -93,23 +104,6 @@ export function HabitFormFields({
             disabled={!isCounter}
           />
         </label>
-        {isTypeLocked && (
-          <span className="col-span-2 text-caption">
-            {DAILY_TRACKER_TEXTS.typeLockedHint}
-          </span>
-        )}
-      </div>
-
-      <div className="grid grid-cols-[minmax(0,1fr)_6rem] items-end gap-3">
-        <div className="flex min-w-0 flex-col gap-1.5">
-          <span className="text-caption">{DAILY_TRACKER_TEXTS.weekdays}</span>
-          <WeekdayPicker
-            order={weekdayOrder}
-            selected={values.weekdays}
-            onToggle={onToggleWeekday}
-            label={DAILY_TRACKER_TEXTS.weekdays}
-          />
-        </div>
         <label className="flex min-w-0 flex-col gap-1.5">
           <span className="text-caption">{DAILY_TRACKER_TEXTS.duration}</span>
           <Input
@@ -120,6 +114,11 @@ export function HabitFormFields({
             placeholder={DAILY_TRACKER_TEXTS.durationPlaceholder}
           />
         </label>
+        {isTypeLocked && (
+          <span className="col-span-3 text-caption">
+            {DAILY_TRACKER_TEXTS.typeLockedHint}
+          </span>
+        )}
       </div>
     </div>
   )

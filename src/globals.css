@@ -530,6 +530,17 @@ select {
     inset -1px -1px 0 color-mix(in srgb, var(--lcd-screen) 40%, transparent);
 }
 
+/* Campo editável que, fora de edição, parece texto (título do card, comentário do dia) */
+.input-static {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.input-static:hover {
+  border-color: var(--border);
+}
+
 input:autofill,
 input:-webkit-autofill {
   -webkit-text-fill-color: var(--text-primary);
