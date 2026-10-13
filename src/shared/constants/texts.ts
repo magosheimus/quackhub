@@ -1,3 +1,5 @@
+import type { PaletteColor } from '@/shared/lib/palette'
+
 // Textos reaproveitados por várias features
 export const COMMON_TEXTS = {
   brand: 'QUACKHUB',
@@ -29,3 +31,12 @@ export const COMMON_TEXTS = {
   progressOf: (name: string) => `Progresso de ${name}`,
   dayCount: (days: number) => (days === 1 ? '1 dia' : `${days} dias`),
 } as const
+
+export const PALETTE_COLOR_LABELS: Record<PaletteColor, string> = {
+  amber: 'Âmbar',
+  sage: 'Sálvia',
+  blue: 'Azul',
+  rose: 'Rosa',
+  lavender: 'Lavanda',
+  sand: 'Areia',
+}

@@ -19,14 +19,12 @@ import {
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { useCreateProject } from '@/features/projects/hooks/useCreateProject'
-import {
-  isStudyProject,
-  PROJECT_COLORS,
-  type ProjectColor,
-} from '@/features/projects/lib/project'
+import { isStudyProject } from '@/features/projects/lib/project'
 import { isProjectType } from '@/shared/lib/enums'
 import type { ProjectType } from '@/shared/types/entities'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
+import { ColorSwatchPicker } from '@/components/ui/color-swatch-picker'
+import { DEFAULT_PALETTE_COLOR, type PaletteColor } from '@/shared/lib/palette'
 import {
   PROJECTS_TEXTS,
   PROJECT_TYPE_LABELS,
@@ -43,7 +41,7 @@ export function ProjectCreateModal({
   const [name, setName] = useState('')
   const [prefix, setPrefix] = useState('')
   const [type, setType] = useState<ProjectType>('general')
-  const [color, setColor] = useState<ProjectColor>(PROJECT_COLORS[0])
+  const [color, setColor] = useState<PaletteColor>(DEFAULT_PALETTE_COLOR)
   const nameInputRef = useRef<HTMLInputElement>(null)
   const { mutate: createProject, isPending } = useCreateProject()
 
@@ -54,7 +52,7 @@ export function ProjectCreateModal({
   function resetForm() {
     setName('')
     setType('general')
-    setColor(PROJECT_COLORS[0])
+    setColor(DEFAULT_PALETTE_COLOR)
     setPrefix('')
   }
 
@@ -160,26 +158,11 @@ export function ProjectCreateModal({
               <span id="project-color-label" className="text-caption">
                 {PROJECTS_TEXTS.color}
               </span>
-              <div
-                className="flex h-8 items-center gap-2"
-                role="group"
+              <ColorSwatchPicker
+                value={color}
+                onChange={setColor}
                 aria-labelledby="project-color-label"
-              >
-                {PROJECT_COLORS.map((c) => (
-                  <button
-                    key={c}
-                    type="button"
-                    onClick={() => setColor(c)}
-                    className="size-6 rounded-full transition-transform"
-                    style={{
-                      backgroundColor: c,
-                      outline: color === c ? '2px solid var(--accent)' : 'none',
-                      outlineOffset: 2,
-                    }}
-                    aria-label={COMMON_TEXTS.selectColor(c)}
-                  />
-                ))}
-              </div>
+              />
             </div>
           </div>
 

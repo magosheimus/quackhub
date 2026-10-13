@@ -18,16 +18,18 @@ import { useProjects } from '@/features/projects/hooks/useProjects'
 import { useEpics } from '@/features/epics/hooks/useEpics'
 import { useCreateEpic } from '@/features/epics/hooks/useCreateEpic'
 import { useUpdateEpic } from '@/features/epics/hooks/useUpdateEpic'
-import {
-  PROJECT_COLORS,
-  type ProjectColor,
-} from '@/features/projects/lib/project'
 import { LoadingText } from '@/components/ui/loading-text'
 import { ConfirmDialog } from '@/components/ui/confirm-dialog'
 import { useSoftDeleteEpic } from '@/features/epics/hooks/useSoftDeleteEpic'
 import { IconTrash } from '@/shared/lib/icons'
 import type { Epic } from '@/shared/types/entities'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
+import { ColorSwatchPicker } from '@/components/ui/color-swatch-picker'
+import {
+  DEFAULT_PALETTE_COLOR,
+  resolvePaletteColor,
+  type PaletteColor,
+} from '@/shared/lib/palette'
 import { EPICS_TEXTS } from '@/features/epics/constants/texts'
 import { EmptyMessage } from '@/components/ui/empty-message'
 
@@ -46,7 +48,7 @@ export function EpicManageModal({
   const [projectId, setProjectId] = useState<string | null>(initialProjectId)
   const { data: epics, isLoading } = useEpics(projectId ?? '')
   const [newEpicName, setNewEpicName] = useState('')
-  const [color, setColor] = useState<ProjectColor>(PROJECT_COLORS[0])
+  const [color, setColor] = useState<PaletteColor>(DEFAULT_PALETTE_COLOR)
   const { mutate: createEpic, isPending: isCreating } = useCreateEpic()
 
   function handleCreate() {
@@ -93,26 +95,11 @@ export function EpicManageModal({
         )}
 
         <div className="flex flex-col gap-2 pt-2 border-t border-border">
-          <div
-            className="flex gap-2"
-            role="group"
+          <ColorSwatchPicker
+            value={color}
+            onChange={setColor}
             aria-label={EPICS_TEXTS.colorLabel}
-          >
-            {PROJECT_COLORS.map((c) => (
-              <button
-                key={c}
-                type="button"
-                onClick={() => setColor(c)}
-                className="size-6 rounded-full transition-transform"
-                style={{
-                  backgroundColor: c,
-                  outline: color === c ? '2px solid var(--accent)' : 'none',
-                  outlineOffset: 2,
-                }}
-                aria-label={COMMON_TEXTS.selectColor(c)}
-              />
-            ))}
-          </div>
+          />
           <div className="flex gap-2">
             <Input
               value={newEpicName}
@@ -163,7 +150,9 @@ function EpicRow({ epic }: { epic: Epic }) {
       />
       <span
         className="size-3 shrink-0 rounded-full"
-        style={{ backgroundColor: epic.color ?? 'transparent' }}
+        style={{
+          backgroundColor: resolvePaletteColor(epic.color, 'transparent'),
+        }}
         aria-hidden="true"
       />
       <Button

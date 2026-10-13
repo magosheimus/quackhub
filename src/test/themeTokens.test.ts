@@ -8,11 +8,12 @@ const sourceFiles = import.meta.glob<string>('/src/**/*.{ts,tsx}', {
   eager: true,
 })
 
-// Variáveis definidas em tempo de execução pelos componentes do Base UI
+// Variáveis definidas em tempo de execução (Base UI ou style inline dos componentes)
 const RUNTIME_VARIABLES = new Set([
   '--anchor-width',
   '--available-height',
   '--transform-origin',
+  '--habit',
 ])
 
 function definedVariables(): Set<string> {

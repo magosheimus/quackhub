@@ -80,4 +80,13 @@ export const queryKeys = {
     srsByTag: (projectId?: string | null) =>
       ['analytics', 'srs-by-tag', projectId ?? 'all'] as const,
   },
+  dailyTracker: {
+    root: ['daily-tracker'] as const,
+    habits: ['daily-tracker', 'habits'] as const,
+    allHabits: ['daily-tracker', 'all-habits'] as const,
+    habitLogs: (start: string, end: string) =>
+      ['daily-tracker', 'habit-logs', start, end] as const,
+    dailyLogs: (start: string, end: string) =>
+      ['daily-tracker', 'daily-logs', start, end] as const,
+  },
 }

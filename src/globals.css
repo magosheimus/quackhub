@@ -35,6 +35,14 @@
   --signal-warning: #765000;
   --signal-success: #315e35;
 
+  /* Paleta de categorias: oliva, caramelo e terracota */
+  --palette-amber: #bc6c25;
+  --palette-sage: #606c38;
+  --palette-blue: #2f6f73;
+  --palette-rose: #9b3d3d;
+  --palette-lavender: #7d4f86;
+  --palette-sand: #c4952f;
+
   /* Elevation */
   --elevation-none: var(--bg-card);
   --elevation-active: var(--bg-selected);
@@ -115,6 +123,14 @@
   --signal-danger: #a31a08;
   --signal-warning: #805100;
   --signal-success: #597b02;
+
+  /* Paleta de categorias: tons de âmbar */
+  --palette-amber: #cc5500;
+  --palette-sage: #8f7f2a;
+  --palette-blue: #7b6060;
+  --palette-rose: #c0213f;
+  --palette-lavender: #a66e58;
+  --palette-sand: #b8960c;
 }
 
 .cartucho-slate {
@@ -140,6 +156,14 @@
   --signal-danger: #a11a45;
   --signal-warning: #8b460b;
   --signal-success: #00634e;
+
+  /* Paleta de categorias: slate moderno */
+  --palette-amber: #cf5c36;
+  --palette-sage: #6b8e23;
+  --palette-blue: #5f86a3;
+  --palette-rose: #a35d6a;
+  --palette-lavender: #7a7397;
+  --palette-sand: #708090;
 }
 
 .cartucho-earth {
@@ -165,6 +189,14 @@
   --signal-danger: #a73318;
   --signal-warning: #80520a;
   --signal-success: #1d6e1d;
+
+  /* Paleta de categorias: deserto (the earth series) */
+  --palette-amber: #c65d3b;
+  --palette-sage: #9db089;
+  --palette-blue: #3e5c76;
+  --palette-rose: #c08081;
+  --palette-lavender: #8f5b3c;
+  --palette-sand: #c9a66c;
 }
 
 .cartucho-sage-dark {
@@ -192,6 +224,14 @@
   --signal-danger: #ff8567;
   --signal-warning: #ebbd58;
   --signal-success: #5abe5c;
+
+  /* Paleta de categorias: rosa vinho, sálvia e cáqui do musgo */
+  --palette-amber: #c2a868;
+  --palette-sage: #95ae97;
+  --palette-blue: #7f9ea8;
+  --palette-rose: #be5f75;
+  --palette-lavender: #d391a1;
+  --palette-sand: #afb28e;
 }
 
 .cartucho-amber-dark {
@@ -219,6 +259,14 @@
   --signal-danger: #ff9974;
   --signal-warning: #f2c362;
   --signal-success: #b7d77b;
+
+  /* Paleta de categorias no estilo gruvbox dark */
+  --palette-amber: #fe8019;
+  --palette-sage: #b8bb26;
+  --palette-blue: #83a598;
+  --palette-rose: #fb4934;
+  --palette-lavender: #d3869b;
+  --palette-sand: #bdae93;
 }
 
 .scanlines-on {

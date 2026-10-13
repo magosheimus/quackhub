@@ -3,6 +3,7 @@ import { PageTitle } from '@/components/ui/page-title'
 import { AnalyticsScopeSelect } from '@/features/analytics/components/AnalyticsScopeSelect'
 import { StudySection } from '@/features/analytics/components/StudySection'
 import { GeneralSection } from '@/features/analytics/components/GeneralSection'
+import { HabitsSection } from '@/features/analytics/components/HabitsSection'
 import { useAnalyticsPage } from '@/features/analytics/hooks/useAnalyticsPage'
 import { ANALYTICS_TEXTS } from '@/features/analytics/constants/texts'
 import { EmptyMessage } from '@/components/ui/empty-message'
@@ -22,6 +23,8 @@ export function AnalyticsPage() {
     accuracyPercent,
     accuracyChartData,
     reviewsByEpic,
+    habitSummary,
+    habitTrend,
   } = useAnalyticsPage()
 
   return (
@@ -51,6 +54,11 @@ export function AnalyticsPage() {
             accuracyPercent={accuracyPercent}
             accuracyChartData={accuracyChartData}
             epicData={reviewsByEpic}
+          />
+          <HabitsSection
+            isAll={isAllScope}
+            summary={habitSummary}
+            trend={habitTrend}
           />
         </>
       )}

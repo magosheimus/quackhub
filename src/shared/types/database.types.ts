@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      daily_logs: {
+        Row: {
+          comment: string | null
+          created_at: string
+          date: string
+          id: string
+          mood: number
+          user_id: string
+        }
+        Insert: {
+          comment?: string | null
+          created_at?: string
+          date: string
+          id?: string
+          mood: number
+          user_id?: string
+        }
+        Update: {
+          comment?: string | null
+          created_at?: string
+          date?: string
+          id?: string
+          mood?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
       drafts_items: {
         Row: {
           checked_at: string | null
@@ -92,6 +119,83 @@ export type Database = {
             referencedColumns: ['id']
           },
         ]
+      }
+      habit_logs: {
+        Row: {
+          created_at: string
+          date: string
+          habit_id: string
+          id: string
+          user_id: string
+          value: number
+        }
+        Insert: {
+          created_at?: string
+          date: string
+          habit_id: string
+          id?: string
+          user_id?: string
+          value?: number
+        }
+        Update: {
+          created_at?: string
+          date?: string
+          habit_id?: string
+          id?: string
+          user_id?: string
+          value?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'habit_logs_habit_id_fkey'
+            columns: ['habit_id']
+            isOneToOne: false
+            referencedRelation: 'habits'
+            referencedColumns: ['id']
+          },
+        ]
+      }
+      habits: {
+        Row: {
+          active: boolean
+          color: string | null
+          created_at: string
+          duration_minutes: number | null
+          goal: number | null
+          icon: string
+          id: string
+          name: string
+          type: Database['public']['Enums']['habit_type']
+          user_id: string
+          weekdays: number[] | null
+        }
+        Insert: {
+          active?: boolean
+          color?: string | null
+          created_at?: string
+          duration_minutes?: number | null
+          goal?: number | null
+          icon?: string
+          id?: string
+          name: string
+          type: Database['public']['Enums']['habit_type']
+          user_id?: string
+          weekdays?: number[] | null
+        }
+        Update: {
+          active?: boolean
+          color?: string | null
+          created_at?: string
+          duration_minutes?: number | null
+          goal?: number | null
+          icon?: string
+          id?: string
+          name?: string
+          type?: Database['public']['Enums']['habit_type']
+          user_id?: string
+          weekdays?: number[] | null
+        }
+        Relationships: []
       }
       projects: {
         Row: {
@@ -594,6 +698,7 @@ export type Database = {
     Enums: {
       activity_event_type: 'status_change' | 'sprint_change'
       draft_triage_target: 'task' | 'project' | 'habit' | 'discarded' | 'done'
+      habit_type: 'boolean' | 'counter'
       project_type: 'general' | 'study'
       recurrence_type: 'daily' | 'weekly' | 'monthly' | 'yearly'
       sprint_status: 'planned' | 'active' | 'closed'
@@ -735,6 +840,7 @@ export const Constants = {
     Enums: {
       activity_event_type: ['status_change', 'sprint_change'],
       draft_triage_target: ['task', 'project', 'habit', 'discarded', 'done'],
+      habit_type: ['boolean', 'counter'],
       project_type: ['general', 'study'],
       recurrence_type: ['daily', 'weekly', 'monthly', 'yearly'],
       sprint_status: ['planned', 'active', 'closed'],

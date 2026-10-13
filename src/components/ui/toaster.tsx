@@ -1,5 +1,5 @@
 import { useSyncExternalStore } from 'react'
-import { IconClose } from '@/shared/lib/icons'
+import { IconClose, IconWarning } from '@/shared/lib/icons'
 import { dismissToast, getToasts, subscribeToasts } from '@/shared/lib/toast'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
 
@@ -16,14 +16,15 @@ export function Toaster() {
         <div
           key={toast.id}
           role="alert"
-          className="flex items-center gap-3 border border-danger bg-surface p-3 text-sm text-fg"
+          className="flex items-center gap-3 border border-danger bg-danger p-3 text-sm text-on-accent"
         >
+          <IconWarning size={14} aria-hidden="true" className="shrink-0" />
           <span>{toast.message}</span>
           <button
             type="button"
             aria-label={COMMON_TEXTS.close}
             onClick={() => dismissToast(toast.id)}
-            className="text-fg-muted"
+            className="opacity-80 hover:opacity-100"
           >
             <IconClose size={12} />
           </button>

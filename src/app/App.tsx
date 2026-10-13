@@ -26,6 +26,7 @@ import { AnalyticsPage } from '@/features/analytics/pages/AnalyticsPage'
 import { Toaster } from '@/components/ui/toaster'
 import { PrivacyPage } from '@/features/privacy/pages/PrivacyPage'
 import { PRIVACY_PATH } from '@/features/privacy/constants/paths'
+import { DailyTrackerPage } from '@/features/dailyTracker/pages/DailyTrackerPage'
 
 function Layout() {
   return (
@@ -49,6 +50,7 @@ function App() {
             <Route path="/" element={<Navigate to={HOME_PATH} replace />} />
             <Route path="/inbox" element={<InboxPage />} />
             <Route path="/rascunhos" element={<DraftsPage />} />
+            <Route path="/diario" element={<DailyTrackerPage />} />
             <Route path="/board" element={<BoardPage />} />
             <Route path="/backlog" element={<BacklogPage />} />
             <Route path="/configuracoes" element={<SettingsPage />} />
