@@ -283,6 +283,51 @@ export function parseGoal(text: string): number | null {
   return goal !== null && goal >= 1 ? goal : null
 }
 
+const MAX_FULL_PERIOD_DAYS = 21
+export const DAY_WINDOW_SIZE = 14
+const DAY_WINDOW_STEP = 7
+const DAYS_AFTER_TODAY = 3
+
+export type DayWindow = {
+  days: string[]
+  isWindowed: boolean
+  canGoBack: boolean
+  canGoForward: boolean
+}
+
+function clampIndex(index: number, min: number, max: number): number {
+  return Math.min(Math.max(index, min), max)
+}
+
+export function getDayWindow(
+  days: string[],
+  today: string,
+  stepsBack: number,
+): DayWindow {
+  if (days.length <= MAX_FULL_PERIOD_DAYS) {
+    return { days, isWindowed: false, canGoBack: false, canGoForward: false }
+  }
+  const lastIndex = days.length - 1
+  const firstEnd = DAY_WINDOW_SIZE - 1
+  const todayIndex = days.filter((date) => date <= today).length - 1
+  const defaultEnd = clampIndex(
+    todayIndex + DAYS_AFTER_TODAY,
+    firstEnd,
+    lastIndex,
+  )
+  const end = clampIndex(
+    defaultEnd - stepsBack * DAY_WINDOW_STEP,
+    firstEnd,
+    lastIndex,
+  )
+  return {
+    days: days.slice(end - firstEnd, end + 1),
+    isWindowed: true,
+    canGoBack: end > firstEnd,
+    canGoForward: end < lastIndex,
+  }
+}
+
 export type TrackerPeriod = {
   kind: 'sprint' | 'week'
   name: string

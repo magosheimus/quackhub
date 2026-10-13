@@ -55,7 +55,7 @@ export function CardPageHeader({
             className={`h-8 rounded-md px-2 py-0 font-heading text-3xl leading-tight text-fg outline-none ${
               isEditingTitle
                 ? 'border border-border bg-transparent shadow-[inset_1px_1px_2px_color-mix(in_srgb,var(--lcd-ink)_20%,transparent),inset_-1px_-1px_0_color-mix(in_srgb,var(--lcd-screen)_40%,transparent)]'
-                : 'border! border-transparent! bg-transparent! shadow-none!'
+                : 'input-static'
             }`}
           />
         </div>

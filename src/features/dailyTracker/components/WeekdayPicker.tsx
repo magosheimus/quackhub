@@ -46,10 +46,7 @@ export function WeekdayPicker({
             aria-label={WEEKDAY_NAMES[weekday]}
             title={WEEKDAY_NAMES[weekday]}
             onClick={() => onToggle(weekday)}
-            className={cn(
-              className,
-              'h-8 max-w-8 min-w-6 flex-1 hover:border-accent',
-            )}
+            className={cn(className, 'h-8 min-w-6 flex-1 hover:border-accent')}
           >
             {WEEKDAY_INITIALS[weekday]}
           </button>

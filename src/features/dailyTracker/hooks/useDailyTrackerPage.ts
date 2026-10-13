@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useSettings } from '@/features/settings/hooks/useSettings'
 import { useSprints } from '@/features/sprints/hooks/useSprints'
 import { useHabits } from '@/features/dailyTracker/hooks/useHabits'
@@ -14,6 +15,7 @@ import {
   computeOverallRate,
   formatDuration,
   getCurrentTrackerPeriod,
+  getDayWindow,
   getHeatIntensity,
   getLogValue,
   getWeekdayOrder,
@@ -67,6 +69,15 @@ export type MoodDay = {
   label: string
 }
 
+export type DayWindowNav = {
+  isWindowed: boolean
+  rangeLabel: string
+  canGoBack: boolean
+  canGoForward: boolean
+  goBack: () => void
+  goForward: () => void
+}
+
 export type HeatRow = {
   habit: Habit
   color: string
@@ -114,6 +125,20 @@ export function useDailyTrackerPage() {
     settings.weekStartsOn,
   )
   const days = getDateRange(period.start, period.end)
+  const [windowStepsBack, setWindowStepsBack] = useState(0)
+  const dayWindow = getDayWindow(days, today, windowStepsBack)
+  const visibleDays = dayWindow.days
+  const dayWindowNav: DayWindowNav = {
+    isWindowed: dayWindow.isWindowed,
+    rangeLabel: DAILY_TRACKER_TEXTS.visibleRange(
+      formatDayMonth(visibleDays[0] ?? today),
+      formatDayMonth(visibleDays[visibleDays.length - 1] ?? today),
+    ),
+    canGoBack: dayWindow.canGoBack,
+    canGoForward: dayWindow.canGoForward,
+    goBack: () => setWindowStepsBack((steps) => steps + 1),
+    goForward: () => setWindowStepsBack((steps) => Math.max(steps - 1, 0)),
+  }
 
   const habitsQuery = useHabits()
   const logsQuery = useHabitLogs(period.start, period.end)
@@ -130,7 +155,7 @@ export function useDailyTrackerPage() {
   const { pending, done } = splitTodayHabits(habits, logs, today)
   const todayTotal = pending.length + done.length
 
-  const heatDays: HeatDay[] = days.map((date) => ({
+  const heatDays: HeatDay[] = visibleDays.map((date) => ({
     date,
     weekday: formatWeekdayInitials(date),
     dayNumber: date.slice(8),
@@ -144,7 +169,7 @@ export function useDailyTrackerPage() {
       color: resolveHabitColor(getHabitColor(habit)),
       daysCompleted: stats.daysCompleted,
       totalDays: stats.totalDays,
-      cells: days.map((date) => {
+      cells: visibleDays.map((date) => {
         const value = getLogValue(logs, habit.id, date)
         const isScheduled = isScheduledOn(habit, date)
         return {
@@ -164,15 +189,16 @@ export function useDailyTrackerPage() {
     }
   })
 
-  const moodDays: MoodDay[] = days.map((date) => {
-    const mood = dailyLogs.find((log) => log.date === date)?.mood
-    const level = isMoodLevel(mood) ? mood : null
+  const moodDays: MoodDay[] = visibleDays.map((date) => {
+    const log = dailyLogs.find((dailyLog) => dailyLog.date === date)
+    const level = isMoodLevel(log?.mood) ? log.mood : null
     return {
       date,
       level,
       label: DAILY_TRACKER_TEXTS.moodOf(
         formatDayMonth(date),
         level ? MOOD_LABELS[level] : DAILY_TRACKER_TEXTS.noMood,
+        log?.comment ?? null,
       ),
     }
   })
@@ -242,6 +268,7 @@ export function useDailyTrackerPage() {
     toggleToday,
     heatDays,
     heatRows,
+    dayWindow: dayWindowNav,
     todayMood,
     todayComment: todayLog?.comment ?? '',
     saveMood,

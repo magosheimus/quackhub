@@ -24,19 +24,12 @@ type SectionPanelProps = {
   icon: IconComponent
   title: string
   aside?: string
-  className?: string
   children: ReactNode
 }
 
-function SectionPanel({
-  icon,
-  title,
-  aside,
-  className,
-  children,
-}: SectionPanelProps) {
+function SectionPanel({ icon, title, aside, children }: SectionPanelProps) {
   return (
-    <Panel className={cn('flex min-w-0 flex-col gap-4', className)}>
+    <Panel className="flex min-w-0 flex-col gap-4">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <SectionLabel icon={icon}>{title}</SectionLabel>
         {aside && <span className="text-caption">{aside}</span>}
@@ -65,6 +58,7 @@ export function DailyTrackerPage() {
     toggleToday,
     heatDays,
     heatRows,
+    dayWindow,
     todayMood,
     todayComment,
     saveMood,
@@ -113,21 +107,23 @@ export function DailyTrackerPage() {
         />
       </div>
 
-      <div className="flex flex-wrap gap-6">
+      <div className={cn('grid gap-6', hasHabits && 'lg:grid-cols-2')}>
         {hasHabits && (
           <SectionPanel
             icon={IconCalendarWeeks}
             title={DAILY_TRACKER_TEXTS.heatmapTitle(isSprintPeriod)}
-            className="max-w-full flex-none"
           >
-            <HabitHeatmap days={heatDays} rows={heatRows} />
+            <HabitHeatmap
+              days={heatDays}
+              rows={heatRows}
+              dayWindow={dayWindow}
+            />
           </SectionPanel>
         )}
         <SectionPanel
           icon={IconChecklist}
           title={DAILY_TRACKER_TEXTS.todayTitle}
           aside={todayProgress}
-          className="flex-1 basis-80"
         >
           <TodayHabits
             hasHabits={hasHabits}

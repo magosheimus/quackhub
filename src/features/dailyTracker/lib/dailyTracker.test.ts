@@ -22,7 +22,10 @@ import {
   nextHabitValue,
   parseCounterValue,
   pickHabitHighlights,
+  getDayWindow,
+  DAY_WINDOW_SIZE,
 } from './dailyTracker'
+import { getDateRange } from '@/shared/lib/date'
 
 function makeHabit(overrides: Partial<Habit> = {}): Habit {
   return {
@@ -383,5 +386,42 @@ describe('pickHabitHighlights', () => {
       mostConsistent: null,
       needsAttention: null,
     })
+  })
+})
+
+describe('getDayWindow', () => {
+  const longSprint = getDateRange('2026-09-01', '2026-10-20')
+
+  it('períodos curtos aparecem inteiros', () => {
+    const week = getDateRange('2026-10-01', '2026-10-21')
+    expect(getDayWindow(week, '2026-10-10', 0)).toEqual({
+      days: week,
+      isWindowed: false,
+      canGoBack: false,
+      canGoForward: false,
+    })
+  })
+
+  it('período longo mostra uma janela que termina 3 dias depois de hoje', () => {
+    const window = getDayWindow(longSprint, '2026-10-10', 0)
+    expect(window.days).toHaveLength(DAY_WINDOW_SIZE)
+    expect(window.days.at(-1)).toBe('2026-10-13')
+    expect(window.canGoBack).toBe(true)
+    expect(window.canGoForward).toBe(true)
+  })
+
+  it('voltar anda de semana em semana e para no começo do período', () => {
+    expect(getDayWindow(longSprint, '2026-10-10', 1).days.at(-1)).toBe(
+      '2026-10-06',
+    )
+    const start = getDayWindow(longSprint, '2026-10-10', 99)
+    expect(start.days[0]).toBe('2026-09-01')
+    expect(start.canGoBack).toBe(false)
+  })
+
+  it('perto do fim do período a janela encosta no último dia', () => {
+    const end = getDayWindow(longSprint, '2026-10-19', 0)
+    expect(end.days.at(-1)).toBe('2026-10-20')
+    expect(end.canGoForward).toBe(false)
   })
 })

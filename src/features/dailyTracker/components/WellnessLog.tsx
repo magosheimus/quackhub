@@ -1,4 +1,3 @@
-import { Input } from '@/components/ui/input'
 import { Panel } from '@/components/ui/panel'
 import { SectionLabel } from '@/components/ui/section-label'
 import {
@@ -10,6 +9,7 @@ import {
   MOOD_LABELS,
 } from '@/features/dailyTracker/constants/texts'
 import { MOOD_ICONS } from '@/features/dailyTracker/components/moodIcons'
+import { DayCommentField } from '@/features/dailyTracker/components/DayCommentField'
 import { MoodHistory } from '@/features/dailyTracker/components/MoodHistory'
 import type { MoodDay } from '@/features/dailyTracker/hooks/useDailyTrackerPage'
 import { IconMoodGood } from '@/shared/lib/icons'
@@ -66,22 +66,11 @@ export function WellnessLog({
         })}
       </div>
 
-      <Input
+      <DayCommentField
         key={comment}
-        defaultValue={comment}
-        placeholder={
-          mood
-            ? DAILY_TRACKER_TEXTS.commentPlaceholder
-            : DAILY_TRACKER_TEXTS.commentNeedsMood
-        }
-        aria-label={DAILY_TRACKER_TEXTS.commentLabel}
-        disabled={!mood}
-        onBlur={(e) => onCommentSave(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter') {
-            e.currentTarget.blur()
-          }
-        }}
+        savedComment={comment}
+        isEnabled={mood !== null}
+        onSave={onCommentSave}
       />
 
       <MoodHistory label={historyLabel} days={history} />

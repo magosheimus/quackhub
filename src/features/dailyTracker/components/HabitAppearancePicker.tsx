@@ -128,7 +128,7 @@ export function HabitAppearancePicker({
   onColorChange,
 }: HabitAppearancePickerProps) {
   return (
-    <div className="grid grid-cols-2 gap-3">
+    <>
       <div className="flex min-w-0 flex-col gap-1.5">
         <span id={`${idPrefix}-icon`} className="text-caption">
           {DAILY_TRACKER_TEXTS.habitIcon}
@@ -158,6 +158,6 @@ export function HabitAppearancePicker({
           columns="grid-cols-4"
         />
       </div>
-    </div>
+    </>
   )
 }
