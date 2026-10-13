@@ -43,3 +43,35 @@ export function addDaysToToday(days: number): string {
   date.setDate(date.getDate() + days)
   return toDbDate(date)
 }
+
+export function parseDbDate(date: string): Date {
+  const [year, month, day] = date.split('-').map(Number)
+  return new Date(year, month - 1, day)
+}
+
+export function shiftDbDate(date: string, days: number): string {
+  const shifted = parseDbDate(date)
+  shifted.setDate(shifted.getDate() + days)
+  return toDbDate(shifted)
+}
+
+export function getWeekDays(date: string, weekStartsOn: 0 | 1): string[] {
+  const offset = (parseDbDate(date).getDay() - weekStartsOn + 7) % 7
+  const start = shiftDbDate(date, -offset)
+  return Array.from({ length: 7 }, (_, index) => shiftDbDate(start, index))
+}
+
+export function formatWeekdayInitials(date: string): string {
+  return new Intl.DateTimeFormat('pt-BR', { weekday: 'short' })
+    .format(parseDbDate(date))
+    .replace('.', '')
+    .toUpperCase()
+}
+
+export function getDateRange(start: string, end: string): string[] {
+  const dates: string[] = []
+  for (let date = start; date <= end; date = shiftDbDate(date, 1)) {
+    dates.push(date)
+  }
+  return dates
+}

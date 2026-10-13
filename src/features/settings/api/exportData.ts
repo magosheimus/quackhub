@@ -14,6 +14,9 @@ const TABLES = [
   'time_entries',
   'drafts_items',
   'user_settings',
+  'habits',
+  'habit_logs',
+  'daily_logs',
 ] as const
 
 export async function exportAllData(): Promise<Record<string, unknown[]>> {

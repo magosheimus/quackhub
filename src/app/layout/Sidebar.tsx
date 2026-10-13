@@ -2,6 +2,7 @@ import { useState, type ReactNode } from 'react'
 import { NavLink } from 'react-router-dom'
 import {
   IconBulletlist,
+  IconCalendarWeeks,
   IconChartBar,
   IconChevronRight,
   IconClock,
@@ -29,6 +30,7 @@ import { DRAFTS_TEXTS } from '@/features/drafts/constants/texts'
 import { Panel } from '@/components/ui/panel'
 import { LogoMark } from '@/components/ui/logo-mark'
 import { cn } from '@/shared/lib/utils'
+import { DAILY_TRACKER_TEXTS } from '@/features/dailyTracker/constants/texts'
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
   `flex h-10 items-center gap-3 border px-3 py-2 rounded-md text-base ${
@@ -95,6 +97,9 @@ export function Sidebar({ className }: SidebarProps) {
       </div>
 
       <nav className="flex flex-col gap-1">
+        <NavItem to="/diario" icon={IconCalendarWeeks}>
+          {DAILY_TRACKER_TEXTS.title}
+        </NavItem>
         <NavItem to="/inbox" icon={IconInbox}>
           {INBOX_TEXTS.title}
           {inboxCount > 0 && (

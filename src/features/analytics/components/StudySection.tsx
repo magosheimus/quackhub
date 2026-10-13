@@ -12,7 +12,7 @@ import {
 } from 'recharts'
 import { ChartCard } from './ChartCard'
 import { SectionTitle } from '@/components/ui/section-title'
-import type { ReviewsByEpicItem } from '@/features/analytics/api/analytics'
+import type { EpicChartItem } from '@/features/analytics/hooks/useAnalyticsPage'
 import { ANALYTICS_TEXTS } from '@/features/analytics/constants/texts'
 import { EmptyMessage } from '@/components/ui/empty-message'
 import { Panel } from '@/components/ui/panel'
@@ -21,7 +21,7 @@ type StudySectionProps = {
   totalReviews: number
   accuracyPercent: number
   accuracyChartData: { week: string; quality: number }[]
-  epicData: ReviewsByEpicItem[]
+  epicData: EpicChartItem[]
 }
 
 export function StudySection({
@@ -96,10 +96,7 @@ export function StudySection({
                   paddingAngle={2}
                 >
                   {epicData.map((epic) => (
-                    <Cell
-                      key={epic.epicName}
-                      fill={epic.color ?? 'var(--border-strong)'}
-                    />
+                    <Cell key={epic.epicName} fill={epic.color} />
                   ))}
                 </Pie>
                 <Tooltip />
@@ -110,7 +107,7 @@ export function StudySection({
                 <li key={epic.epicName} className="flex items-center gap-2">
                   <span
                     className="size-3 rounded-full"
-                    style={{ background: epic.color ?? 'var(--border-strong)' }}
+                    style={{ background: epic.color }}
                   />
                   {epic.epicName} · {epic.count}
                 </li>

@@ -18,13 +18,15 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { useUpdateProject } from '@/features/projects/hooks/useUpdateProject'
 import { useSoftDeleteProject } from '@/features/projects/hooks/useSoftDeleteProject'
-import {
-  PROJECT_COLORS,
-  type ProjectColor,
-} from '@/features/projects/lib/project'
 import { isProjectType } from '@/shared/lib/enums'
 import type { Project, ProjectType } from '@/shared/types/entities'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
+import { ColorSwatchPicker } from '@/components/ui/color-swatch-picker'
+import {
+  DEFAULT_PALETTE_COLOR,
+  toPaletteColor,
+  type PaletteColor,
+} from '@/shared/lib/palette'
 import {
   PROJECTS_TEXTS,
   PROJECT_TYPE_LABELS,
@@ -67,8 +69,8 @@ function ProjectEditForm({ project, onClose }: ProjectEditFormProps) {
   const [name, setName] = useState(project.name)
   const [prefix, setPrefix] = useState(project.prefix ?? '')
   const [type, setType] = useState<ProjectType>(project.type)
-  const [color, setColor] = useState<ProjectColor>(
-    (project.color as ProjectColor) ?? PROJECT_COLORS[0],
+  const [color, setColor] = useState<PaletteColor>(
+    toPaletteColor(project.color) ?? DEFAULT_PALETTE_COLOR,
   )
 
   const { mutate: updateProject, isPending: isUpdating } = useUpdateProject()
@@ -152,26 +154,11 @@ function ProjectEditForm({ project, onClose }: ProjectEditFormProps) {
           <span id="project-edit-color-label" className="text-caption">
             {PROJECTS_TEXTS.color}
           </span>
-          <div
-            className="flex gap-2"
-            role="group"
+          <ColorSwatchPicker
+            value={color}
+            onChange={setColor}
             aria-labelledby="project-edit-color-label"
-          >
-            {PROJECT_COLORS.map((c) => (
-              <button
-                key={c}
-                type="button"
-                onClick={() => setColor(c)}
-                className="size-6 rounded-full transition-transform"
-                style={{
-                  backgroundColor: c,
-                  outline: color === c ? '2px solid var(--accent)' : 'none',
-                  outlineOffset: 2,
-                }}
-                aria-label={COMMON_TEXTS.selectColor(c)}
-              />
-            ))}
-          </div>
+          />
         </div>
       </div>
 

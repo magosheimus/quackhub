@@ -16,13 +16,31 @@ import {
   sumCounts,
   toAccuracyChartData,
 } from '@/features/analytics/lib/metrics'
-import type { CompletionByProjectItem } from '@/features/analytics/api/analytics'
+import type {
+  CompletionByProjectItem,
+  ReviewsByEpicItem,
+} from '@/features/analytics/api/analytics'
 import { getClosedSprintsByRecency } from '@/features/sprints/lib/sprint'
 import { ALL_COLUMNS } from '@/features/board/lib/board'
 import { getStatusLabel } from '@/features/tasks/lib/taskStatus'
 import type { Sprint } from '@/shared/types/entities'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
 import { ANALYTICS_TEXTS } from '@/features/analytics/constants/texts'
+import { useAllHabits } from '@/features/dailyTracker/hooks/useHabits'
+import { useHabitLogs } from '@/features/dailyTracker/hooks/useHabitLogs'
+import { useDailyLogs } from '@/features/dailyTracker/hooks/useDailyLogs'
+import { getSprintDays } from '@/features/dailyTracker/lib/dailyTracker'
+import {
+  buildSprintHabitTrend,
+  getEarliestSprintStart,
+  summarizeHabitPeriod,
+} from '@/features/analytics/lib/habitMetrics'
+import { todayLocal } from '@/shared/lib/date'
+import { resolvePaletteColor } from '@/shared/lib/palette'
+
+export type EpicChartItem = Omit<ReviewsByEpicItem, 'color'> & {
+  color: string
+}
 
 type SprintSnapshot = {
   completionByProject: CompletionByProjectItem[]
@@ -67,6 +85,21 @@ export function useAnalyticsPage() {
 
   const accuracy = accuracyOverTime ?? []
 
+  const today = todayLocal()
+  const isAllScope = scope === ALL_SCOPE
+  const scopeSprint =
+    scope === CURRENT_SCOPE ? (activeSprint ?? null) : selectedSprint
+  const scopeDays = scopeSprint ? getSprintDays(scopeSprint, today) : []
+  const habitRangeStart = isAllScope
+    ? getEarliestSprintStart(sprints ?? [], today)
+    : (scopeDays[0] ?? today)
+  const habitRangeEnd = isAllScope
+    ? today
+    : (scopeDays[scopeDays.length - 1] ?? today)
+  const { data: habits } = useAllHabits()
+  const { data: habitLogs } = useHabitLogs(habitRangeStart, habitRangeEnd)
+  const { data: dailyLogs } = useDailyLogs(habitRangeStart, habitRangeEnd)
+
   function selectScope(value: string) {
     if (value === CURRENT_SCOPE) {
       setSearchParams({})
@@ -77,7 +110,7 @@ export function useAnalyticsPage() {
 
   return {
     scope,
-    isAllScope: scope === ALL_SCOPE,
+    isAllScope,
     scopeLabel: getScopeLabel(scope, activeSprint ?? null, selectedSprint),
     closedSprints: getClosedSprintsByRecency(sprints ?? []),
     selectScope,
@@ -90,6 +123,24 @@ export function useAnalyticsPage() {
     totalReviews: sumCounts(calibration ?? []),
     accuracyPercent: getAccuracyPercent(accuracy),
     accuracyChartData: toAccuracyChartData(accuracy),
-    reviewsByEpic: reviewsByEpic ?? [],
+    reviewsByEpic: (reviewsByEpic ?? []).map((epic): EpicChartItem => ({
+      ...epic,
+      color: resolvePaletteColor(epic.color, 'var(--border-strong)'),
+    })),
+    habitSummary: summarizeHabitPeriod(
+      habits ?? [],
+      habitLogs ?? [],
+      dailyLogs ?? [],
+      scopeDays,
+    ),
+    habitTrend: isAllScope
+      ? buildSprintHabitTrend(
+          sprints ?? [],
+          habits ?? [],
+          habitLogs ?? [],
+          dailyLogs ?? [],
+          today,
+        )
+      : [],
   }
 }

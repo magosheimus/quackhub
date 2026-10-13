@@ -42,6 +42,45 @@ import { Menu } from 'pixelarticons/react/Menu'
 import { WarningDiamond } from 'pixelarticons/react/WarningDiamond'
 import { Move } from 'pixelarticons/react/Move'
 import { createIcon } from './createIcon'
+import { Archive } from 'pixelarticons/react/Archive'
+import { CalendarWeeks } from 'pixelarticons/react/CalendarWeeks'
+import { RobotSharp } from 'pixelarticons/react/RobotSharp'
+import { RobotFaceSharp } from 'pixelarticons/react/RobotFaceSharp'
+import { RobotFaceHappySharp } from 'pixelarticons/react/RobotFaceHappySharp'
+import { RobotFaceSad } from 'pixelarticons/react/RobotFaceSad'
+import { RobotFaceSadSharp } from 'pixelarticons/react/RobotFaceSadSharp'
+import { Target } from 'pixelarticons/react/Target'
+import { Notebook } from 'pixelarticons/react/Notebook'
+import { Feather } from 'pixelarticons/react/Feather'
+import { Languages } from 'pixelarticons/react/Languages'
+import { Code } from 'pixelarticons/react/Code'
+import { Waves } from 'pixelarticons/react/Waves'
+import { Mug } from 'pixelarticons/react/Mug'
+import { Tea } from 'pixelarticons/react/Tea'
+import { Potion } from 'pixelarticons/react/Potion'
+import { Heart } from 'pixelarticons/react/Heart'
+import { HumanArmsUp } from 'pixelarticons/react/HumanArmsUp'
+import { Scale } from 'pixelarticons/react/Scale'
+import { Bed } from 'pixelarticons/react/Bed'
+import { Moon } from 'pixelarticons/react/Moon'
+import { Sun } from 'pixelarticons/react/Sun'
+import { Leaf } from 'pixelarticons/react/Leaf'
+import { TreePine } from 'pixelarticons/react/TreePine'
+import { Dog } from 'pixelarticons/react/Dog'
+import { Music } from 'pixelarticons/react/Music'
+import { Headphone } from 'pixelarticons/react/Headphone'
+import { Brush } from 'pixelarticons/react/Brush'
+import { Gamepad } from 'pixelarticons/react/Gamepad'
+import { Coins } from 'pixelarticons/react/Coins'
+import { Home } from 'pixelarticons/react/Home'
+import { Spray } from 'pixelarticons/react/Spray'
+import { CigaretteOff } from 'pixelarticons/react/CigaretteOff'
+import { Users } from 'pixelarticons/react/Users'
+import { Fire } from 'pixelarticons/react/Fire'
+import { Star } from 'pixelarticons/react/Star'
+import { Briefcase } from 'pixelarticons/react/Briefcase'
+import { Apple } from 'pixelarticons/react/Apple'
+import { Sofa } from 'pixelarticons/react/Sofa'
 
 export type { IconComponent, IconProps, IconSize } from './createIcon'
 
@@ -88,3 +127,42 @@ export const IconLink = createIcon(Link)
 export const IconMenu = createIcon(Menu)
 export const IconWarning = createIcon(WarningDiamond)
 export const IconMove = createIcon(Move)
+export const IconArchive = createIcon(Archive)
+export const IconCalendarWeeks = createIcon(CalendarWeeks)
+export const IconMoodExhausted = createIcon(RobotFaceSadSharp)
+export const IconMoodTired = createIcon(RobotFaceSad)
+export const IconMoodNeutral = createIcon(RobotSharp)
+export const IconMoodGood = createIcon(RobotFaceSharp)
+export const IconMoodGreat = createIcon(RobotFaceHappySharp)
+export const IconTarget = createIcon(Target)
+export const IconNotebook = createIcon(Notebook)
+export const IconFeather = createIcon(Feather)
+export const IconLanguages = createIcon(Languages)
+export const IconCode = createIcon(Code)
+export const IconWaves = createIcon(Waves)
+export const IconMug = createIcon(Mug)
+export const IconTea = createIcon(Tea)
+export const IconPotion = createIcon(Potion)
+export const IconHeart = createIcon(Heart)
+export const IconExercise = createIcon(HumanArmsUp)
+export const IconScale = createIcon(Scale)
+export const IconBed = createIcon(Bed)
+export const IconMoon = createIcon(Moon)
+export const IconSun = createIcon(Sun)
+export const IconLeaf = createIcon(Leaf)
+export const IconTree = createIcon(TreePine)
+export const IconDog = createIcon(Dog)
+export const IconMusic = createIcon(Music)
+export const IconHeadphone = createIcon(Headphone)
+export const IconBrush = createIcon(Brush)
+export const IconGamepad = createIcon(Gamepad)
+export const IconCoins = createIcon(Coins)
+export const IconHome = createIcon(Home)
+export const IconSpray = createIcon(Spray)
+export const IconNoSmoking = createIcon(CigaretteOff)
+export const IconUsers = createIcon(Users)
+export const IconFire = createIcon(Fire)
+export const IconStar = createIcon(Star)
+export const IconBriefcase = createIcon(Briefcase)
+export const IconApple = createIcon(Apple)
+export const IconSofa = createIcon(Sofa)

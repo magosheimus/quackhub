@@ -33,8 +33,15 @@ export type Attachment = Tables<'task_attachments'>
 export type AttachmentWithUrl = Attachment & { url: string | null }
 export type TimeEntry = Tables<'time_entries'>
 
+export type Habit = Tables<'habits'>
+export type NewHabit = TablesInsert<'habits'>
+export type HabitUpdate = TablesUpdate<'habits'>
+export type HabitLog = Tables<'habit_logs'>
+export type DailyLog = Tables<'daily_logs'>
+
 export type TaskStatus = Enums<'task_status'>
 export type TaskPriority = Enums<'task_priority'>
 export type ProjectType = Enums<'project_type'>
 export type RecurrenceType = Enums<'recurrence_type'>
 export type DraftTriageTarget = Enums<'draft_triage_target'>
+export type HabitType = Enums<'habit_type'>

@@ -39,7 +39,8 @@ import type { Task, TaskPriority } from '@/shared/types/entities'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
 import { TASKS_TEXTS } from '@/features/tasks/constants/texts'
 import { useCreateEpic } from '@/features/epics/hooks/useCreateEpic'
-import { isStudyProject, PROJECT_COLORS } from '@/features/projects/lib/project'
+import { isStudyProject } from '@/features/projects/lib/project'
+import { DEFAULT_PALETTE_COLOR } from '@/shared/lib/palette'
 
 const NONE_VALUE = '__backlog__'
 
@@ -177,7 +178,7 @@ export function CardCreateModal({
     const epic = await createEpic({
       project_id: projectId,
       name,
-      color: PROJECT_COLORS[0],
+      color: DEFAULT_PALETTE_COLOR,
     })
     setEpicId(epic.id)
     setNewEpicName(null)
