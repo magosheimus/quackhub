@@ -9,7 +9,9 @@ import { getCompletionPercent } from '@/features/sprints/lib/sprint'
 import { formatDayMonth } from '@/shared/lib/date'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
 import { SPRINTS_TEXTS } from '@/features/sprints/constants/texts'
-import { EmptyMessage } from '@/components/ui/empty-message'
+import { EmptyState } from '@/components/ui/empty-state'
+import { Button } from '@/components/ui/button'
+import { Link } from 'react-router-dom'
 
 export function SprintHistoryPage() {
   const {
@@ -33,7 +35,15 @@ export function SprintHistoryPage() {
     return (
       <div className="flex flex-col gap-4">
         <PageTitle title={COMMON_TEXTS.history} icon={IconClock} count={0} />
-        <EmptyMessage>{SPRINTS_TEXTS.noClosedSprints}</EmptyMessage>
+        <EmptyState
+          icon={IconClock}
+          title={SPRINTS_TEXTS.historyEmptyTitle}
+          description={SPRINTS_TEXTS.historyEmptyDescription}
+        >
+          <Button variant="outline" size="sm" render={<Link to="/board" />}>
+            {SPRINTS_TEXTS.goToCurrentSprint}
+          </Button>
+        </EmptyState>
       </div>
     )
   }

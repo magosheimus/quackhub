@@ -11,6 +11,9 @@ export const PROJECTS_TEXTS = {
   prefix: 'Prefixo',
   type: 'Tipo',
   color: 'Cor',
+  hintPrefix: 'Aparece no código de cada card do projeto, como QH-12.',
+  hintType:
+    'Geral: tarefas com status de trabalho. Estudo: cards entram na revisão espaçada.',
   namePlaceholder: 'Nome do projeto',
   prefixPlaceholder: 'Ex: QH',
   studyProjectHint: 'Estudo: os cards entram no ciclo de revisão do SM-2.',

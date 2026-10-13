@@ -2,11 +2,15 @@ import { IconArrowLeft, IconFolder } from '@/shared/lib/icons'
 import { Button } from '@/components/ui/button'
 import { PageTitle } from '@/components/ui/page-title'
 import { TASKS_TEXTS } from '@/features/tasks/constants/texts'
+import { ProjectCode } from '@/features/projects/components/ProjectCode'
+import { EpicTag } from '@/features/epics/components/EpicTag'
+import type { ProjectLabel } from '@/features/projects/lib/project'
+import type { EpicLabel } from '@/features/epics/lib/epic'
 
 type CardPageHeaderProps = {
   taskNumber: number | null
-  projectPrefix?: string | null
-  epicName?: string | null
+  projectLabel?: ProjectLabel
+  epicLabel?: EpicLabel
   title: string
   isEditingTitle: boolean
   onTitleChange: (value: string) => void
@@ -17,8 +21,8 @@ type CardPageHeaderProps = {
 
 export function CardPageHeader({
   taskNumber,
-  projectPrefix,
-  epicName,
+  projectLabel,
+  epicLabel,
   title,
   isEditingTitle,
   onTitleChange,
@@ -40,9 +44,9 @@ export function CardPageHeader({
       <PageTitle icon={IconFolder} iconSize={48} withAccentBar={false}>
         <div className="flex flex-col gap-0.5">
           {taskNumber && (
-            <span className="px-2 text-caption">
-              {epicName ? `${epicName}/` : ''}
-              {projectPrefix}-{taskNumber}
+            <span className="flex flex-wrap items-center gap-x-3 gap-y-1 px-2">
+              <ProjectCode label={projectLabel} taskNumber={taskNumber} />
+              {epicLabel && <EpicTag label={epicLabel} withColor={false} />}
             </span>
           )}
           <input

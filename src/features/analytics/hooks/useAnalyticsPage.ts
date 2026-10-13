@@ -36,7 +36,14 @@ import {
   summarizeHabitPeriod,
 } from '@/features/analytics/lib/habitMetrics'
 import { todayLocal } from '@/shared/lib/date'
-import { resolvePaletteColor } from '@/shared/lib/palette'
+import { NEUTRAL_COLOR, resolvePaletteColor } from '@/shared/lib/palette'
+import { useProjects } from '@/features/projects/hooks/useProjects'
+import { toProjectLabel } from '@/features/projects/lib/project'
+
+export type ProjectCompletionItem = CompletionByProjectItem & {
+  color: string
+  percent: number
+}
 
 export type EpicChartItem = Omit<ReviewsByEpicItem, 'color'> & {
   color: string
@@ -85,6 +92,14 @@ export function useAnalyticsPage() {
 
   const accuracy = accuracyOverTime ?? []
 
+  const { data: projects } = useProjects()
+  const projectColorByName = new Map(
+    (projects ?? []).map((project) => [
+      project.name,
+      toProjectLabel(project).color,
+    ]),
+  )
+
   const today = todayLocal()
   const isAllScope = scope === ALL_SCOPE
   const scopeSprint =
@@ -115,7 +130,16 @@ export function useAnalyticsPage() {
     closedSprints: getClosedSprintsByRecency(sprints ?? []),
     selectScope,
     hasNoActiveSprint: scope === CURRENT_SCOPE && !activeSprint,
-    projectCompletion: snapshot?.completionByProject ?? liveByProject ?? [],
+    projectCompletion: (
+      snapshot?.completionByProject ??
+      liveByProject ??
+      []
+    ).map((item): ProjectCompletionItem => ({
+      ...item,
+      color: projectColorByName.get(item.projectName) ?? NEUTRAL_COLOR,
+      percent:
+        item.total > 0 ? Math.round((item.completed / item.total) * 100) : 0,
+    })),
     statusCounts: countTasksByStatus(tasks ?? [], ALL_COLUMNS).map(
       ({ status, count }) => ({ name: getStatusLabel(status), count }),
     ),

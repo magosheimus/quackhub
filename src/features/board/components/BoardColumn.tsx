@@ -7,12 +7,13 @@ import { BoardCard } from './BoardCard'
 import { IconLayout } from '@/shared/lib/icons'
 import type { Task } from '@/shared/types/entities'
 import { BOARD_TEXTS } from '@/features/board/constants/texts'
+import type { ProjectLabels } from '@/features/projects/lib/project'
 
 type BoardColumnProps = {
   column: BoardColumnKey
   label: string
   tasks: Task[]
-  projectPrefixById: Map<string, string>
+  projectLabels: ProjectLabels
   getMoveOptions: (task: Task) => MoveOption[]
   onMove: (taskId: string, column: BoardColumnKey) => void
 }
@@ -21,7 +22,7 @@ export function BoardColumn({
   column,
   label,
   tasks,
-  projectPrefixById,
+  projectLabels,
   getMoveOptions,
   onMove,
 }: BoardColumnProps) {
@@ -54,7 +55,7 @@ export function BoardColumn({
                 key={task.id}
                 task={task}
                 index={index}
-                projectPrefixById={projectPrefixById}
+                projectLabels={projectLabels}
                 moveOptions={getMoveOptions(task)}
                 onMove={(target) => onMove(task.id, target)}
               />

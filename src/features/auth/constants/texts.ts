@@ -1,5 +1,4 @@
 export const AUTH_TEXTS = {
-  title: 'Entrar',
   subtitle: 'Acesso restrito.',
   email: 'E-mail',
   emailPlaceholder: 'voce@exemplo.com',

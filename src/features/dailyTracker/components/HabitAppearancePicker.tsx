@@ -155,7 +155,7 @@ export function HabitAppearancePicker({
           onChange={onColorChange}
           getLabel={colorLabel}
           renderOption={renderColor}
-          columns="grid-cols-4"
+          columns="grid-cols-7"
         />
       </div>
     </>

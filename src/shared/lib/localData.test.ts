@@ -30,13 +30,17 @@ describe('dados locais', () => {
     expect(storedKeys()).toEqual([
       STORAGE_KEYS.settings,
       STORAGE_KEYS.draftsQueue,
+      STORAGE_KEYS.projectView,
     ])
   })
 
-  it('logout apaga tudo do usuário e mantém só as configurações', () => {
+  it('logout apaga tudo do usuário e mantém só as preferências do aparelho', () => {
     clearUserLocalData(queryClient)
 
     expect(queryClient.getQueryData(['tasks'])).toBeUndefined()
-    expect(storedKeys()).toEqual([STORAGE_KEYS.settings])
+    expect(storedKeys()).toEqual([
+      STORAGE_KEYS.settings,
+      STORAGE_KEYS.projectView,
+    ])
   })
 })

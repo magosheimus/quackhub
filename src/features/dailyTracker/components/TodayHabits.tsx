@@ -15,6 +15,7 @@ type TodayHabitsProps = {
   onSetValue: (habit: Habit, value: number) => void
   onCommitValue: (habit: Habit, text: string) => void
   onToggle: (habit: Habit) => void
+  onCreateHabit: () => void
 }
 
 function CounterControl({
@@ -73,14 +74,23 @@ export function TodayHabits({
   onSetValue,
   onCommitValue,
   onToggle,
+  onCreateHabit,
 }: TodayHabitsProps) {
   if (pending.length === 0 && done.length === 0) {
     return (
-      <EmptyMessage>
-        {hasHabits
-          ? DAILY_TRACKER_TEXTS.noHabitsToday
-          : DAILY_TRACKER_TEXTS.noHabits}
-      </EmptyMessage>
+      <div className="flex flex-col items-start gap-3">
+        <EmptyMessage>
+          {hasHabits
+            ? DAILY_TRACKER_TEXTS.noHabitsToday
+            : DAILY_TRACKER_TEXTS.noHabits}
+        </EmptyMessage>
+        {!hasHabits && (
+          <Button type="button" size="sm" onClick={onCreateHabit}>
+            <IconPlus size={12} aria-hidden="true" />
+            {DAILY_TRACKER_TEXTS.createFirstHabit}
+          </Button>
+        )}
+      </div>
     )
   }
 

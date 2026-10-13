@@ -2,7 +2,13 @@ import { hasLoadError, retryFailedQueries } from '@/shared/query/queryState'
 import { useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { useProjects } from '@/features/projects/hooks/useProjects'
-import { useEpics } from '@/features/epics/hooks/useEpics'
+import type { ColorScope } from '@/shared/lib/palette'
+import { useAllEpics } from '@/features/epics/hooks/useAllEpics'
+import {
+  buildEpicLabels,
+  buildEpicOptions,
+  type EpicLabel,
+} from '@/features/epics/lib/epic'
 import { useBacklogTasks } from '@/features/tasks/hooks/useBacklogTasks'
 import { useActiveSprint } from '@/features/sprints/hooks/useActiveSprint'
 import { useSprints } from '@/features/sprints/hooks/useSprints'
@@ -23,6 +29,7 @@ import type {
   TaskPriority,
   TaskStatus,
 } from '@/shared/types/entities'
+import { buildProjectLabels } from '@/features/projects/lib/project'
 
 export function useBacklogPage() {
   const [searchParams] = useSearchParams()
@@ -46,7 +53,6 @@ export function useBacklogPage() {
   const tasksQuery = useBacklogTasks(projectFilter)
   const { data: projects, isLoading: isLoadingProjects } = projectsQuery
   const { data: tasks, isLoading: isLoadingTasks } = tasksQuery
-  const { data: epics } = useEpics(projectFilter ?? '')
   const { data: tagsByTask } = useBulkTaskTags((tasks ?? []).map((t) => t.id))
   const { data: activeSprint } = useActiveSprint()
   const { data: sprints } = useSprints()
@@ -56,10 +62,10 @@ export function useBacklogPage() {
     activeSprint ?? sprints?.find((s) => s.status === 'planned') ?? null
 
   const projectById = new Map(projects?.map((p) => [p.id, p]))
-  const projectPrefixById = new Map(
-    projects?.map((p) => [p.id, p.prefix ?? '']),
-  )
-  const epicNameById = new Map(epics?.map((e) => [e.id, e.name]))
+  const projectLabels = buildProjectLabels(projects ?? [])
+  const colorScope: ColorScope = projectFilter ? 'epic' : 'project'
+  const { data: allEpics } = useAllEpics()
+  const epicLabels = buildEpicLabels(allEpics ?? [])
 
   const filteredTasks = filterBacklogTasks(
     tasks ?? [],
@@ -76,7 +82,9 @@ export function useBacklogPage() {
   const selectedProject = projectFilter
     ? (projectById.get(projectFilter) ?? null)
     : null
-  const selectedEpicName = epicFilter ? epicNameById.get(epicFilter) : undefined
+  const selectedEpicName = epicFilter
+    ? epicLabels.get(epicFilter)?.name
+    : undefined
 
   function selectProject(projectId: string | null) {
     setProjectFilter(projectId)
@@ -92,11 +100,11 @@ export function useBacklogPage() {
     setPriorityFilter(isTaskPriority(value) ? value : null)
   }
 
-  function getEpicName(task: Task): string | null {
+  function getEpicLabel(task: Task): EpicLabel | null {
     if (!task.epic_id) {
       return null
     }
-    return epicNameById.get(task.epic_id) ?? null
+    return epicLabels.get(task.epic_id) ?? null
   }
 
   function addToSprint(task: Task, project: Project) {
@@ -117,7 +125,6 @@ export function useBacklogPage() {
 
   return {
     projects,
-    epics,
     isLoadingProjects,
     isLoadingTasks,
     hasError: hasLoadError(projectsQuery, tasksQuery),
@@ -138,9 +145,14 @@ export function useBacklogPage() {
     isEpicModalOpen,
     setIsEpicModalOpen,
     filteredTasks,
+    hasBacklogTasks: (tasks ?? []).length > 0,
     projectGroups,
-    projectPrefixById,
-    getEpicName,
+    projectLabels,
+    getEpicLabel,
+    colorScope,
+    epicOptions: buildEpicOptions(
+      (allEpics ?? []).filter((epic) => epic.project_id === projectFilter),
+    ),
     toggleProject: collapsedProjects.toggle,
     isProjectCollapsed: collapsedProjects.has,
     canAddToSprint: targetSprint !== null,

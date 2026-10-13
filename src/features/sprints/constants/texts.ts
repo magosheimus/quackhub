@@ -4,6 +4,10 @@ export const SPRINT_ERRORS = {
 
 export const SPRINTS_TEXTS = {
   noClosedSprints: '— nenhuma sprint encerrada ainda —',
+  historyEmptyTitle: 'Nenhuma sprint encerrada',
+  historyEmptyDescription:
+    'Quando você encerrar uma sprint, ela aparece aqui com o que foi concluído.',
+  goToCurrentSprint: 'Ir para a sprint atual',
   completedOf: (done: number, total: number) => `${done} de ${total}`,
   close: 'Encerrar Sprint',
   closing: 'Encerrando...',

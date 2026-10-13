@@ -1,3 +1,4 @@
+import { ProjectFormFields } from '@/features/projects/components/ProjectFormFields'
 import { ConfirmDialog } from '@/components/ui/confirm-dialog'
 import { useState } from 'react'
 import {
@@ -7,30 +8,17 @@ import {
   DialogTitle,
   DialogFooter,
 } from '@/components/ui/dialog'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { useUpdateProject } from '@/features/projects/hooks/useUpdateProject'
 import { useSoftDeleteProject } from '@/features/projects/hooks/useSoftDeleteProject'
-import { isProjectType } from '@/shared/lib/enums'
 import type { Project, ProjectType } from '@/shared/types/entities'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
-import { ColorSwatchPicker } from '@/components/ui/color-swatch-picker'
 import {
   DEFAULT_PALETTE_COLOR,
   toPaletteColor,
   type PaletteColor,
 } from '@/shared/lib/palette'
-import {
-  PROJECTS_TEXTS,
-  PROJECT_TYPE_LABELS,
-} from '@/features/projects/constants/texts'
+import { PROJECTS_TEXTS } from '@/features/projects/constants/texts'
 
 type ProjectEditModalProps = {
   project: Project | null
@@ -43,7 +31,7 @@ export function ProjectEditModal({
 }: ProjectEditModalProps) {
   return (
     <Dialog open={project !== null} onOpenChange={onOpenChange}>
-      <DialogContent>
+      <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>{PROJECTS_TEXTS.editProject}</DialogTitle>
         </DialogHeader>
@@ -97,70 +85,17 @@ function ProjectEditForm({ project, onClose }: ProjectEditFormProps) {
 
   return (
     <>
-      <div className="flex flex-col gap-4">
-        <div className="flex flex-col gap-1.5">
-          <label htmlFor="project-edit-name" className="text-caption">
-            {COMMON_TEXTS.name}
-          </label>
-          <Input
-            id="project-edit-name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </div>
-
-        <div className="flex flex-col gap-1.5">
-          <label htmlFor="project-edit-prefix" className="text-caption">
-            {PROJECTS_TEXTS.prefix}
-          </label>
-          <Input
-            id="project-edit-prefix"
-            value={prefix}
-            onChange={(e) => setPrefix(e.target.value.toUpperCase())}
-            placeholder={PROJECTS_TEXTS.prefixPlaceholder}
-            maxLength={6}
-          />
-        </div>
-
-        <div className="flex flex-col gap-1.5">
-          <span id="project-edit-type-label" className="text-caption">
-            {PROJECTS_TEXTS.type}
-          </span>
-          <Select
-            value={type}
-            onValueChange={(v) => {
-              if (isProjectType(v)) {
-                setType(v)
-              }
-            }}
-          >
-            <SelectTrigger aria-labelledby="project-edit-type-label">
-              <SelectValue>
-                {type === 'general'
-                  ? PROJECT_TYPE_LABELS.general
-                  : PROJECT_TYPE_LABELS.study}
-              </SelectValue>
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="general">
-                {PROJECT_TYPE_LABELS.general}
-              </SelectItem>
-              <SelectItem value="study">{PROJECT_TYPE_LABELS.study}</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-
-        <div className="flex flex-col gap-1.5">
-          <span id="project-edit-color-label" className="text-caption">
-            {PROJECTS_TEXTS.color}
-          </span>
-          <ColorSwatchPicker
-            value={color}
-            onChange={setColor}
-            aria-labelledby="project-edit-color-label"
-          />
-        </div>
-      </div>
+      <ProjectFormFields
+        idPrefix="project-edit"
+        name={name}
+        prefix={prefix}
+        type={type}
+        color={color}
+        onNameChange={setName}
+        onPrefixChange={setPrefix}
+        onTypeChange={setType}
+        onColorChange={setColor}
+      />
 
       <DialogFooter className="sm:justify-between">
         <Button

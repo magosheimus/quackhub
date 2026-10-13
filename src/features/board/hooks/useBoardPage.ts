@@ -26,6 +26,11 @@ import {
 } from '@/features/board/lib/board'
 import { todayLocal } from '@/shared/lib/date'
 import type { ProjectType, Task } from '@/shared/types/entities'
+import {
+  buildProjectLabels,
+  buildProjectOptions,
+} from '@/features/projects/lib/project'
+import { buildEpicOptions } from '@/features/epics/lib/epic'
 
 export function useBoardPage() {
   const [searchParams] = useSearchParams()
@@ -50,9 +55,7 @@ export function useBoardPage() {
     : null
   const plannedSprint = sprints?.find((s) => s.status === 'planned') ?? null
 
-  const projectPrefixById = new Map(
-    projects?.map((p) => [p.id, p.prefix ?? '']),
-  )
+  const projectLabels = buildProjectLabels(projects ?? [])
   const projectTypeById = new Map<string, ProjectType>(
     projects?.map((p) => [p.id, p.type]),
   )
@@ -110,11 +113,13 @@ export function useBoardPage() {
     projectTasks: projectTasks ?? [],
     activeSprint: activeSprint ?? null,
     plannedSprint,
-    projectPrefixById,
+    projectLabels,
     filters,
     updateFilter,
-    sprintProjects: getProjectsInTasks(projects ?? [], sprintTasks),
-    sprintEpics: getEpicsInTasks(epics ?? [], sprintTasks),
+    sprintProjects: buildProjectOptions(
+      getProjectsInTasks(projects ?? [], sprintTasks),
+    ),
+    sprintEpics: buildEpicOptions(getEpicsInTasks(epics ?? [], sprintTasks)),
     visibleTasks,
     columns,
     handleDragEnd,

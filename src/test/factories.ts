@@ -76,6 +76,7 @@ export function makeEpic(overrides: Partial<Epic> = {}): Epic {
     project_id: 'project-1',
     name: 'Épico',
     color: null,
+    position: 0,
     created_at: '2026-01-01T00:00:00Z',
     deleted_at: null,
     ...overrides,

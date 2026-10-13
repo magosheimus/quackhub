@@ -11,7 +11,10 @@ import { TodayHabits } from '@/features/dailyTracker/components/TodayHabits'
 import { WellnessLog } from '@/features/dailyTracker/components/WellnessLog'
 import { WeeklyStats } from '@/features/dailyTracker/components/WeeklyStats'
 import { useDailyTrackerPage } from '@/features/dailyTracker/hooks/useDailyTrackerPage'
-import { DAILY_TRACKER_TEXTS } from '@/features/dailyTracker/constants/texts'
+import {
+  DAILY_TRACKER_TEXTS,
+  NEW_HABIT_NAME_INPUT_ID,
+} from '@/features/dailyTracker/constants/texts'
 import {
   IconCalendarWeeks,
   IconChartBar,
@@ -69,6 +72,12 @@ export function DailyTrackerPage() {
     moodHistoryLabel,
     moodDays,
   } = useDailyTrackerPage()
+
+  function focusNewHabit() {
+    const input = document.getElementById(NEW_HABIT_NAME_INPUT_ID)
+    input?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    input?.focus({ preventScroll: true })
+  }
 
   if (isLoading) {
     return <LoadingText />
@@ -132,6 +141,7 @@ export function DailyTrackerPage() {
             onSetValue={setTodayValue}
             onCommitValue={commitTodayValue}
             onToggle={toggleToday}
+            onCreateHabit={focusNewHabit}
           />
         </SectionPanel>
       </div>

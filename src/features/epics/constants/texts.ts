@@ -1,8 +1,11 @@
 export const EPICS_TEXTS = {
   title: 'Épicos',
+  titleFor: (projectName: string) => `Épicos · ${projectName}`,
   empty: '— nenhum épico ainda —',
   projectLabel: 'Projeto do épico',
   colorLabel: 'Cor do épico',
+  changeColor: (name: string) => `Trocar a cor de ${name}`,
+  reorder: (name: string) => `Arrastar para reordenar ${name}`,
   namePlaceholder: 'Nome do novo épico',
   selectProject: 'Selecione o projeto',
   noEpic: 'Sem épico',

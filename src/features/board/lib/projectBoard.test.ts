@@ -1,6 +1,12 @@
 import { describe, it, expect } from 'vitest'
-import { makeTask } from '@/test/factories'
-import { getProjectBucket, sortByStatusOrder } from './projectBoard'
+import { makeEpic, makeTask } from '@/test/factories'
+import {
+  getEpicIdForColumn,
+  getProjectBucket,
+  groupOpenTasksByEpic,
+  NO_EPIC_COLUMN,
+  sortByStatusOrder,
+} from './projectBoard'
 
 describe('getProjectBucket', () => {
   it('card não concluído na sprint ativa vai para sprint', () => {
@@ -47,5 +53,43 @@ describe('sortByStatusOrder', () => {
     ]
     const sorted = sortByStatusOrder(tasks, ['todo', 'doing', 'done'])
     expect(sorted.map((t) => t.id)).toEqual(['3', '4', '1', '2'])
+  })
+})
+
+describe('groupOpenTasksByEpic', () => {
+  const physics = makeEpic({ id: 'e1', name: 'Física' })
+  const chemistry = makeEpic({ id: 'e2', name: 'Química' })
+
+  it('uma coluna por épico só com o que falta fazer, sprint antes do backlog', () => {
+    const tasks = [
+      makeTask({ id: 't1', epic_id: 'e1' }),
+      makeTask({ id: 't2', epic_id: 'e1', sprint_id: 's1' }),
+      makeTask({ id: 't3', epic_id: 'e1', status: 'done' }),
+    ]
+    const [first, second] = groupOpenTasksByEpic(
+      tasks,
+      [physics, chemistry],
+      's1',
+    )
+    expect(first.tasks.map((task) => task.id)).toEqual(['t2', 't1'])
+    expect(first.doneCount).toBe(1)
+    expect(first.totalCount).toBe(3)
+    expect(second.tasks).toEqual([])
+  })
+
+  it('sem épico (ou épico apagado) vai para a coluna "Sem épico", que só aparece se tiver card', () => {
+    const tasks = [
+      makeTask({ id: 't1', epic_id: null }),
+      makeTask({ id: 't2', epic_id: 'apagado' }),
+    ]
+    const columns = groupOpenTasksByEpic(tasks, [physics], null)
+    expect(columns.map((column) => column.id)).toEqual(['e1', NO_EPIC_COLUMN])
+    expect(columns[1].tasks.map((task) => task.id)).toEqual(['t1', 't2'])
+    expect(groupOpenTasksByEpic([], [physics], null)).toHaveLength(1)
+  })
+
+  it('a coluna "Sem épico" volta a ser épico nulo', () => {
+    expect(getEpicIdForColumn(NO_EPIC_COLUMN)).toBeNull()
+    expect(getEpicIdForColumn('e1')).toBe('e1')
   })
 })

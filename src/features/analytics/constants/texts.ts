@@ -3,7 +3,9 @@ export const ANALYTICS_TEXTS = {
   scopeLabel: 'Escopo da análise',
   sprint: 'Sprint',
   currentSprintNamed: (name: string) => `Sprint atual (${name})`,
-  noActiveSprint: '— nenhuma sprint ativa para analisar —',
+  noActiveSprintTitle: 'Nenhuma sprint ativa',
+  noActiveSprintDescription:
+    'Os gráficos acompanham a sprint em andamento. Crie uma sprint ou escolha uma encerrada no seletor acima.',
   general: 'Geral',
   study: 'Estudo',
   reviews: 'Revisões',

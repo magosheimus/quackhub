@@ -39,7 +39,7 @@ export function RecurrenceFields({ value, onChange }: RecurrenceFieldsProps) {
       <button
         type="button"
         onClick={() => onChange({ ...value, type: 'monthly', interval: 1 })}
-        className="text-left text-subtle"
+        className="flex h-8 items-center text-left text-subtle"
       >
         {TASKS_TEXTS.notRecurring}
       </button>
@@ -64,7 +64,7 @@ export function RecurrenceFields({ value, onChange }: RecurrenceFieldsProps) {
           }
           className="text-caption underline"
         >
-          remover
+          {TASKS_TEXTS.removeRecurrence}
         </button>
       </div>
 

@@ -6,7 +6,11 @@ import { GeneralSection } from '@/features/analytics/components/GeneralSection'
 import { HabitsSection } from '@/features/analytics/components/HabitsSection'
 import { useAnalyticsPage } from '@/features/analytics/hooks/useAnalyticsPage'
 import { ANALYTICS_TEXTS } from '@/features/analytics/constants/texts'
-import { EmptyMessage } from '@/components/ui/empty-message'
+import { EmptyState } from '@/components/ui/empty-state'
+import { Button } from '@/components/ui/button'
+import { Link } from 'react-router-dom'
+import { SprintCreateModal } from '@/features/sprints/components/SprintCreateModal'
+import { COMMON_TEXTS } from '@/shared/constants/texts'
 
 export function AnalyticsPage() {
   const {
@@ -40,7 +44,16 @@ export function AnalyticsPage() {
       </div>
 
       {hasNoActiveSprint ? (
-        <EmptyMessage>{ANALYTICS_TEXTS.noActiveSprint}</EmptyMessage>
+        <EmptyState
+          icon={IconChartBar}
+          title={ANALYTICS_TEXTS.noActiveSprintTitle}
+          description={ANALYTICS_TEXTS.noActiveSprintDescription}
+        >
+          <Button variant="outline" size="sm" render={<Link to="/backlog" />}>
+            {COMMON_TEXTS.goToBacklog}
+          </Button>
+          <SprintCreateModal />
+        </EmptyState>
       ) : (
         <>
           <GeneralSection

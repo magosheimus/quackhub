@@ -25,7 +25,9 @@ export const MONTH_NAMES = [
 
 export const TASKS_TEXTS = {
   // página do card
-  notFound: '— Card não encontrado —',
+  notFound: 'Card não encontrado',
+  goToInbox: 'Ir para a Inbox',
+  notFoundDescription: 'Ele pode ter sido excluído ou o link está incompleto.',
   back: 'Voltar',
   titleLabel: 'Título do card',
   details: 'Detalhes',
@@ -61,6 +63,13 @@ export const TASKS_TEXTS = {
   logNextReview: (days: number | null) => `próxima revisão em ${days} dia(s)`,
   // dependências, checklist, tags, anexos
   dependsOn: 'Depende de',
+  hintEpic: 'Agrupa cards do mesmo tema ou entrega dentro do projeto.',
+  hintSprint: 'Sem sprint, o card fica no Backlog até você planejar a próxima.',
+  removeRecurrence: 'remover',
+  hintRecurrence:
+    'Ao concluir, um novo card é criado para a próxima data automaticamente.',
+  hintUrgent: 'Cards urgentes aparecem no topo da Inbox.',
+  hintDependsOn: 'Cards que precisam ser concluídos antes deste.',
   dependencyPlaceholder: 'Buscar card pra adicionar como dependência...',
   dependencySearch: 'Buscar dependência',
   removeDependency: (title: string) => `Remover dependência de "${title}"`,

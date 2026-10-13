@@ -41,6 +41,7 @@ import { TASKS_TEXTS } from '@/features/tasks/constants/texts'
 import { useCreateEpic } from '@/features/epics/hooks/useCreateEpic'
 import { isStudyProject } from '@/features/projects/lib/project'
 import { DEFAULT_PALETTE_COLOR } from '@/shared/lib/palette'
+import { InfoTip } from '@/components/ui/info-tip'
 
 const NONE_VALUE = '__backlog__'
 
@@ -74,6 +75,7 @@ export function CardCreateModal({
   const [description, setDescription] = useState('')
   const [priority, setPriority] = useState<TaskPriority>('medium')
   const [flagged, setFlagged] = useState(false)
+  const [dueDate, setDueDate] = useState<string | null>(null)
   const [tags, setTags] = useState<string[]>([])
   const [createAnother, setCreateAnother] = useState(false)
   const titleInputRef = useRef<HTMLInputElement>(null)
@@ -112,6 +114,7 @@ export function CardCreateModal({
     setDescription('')
     setPriority('medium')
     setFlagged(false)
+    setDueDate(null)
     setRecurrence({
       type: null,
       interval: null,
@@ -149,6 +152,7 @@ export function CardCreateModal({
       description: description.trim() || null,
       priority,
       flagged,
+      due_date: project.type === 'general' ? dueDate : null,
       status: getInitialStatusForType(project.type),
       recurrence_type: recurrence.type,
       recurrence_interval: recurrence.interval,
@@ -161,6 +165,7 @@ export function CardCreateModal({
     setTitle('')
     setDescription('')
     setFlagged(false)
+    setDueDate(null)
     setRecurrence({
       type: null,
       interval: null,
@@ -254,7 +259,10 @@ export function CardCreateModal({
               </Select>
             </div>
             <div className="flex min-w-0 flex-col gap-1.5">
-              <span className="text-caption">{TASKS_TEXTS.epic}</span>
+              <span className="flex items-center gap-1.5 text-caption">
+                {TASKS_TEXTS.epic}
+                <InfoTip text={TASKS_TEXTS.hintEpic} />
+              </span>
               {projectId ? (
                 <EpicSelector
                   newEpicName={newEpicName}
@@ -272,8 +280,11 @@ export function CardCreateModal({
               )}
             </div>
             <div className="flex min-w-0 flex-col gap-1.5">
-              <span id="card-sprint-label" className="text-caption">
-                {TASKS_TEXTS.sprintOptional}
+              <span className="flex items-center gap-1.5">
+                <span id="card-sprint-label" className="text-caption">
+                  {TASKS_TEXTS.sprintOptional}
+                </span>
+                <InfoTip text={TASKS_TEXTS.hintSprint} />
               </span>
               <Select
                 value={sprintId ?? NONE_VALUE}
@@ -322,42 +333,6 @@ export function CardCreateModal({
             <SimilarCardsHint cards={similarCards ?? []} />
           </div>
 
-          {project?.type === 'general' && (
-            <div className="flex flex-col gap-2">
-              {recurrenceDetected && (
-                <div className="flex flex-col gap-2 rounded-md border border-accent bg-surface p-2 text-sm">
-                  <span className="text-fg">{TASKS_TEXTS.looksRecurring}</span>
-                  <div className="flex flex-wrap gap-1">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => setRecurrenceBannerDismissed(true)}
-                    >
-                      {TASKS_TEXTS.createAnyway}
-                    </Button>
-                    <Button
-                      size="sm"
-                      onClick={() => {
-                        setRecurrence({
-                          type: 'monthly',
-                          interval: 1,
-                          dayOfMonth: null,
-                          endDate: null,
-                        })
-                        setRecurrenceBannerDismissed(true)
-                      }}
-                    >
-                      {TASKS_TEXTS.createAsRecurring}
-                    </Button>
-                  </div>
-                </div>
-              )}
-              {!recurrenceDetected && (
-                <RecurrenceFields value={recurrence} onChange={setRecurrence} />
-              )}
-            </div>
-          )}
-
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div className="flex min-w-0 flex-col gap-1.5">
               <span className="text-caption">{TASKS_TEXTS.priority}</span>
@@ -394,6 +369,66 @@ export function CardCreateModal({
               />
             </div>
           </div>
+
+          {project?.type === 'general' && (
+            <div className="grid grid-cols-1 items-start gap-4 sm:grid-cols-2">
+              <div className="flex min-w-0 flex-col gap-1.5">
+                <label htmlFor="card-due-date" className="text-caption">
+                  {TASKS_TEXTS.dueDate}
+                </label>
+                <Input
+                  id="card-due-date"
+                  type="date"
+                  value={dueDate ?? ''}
+                  onChange={(e) => setDueDate(e.target.value || null)}
+                />
+              </div>
+              <div className="flex min-w-0 flex-col gap-1.5">
+                {!recurrence.type && (
+                  <span className="flex items-center gap-1.5 text-caption">
+                    {TASKS_TEXTS.recurrence}
+                    <InfoTip text={TASKS_TEXTS.hintRecurrence} />
+                  </span>
+                )}
+                {recurrenceDetected && (
+                  <div className="flex flex-col gap-2 rounded-md border border-accent bg-surface p-2 text-sm">
+                    <span className="text-fg">
+                      {TASKS_TEXTS.looksRecurring}
+                    </span>
+                    <div className="flex flex-wrap gap-1">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setRecurrenceBannerDismissed(true)}
+                      >
+                        {TASKS_TEXTS.createAnyway}
+                      </Button>
+                      <Button
+                        size="sm"
+                        onClick={() => {
+                          setRecurrence({
+                            type: 'monthly',
+                            interval: 1,
+                            dayOfMonth: null,
+                            endDate: null,
+                          })
+                          setRecurrenceBannerDismissed(true)
+                        }}
+                      >
+                        {TASKS_TEXTS.createAsRecurring}
+                      </Button>
+                    </div>
+                  </div>
+                )}
+                {!recurrenceDetected && (
+                  <RecurrenceFields
+                    value={recurrence}
+                    onChange={setRecurrence}
+                  />
+                )}
+              </div>
+            </div>
+          )}
 
           <div className="flex flex-col gap-1.5">
             <label htmlFor="card-description" className="text-caption">
