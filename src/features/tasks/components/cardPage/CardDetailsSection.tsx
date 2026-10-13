@@ -1,4 +1,6 @@
 import { IconInfo } from '@/shared/lib/icons'
+import { ColorDot } from '@/components/ui/color-dot'
+import type { EpicLabel, EpicOption } from '@/features/epics/lib/epic'
 import { SectionLabel } from '@/components/ui/section-label'
 import type { ReactNode } from 'react'
 import {
@@ -22,7 +24,6 @@ import {
   TASK_PRIORITIES,
 } from '@/shared/lib/enums'
 import type {
-  Epic,
   ProjectType,
   Sprint,
   TaskPriority,
@@ -46,8 +47,8 @@ type CardDetailsSectionProps = {
   priority: TaskPriority
   flagged: boolean
   epicId: string | null
-  epicName?: string
-  epics?: Epic[]
+  epicLabel?: EpicLabel
+  epicOptions: EpicOption[]
   sprintId: string | null
   sprints?: Sprint[]
   tags: string[]
@@ -80,8 +81,8 @@ export function CardDetailsSection({
   priority,
   flagged,
   epicId,
-  epicName,
-  epics,
+  epicLabel,
+  epicOptions,
   sprintId,
   sprints,
   tags,
@@ -114,13 +115,23 @@ export function CardDetailsSection({
                 aria-labelledby="epic-label"
                 className={INLINE_TRIGGER_CLASS}
               >
-                <SelectValue>{epicName ?? TASKS_TEXTS.none}</SelectValue>
+                <SelectValue>
+                  {epicLabel ? (
+                    <>
+                      <ColorDot color={epicLabel.color} />
+                      {epicLabel.name}
+                    </>
+                  ) : (
+                    TASKS_TEXTS.none
+                  )}
+                </SelectValue>
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value={NONE_EPIC}>{TASKS_TEXTS.none}</SelectItem>
-                {epics?.map((e) => (
-                  <SelectItem key={e.id} value={e.id}>
-                    {e.name}
+                {epicOptions.map((epic) => (
+                  <SelectItem key={epic.id} value={epic.id}>
+                    <ColorDot color={epic.color} />
+                    {epic.name}
                   </SelectItem>
                 ))}
               </SelectContent>

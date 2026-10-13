@@ -2,12 +2,14 @@ type SegmentedProgressProps = {
   value: number
   label: string
   segments?: number
+  color?: string
 }
 
 export function SegmentedProgress({
   value,
   label,
   segments = 20,
+  color,
 }: SegmentedProgressProps) {
   const filledSegments = Math.round((value / 100) * segments)
 
@@ -26,6 +28,11 @@ export function SegmentedProgress({
           className={`h-2.5 w-2 ${
             index < filledSegments ? 'bg-accent' : 'bg-surface'
           }`}
+          style={
+            color && index < filledSegments
+              ? { backgroundColor: color }
+              : undefined
+          }
         />
       ))}
     </div>

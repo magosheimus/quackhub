@@ -190,8 +190,8 @@ export function groupTasksByColumn(
   return groups
 }
 
-export type MoveOption = {
-  column: BoardColumnKey
+export type MoveOption<T extends string = BoardColumnKey> = {
+  column: T
   label: string
 }
 

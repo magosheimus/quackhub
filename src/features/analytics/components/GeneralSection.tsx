@@ -9,10 +9,9 @@ import {
 import { ChartCard } from './ChartCard'
 import { SectionTitle } from '@/components/ui/section-title'
 import { SegmentedProgress } from '@/components/ui/segmented-progress'
-import type {
-  CompletionByProjectItem,
-  CompletionRateOverTimeItem,
-} from '@/features/analytics/api/analytics'
+import { ColorDot } from '@/components/ui/color-dot'
+import type { ProjectCompletionItem } from '@/features/analytics/hooks/useAnalyticsPage'
+import type { CompletionRateOverTimeItem } from '@/features/analytics/api/analytics'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
 import { SPRINTS_TEXTS } from '@/features/sprints/constants/texts'
 import { ANALYTICS_TEXTS } from '@/features/analytics/constants/texts'
@@ -20,7 +19,7 @@ import { EmptyMessage } from '@/components/ui/empty-message'
 
 type GeneralSectionProps = {
   isAll: boolean
-  projects: CompletionByProjectItem[]
+  projects: ProjectCompletionItem[]
   statusCounts: { name: string; count: number }[]
   completionRateOverTime: CompletionRateOverTimeItem[]
 }
@@ -38,31 +37,27 @@ export function GeneralSection({
       <ChartCard title={ANALYTICS_TEXTS.doneByProject}>
         {projects.length > 0 ? (
           <div className="flex flex-col gap-4">
-            {projects.map((project) => {
-              const percent =
-                project.total > 0
-                  ? Math.round((project.completed / project.total) * 100)
-                  : 0
-              return (
-                <div
-                  key={project.projectName}
-                  className="flex flex-col gap-1.5 sm:flex-row sm:items-center sm:gap-4"
-                >
-                  <span className="truncate text-sm text-fg sm:w-48 sm:shrink-0">
-                    {project.projectName}
+            {projects.map((project) => (
+              <div
+                key={project.projectName}
+                className="flex flex-col gap-1.5 sm:flex-row sm:items-center sm:gap-4"
+              >
+                <span className="flex min-w-0 items-center gap-2 text-sm text-fg sm:w-48 sm:shrink-0">
+                  <ColorDot color={project.color} />
+                  <span className="truncate">{project.projectName}</span>
+                </span>
+                <div className="flex items-center gap-3">
+                  <SegmentedProgress
+                    value={project.percent}
+                    color={project.color}
+                    label={COMMON_TEXTS.progressOf(project.projectName)}
+                  />
+                  <span className="text-caption">
+                    {project.completed} de {project.total}
                   </span>
-                  <div className="flex items-center gap-3">
-                    <SegmentedProgress
-                      value={percent}
-                      label={COMMON_TEXTS.progressOf(project.projectName)}
-                    />
-                    <span className="text-caption">
-                      {project.completed} de {project.total}
-                    </span>
-                  </div>
                 </div>
-              )
-            })}
+              </div>
+            ))}
           </div>
         ) : (
           <EmptyMessage>{ANALYTICS_TEXTS.noCards}</EmptyMessage>

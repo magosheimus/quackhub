@@ -3,7 +3,10 @@ import { Button } from '@/components/ui/button'
 import { HabitFormFields } from '@/features/dailyTracker/components/HabitFormFields'
 import { useHabitForm } from '@/features/dailyTracker/hooks/useHabitForm'
 import { useCreateHabit } from '@/features/dailyTracker/hooks/useHabitMutations'
-import { DAILY_TRACKER_TEXTS } from '@/features/dailyTracker/constants/texts'
+import {
+  DAILY_TRACKER_TEXTS,
+  NEW_HABIT_ID_PREFIX,
+} from '@/features/dailyTracker/constants/texts'
 import { IconPlus } from '@/shared/lib/icons'
 
 type NewHabitFormProps = {
@@ -25,7 +28,7 @@ export function NewHabitForm({ weekdayOrder }: NewHabitFormProps) {
   return (
     <form onSubmit={submit} className="flex flex-col gap-4">
       <HabitFormFields
-        idPrefix="new-habit"
+        idPrefix={NEW_HABIT_ID_PREFIX}
         values={values}
         weekdayOrder={weekdayOrder}
         onChange={update}

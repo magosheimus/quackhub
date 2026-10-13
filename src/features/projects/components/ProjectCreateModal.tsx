@@ -1,5 +1,5 @@
-import { InlineHint } from '@/components/ui/inline-hint'
-import { IconPlus, IconPlusBoxSharp, IconRefresh } from '@/shared/lib/icons'
+import { ProjectFormFields } from '@/features/projects/components/ProjectFormFields'
+import { IconPlus, IconPlusBoxSharp } from '@/shared/lib/icons'
 import { useEffect, useRef, useState } from 'react'
 import {
   Dialog,
@@ -9,26 +9,12 @@ import {
   DialogFooter,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { useCreateProject } from '@/features/projects/hooks/useCreateProject'
-import { isStudyProject } from '@/features/projects/lib/project'
-import { isProjectType } from '@/shared/lib/enums'
 import type { ProjectType } from '@/shared/types/entities'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
-import { ColorSwatchPicker } from '@/components/ui/color-swatch-picker'
 import { DEFAULT_PALETTE_COLOR, type PaletteColor } from '@/shared/lib/palette'
-import {
-  PROJECTS_TEXTS,
-  PROJECT_TYPE_LABELS,
-} from '@/features/projects/constants/texts'
+import { PROJECTS_TEXTS } from '@/features/projects/constants/texts'
 
 type ProjectCreateModalProps = {
   triggerVariant?: 'icon' | 'button'
@@ -96,82 +82,18 @@ export function ProjectCreateModal({
           <DialogTitle>{PROJECTS_TEXTS.newProject}</DialogTitle>
         </DialogHeader>
 
-        <div className="flex flex-col gap-4">
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-[1fr_8rem]">
-            <div className="flex min-w-0 flex-col gap-1.5">
-              <label htmlFor="project-name" className="text-caption">
-                {COMMON_TEXTS.name}
-              </label>
-              <Input
-                id="project-name"
-                ref={nameInputRef}
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder={PROJECTS_TEXTS.namePlaceholder}
-              />
-            </div>
-            <div className="flex min-w-0 flex-col gap-1.5">
-              <label htmlFor="project-prefix" className="text-caption">
-                {PROJECTS_TEXTS.prefix}
-              </label>
-              <Input
-                id="project-prefix"
-                value={prefix}
-                onChange={(e) => setPrefix(e.target.value.toUpperCase())}
-                placeholder={PROJECTS_TEXTS.prefixPlaceholder}
-                maxLength={6}
-              />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 [&_[data-slot=select-trigger]]:w-full">
-            <div className="flex min-w-0 flex-col gap-1.5">
-              <span id="project-type-label" className="text-caption">
-                {PROJECTS_TEXTS.type}
-              </span>
-              <Select
-                value={type}
-                onValueChange={(v) => {
-                  if (isProjectType(v)) {
-                    setType(v)
-                  }
-                }}
-              >
-                <SelectTrigger aria-labelledby="project-type-label">
-                  <SelectValue>
-                    {type === 'general'
-                      ? PROJECT_TYPE_LABELS.general
-                      : PROJECT_TYPE_LABELS.study}
-                  </SelectValue>
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="general">
-                    {PROJECT_TYPE_LABELS.general}
-                  </SelectItem>
-                  <SelectItem value="study">
-                    {PROJECT_TYPE_LABELS.study}
-                  </SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="flex min-w-0 flex-col gap-1.5">
-              <span id="project-color-label" className="text-caption">
-                {PROJECTS_TEXTS.color}
-              </span>
-              <ColorSwatchPicker
-                value={color}
-                onChange={setColor}
-                aria-labelledby="project-color-label"
-              />
-            </div>
-          </div>
-
-          {isStudyProject({ type }) && (
-            <InlineHint icon={IconRefresh}>
-              {PROJECTS_TEXTS.studyProjectHint}
-            </InlineHint>
-          )}
-        </div>
+        <ProjectFormFields
+          idPrefix="project"
+          name={name}
+          prefix={prefix}
+          type={type}
+          color={color}
+          onNameChange={setName}
+          onPrefixChange={setPrefix}
+          onTypeChange={setType}
+          onColorChange={setColor}
+          nameInputRef={nameInputRef}
+        />
 
         <DialogFooter>
           <Button variant="outline" onClick={() => setOpen(false)}>

@@ -39,6 +39,7 @@ export function HabitFormFields({
       <label className="flex flex-col gap-1.5">
         <span className="text-caption">{DAILY_TRACKER_TEXTS.habitName}</span>
         <Input
+          id={`${idPrefix}-name`}
           value={values.name}
           onChange={(e) => onChange({ name: e.target.value })}
           placeholder={DAILY_TRACKER_TEXTS.habitNamePlaceholder}

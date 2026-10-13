@@ -20,6 +20,9 @@ import { PRIORITY_CONFIG } from '@/features/tasks/lib/taskPriority'
 import type { ReactNode } from 'react'
 import type { Task } from '@/shared/types/entities'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
+import { ProjectCode } from '@/features/projects/components/ProjectCode'
+import type { ColorScope } from '@/shared/lib/palette'
+import type { ProjectLabels } from '@/features/projects/lib/project'
 
 const CARD_CLASS =
   'flex gap-2 rounded-md border border-l-4 border-border bg-card p-3 text-sm hover:bg-card-hover'
@@ -31,18 +34,21 @@ function getBorderStyle(task: Task) {
 
 type BoardCardBodyProps = {
   task: Task
-  projectPrefixById: Map<string, string>
+  projectLabels: ProjectLabels
   showStatus?: boolean
+  tag?: string
+  colorScope?: ColorScope
 }
 
 function BoardCardBody({
   task,
-  projectPrefixById,
+  projectLabels,
   showStatus = false,
+  tag,
+  colorScope = 'project',
 }: BoardCardBodyProps) {
   const priority = PRIORITY_CONFIG[task.priority]
   const PriorityIcon = priority.icon
-  const projectPrefix = projectPrefixById.get(task.project_id) ?? ''
 
   return (
     <>
@@ -65,9 +71,11 @@ function BoardCardBody({
 
       <div className="flex min-w-0 flex-1 flex-col gap-1">
         {task.task_number && (
-          <span className="text-caption">
-            {projectPrefix}-{task.task_number}
-          </span>
+          <ProjectCode
+            label={projectLabels.get(task.project_id)}
+            taskNumber={task.task_number}
+            withColor={colorScope === 'project'}
+          />
         )}
         <Link
           to={`/cards/${task.id}`}
@@ -75,7 +83,9 @@ function BoardCardBody({
         >
           {task.title}
         </Link>
-        <span className="text-caption">{priority.text}</span>
+        <span className="text-caption">
+          {tag ? `${priority.text} · ${tag}` : priority.text}
+        </span>
         {showStatus && (
           <span
             className={`w-fit rounded-sm px-2 py-0.5 text-xs font-medium text-page ${
@@ -90,21 +100,27 @@ function BoardCardBody({
   )
 }
 
-type BoardCardProps = {
+type BoardCardProps<T extends string> = {
   task: Task
   index: number
-  projectPrefixById: Map<string, string>
-  moveOptions?: MoveOption[]
-  onMove?: (column: BoardColumnKey) => void
+  projectLabels: ProjectLabels
+  tag?: string
+  colorScope?: ColorScope
+  moveOptions?: MoveOption<T>[]
+  onMove?: (column: T) => void
 }
 
-type MoveMenuProps = {
+type MoveMenuProps<T extends string> = {
   taskTitle: string
-  options: MoveOption[]
-  onMove: (column: BoardColumnKey) => void
+  options: MoveOption<T>[]
+  onMove: (column: T) => void
 }
 
-function MoveMenu({ taskTitle, options, onMove }: MoveMenuProps) {
+function MoveMenu<T extends string>({
+  taskTitle,
+  options,
+  onMove,
+}: MoveMenuProps<T>) {
   if (options.length === 0) {
     return null
   }
@@ -141,13 +157,15 @@ function MoveMenu({ taskTitle, options, onMove }: MoveMenuProps) {
   )
 }
 
-export function BoardCard({
+export function BoardCard<T extends string = BoardColumnKey>({
   task,
   index,
-  projectPrefixById,
+  projectLabels,
+  tag,
+  colorScope,
   moveOptions,
   onMove,
-}: BoardCardProps) {
+}: BoardCardProps<T>) {
   return (
     <Draggable draggableId={task.id} index={index}>
       {(provided, snapshot) => (
@@ -163,7 +181,12 @@ export function BoardCard({
             snapshot.isDragging ? 'bg-card-hover' : ''
           }`}
         >
-          <BoardCardBody task={task} projectPrefixById={projectPrefixById} />
+          <BoardCardBody
+            task={task}
+            projectLabels={projectLabels}
+            tag={tag}
+            colorScope={colorScope}
+          />
           {moveOptions && onMove && (
             <MoveMenu
               taskTitle={task.title}
@@ -179,23 +202,26 @@ export function BoardCard({
 
 type StaticBoardCardProps = {
   task: Task
-  projectPrefixById: Map<string, string>
+  projectLabels: ProjectLabels
   showStatus?: boolean
+  colorScope?: ColorScope
   actions?: ReactNode
 }
 
 export function StaticBoardCard({
   task,
-  projectPrefixById,
+  projectLabels,
   showStatus,
+  colorScope,
   actions,
 }: StaticBoardCardProps) {
   return (
     <div style={getBorderStyle(task)} className={`${CARD_CLASS} flex-wrap`}>
       <BoardCardBody
         task={task}
-        projectPrefixById={projectPrefixById}
+        projectLabels={projectLabels}
         showStatus={showStatus}
+        colorScope={colorScope}
       />
       {actions && (
         <div className="ml-auto flex items-center gap-2 self-center">

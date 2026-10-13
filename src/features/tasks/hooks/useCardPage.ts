@@ -4,6 +4,8 @@ import { useUpdateTask } from '@/features/tasks/hooks/useUpdateTask'
 import { useUpdateTaskStatus } from '@/features/tasks/hooks/sprint/useUpdateTaskStatus'
 import { useProjects } from '@/features/projects/hooks/useProjects'
 import { useEpics } from '@/features/epics/hooks/useEpics'
+import { buildEpicOptions, toEpicLabel } from '@/features/epics/lib/epic'
+import { toProjectLabel } from '@/features/projects/lib/project'
 import { useSprints } from '@/features/sprints/hooks/useSprints'
 import { useTaskTags } from '@/features/tasks/hooks/tags/useTaskTags'
 import { useAddTaskTag } from '@/features/tasks/hooks/tags/useAddTaskTag'
@@ -88,8 +90,9 @@ export function useCardPage(task: Task) {
     updateTask,
     projects,
     project,
-    epics,
-    epic,
+    projectLabel: project ? toProjectLabel(project) : undefined,
+    epicLabel: epic ? toEpicLabel(epic) : undefined,
+    epicOptions: buildEpicOptions(epics ?? []),
     assignableSprints,
     tags,
     tagSuggestions,

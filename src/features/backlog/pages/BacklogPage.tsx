@@ -15,18 +15,20 @@ import { TASK_PRIORITIES, TASK_STATUSES } from '@/shared/lib/enums'
 import { AnimatePresence } from 'framer-motion'
 import { LoadingText } from '@/components/ui/loading-text'
 import { Button } from '@/components/ui/button'
+import { ColorDot } from '@/components/ui/color-dot'
 import { EpicManageModal } from '@/features/epics/components/EpicManageModal'
 import { PageTitle } from '@/components/ui/page-title'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
 import { BACKLOG_TEXTS } from '@/features/backlog/constants/texts'
 import { EmptyMessage } from '@/components/ui/empty-message'
+import { EmptyState } from '@/components/ui/empty-state'
+import { CardCreateModal } from '@/features/tasks/components/CardCreateModal'
 
 const NONE_VALUE = '__all__'
 
 export function BacklogPage() {
   const {
     projects,
-    epics,
     isLoadingProjects,
     isLoadingTasks,
     hasError,
@@ -47,9 +49,12 @@ export function BacklogPage() {
     isEpicModalOpen,
     setIsEpicModalOpen,
     filteredTasks,
+    hasBacklogTasks,
     projectGroups,
-    projectPrefixById,
-    getEpicName,
+    projectLabels,
+    getEpicLabel,
+    colorScope,
+    epicOptions,
     toggleProject,
     isProjectCollapsed,
     canAddToSprint,
@@ -187,8 +192,9 @@ export function BacklogPage() {
               <SelectItem value={NONE_VALUE}>
                 {BACKLOG_TEXTS.allEpics}
               </SelectItem>
-              {epics?.map((epic) => (
+              {epicOptions.map((epic) => (
                 <SelectItem key={epic.id} value={epic.id}>
+                  <ColorDot color={epic.color} />
                   {epic.name}
                 </SelectItem>
               ))}
@@ -199,7 +205,16 @@ export function BacklogPage() {
 
       <div className="flex flex-col gap-6">
         {isLoadingTasks && <LoadingText />}
-        {!isLoadingTasks && filteredTasks.length === 0 && (
+        {!isLoadingTasks && !hasBacklogTasks && (
+          <EmptyState
+            icon={IconBulletlist}
+            title={BACKLOG_TEXTS.emptyTitle}
+            description={BACKLOG_TEXTS.emptyDescription}
+          >
+            <CardCreateModal />
+          </EmptyState>
+        )}
+        {!isLoadingTasks && hasBacklogTasks && filteredTasks.length === 0 && (
           <EmptyMessage>{BACKLOG_TEXTS.empty}</EmptyMessage>
         )}
         {projectGroups.map((group) => {
@@ -238,8 +253,9 @@ export function BacklogPage() {
                     <BacklogRow
                       key={task.id}
                       task={task}
-                      projectPrefixById={projectPrefixById}
-                      epicName={getEpicName(task)}
+                      projectLabels={projectLabels}
+                      epicLabel={getEpicLabel(task)}
+                      colorScope={colorScope}
                       onAddToSprint={
                         canAddToSprint
                           ? () => addToSprint(task, project)

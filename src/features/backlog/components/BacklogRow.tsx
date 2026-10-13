@@ -7,23 +7,29 @@ import { Button } from '@/components/ui/button'
 import type { Task } from '@/shared/types/entities'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
 import { BACKLOG_TEXTS } from '@/features/backlog/constants/texts'
+import type { ProjectLabels } from '@/features/projects/lib/project'
+import { ProjectCode } from '@/features/projects/components/ProjectCode'
+import { EpicTag } from '@/features/epics/components/EpicTag'
+import type { EpicLabel } from '@/features/epics/lib/epic'
+import type { ColorScope } from '@/shared/lib/palette'
 
 type BacklogRowProps = {
   task: Task
-  projectPrefixById: Map<string, string>
-  epicName: string | null
+  projectLabels: ProjectLabels
+  epicLabel: EpicLabel | null
+  colorScope: ColorScope
   onAddToSprint?: () => void
 }
 
 export function BacklogRow({
   task,
-  projectPrefixById,
-  epicName,
+  projectLabels,
+  epicLabel,
+  colorScope,
   onAddToSprint,
 }: BacklogRowProps) {
   const priority = PRIORITY_CONFIG[task.priority]
   const PriorityIcon = priority.icon
-  const projectPrefix = projectPrefixById.get(task.project_id) ?? ''
 
   return (
     <motion.div
@@ -57,9 +63,11 @@ export function BacklogRow({
 
         <div className="flex min-w-40 flex-1 flex-col gap-0.5">
           {task.task_number && (
-            <span className="text-caption">
-              {projectPrefix}-{task.task_number}
-            </span>
+            <ProjectCode
+              label={projectLabels.get(task.project_id)}
+              taskNumber={task.task_number}
+              withColor={colorScope === 'project'}
+            />
           )}
           <Link
             to={`/cards/${task.id}`}
@@ -71,7 +79,9 @@ export function BacklogRow({
 
         <span className="text-caption">{STATUS_LABELS[task.status]}</span>
 
-        {epicName && <span className="text-caption">{epicName}</span>}
+        {epicLabel && (
+          <EpicTag label={epicLabel} withColor={colorScope === 'epic'} />
+        )}
 
         {onAddToSprint && (
           <Button variant="outline" size="sm" onClick={onAddToSprint}>

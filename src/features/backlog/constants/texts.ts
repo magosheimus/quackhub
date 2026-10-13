@@ -5,7 +5,10 @@ export const BACKLOG_TEXTS = {
   allPriorities: 'Todas as prioridades',
   allTags: 'Todas as tags',
   allEpics: 'Todos os épicos',
-  empty: '— nenhum card no backlog —',
+  empty: '— nenhum card com esses filtros —',
+  emptyTitle: 'Backlog vazio',
+  emptyDescription:
+    'Cards sem sprint ficam aqui até você planejar a próxima. Comece criando um card.',
   addAll: 'Adicionar todos',
   addToSprint: 'Adicionar à Sprint',
 } as const

@@ -6,6 +6,7 @@ import { todayLocal } from '@/shared/lib/date'
 import type { Project, Task } from '@/shared/types/entities'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
 import { INBOX_TEXTS } from '@/features/inbox/constants/texts'
+import { buildProjectLabels } from '@/features/projects/lib/project'
 
 function describeReview(nextReview: string | null, today: string): string {
   if (!nextReview) return INBOX_TEXTS.reviewWithoutDate
@@ -36,7 +37,7 @@ export function InboxSection({
   if (tasks.length === 0) return null
 
   const today = todayLocal()
-  const projectPrefixById = new Map(projects.map((p) => [p.id, p.prefix ?? '']))
+  const projectLabels = buildProjectLabels(projects ?? [])
 
   return (
     <div className="flex flex-col gap-2">
@@ -52,7 +53,7 @@ export function InboxSection({
           <StaticBoardCard
             key={task.id}
             task={task}
-            projectPrefixById={projectPrefixById}
+            projectLabels={projectLabels}
             actions={
               isSrsEligible ? (
                 <div className="flex flex-col items-end gap-1">

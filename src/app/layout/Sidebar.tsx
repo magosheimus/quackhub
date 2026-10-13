@@ -14,7 +14,7 @@ import {
   IconSettings,
   type IconComponent,
 } from '@/shared/lib/icons'
-import { useProjects } from '@/features/projects/hooks/useProjects'
+import { useProjectNavItems } from '@/features/projects/hooks/useProjectNavItems'
 import { useDraftsItems } from '@/features/drafts/hooks/useDraftsItems'
 import { ProjectCreateModal } from '@/features/projects/components/ProjectCreateModal'
 import { ProjectEditModal } from '@/features/projects/components/ProjectEditModal'
@@ -30,6 +30,11 @@ import { DRAFTS_TEXTS } from '@/features/drafts/constants/texts'
 import { Panel } from '@/components/ui/panel'
 import { LogoMark } from '@/components/ui/logo-mark'
 import { cn } from '@/shared/lib/utils'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
 import { DAILY_TRACKER_TEXTS } from '@/features/dailyTracker/constants/texts'
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
@@ -43,18 +48,29 @@ function NavItem({
   to,
   icon: Icon,
   end,
+  hint,
   children,
 }: {
   to: string
   icon: IconComponent
   end?: boolean
+  hint?: string
   children: ReactNode
 }) {
-  return (
+  const link = (
     <NavLink to={to} end={end} className={navLinkClass}>
       <Icon size={16} aria-hidden="true" />
       {children}
     </NavLink>
+  )
+  if (!hint) {
+    return link
+  }
+  return (
+    <Tooltip>
+      <TooltipTrigger render={link} />
+      <TooltipContent side="right">{hint}</TooltipContent>
+    </Tooltip>
   )
 }
 
@@ -63,7 +79,7 @@ type SidebarProps = {
 }
 
 export function Sidebar({ className }: SidebarProps) {
-  const { data: projects, isLoading } = useProjects()
+  const { isLoading, items: projectItems } = useProjectNavItems()
   const { data: draftsItems } = useDraftsItems()
   const draftsCount = draftsItems?.length ?? 0
   const { data: inboxData } = useInboxItems()
@@ -97,31 +113,43 @@ export function Sidebar({ className }: SidebarProps) {
       </div>
 
       <nav className="flex flex-col gap-1">
-        <NavItem to="/diario" icon={IconCalendarWeeks}>
+        <NavItem
+          to="/diario"
+          icon={IconCalendarWeeks}
+          hint={APP_TEXTS.hintDailyTracker}
+        >
           {DAILY_TRACKER_TEXTS.title}
         </NavItem>
-        <NavItem to="/inbox" icon={IconInbox}>
+        <NavItem to="/inbox" icon={IconInbox} hint={APP_TEXTS.hintInbox}>
           {INBOX_TEXTS.title}
           {inboxCount > 0 && (
             <span className="ml-auto text-caption">{inboxCount}</span>
           )}
         </NavItem>
-        <NavItem to="/rascunhos" icon={IconNotes}>
+        <NavItem to="/rascunhos" icon={IconNotes} hint={APP_TEXTS.hintDrafts}>
           {DRAFTS_TEXTS.title}
           {draftsCount > 0 && (
             <span className="ml-auto text-caption">{draftsCount}</span>
           )}
         </NavItem>
-        <NavItem to="/board" icon={IconGrid}>
+        <NavItem to="/board" icon={IconGrid} hint={APP_TEXTS.hintCurrentSprint}>
           {COMMON_TEXTS.currentSprint}
         </NavItem>
-        <NavItem to="/backlog" icon={IconBulletlist}>
+        <NavItem
+          to="/backlog"
+          icon={IconBulletlist}
+          hint={APP_TEXTS.hintBacklog}
+        >
           {COMMON_TEXTS.backlog}
         </NavItem>
-        <NavItem to="/sprints" icon={IconClock}>
+        <NavItem to="/sprints" icon={IconClock} hint={APP_TEXTS.hintHistory}>
           {COMMON_TEXTS.history}
         </NavItem>
-        <NavItem to="/analytics" icon={IconChartBar}>
+        <NavItem
+          to="/analytics"
+          icon={IconChartBar}
+          hint={APP_TEXTS.hintAnalytics}
+        >
           {APP_TEXTS.analytics}
         </NavItem>
         <div className={navLinkClass({ isActive: false })}>
@@ -144,13 +172,13 @@ export function Sidebar({ className }: SidebarProps) {
         {isProjectsOpen && (
           <div className="flex flex-col gap-1">
             {isLoading && <LoadingText />}
-            {projects?.map((project) => (
+            {projectItems.map(({ project, color }) => (
               <Panel key={project.id} className="group flex items-center p-0">
                 <NavLink
                   to={`/board?project=${project.id}`}
                   className="flex flex-1 items-center gap-2 px-3 py-2 text-sm text-fg"
                 >
-                  <IconFolder size={12} aria-hidden="true" />
+                  <IconFolder size={12} aria-hidden="true" style={{ color }} />
                   {project.name}
                 </NavLink>
                 <button

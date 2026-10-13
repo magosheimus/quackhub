@@ -11,7 +11,8 @@ export const DAILY_TRACKER_TEXTS = {
   todayProgress: (done: number, total: number) =>
     `${done} de ${total} concluídos`,
   noHabitsToday: '— nenhum hábito agendado para hoje —',
-  noHabits: '— nenhum hábito ainda: crie o primeiro em "Gerenciar hábitos" —',
+  noHabits: '— nenhum hábito ainda —',
+  createFirstHabit: 'Criar meu primeiro hábito',
   markDone: 'Marcar como feito',
   undo: 'Desfazer',
   doneToday: 'Feito hoje',
@@ -156,3 +157,6 @@ export const HABIT_ICON_LABELS: Record<HabitIconKey, string> = {
   fire: 'Fogo',
   star: 'Estrela',
 }
+
+export const NEW_HABIT_ID_PREFIX = 'new-habit'
+export const NEW_HABIT_NAME_INPUT_ID = `${NEW_HABIT_ID_PREFIX}-name`

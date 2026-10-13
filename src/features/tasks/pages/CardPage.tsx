@@ -1,6 +1,6 @@
 import { ErrorState } from '@/components/ui/error-state'
 import { hasLoadError, retryFailedQueries } from '@/shared/query/queryState'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { useTaskById } from '@/features/tasks/hooks/useTaskById'
 import { useCardPage } from '@/features/tasks/hooks/useCardPage'
 import { CardPageHeader } from '@/features/tasks/components/cardPage/CardPageHeader'
@@ -15,7 +15,10 @@ import { LoadingText } from '@/components/ui/loading-text'
 import { CardDescription } from '@/features/tasks/components/cardPage/CardDescription'
 import type { Task } from '@/shared/types/entities'
 import { TASKS_TEXTS } from '@/features/tasks/constants/texts'
-import { EmptyMessage } from '@/components/ui/empty-message'
+import { EmptyState } from '@/components/ui/empty-state'
+import { HOME_PATH } from '@/features/auth/lib/redirect'
+import { Button } from '@/components/ui/button'
+import { IconFolder } from '@/shared/lib/icons'
 
 export function CardPage() {
   const { id } = useParams<{ id: string }>()
@@ -31,7 +34,17 @@ export function CardPage() {
   }
 
   if (!task) {
-    return <EmptyMessage>{TASKS_TEXTS.notFound}</EmptyMessage>
+    return (
+      <EmptyState
+        icon={IconFolder}
+        title={TASKS_TEXTS.notFound}
+        description={TASKS_TEXTS.notFoundDescription}
+      >
+        <Button variant="outline" size="sm" render={<Link to={HOME_PATH} />}>
+          {TASKS_TEXTS.goToInbox}
+        </Button>
+      </EmptyState>
+    )
   }
 
   return <CardPageBody key={task.id} task={task} />
@@ -43,8 +56,6 @@ function CardPageBody({ task }: { task: Task }) {
     changeStatus,
     updateTask,
     project,
-    epic,
-    epics,
     assignableSprints,
     tags,
     tagSuggestions,
@@ -61,14 +72,17 @@ function CardPageBody({ task }: { task: Task }) {
     handleTagsChange,
     recurrenceValue,
     handleRecurrenceChange,
+    projectLabel,
+    epicLabel,
+    epicOptions,
   } = useCardPage(task)
 
   return (
     <div className="flex flex-col gap-4">
       <CardPageHeader
         taskNumber={task.task_number}
-        projectPrefix={project?.prefix}
-        epicName={epic?.name}
+        projectLabel={projectLabel}
+        epicLabel={epicLabel}
         title={title}
         isEditingTitle={isEditingTitle}
         onTitleChange={setTitle}
@@ -85,8 +99,8 @@ function CardPageBody({ task }: { task: Task }) {
             priority={task.priority}
             flagged={task.flagged}
             epicId={task.epic_id}
-            epicName={epic?.name}
-            epics={epics}
+            epicLabel={epicLabel}
+            epicOptions={epicOptions}
             sprintId={task.sprint_id}
             sprints={assignableSprints}
             tags={tags ?? []}

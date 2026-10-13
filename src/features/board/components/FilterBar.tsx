@@ -1,6 +1,8 @@
 import { Button } from '@/components/ui/button'
 import type { BoardFilters } from '@/features/board/lib/board'
-import type { Epic, Project } from '@/shared/types/entities'
+import { ColorDot } from '@/components/ui/color-dot'
+import type { EpicOption } from '@/features/epics/lib/epic'
+import type { ProjectOption } from '@/features/projects/lib/project'
 import { BOARD_TEXTS } from '@/features/board/constants/texts'
 
 type FilterBarProps = {
@@ -9,8 +11,8 @@ type FilterBarProps = {
     key: K,
     value: BoardFilters[K],
   ) => void
-  epics: Epic[]
-  projects: Project[]
+  epics: EpicOption[]
+  projects: ProjectOption[]
 }
 
 const CHIP_CLASS = 'bg-card hover:bg-hover'
@@ -68,6 +70,7 @@ export function FilterBar({
               )
             }
           >
+            <ColorDot color={project.color} />
             {project.name}
           </Button>
         )

@@ -7,11 +7,22 @@ export const PALETTE_COLORS = [
   'rose',
   'lavender',
   'sand',
+  'magenta',
+  'teal',
+  'indigo',
+  'brown',
+  'lime',
+  'graphite',
 ] as const
 
 export type PaletteColor = (typeof PALETTE_COLORS)[number]
 
 export const DEFAULT_PALETTE_COLOR: PaletteColor = 'amber'
+
+export const NEUTRAL_COLOR = 'var(--text-muted)'
+
+// Onde vários projetos se misturam a cor identifica o projeto; dentro de um projeto, o épico
+export type ColorScope = 'project' | 'epic'
 
 export const isPaletteColor = createEnumGuard(PALETTE_COLORS)
 
@@ -26,6 +37,12 @@ const PALETTE_VARS: Record<PaletteColor, string> = {
   rose: 'var(--palette-rose)',
   lavender: 'var(--palette-lavender)',
   sand: 'var(--palette-sand)',
+  magenta: 'var(--palette-magenta)',
+  teal: 'var(--palette-teal)',
+  indigo: 'var(--palette-indigo)',
+  brown: 'var(--palette-brown)',
+  lime: 'var(--palette-lime)',
+  graphite: 'var(--palette-graphite)',
 }
 
 export function paletteVar(color: PaletteColor): string {

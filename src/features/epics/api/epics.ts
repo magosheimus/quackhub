@@ -7,6 +7,8 @@ export async function getEpicsByProject(projectId: string): Promise<Epic[]> {
     .select('*')
     .eq('project_id', projectId)
     .is('deleted_at', null)
+    .order('position')
+    .order('created_at')
   if (error) throw new Error(`Falha ao buscar épicos: ${error.message}`)
   return data
 }
@@ -45,6 +47,20 @@ export async function getAllEpics(): Promise<Epic[]> {
     .from('epics')
     .select('*')
     .is('deleted_at', null)
+    .order('position')
+    .order('created_at')
   if (error) throw new Error(`Falha ao buscar épicos: ${error.message}`)
   return data
+}
+
+export async function reorderEpics(orderedIds: string[]): Promise<void> {
+  const results = await Promise.all(
+    orderedIds.map((id, position) =>
+      supabase.from('epics').update({ position }).eq('id', id),
+    ),
+  )
+  const failed = results.find((result) => result.error)
+  if (failed?.error) {
+    throw new Error(`Falha ao reordenar épicos: ${failed.error.message}`)
+  }
 }

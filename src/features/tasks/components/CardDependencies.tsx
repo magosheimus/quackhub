@@ -8,6 +8,7 @@ import { useRemoveDependency } from '@/features/tasks/hooks/dependencies/useRemo
 import { useSimilarCards } from '@/features/tasks/hooks/useSimilarCards'
 import { useDebouncedValue } from '@/shared/hooks/useDebouncedValue'
 import { TASKS_TEXTS } from '@/features/tasks/constants/texts'
+import { InfoTip } from '@/components/ui/info-tip'
 
 type CardDependenciesProps = {
   taskId: string
@@ -30,7 +31,10 @@ export function CardDependencies({ taskId, projectId }: CardDependenciesProps) {
 
   return (
     <div className="flex flex-col gap-2">
-      <SectionLabel icon={IconLink}>{TASKS_TEXTS.dependsOn}</SectionLabel>
+      <span className="flex items-center gap-1.5">
+        <SectionLabel icon={IconLink}>{TASKS_TEXTS.dependsOn}</SectionLabel>
+        <InfoTip text={TASKS_TEXTS.hintDependsOn} />
+      </span>
 
       {dependencies && dependencies.length > 0 && (
         <div className="flex flex-col gap-1">

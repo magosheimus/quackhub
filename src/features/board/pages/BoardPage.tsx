@@ -20,7 +20,7 @@ export function BoardPage() {
     projectTasks,
     activeSprint,
     plannedSprint,
-    projectPrefixById,
+    projectLabels,
     filters,
     updateFilter,
     sprintProjects,
@@ -47,7 +47,7 @@ export function BoardPage() {
         activeSprintId={activeSprint?.id ?? null}
         activeSprintName={activeSprint?.name ?? null}
         tasks={projectTasks}
-        projectPrefixById={projectPrefixById}
+        projectLabels={projectLabels}
       />
     )
   }
@@ -83,7 +83,7 @@ export function BoardPage() {
               column={column.key}
               label={column.label}
               tasks={column.tasks}
-              projectPrefixById={projectPrefixById}
+              projectLabels={projectLabels}
               getMoveOptions={getMoveOptionsFor}
               onMove={moveTask}
             />
