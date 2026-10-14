@@ -16,6 +16,7 @@ import { CardDescription } from '@/features/tasks/components/cardPage/CardDescri
 import type { Task } from '@/shared/types/entities'
 import { TASKS_TEXTS } from '@/features/tasks/constants/texts'
 import { EmptyState } from '@/components/ui/empty-state'
+import { ConfirmDialog } from '@/components/ui/confirm-dialog'
 import { HOME_PATH } from '@/features/auth/lib/redirect'
 import { Button } from '@/components/ui/button'
 import { IconFolder } from '@/shared/lib/icons'
@@ -75,6 +76,11 @@ function CardPageBody({ task }: { task: Task }) {
     projectLabel,
     epicLabel,
     epicOptions,
+    projectOptions,
+    projectMoveDescription,
+    requestProjectChange,
+    confirmProjectChange,
+    cancelProjectChange,
   } = useCardPage(task)
 
   return (
@@ -94,6 +100,10 @@ function CardPageBody({ task }: { task: Task }) {
       <div className="grid gap-6 sm:grid-cols-[1fr_240px]">
         <div className="flex flex-col gap-4">
           <CardDetailsSection
+            projectId={task.project_id}
+            projectName={project?.name}
+            projectOptions={projectOptions}
+            onProjectChange={requestProjectChange}
             projectType={project?.type}
             status={task.status}
             priority={task.priority}
@@ -146,6 +156,14 @@ function CardPageBody({ task }: { task: Task }) {
         task={task}
         open={isSrsModalOpen}
         onOpenChange={setIsSrsModalOpen}
+      />
+      <ConfirmDialog
+        open={projectMoveDescription !== null}
+        onOpenChange={(open) => !open && cancelProjectChange()}
+        title={TASKS_TEXTS.moveProjectTitle}
+        description={projectMoveDescription ?? ''}
+        confirmLabel={TASKS_TEXTS.moveProjectConfirm}
+        onConfirm={confirmProjectChange}
       />
     </div>
   )

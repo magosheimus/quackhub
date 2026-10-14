@@ -42,6 +42,7 @@ import { useCreateEpic } from '@/features/epics/hooks/useCreateEpic'
 import { isStudyProject } from '@/features/projects/lib/project'
 import { DEFAULT_PALETTE_COLOR } from '@/shared/lib/palette'
 import { InfoTip } from '@/components/ui/info-tip'
+import { DependencyPicker } from '@/features/tasks/components/DependencyPicker'
 
 const NONE_VALUE = '__backlog__'
 
@@ -77,6 +78,7 @@ export function CardCreateModal({
   const [flagged, setFlagged] = useState(false)
   const [dueDate, setDueDate] = useState<string | null>(null)
   const [tags, setTags] = useState<string[]>([])
+  const [dependencies, setDependencies] = useState<Task[]>([])
   const [createAnother, setCreateAnother] = useState(false)
   const titleInputRef = useRef<HTMLInputElement>(null)
   const [recurrence, setRecurrence] = useState<RecurrenceValue>({
@@ -123,6 +125,7 @@ export function CardCreateModal({
     })
     setRecurrenceBannerDismissed(false)
     setTags([])
+    setDependencies([])
   }
 
   function handleOpenChange(nextOpen: boolean) {
@@ -201,7 +204,11 @@ export function CardCreateModal({
       return
     }
     createTask(
-      { data: { ...data, epic_id: resolvedEpicId }, tags },
+      {
+        data: { ...data, epic_id: resolvedEpicId },
+        tags,
+        dependsOnTaskIds: dependencies.map((dep) => dep.id),
+      },
       {
         onSuccess: (task) => {
           if (createAnother) {
@@ -242,6 +249,7 @@ export function CardCreateModal({
                   setProjectId(v)
                   setNewEpicName(null)
                   setEpicId(null)
+                  setDependencies([])
                 }}
               >
                 <SelectTrigger aria-labelledby="card-project-label">
@@ -439,6 +447,23 @@ export function CardCreateModal({
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder={TASKS_TEXTS.descriptionPlaceholder}
+            />
+          </div>
+
+          <div className="flex flex-col gap-1.5">
+            <span className="flex items-center gap-1.5 text-caption">
+              {TASKS_TEXTS.dependsOn}
+              <InfoTip text={TASKS_TEXTS.hintDependsOn} />
+            </span>
+            <DependencyPicker
+              projectId={projectId}
+              dependencies={dependencies}
+              onAdd={(task) => setDependencies((current) => [...current, task])}
+              onRemove={(task) =>
+                setDependencies((current) =>
+                  current.filter((dep) => dep.id !== task.id),
+                )
+              }
             />
           </div>
         </div>

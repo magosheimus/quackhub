@@ -35,6 +35,7 @@ import { PROJECT_TYPE_LABELS } from '@/features/projects/constants/texts'
 import { TASKS_TEXTS } from '@/features/tasks/constants/texts'
 import { Panel } from '@/components/ui/panel'
 import { cn } from '@/shared/lib/utils'
+import type { ProjectOption } from '@/features/projects/lib/project'
 
 const NONE_EPIC = '__none__'
 const NONE_SPRINT = '__none__'
@@ -42,6 +43,10 @@ const INLINE_TRIGGER_CLASS =
   'h-auto! w-fit! border! border-transparent! bg-transparent! p-0! shadow-none! data-[popup-open]:border-border! data-[popup-open]:bg-input! data-[popup-open]:px-2! data-[popup-open]:py-1!'
 
 type CardDetailsSectionProps = {
+  projectId: string
+  projectName?: string
+  projectOptions: ProjectOption[]
+  onProjectChange: (projectId: string) => void
   projectType?: ProjectType | null
   status: TaskStatus
   priority: TaskPriority
@@ -76,6 +81,10 @@ function DetailRow({ label, labelId, children }: DetailRowProps) {
 }
 
 export function CardDetailsSection({
+  projectId,
+  projectName,
+  projectOptions,
+  onProjectChange,
   projectType,
   status,
   priority,
@@ -99,6 +108,31 @@ export function CardDetailsSection({
 
       <div className="grid grid-cols-1 gap-4 pl-6 sm:grid-cols-2">
         <div className="flex flex-col gap-3">
+          <DetailRow label={TASKS_TEXTS.projectLabel} labelId="project-label">
+            <Select
+              value={projectId}
+              onValueChange={(value) => {
+                if (value) {
+                  onProjectChange(value)
+                }
+              }}
+            >
+              <SelectTrigger
+                aria-labelledby="project-label"
+                className={INLINE_TRIGGER_CLASS}
+              >
+                <SelectValue>{projectName}</SelectValue>
+              </SelectTrigger>
+              <SelectContent>
+                {projectOptions.map((option) => (
+                  <SelectItem key={option.id} value={option.id}>
+                    <ColorDot color={option.color} />
+                    {option.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </DetailRow>
           <DetailRow label={TASKS_TEXTS.typeLabel}>
             <span className="text-sm text-fg">
               {PROJECT_TYPE_LABELS[projectType ?? 'general']}

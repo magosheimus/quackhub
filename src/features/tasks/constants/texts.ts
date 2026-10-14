@@ -32,6 +32,23 @@ export const TASKS_TEXTS = {
   titleLabel: 'Título do card',
   details: 'Detalhes',
   typeLabel: 'Tipo:',
+  projectLabel: 'Projeto:',
+  moveProjectTitle: 'Mover para outro projeto',
+  moveProjectConfirm: 'Mover',
+  moveProjectDescription: (
+    projectName: string,
+    leavesEpic: boolean,
+    resetsStatus: boolean,
+  ) =>
+    [
+      `O card vai para "${projectName}".`,
+      leavesEpic ? 'Ele sai do épico atual.' : null,
+      resetsStatus
+        ? 'Como o tipo de projeto muda, o status volta ao inicial.'
+        : null,
+    ]
+      .filter(Boolean)
+      .join(' '),
   epicLabel: 'Épico:',
   none: 'Nenhum',
   sprintLabel: 'Sprint:',
