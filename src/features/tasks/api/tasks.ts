@@ -175,12 +175,30 @@ export async function createTaskTags(
   if (error) throw new Error(`Falha ao salvar tags: ${error.message}`)
 }
 
-export async function createTaskWithTags(
+async function createTaskDependencies(
+  taskId: string,
+  dependsOnTaskIds: string[],
+): Promise<void> {
+  if (dependsOnTaskIds.length === 0) return
+  const { error } = await supabase.from('task_dependencies').insert(
+    dependsOnTaskIds.map((dependsOnTaskId) => ({
+      task_id: taskId,
+      depends_on_task_id: dependsOnTaskId,
+    })),
+  )
+  if (error) throw new Error(`Falha ao salvar dependências: ${error.message}`)
+}
+
+export async function createTaskWithRelations(
   data: NewTask,
   tagNames: string[],
+  dependsOnTaskIds: string[],
 ): Promise<Task> {
   const task = await createTask(data)
-  await createTaskTags(task.id, tagNames)
+  await Promise.all([
+    createTaskTags(task.id, tagNames),
+    createTaskDependencies(task.id, dependsOnTaskIds),
+  ])
   return task
 }
 

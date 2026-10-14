@@ -5,7 +5,12 @@ import { useUpdateTaskStatus } from '@/features/tasks/hooks/sprint/useUpdateTask
 import { useProjects } from '@/features/projects/hooks/useProjects'
 import { useEpics } from '@/features/epics/hooks/useEpics'
 import { buildEpicOptions, toEpicLabel } from '@/features/epics/lib/epic'
-import { toProjectLabel } from '@/features/projects/lib/project'
+import {
+  buildProjectOptions,
+  toProjectLabel,
+} from '@/features/projects/lib/project'
+import { buildProjectMove } from '@/features/tasks/lib/projectMove'
+import { TASKS_TEXTS } from '@/features/tasks/constants/texts'
 import { useSprints } from '@/features/sprints/hooks/useSprints'
 import { useTaskTags } from '@/features/tasks/hooks/tags/useTaskTags'
 import { useAddTaskTag } from '@/features/tasks/hooks/tags/useAddTaskTag'
@@ -19,6 +24,7 @@ export function useCardPage(task: Task) {
   const [isEditingTitle, setIsEditingTitle] = useState(false)
   const [isSrsModalOpen, setIsSrsModalOpen] = useState(false)
   const [description, setDescription] = useState(task.description ?? '')
+  const [pendingProjectId, setPendingProjectId] = useState<string | null>(null)
   const navigate = useNavigate()
 
   const { mutate: updateTask } = useUpdateTask()
@@ -77,6 +83,22 @@ export function useCardPage(task: Task) {
     })
   }
 
+  const pendingProject =
+    projects?.find((p) => p.id === pendingProjectId) ?? null
+
+  function requestProjectChange(projectId: string) {
+    if (projectId !== task.project_id) {
+      setPendingProjectId(projectId)
+    }
+  }
+
+  function confirmProjectChange() {
+    if (pendingProject) {
+      updateTask({ id: task.id, data: buildProjectMove(task, pendingProject) })
+    }
+    setPendingProjectId(null)
+  }
+
   function changeStatus(status: TaskStatus) {
     if (status === task.status) {
       return
@@ -93,6 +115,17 @@ export function useCardPage(task: Task) {
     projectLabel: project ? toProjectLabel(project) : undefined,
     epicLabel: epic ? toEpicLabel(epic) : undefined,
     epicOptions: buildEpicOptions(epics ?? []),
+    projectOptions: buildProjectOptions(projects ?? []),
+    projectMoveDescription: pendingProject
+      ? TASKS_TEXTS.moveProjectDescription(
+          pendingProject.name,
+          task.epic_id !== null,
+          buildProjectMove(task, pendingProject).status !== task.status,
+        )
+      : null,
+    requestProjectChange,
+    confirmProjectChange,
+    cancelProjectChange: () => setPendingProjectId(null),
     assignableSprints,
     tags,
     tagSuggestions,
