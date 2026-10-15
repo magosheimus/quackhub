@@ -42,7 +42,7 @@ export function HabitManager({ habits, weekdayOrder }: HabitManagerProps) {
   } = useHabitManager(habits)
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
+    <div className="grid gap-6 lg:grid-cols-[minmax(0,5fr)_minmax(0,2fr)]">
       <div className="flex min-w-0 flex-col">
         {habits.length === 0 ? (
           <EmptyMessage>{DAILY_TRACKER_TEXTS.noHabits}</EmptyMessage>
