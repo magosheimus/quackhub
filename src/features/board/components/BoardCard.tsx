@@ -23,6 +23,7 @@ import { COMMON_TEXTS } from '@/shared/constants/texts'
 import { ProjectCode } from '@/features/projects/components/ProjectCode'
 import type { ColorScope } from '@/shared/lib/palette'
 import type { ProjectLabels } from '@/features/projects/lib/project'
+import { AssigneeBadge } from '@/features/personas/components/AssigneeBadge'
 
 const CARD_CLASS =
   'flex gap-2 rounded-md border border-l-4 border-border bg-card p-3 text-sm hover:bg-card-hover'
@@ -95,6 +96,10 @@ function BoardCardBody({
             {STATUS_LABELS[task.status]}
           </span>
         )}
+      </div>
+
+      <div className="shrink-0 self-start">
+        <AssigneeBadge assigneeId={task.assignee_id} />
       </div>
     </>
   )

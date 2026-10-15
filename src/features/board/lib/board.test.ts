@@ -50,6 +50,21 @@ describe('applyBoardFilters', () => {
     expect(result.map((t) => t.id)).toEqual(['t1'])
   })
 
+  it('filtra pelas personas escolhidas', () => {
+    const tasks = [
+      makeTask({ id: 't1', assignee_id: 'p1' }),
+      makeTask({ id: 't2', assignee_id: 'p2' }),
+      makeTask({ id: 't3', assignee_id: null }),
+    ]
+    const result = applyBoardFilters(
+      tasks,
+      { ...DEFAULT_BOARD_FILTERS, assigneeIds: ['p1', 'p2'] },
+      emptyTags,
+      today,
+    )
+    expect(result.map((t) => t.id)).toEqual(['t1', 't2'])
+  })
+
   it('filtra por tag', () => {
     const tasks = [makeTask({ id: 't1' }), makeTask({ id: 't2' })]
     const tagsMap = { t1: ['urgente'] }

@@ -21,6 +21,10 @@ export type Epic = Tables<'epics'>
 export type NewEpic = TablesInsert<'epics'>
 export type EpicUpdate = TablesUpdate<'epics'>
 
+export type Persona = Tables<'personas'>
+export type NewPersona = TablesInsert<'personas'>
+export type PersonaUpdate = TablesUpdate<'personas'>
+
 export type ChecklistItem = Tables<'task_checklist_items'>
 export type NewChecklistItem = TablesInsert<'task_checklist_items'>
 export type ChecklistItemUpdate = TablesUpdate<'task_checklist_items'>

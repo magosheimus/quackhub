@@ -1,4 +1,6 @@
 import { createIcon } from './createIcon'
+import { Alien } from 'pixelarticons/react/Alien'
+import { Android } from 'pixelarticons/react/Android'
 import { Apple } from 'pixelarticons/react/Apple'
 import { Archive } from 'pixelarticons/react/Archive'
 import { ArrowBigDown } from 'pixelarticons/react/ArrowBigDown'
@@ -8,7 +10,9 @@ import { ArrowLeft } from 'pixelarticons/react/ArrowLeft'
 import { ArrowUp } from 'pixelarticons/react/ArrowUp'
 import { Article } from 'pixelarticons/react/Article'
 import { Attachment } from 'pixelarticons/react/Attachment'
+import { AvatarCircle } from 'pixelarticons/react/AvatarCircle'
 import { Bed } from 'pixelarticons/react/Bed'
+import { Bluesky } from 'pixelarticons/react/Bluesky'
 import { BookOpen } from 'pixelarticons/react/BookOpen'
 import { Briefcase } from 'pixelarticons/react/Briefcase'
 import { Brush } from 'pixelarticons/react/Brush'
@@ -26,15 +30,22 @@ import { ChevronUp } from 'pixelarticons/react/ChevronUp'
 import { CigaretteOff } from 'pixelarticons/react/CigaretteOff'
 import { Clock } from 'pixelarticons/react/Clock'
 import { Close } from 'pixelarticons/react/Close'
+import { Cloud } from 'pixelarticons/react/Cloud'
 import { Code } from 'pixelarticons/react/Code'
 import { Coins } from 'pixelarticons/react/Coins'
+import { Crown } from 'pixelarticons/react/Crown'
+import { DiamondGem } from 'pixelarticons/react/DiamondGem'
+import { Discord } from 'pixelarticons/react/Discord'
 import { Dog } from 'pixelarticons/react/Dog'
+import { Eye } from 'pixelarticons/react/Eye'
 import { Feather } from 'pixelarticons/react/Feather'
 import { File } from 'pixelarticons/react/File'
 import { Fire } from 'pixelarticons/react/Fire'
 import { Flag } from 'pixelarticons/react/Flag'
 import { Folder } from 'pixelarticons/react/Folder'
 import { Gamepad } from 'pixelarticons/react/Gamepad'
+import { Github } from 'pixelarticons/react/Github'
+import { Gitlab } from 'pixelarticons/react/Gitlab'
 import { Grid2x3 } from 'pixelarticons/react/Grid2x3'
 import { Headphone } from 'pixelarticons/react/Headphone'
 import { Heart } from 'pixelarticons/react/Heart'
@@ -47,6 +58,8 @@ import { Languages } from 'pixelarticons/react/Languages'
 import { Layout } from 'pixelarticons/react/Layout'
 import { Leaf } from 'pixelarticons/react/Leaf'
 import { Link } from 'pixelarticons/react/Link'
+import { Linux } from 'pixelarticons/react/Linux'
+import { Meh } from 'pixelarticons/react/Meh'
 import { Menu } from 'pixelarticons/react/Menu'
 import { Minus } from 'pixelarticons/react/Minus'
 import { Moon } from 'pixelarticons/react/Moon'
@@ -62,6 +75,7 @@ import { PlusBox } from 'pixelarticons/react/PlusBox'
 import { PlusBoxSharp } from 'pixelarticons/react/PlusBoxSharp'
 import { Potion } from 'pixelarticons/react/Potion'
 import { RefreshSolid } from 'pixelarticons/react/RefreshSolid'
+import { Robot } from 'pixelarticons/react/Robot'
 import { RobotFaceHappySharp } from 'pixelarticons/react/RobotFaceHappySharp'
 import { RobotFaceSad } from 'pixelarticons/react/RobotFaceSad'
 import { RobotFaceSadSharp } from 'pixelarticons/react/RobotFaceSadSharp'
@@ -70,21 +84,33 @@ import { RobotSharp } from 'pixelarticons/react/RobotSharp'
 import { Scale } from 'pixelarticons/react/Scale'
 import { Send } from 'pixelarticons/react/Send'
 import { SettingsCog } from 'pixelarticons/react/SettingsCog'
+import { SkullSharp } from 'pixelarticons/react/SkullSharp'
+import { Smile } from 'pixelarticons/react/Smile'
+import { Snail } from 'pixelarticons/react/Snail'
 import { Sofa } from 'pixelarticons/react/Sofa'
+import { Sparkle } from 'pixelarticons/react/Sparkle'
+import { Sparkles } from 'pixelarticons/react/Sparkles'
 import { Spray } from 'pixelarticons/react/Spray'
 import { Star } from 'pixelarticons/react/Star'
+import { StickerSharp } from 'pixelarticons/react/StickerSharp'
 import { StickyNoteSharp } from 'pixelarticons/react/StickyNoteSharp'
 import { Sun } from 'pixelarticons/react/Sun'
+import { SunglassesSharp } from 'pixelarticons/react/SunglassesSharp'
 import { Target } from 'pixelarticons/react/Target'
 import { Tea } from 'pixelarticons/react/Tea'
 import { Trash } from 'pixelarticons/react/Trash'
 import { TreePine } from 'pixelarticons/react/TreePine'
+import { TRex } from 'pixelarticons/react/TRex'
+import { UserMinus } from 'pixelarticons/react/UserMinus'
+import { UserPlus } from 'pixelarticons/react/UserPlus'
 import { Users } from 'pixelarticons/react/Users'
 import { WarningDiamond } from 'pixelarticons/react/WarningDiamond'
 import { Waves } from 'pixelarticons/react/Waves'
 
 export type { IconComponent, IconProps, IconSize } from './createIcon'
 
+export const IconAlien = createIcon(Alien)
+export const IconAndroid = createIcon(Android)
 export const IconApple = createIcon(Apple)
 export const IconArchive = createIcon(Archive)
 export const IconArrowBigDown = createIcon(ArrowBigDown)
@@ -94,7 +120,9 @@ export const IconArrowLeft = createIcon(ArrowLeft)
 export const IconArrowUp = createIcon(ArrowUp)
 export const IconArticle = createIcon(Article)
 export const IconAttachment = createIcon(Attachment)
+export const IconAvatar = createIcon(AvatarCircle)
 export const IconBed = createIcon(Bed)
+export const IconBluesky = createIcon(Bluesky)
 export const IconBookOpen = createIcon(BookOpen)
 export const IconBriefcase = createIcon(Briefcase)
 export const IconBrush = createIcon(Brush)
@@ -111,16 +139,23 @@ export const IconChevronRight = createIcon(ChevronRight)
 export const IconChevronUp = createIcon(ChevronUp)
 export const IconClock = createIcon(Clock)
 export const IconClose = createIcon(Close)
+export const IconCloud = createIcon(Cloud)
 export const IconCode = createIcon(Code)
 export const IconCoins = createIcon(Coins)
+export const IconCrown = createIcon(Crown)
+export const IconDiscord = createIcon(Discord)
 export const IconDog = createIcon(Dog)
 export const IconExercise = createIcon(HumanArmsUp)
+export const IconEye = createIcon(Eye)
 export const IconFeather = createIcon(Feather)
 export const IconFile = createIcon(File)
 export const IconFire = createIcon(Fire)
 export const IconFlag = createIcon(Flag)
 export const IconFolder = createIcon(Folder)
 export const IconGamepad = createIcon(Gamepad)
+export const IconGem = createIcon(DiamondGem)
+export const IconGithub = createIcon(Github)
+export const IconGitlab = createIcon(Gitlab)
 export const IconGrid = createIcon(Grid2x3)
 export const IconHeadphone = createIcon(Headphone)
 export const IconHeart = createIcon(Heart)
@@ -132,6 +167,8 @@ export const IconLanguages = createIcon(Languages)
 export const IconLayout = createIcon(Layout)
 export const IconLeaf = createIcon(Leaf)
 export const IconLink = createIcon(Link)
+export const IconLinux = createIcon(Linux)
+export const IconMeh = createIcon(Meh)
 export const IconMenu = createIcon(Menu)
 export const IconMinus = createIcon(Minus)
 export const IconMoodExhausted = createIcon(RobotFaceSadSharp)
@@ -153,18 +190,32 @@ export const IconPlusBox = createIcon(PlusBox)
 export const IconPlusBoxSharp = createIcon(PlusBoxSharp)
 export const IconPotion = createIcon(Potion)
 export const IconRefresh = createIcon(RefreshSolid)
+export const IconRobot = createIcon(Robot)
 export const IconScale = createIcon(Scale)
 export const IconSend = createIcon(Send)
 export const IconSettings = createIcon(SettingsCog)
+export const IconSkull = createIcon(SkullSharp)
+export const IconSmile = createIcon(Smile)
+export const IconSnail = createIcon(Snail)
 export const IconSofa = createIcon(Sofa)
+export const IconSparkle = createIcon(Sparkle)
+export const IconSparkles = createIcon(Sparkles)
 export const IconSpray = createIcon(Spray)
 export const IconStar = createIcon(Star)
+export const IconSticker = createIcon(StickerSharp)
 export const IconStickyNoteSharp = createIcon(StickyNoteSharp)
 export const IconSun = createIcon(Sun)
+export const IconSunglasses = createIcon(SunglassesSharp)
 export const IconTarget = createIcon(Target)
 export const IconTea = createIcon(Tea)
 export const IconTrash = createIcon(Trash)
 export const IconTree = createIcon(TreePine)
+export const IconTRex = createIcon(TRex)
+export const IconUserMinus = createIcon(UserMinus)
+export const IconUserPlus = createIcon(UserPlus)
 export const IconUsers = createIcon(Users)
 export const IconWarning = createIcon(WarningDiamond)
 export const IconWaves = createIcon(Waves)
+
+export { IconDuck } from './duck'
+export { LETTER_ICONS } from './letters'

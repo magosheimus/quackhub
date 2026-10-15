@@ -25,6 +25,7 @@ export function BoardPage() {
     updateFilter,
     sprintProjects,
     sprintEpics,
+    sprintPersonas,
     visibleTasks,
     columns,
     handleDragEnd,
@@ -73,6 +74,7 @@ export function BoardPage() {
         onUpdateFilter={updateFilter}
         epics={sprintEpics}
         projects={sprintProjects}
+        personas={sprintPersonas}
       />
 
       <DragDropContext onDragEnd={handleDragEnd}>

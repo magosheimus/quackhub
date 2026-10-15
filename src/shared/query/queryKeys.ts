@@ -36,6 +36,9 @@ export const queryKeys = {
   projects: {
     root: ['projects'] as const,
   },
+  personas: {
+    root: ['personas'] as const,
+  },
   drafts: {
     root: ['drafts'] as const,
   },

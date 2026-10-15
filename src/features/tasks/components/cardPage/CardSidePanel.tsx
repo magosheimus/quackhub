@@ -1,4 +1,4 @@
-import { IconCalendar, IconRefresh } from '@/shared/lib/icons'
+import { IconCalendar, IconRefresh, IconUsers } from '@/shared/lib/icons'
 import { SectionLabel } from '@/components/ui/section-label'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -11,6 +11,8 @@ import type { ProjectType, Task } from '@/shared/types/entities'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
 import { TASKS_TEXTS } from '@/features/tasks/constants/texts'
 import { Panel } from '@/components/ui/panel'
+import { AssigneeCombobox } from '@/features/personas/components/AssigneeCombobox'
+import { PERSONAS_TEXTS } from '@/features/personas/constants/texts'
 
 function formatDate(value: string | null): string {
   if (!value) return '—'
@@ -20,12 +22,14 @@ function formatDate(value: string | null): string {
 type CardSidePanelProps = {
   projectType?: ProjectType | null
   status: Task['status']
+  assigneeId: string | null
   createdAt: string | null
   updatedAt: string | null
   dueDate: string | null
   easeFactor: number | null
   nextReview: string | null
   recurrenceValue: RecurrenceValue
+  onAssigneeChange: (assigneeId: string | null) => void
   onDueDateChange: (value: string | null) => void
   onRecurrenceChange: (value: RecurrenceValue) => void
   onRegisterPerformance: () => void
@@ -34,18 +38,35 @@ type CardSidePanelProps = {
 export function CardSidePanel({
   projectType,
   status,
+  assigneeId,
   createdAt,
   updatedAt,
   dueDate,
   easeFactor,
   nextReview,
   recurrenceValue,
+  onAssigneeChange,
   onDueDateChange,
   onRecurrenceChange,
   onRegisterPerformance,
 }: CardSidePanelProps) {
   return (
     <div className="flex flex-col gap-4">
+      <Panel className="flex flex-col gap-2 p-3">
+        <SectionLabel icon={IconUsers}>{PERSONAS_TEXTS.people}</SectionLabel>
+        <div className="flex flex-col gap-1.5">
+          <span id="card-page-assignee-label" className="text-caption">
+            {PERSONAS_TEXTS.assignee}
+          </span>
+          <AssigneeCombobox
+            value={assigneeId}
+            onChange={onAssigneeChange}
+            labelId="card-page-assignee-label"
+            inline
+          />
+        </div>
+      </Panel>
+
       <Panel className="flex flex-col gap-1.5 p-3">
         <SectionLabel icon={IconCalendar}>{TASKS_TEXTS.dates}</SectionLabel>
         <span className="text-sm text-fg">

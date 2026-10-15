@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { moveItem } from './array'
+import { moveItem, toggleItem } from './array'
 
 describe('moveItem', () => {
   it('move um item para a nova posição sem alterar a lista original', () => {
@@ -11,5 +11,12 @@ describe('moveItem', () => {
 
   it('índice inexistente devolve a lista como está', () => {
     expect(moveItem(['a'], 5, 0)).toEqual(['a'])
+  })
+})
+
+describe('toggleItem', () => {
+  it('adiciona o item ausente e remove o presente', () => {
+    expect(toggleItem(['a'], 'b')).toEqual(['a', 'b'])
+    expect(toggleItem(['a', 'b'], 'a')).toEqual(['b'])
   })
 })

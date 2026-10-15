@@ -105,6 +105,7 @@ export type BoardFilters = {
   status: TaskStatus | null
   srsOverdue: boolean
   projectIds: string[]
+  assigneeIds: string[]
 }
 
 export const DEFAULT_BOARD_FILTERS: BoardFilters = {
@@ -115,6 +116,7 @@ export const DEFAULT_BOARD_FILTERS: BoardFilters = {
   status: null,
   srsOverdue: false,
   projectIds: [],
+  assigneeIds: [],
 }
 
 export function applyBoardFilters(
@@ -130,6 +132,11 @@ export function applyBoardFilters(
     if (
       filters.projectIds.length > 0 &&
       !filters.projectIds.includes(task.project_id)
+    )
+      return false
+    if (
+      filters.assigneeIds.length > 0 &&
+      !(task.assignee_id && filters.assigneeIds.includes(task.assignee_id))
     )
       return false
     if (filters.priority && task.priority !== filters.priority) return false

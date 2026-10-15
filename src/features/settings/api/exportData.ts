@@ -3,6 +3,7 @@ import { supabase } from '@/shared/api/supabase'
 const TABLES = [
   'projects',
   'epics',
+  'personas',
   'tasks',
   'task_tags',
   'task_dependencies',

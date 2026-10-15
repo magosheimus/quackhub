@@ -2,7 +2,13 @@ import { describe, it, expect } from 'vitest'
 import { makeProject, makeTask } from '@/test/factories'
 import { filterBacklogTasks, groupTasksByProject } from './backlog'
 
-const NO_FILTERS = { status: null, priority: null, epicId: null, tag: null }
+const NO_FILTERS = {
+  status: null,
+  priority: null,
+  epicId: null,
+  tag: null,
+  assigneeId: null,
+}
 const NO_TAGS = {}
 
 describe('filterBacklogTasks', () => {
@@ -26,6 +32,21 @@ describe('filterBacklogTasks', () => {
     expect(ids({ ...NO_FILTERS, status: 'todo', priority: 'low' })).toEqual([
       't3',
     ])
+  })
+})
+
+describe('filtro de persona no backlog', () => {
+  it('mantém só os cards da persona escolhida', () => {
+    const tasks = [
+      makeTask({ id: 't1', assignee_id: 'p1' }),
+      makeTask({ id: 't2', assignee_id: null }),
+    ]
+    const result = filterBacklogTasks(
+      tasks,
+      { ...NO_FILTERS, assigneeId: 'p1' },
+      NO_TAGS,
+    )
+    expect(result.map((task) => task.id)).toEqual(['t1'])
   })
 })
 
