@@ -6,7 +6,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { HabitAppearancePicker } from '@/features/dailyTracker/components/HabitAppearancePicker'
+import { HabitIconPicker } from '@/features/dailyTracker/components/HabitIconPicker'
 import { WeekdayPicker } from '@/features/dailyTracker/components/WeekdayPicker'
 import {
   DAILY_TRACKER_TEXTS,
@@ -46,7 +46,7 @@ export function HabitFormFields({
         />
       </label>
 
-      <div className="grid grid-cols-[minmax(0,2fr)_minmax(0,1fr)_minmax(0,1fr)] items-end gap-3">
+      <div className="grid grid-cols-[minmax(0,1fr)_6rem] items-end gap-3">
         <div className="flex min-w-0 flex-col gap-1.5">
           <span className="text-caption">{DAILY_TRACKER_TEXTS.weekdays}</span>
           <WeekdayPicker
@@ -56,12 +56,10 @@ export function HabitFormFields({
             label={DAILY_TRACKER_TEXTS.weekdays}
           />
         </div>
-        <HabitAppearancePicker
+        <HabitIconPicker
           idPrefix={idPrefix}
           icon={values.icon}
-          color={values.color}
           onIconChange={(icon) => onChange({ icon })}
-          onColorChange={(color) => onChange({ color })}
         />
       </div>
 

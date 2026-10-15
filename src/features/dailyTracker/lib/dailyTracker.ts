@@ -13,11 +13,9 @@ import {
   toDbDate,
 } from '@/shared/lib/date'
 import {
-  getHabitColor,
   getHabitIconKey,
   type HabitIconKey,
 } from '@/features/dailyTracker/lib/habitAppearance'
-import type { PaletteColor } from '@/shared/lib/palette'
 
 export const MOOD_LEVELS = [1, 2, 3, 4, 5] as const
 export type MoodLevel = (typeof MOOD_LEVELS)[number]
@@ -58,9 +56,26 @@ export function isScheduledOn(
   return habit.weekdays.includes(parseDbDate(date).getDay())
 }
 
+export function isBeforeHabitStart(
+  habit: Pick<Habit, 'created_at'>,
+  date: string,
+): boolean {
+  return date < toDbDate(new Date(habit.created_at))
+}
+
 export function trackedDays(habit: Habit, days: string[]): string[] {
-  const createdOn = toDbDate(new Date(habit.created_at))
-  return days.filter((date) => date >= createdOn && isScheduledOn(habit, date))
+  return days.filter(
+    (date) => !isBeforeHabitStart(habit, date) && isScheduledOn(habit, date),
+  )
+}
+
+export function isMissedDay(
+  habit: Habit,
+  date: string,
+  today: string,
+  value: number,
+): boolean {
+  return date < today && value <= 0 && trackedDays(habit, [date]).length > 0
 }
 
 export function getWeekdayOrder(weekStartsOn: 0 | 1): number[] {
@@ -75,6 +90,65 @@ export function getHeatIntensity(habit: HabitGoal, value: number): number {
     return 1
   }
   return Math.min(value / (habit.goal ?? 1), 1)
+}
+
+const PARTIAL_TONES = ['partial-1', 'partial-2', 'partial-3'] as const
+const DONE_TONES = ['done-1', 'done-2', 'done-3', 'done-4'] as const
+
+export type HeatTone =
+  'empty' | (typeof PARTIAL_TONES)[number] | (typeof DONE_TONES)[number]
+
+export function getHeatTone(
+  habit: HabitGoal,
+  value: number,
+  streak: number,
+): HeatTone {
+  const intensity = getHeatIntensity(habit, value)
+  if (intensity === 0) {
+    return 'empty'
+  }
+  if (intensity === 1) {
+    const index = Math.min(Math.max(streak, 1), DONE_TONES.length) - 1
+    return DONE_TONES[index] ?? 'done-1'
+  }
+  const index =
+    Math.min(
+      Math.ceil(intensity * PARTIAL_TONES.length),
+      PARTIAL_TONES.length,
+    ) - 1
+  return PARTIAL_TONES[index] ?? 'partial-1'
+}
+
+export const HUE_JITTER_DEGREES = 15
+
+export function getHueShift(seed: string): number {
+  let hash = 2166136261
+  for (const char of seed) {
+    hash = Math.imul(hash ^ char.charCodeAt(0), 16777619)
+  }
+  hash = Math.imul(hash ^ (hash >>> 16), 0x85ebca6b)
+  hash = Math.imul(hash ^ (hash >>> 13), 0xc2b2ae35)
+  hash ^= hash >>> 16
+  const unit = (hash >>> 0) / 0xffffffff
+  return Math.round((unit * 2 - 1) * HUE_JITTER_DEGREES)
+}
+
+export function getDoneStreaks(
+  habit: Habit,
+  logs: HabitLog[],
+  days: string[],
+): Record<string, number> {
+  const streaks: Record<string, number> = {}
+  let streak = 0
+  for (const date of days) {
+    if (isGoalMet(habit, getLogValue(logs, habit.id, date))) {
+      streak += 1
+      streaks[date] = streak
+    } else if (trackedDays(habit, [date]).length > 0) {
+      streak = 0
+    }
+  }
+  return streaks
 }
 
 export type TodayHabit = {
@@ -213,12 +287,11 @@ export type HabitFormValues = {
   weekdays: number[]
   durationText: string
   icon: HabitIconKey
-  color: PaletteColor | null
 }
 
 export type HabitFields = Pick<
   NewHabit,
-  'name' | 'type' | 'goal' | 'weekdays' | 'duration_minutes' | 'icon' | 'color'
+  'name' | 'type' | 'goal' | 'weekdays' | 'duration_minutes' | 'icon'
 >
 
 export function buildHabitFields(values: HabitFormValues): HabitFields | null {
@@ -246,7 +319,6 @@ export function buildHabitFields(values: HabitFormValues): HabitFields | null {
     weekdays,
     duration_minutes: durationMinutes,
     icon: values.icon,
-    color: values.color,
   }
 }
 
@@ -258,7 +330,6 @@ export function getHabitFormValues(habit?: Habit): HabitFormValues {
     weekdays: habit?.weekdays?.length ? habit.weekdays : [...ALL_WEEKDAYS],
     durationText: habit?.duration_minutes ? String(habit.duration_minutes) : '',
     icon: getHabitIconKey(habit),
-    color: getHabitColor(habit),
   }
 }
 

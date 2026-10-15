@@ -161,7 +161,6 @@ export type Database = {
       habits: {
         Row: {
           active: boolean
-          color: string | null
           created_at: string
           duration_minutes: number | null
           goal: number | null
@@ -174,7 +173,6 @@ export type Database = {
         }
         Insert: {
           active?: boolean
-          color?: string | null
           created_at?: string
           duration_minutes?: number | null
           goal?: number | null
@@ -187,7 +185,6 @@ export type Database = {
         }
         Update: {
           active?: boolean
-          color?: string | null
           created_at?: string
           duration_minutes?: number | null
           goal?: number | null

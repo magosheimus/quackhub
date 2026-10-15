@@ -1,8 +1,3 @@
-import {
-  paletteVar,
-  toPaletteColor,
-  type PaletteColor,
-} from '@/shared/lib/palette'
 import { createEnumGuard } from '@/shared/lib/enums'
 import type { Habit } from '@/shared/types/entities'
 
@@ -51,14 +46,4 @@ export const isHabitIconKey = createEnumGuard(HABIT_ICON_KEYS)
 
 export function getHabitIconKey(habit?: Pick<Habit, 'icon'>): HabitIconKey {
   return isHabitIconKey(habit?.icon) ? habit.icon : DEFAULT_HABIT_ICON
-}
-
-export function getHabitColor(
-  habit?: Pick<Habit, 'color'>,
-): PaletteColor | null {
-  return toPaletteColor(habit?.color)
-}
-
-export function resolveHabitColor(color: PaletteColor | null): string {
-  return color ? paletteVar(color) : 'var(--accent)'
 }
