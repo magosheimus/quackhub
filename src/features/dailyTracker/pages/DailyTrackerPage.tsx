@@ -95,6 +95,14 @@ export function DailyTrackerPage() {
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
+        <WellnessLog
+          mood={todayMood}
+          comment={todayComment}
+          onMoodChange={saveMood}
+          onCommentSave={saveComment}
+          historyLabel={moodHistoryLabel}
+          history={moodDays}
+        />
         <SectionPanel
           icon={IconChartBar}
           title={DAILY_TRACKER_TEXTS.summaryTitle(isSprintPeriod)}
@@ -106,29 +114,9 @@ export function DailyTrackerPage() {
             highlights={highlights}
           />
         </SectionPanel>
-        <WellnessLog
-          mood={todayMood}
-          comment={todayComment}
-          onMoodChange={saveMood}
-          onCommentSave={saveComment}
-          historyLabel={moodHistoryLabel}
-          history={moodDays}
-        />
       </div>
 
       <div className={cn('grid gap-6', hasHabits && 'lg:grid-cols-2')}>
-        {hasHabits && (
-          <SectionPanel
-            icon={IconCalendarWeeks}
-            title={DAILY_TRACKER_TEXTS.heatmapTitle(isSprintPeriod)}
-          >
-            <HabitHeatmap
-              days={heatDays}
-              rows={heatRows}
-              dayWindow={dayWindow}
-            />
-          </SectionPanel>
-        )}
         <SectionPanel
           icon={IconChecklist}
           title={DAILY_TRACKER_TEXTS.todayTitle}
@@ -144,6 +132,18 @@ export function DailyTrackerPage() {
             onCreateHabit={focusNewHabit}
           />
         </SectionPanel>
+        {hasHabits && (
+          <SectionPanel
+            icon={IconCalendarWeeks}
+            title={DAILY_TRACKER_TEXTS.heatmapTitle(isSprintPeriod)}
+          >
+            <HabitHeatmap
+              days={heatDays}
+              rows={heatRows}
+              dayWindow={dayWindow}
+            />
+          </SectionPanel>
+        )}
       </div>
 
       <SectionPanel

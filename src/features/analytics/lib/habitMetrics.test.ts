@@ -11,7 +11,6 @@ function makeHabit(overrides: Partial<Habit> = {}): Habit {
   return {
     weekdays: null,
     icon: 'target',
-    color: null,
     duration_minutes: null,
     id: 'h1',
     user_id: 'user-1',

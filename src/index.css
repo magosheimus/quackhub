@@ -90,6 +90,39 @@
   @apply text-sm text-fg-muted;
 }
 
+@utility dither-25 {
+  background: conic-gradient(at 2px 2px, transparent 75%, var(--accent) 0) 0 0 /
+    4px 4px;
+}
+
+@utility dither-50 {
+  background: repeating-conic-gradient(var(--accent) 0 25%, transparent 0 50%) 0
+    0 / 4px 4px;
+}
+
+@utility dither-75 {
+  background: conic-gradient(at 2px 2px, var(--accent) 75%, transparent 0) 0 0 /
+    4px 4px;
+}
+
+@utility hatch {
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--text-muted) 0 1px,
+    transparent 1px 4px
+  );
+}
+
+@utility hue-jitter {
+  --jitter-accent: var(--accent);
+
+  @supports (color: oklch(from red l c h)) {
+    --jitter-accent: oklch(
+      from var(--accent) l c calc(h + var(--hue-shift, 0))
+    );
+  }
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

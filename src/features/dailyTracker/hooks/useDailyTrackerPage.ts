@@ -16,7 +16,12 @@ import {
   formatDuration,
   getCurrentTrackerPeriod,
   getDayWindow,
-  getHeatIntensity,
+  getHeatTone,
+  getDoneStreaks,
+  getHueShift,
+  isMissedDay,
+  isBeforeHabitStart,
+  type HeatTone,
   getLogValue,
   getWeekdayOrder,
   isGoalMet,
@@ -39,10 +44,6 @@ import {
   getDateRange,
   todayLocal,
 } from '@/shared/lib/date'
-import {
-  getHabitColor,
-  resolveHabitColor,
-} from '@/features/dailyTracker/lib/habitAppearance'
 import { hasLoadError, retryFailedQueries } from '@/shared/query/queryState'
 import type { Habit } from '@/shared/types/entities'
 
@@ -56,10 +57,13 @@ export type HeatDay = {
 export type HeatCell = {
   date: string
   value: number
-  intensity: number
+  tone: HeatTone
+  hueShift: number
   isMet: boolean
   isScheduled: boolean
+  isBeforeStart: boolean
   isFuture: boolean
+  isMissed: boolean
   label: string
 }
 
@@ -80,7 +84,6 @@ export type DayWindowNav = {
 
 export type HeatRow = {
   habit: Habit
-  color: string
   cells: HeatCell[]
   daysCompleted: number
   totalDays: number
@@ -102,7 +105,15 @@ function toTodayItem(item: TodayHabit): TodayHabitItem {
   return { ...item, meta: describeHabitMeta(item.habit) }
 }
 
-function describeCell(habit: Habit, value: number, isScheduled: boolean) {
+function describeCell(
+  habit: Habit,
+  value: number,
+  isScheduled: boolean,
+  isBeforeStart: boolean,
+) {
+  if (isBeforeStart) {
+    return DAILY_TRACKER_TEXTS.beforeHabitStart
+  }
   if (!isScheduled) {
     return DAILY_TRACKER_TEXTS.notScheduled
   }
@@ -164,25 +175,29 @@ export function useDailyTrackerPage() {
 
   const heatRows: HeatRow[] = habits.map((habit) => {
     const stats = computeHabitStats(habit, logs, elapsedDays)
+    const streaks = getDoneStreaks(habit, logs, days)
     return {
       habit,
-      color: resolveHabitColor(getHabitColor(habit)),
       daysCompleted: stats.daysCompleted,
       totalDays: stats.totalDays,
       cells: visibleDays.map((date) => {
         const value = getLogValue(logs, habit.id, date)
         const isScheduled = isScheduledOn(habit, date)
+        const isBeforeStart = isBeforeHabitStart(habit, date)
         return {
           date,
           value,
-          intensity: getHeatIntensity(habit, value),
+          tone: getHeatTone(habit, value, streaks[date] ?? 0),
+          hueShift: getHueShift(`${habit.id}:${date}`),
           isMet: isGoalMet(habit, value),
           isScheduled,
+          isBeforeStart,
           isFuture: date > today,
+          isMissed: isMissedDay(habit, date, today, value),
           label: DAILY_TRACKER_TEXTS.cellLabel(
             habit.name,
             formatDayMonth(date),
-            describeCell(habit, value, isScheduled),
+            describeCell(habit, value, isScheduled, isBeforeStart),
           ),
         }
       }),

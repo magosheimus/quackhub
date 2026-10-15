@@ -12,8 +12,14 @@ import {
   formatDuration,
   getHabitFormValues,
   getHeatIntensity,
+  getHeatTone,
+  getDoneStreaks,
+  getHueShift,
+  HUE_JITTER_DEGREES,
   getWeekdayOrder,
   isScheduledOn,
+  isMissedDay,
+  isBeforeHabitStart,
   splitTodayHabits,
   computeOverallRate,
   computeHabitStats,
@@ -31,7 +37,6 @@ function makeHabit(overrides: Partial<Habit> = {}): Habit {
   return {
     weekdays: null,
     icon: 'target',
-    color: null,
     duration_minutes: null,
     id: 'h1',
     user_id: 'user-1',
@@ -283,6 +288,96 @@ describe('getHeatIntensity', () => {
   })
 })
 
+describe('isBeforeHabitStart', () => {
+  it('dias anteriores ao dia de criação ficam fora do hábito', () => {
+    const habit = makeHabit({ created_at: '2026-10-14T09:00:00Z' })
+    expect(isBeforeHabitStart(habit, '2026-10-13')).toBe(true)
+    expect(isBeforeHabitStart(habit, '2026-10-14')).toBe(false)
+  })
+})
+
+describe('isMissedDay', () => {
+  const habit = makeHabit({
+    created_at: '2026-10-05T09:00:00Z',
+    weekdays: [1, 3, 5],
+  })
+  const today = '2026-10-14'
+
+  it('dia agendado que já passou sem registro é falta', () => {
+    expect(isMissedDay(habit, '2026-10-12', today, 0)).toBe(true)
+  })
+
+  it('hoje, dias com registro, fora da agenda ou antes da criação não são falta', () => {
+    expect(isMissedDay(habit, today, today, 0)).toBe(false)
+    expect(isMissedDay(habit, '2026-10-12', today, 1)).toBe(false)
+    expect(isMissedDay(habit, '2026-10-13', today, 0)).toBe(false)
+    expect(isMissedDay(habit, '2026-10-02', today, 0)).toBe(false)
+  })
+})
+
+describe('getHeatTone', () => {
+  const boolean = { type: 'boolean', goal: null } as const
+  const counter = { type: 'counter', goal: 4 } as const
+
+  it('sem registro fica vazio', () => {
+    expect(getHeatTone(counter, 0, 0)).toBe('empty')
+  })
+
+  it('feito escurece a cada dia seguido, até o quarto tom', () => {
+    expect(getHeatTone(boolean, 1, 1)).toBe('done-1')
+    expect(getHeatTone(boolean, 1, 3)).toBe('done-3')
+    expect(getHeatTone(counter, 4, 9)).toBe('done-4')
+  })
+
+  it('parcial vira um de três níveis de pontilhado', () => {
+    expect(getHeatTone(counter, 1, 0)).toBe('partial-1')
+    expect(getHeatTone(counter, 2, 0)).toBe('partial-2')
+    expect(getHeatTone(counter, 3, 0)).toBe('partial-3')
+    expect(getHeatTone({ type: 'counter', goal: 10 }, 9, 0)).toBe('partial-3')
+  })
+})
+
+describe('getHueShift', () => {
+  const seeds = WEEK.map((date) => `h1:${date}`)
+
+  it('o mesmo quadrado sempre recebe o mesmo desvio', () => {
+    expect(getHueShift('h1:2026-10-14')).toBe(getHueShift('h1:2026-10-14'))
+  })
+
+  it('fica dentro do limite e varia entre os dias', () => {
+    const shifts = seeds.map(getHueShift)
+    shifts.forEach((shift) => {
+      expect(Math.abs(shift)).toBeLessThanOrEqual(HUE_JITTER_DEGREES)
+    })
+    expect(new Set(shifts).size).toBeGreaterThan(1)
+  })
+})
+
+describe('getDoneStreaks', () => {
+  it('conta dias seguidos e zera na falta', () => {
+    const habit = makeHabit({ created_at: '2026-10-11T09:00:00Z' })
+    const logs = ['2026-10-11', '2026-10-12', '2026-10-14'].map((date) =>
+      makeLog(date),
+    )
+    expect(getDoneStreaks(habit, logs, WEEK)).toEqual({
+      '2026-10-11': 1,
+      '2026-10-12': 2,
+      '2026-10-14': 1,
+    })
+  })
+
+  it('dia fora da agenda não quebra a sequência', () => {
+    const habit = makeHabit({
+      created_at: '2026-10-11T09:00:00Z',
+      weekdays: [1, 3],
+    })
+    const logs = [makeLog('2026-10-12'), makeLog('2026-10-14')]
+    expect(getDoneStreaks(habit, logs, WEEK)).toMatchObject({
+      '2026-10-14': 2,
+    })
+  })
+})
+
 describe('splitTodayHabits', () => {
   it('separa pendentes e feitos, só com os hábitos agendados para hoje', () => {
     const habits = [
@@ -323,15 +418,10 @@ describe('buildHabitFields', () => {
     ).toMatchObject({ weekdays: [1, 3, 5], duration_minutes: 60 })
   })
 
-  it('leva ícone e cor escolhidos', () => {
+  it('leva o ícone escolhido', () => {
     expect(
-      buildHabitFields({
-        ...base,
-        name: 'Leitura',
-        icon: 'book',
-        color: 'blue',
-      }),
-    ).toMatchObject({ icon: 'book', color: 'blue' })
+      buildHabitFields({ ...base, name: 'Leitura', icon: 'book' }),
+    ).toMatchObject({ icon: 'book' })
   })
 
   it('recusa sem nome, sem dias, contador sem meta e tempo inválido', () => {

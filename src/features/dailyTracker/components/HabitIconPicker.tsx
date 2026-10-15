@@ -11,23 +11,16 @@ import {
 } from '@/features/dailyTracker/constants/texts'
 import {
   HABIT_ICON_KEYS,
-  resolveHabitColor,
   type HabitIconKey,
 } from '@/features/dailyTracker/lib/habitAppearance'
-import { PALETTE_COLORS, type PaletteColor } from '@/shared/lib/palette'
-import { PALETTE_COLOR_LABELS } from '@/shared/constants/texts'
 import { IconChevronDown } from '@/shared/lib/icons'
 import { cn } from '@/shared/lib/utils'
 
-type HabitAppearancePickerProps = {
+type HabitIconPickerProps = {
   idPrefix: string
   icon: HabitIconKey
-  color: PaletteColor | null
   onIconChange: (icon: HabitIconKey) => void
-  onColorChange: (color: PaletteColor | null) => void
 }
-
-const COLOR_OPTIONS: (PaletteColor | null)[] = [null, ...PALETTE_COLORS]
 
 type GridPickerProps<T> = {
   labelId: string
@@ -106,58 +99,25 @@ function renderIcon(icon: HabitIconKey) {
   return <Icon size={16} aria-hidden="true" />
 }
 
-function renderColor(color: PaletteColor | null) {
-  return (
-    <span
-      aria-hidden="true"
-      className="size-4 rounded-sm"
-      style={{ backgroundColor: resolveHabitColor(color) }}
-    />
-  )
-}
-
-function colorLabel(color: PaletteColor | null) {
-  return color ? PALETTE_COLOR_LABELS[color] : DAILY_TRACKER_TEXTS.themeColor
-}
-
-export function HabitAppearancePicker({
+export function HabitIconPicker({
   idPrefix,
   icon,
-  color,
   onIconChange,
-  onColorChange,
-}: HabitAppearancePickerProps) {
+}: HabitIconPickerProps) {
   return (
-    <>
-      <div className="flex min-w-0 flex-col gap-1.5">
-        <span id={`${idPrefix}-icon`} className="text-caption">
-          {DAILY_TRACKER_TEXTS.habitIcon}
-        </span>
-        <GridPicker
-          labelId={`${idPrefix}-icon`}
-          options={HABIT_ICON_KEYS}
-          value={icon}
-          onChange={onIconChange}
-          getLabel={(key) => HABIT_ICON_LABELS[key]}
-          renderOption={renderIcon}
-          columns="grid-cols-6"
-        />
-      </div>
-
-      <div className="flex min-w-0 flex-col gap-1.5">
-        <span id={`${idPrefix}-color`} className="text-caption">
-          {DAILY_TRACKER_TEXTS.habitColor}
-        </span>
-        <GridPicker
-          labelId={`${idPrefix}-color`}
-          options={COLOR_OPTIONS}
-          value={color}
-          onChange={onColorChange}
-          getLabel={colorLabel}
-          renderOption={renderColor}
-          columns="grid-cols-7"
-        />
-      </div>
-    </>
+    <div className="flex min-w-0 flex-col gap-1.5">
+      <span id={`${idPrefix}-icon`} className="text-caption">
+        {DAILY_TRACKER_TEXTS.habitIcon}
+      </span>
+      <GridPicker
+        labelId={`${idPrefix}-icon`}
+        options={HABIT_ICON_KEYS}
+        value={icon}
+        onChange={onIconChange}
+        getLabel={(key) => HABIT_ICON_LABELS[key]}
+        renderOption={renderIcon}
+        columns="grid-cols-6"
+      />
+    </div>
   )
 }

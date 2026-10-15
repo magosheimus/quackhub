@@ -28,14 +28,16 @@ export const DAILY_TRACKER_TEXTS = {
   nextDays: 'Próximos dias',
   visibleRange: (start: string, end: string) => `${start} – ${end}`,
   legendEmpty: 'Sem registro',
+  legendMissed: 'Falta',
   legendOff: 'Fora da agenda',
   legendPartial: 'Parcial',
-  legendDone: 'Feito',
+  legendDone: 'Feito · mais forte a cada dia seguido',
   cellLabel: (habit: string, day: string, status: string) =>
     `${habit}, ${day}: ${status}`,
   done: 'feito',
   notDone: 'não feito',
   notScheduled: 'fora da agenda',
+  beforeHabitStart: 'antes do início do hábito',
   progress: (value: number, goal: number) => `${value} de ${goal}`,
   habitStats: (done: number, total: number) => `${done}/${total}`,
 
@@ -70,8 +72,6 @@ export const DAILY_TRACKER_TEXTS = {
   duration: 'Tempo (min)',
   durationPlaceholder: '30',
   habitIcon: 'Ícone',
-  habitColor: 'Cor',
-  themeColor: 'Cor do tema',
   addHabit: 'Adicionar hábito',
 
   wellnessTitle: 'Como foi seu dia?',
