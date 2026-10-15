@@ -12,6 +12,7 @@ import { ProjectCode } from '@/features/projects/components/ProjectCode'
 import { EpicTag } from '@/features/epics/components/EpicTag'
 import type { EpicLabel } from '@/features/epics/lib/epic'
 import type { ColorScope } from '@/shared/lib/palette'
+import { AssigneeBadge } from '@/features/personas/components/AssigneeBadge'
 
 type BacklogRowProps = {
   task: Task
@@ -82,6 +83,8 @@ export function BacklogRow({
         {epicLabel && (
           <EpicTag label={epicLabel} withColor={colorScope === 'epic'} />
         )}
+
+        <AssigneeBadge assigneeId={task.assignee_id} />
 
         {onAddToSprint && (
           <Button variant="outline" size="sm" onClick={onAddToSprint}>

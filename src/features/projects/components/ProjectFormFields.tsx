@@ -19,7 +19,7 @@ import { isProjectType, PROJECT_TYPES } from '@/shared/lib/enums'
 import { IconRefresh } from '@/shared/lib/icons'
 import type { PaletteColor } from '@/shared/lib/palette'
 import type { ProjectType } from '@/shared/types/entities'
-import { InfoTip } from '@/components/ui/info-tip'
+import { HintTooltip } from '@/components/ui/hint-tooltip'
 
 type ProjectFormFieldsProps = {
   idPrefix: string
@@ -62,12 +62,11 @@ export function ProjectFormFields({
           />
         </div>
         <div className="flex min-w-0 flex-col gap-1.5">
-          <span className="flex items-center gap-1.5">
+          <HintTooltip text={PROJECTS_TEXTS.hintPrefix}>
             <label htmlFor={`${idPrefix}-prefix`} className="text-caption">
               {PROJECTS_TEXTS.prefix}
             </label>
-            <InfoTip text={PROJECTS_TEXTS.hintPrefix} />
-          </span>
+          </HintTooltip>
           <Input
             id={`${idPrefix}-prefix`}
             value={prefix}
@@ -79,12 +78,11 @@ export function ProjectFormFields({
       </div>
 
       <div className="flex flex-col gap-1.5">
-        <span className="flex items-center gap-1.5">
+        <HintTooltip text={PROJECTS_TEXTS.hintType}>
           <span id={`${idPrefix}-type`} className="text-caption">
             {PROJECTS_TEXTS.type}
           </span>
-          <InfoTip text={PROJECTS_TEXTS.hintType} />
-        </span>
+        </HintTooltip>
         <Select
           value={type}
           onValueChange={(value) => {

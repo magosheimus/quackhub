@@ -138,12 +138,16 @@ function CardPageBody({ task }: { task: Task }) {
         <CardSidePanel
           projectType={project?.type}
           status={task.status}
+          assigneeId={task.assignee_id}
           createdAt={task.created_at}
           updatedAt={task.updated_at}
           dueDate={task.due_date}
           easeFactor={task.ease_factor}
           nextReview={task.next_review}
           recurrenceValue={recurrenceValue}
+          onAssigneeChange={(assigneeId) =>
+            updateTask({ id: task.id, data: { assignee_id: assigneeId } })
+          }
           onDueDateChange={(value) =>
             updateTask({ id: task.id, data: { due_date: value } })
           }

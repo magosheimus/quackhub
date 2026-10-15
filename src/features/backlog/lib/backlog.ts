@@ -11,6 +11,7 @@ export type BacklogFilters = {
   priority: TaskPriority | null
   epicId: string | null
   tag: string | null
+  assigneeId: string | null
 }
 
 export type ProjectTaskGroup = {
@@ -28,6 +29,7 @@ export function filterBacklogTasks(
       (!filters.status || task.status === filters.status) &&
       (!filters.priority || task.priority === filters.priority) &&
       (!filters.epicId || task.epic_id === filters.epicId) &&
+      (!filters.assigneeId || task.assignee_id === filters.assigneeId) &&
       (!filters.tag || (tagsByTask[task.id] ?? []).includes(filters.tag)),
   )
 }

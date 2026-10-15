@@ -31,6 +31,8 @@ import {
   buildProjectOptions,
 } from '@/features/projects/lib/project'
 import { buildEpicOptions } from '@/features/epics/lib/epic'
+import { usePersonaOptions } from '@/features/personas/hooks/usePersonaOptions'
+import { getPersonasInTasks } from '@/features/personas/lib/persona'
 
 export function useBoardPage() {
   const [searchParams] = useSearchParams()
@@ -46,6 +48,7 @@ export function useBoardPage() {
   const { data: projectTasks } = useTasksByProjectId(projectId)
   const { mutate: updateTaskStatus } = useUpdateTaskStatus()
   const { data: epics } = useAllEpics()
+  const personaOptions = usePersonaOptions()
   const { filters, updateFilter } = useBoardFilters()
   const { data: tagsByTask } = useBulkTaskTags((tasks ?? []).map((t) => t.id))
 
@@ -120,6 +123,7 @@ export function useBoardPage() {
       getProjectsInTasks(projects ?? [], sprintTasks),
     ),
     sprintEpics: buildEpicOptions(getEpicsInTasks(epics ?? [], sprintTasks)),
+    sprintPersonas: getPersonasInTasks(personaOptions, sprintTasks),
     visibleTasks,
     columns,
     handleDragEnd,

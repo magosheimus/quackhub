@@ -31,6 +31,8 @@ import { CartuchoOptions } from '@/features/settings/components/CartuchoOptions'
 import { DeleteAccountDialog } from '@/features/auth/components/DeleteAccountDialog'
 import { PRIVACY_PATH } from '@/features/privacy/constants/paths'
 import { PRIVACY_TEXTS } from '@/features/privacy/constants/texts'
+import { PersonaManager } from '@/features/personas/components/PersonaManager'
+import { PERSONAS_TEXTS } from '@/features/personas/constants/texts'
 
 const TEXTURES: Settings['texture'][] = ['none', 'grid', 'dots']
 
@@ -198,35 +200,45 @@ export function SettingsPage() {
         </SettingsCard>
       </div>
 
-      <SettingsCard title={SETTINGS_TEXTS.data}>
-        <div className="flex items-center justify-between gap-4">
-          <div className="flex flex-col">
-            <span className="text-sm text-fg">{SETTINGS_TEXTS.exportData}</span>
-            <span className="text-caption">
-              {SETTINGS_TEXTS.exportDescription}
-            </span>
-          </div>
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={exportData}
-            disabled={isExporting}
-          >
-            {isExporting ? SETTINGS_TEXTS.exporting : SETTINGS_TEXTS.export}
-          </Button>
-        </div>
+      <div className="grid gap-6 lg:grid-cols-2">
+        <SettingsCard title={PERSONAS_TEXTS.title}>
+          <PersonaManager />
+        </SettingsCard>
 
-        <div className="flex items-center justify-between gap-4 border-t border-border pt-4">
-          <div className="flex flex-col">
-            <span className="text-sm text-fg">{SETTINGS_TEXTS.clearCache}</span>
-            <span className="text-caption">
-              {SETTINGS_TEXTS.clearCacheDescription}
-            </span>
+        <SettingsCard title={SETTINGS_TEXTS.data}>
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex flex-col">
+              <span className="text-sm text-fg">
+                {SETTINGS_TEXTS.exportData}
+              </span>
+              <span className="text-caption">
+                {SETTINGS_TEXTS.exportDescription}
+              </span>
+            </div>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={exportData}
+              disabled={isExporting}
+            >
+              {isExporting ? SETTINGS_TEXTS.exporting : SETTINGS_TEXTS.export}
+            </Button>
           </div>
-          <ClearCacheButton />
-        </div>
-      </SettingsCard>
+
+          <div className="flex items-center justify-between gap-4 border-t border-border pt-4">
+            <div className="flex flex-col">
+              <span className="text-sm text-fg">
+                {SETTINGS_TEXTS.clearCache}
+              </span>
+              <span className="text-caption">
+                {SETTINGS_TEXTS.clearCacheDescription}
+              </span>
+            </div>
+            <ClearCacheButton />
+          </div>
+        </SettingsCard>
+      </div>
 
       <SettingsCard title={AUTH_TEXTS.account}>
         <div className="flex items-center justify-between gap-4">

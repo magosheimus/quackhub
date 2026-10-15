@@ -23,6 +23,8 @@ import { BACKLOG_TEXTS } from '@/features/backlog/constants/texts'
 import { EmptyMessage } from '@/components/ui/empty-message'
 import { EmptyState } from '@/components/ui/empty-state'
 import { CardCreateModal } from '@/features/tasks/components/CardCreateModal'
+import { PersonaSelect } from '@/features/personas/components/PersonaSelect'
+import { PERSONAS_TEXTS } from '@/features/personas/constants/texts'
 
 const NONE_VALUE = '__all__'
 
@@ -38,6 +40,9 @@ export function BacklogPage() {
     priorityFilter,
     epicFilter,
     tagFilter,
+    assigneeFilter,
+    hasPersonas,
+    selectAssignee,
     tags,
     selectedProject,
     selectedEpicName,
@@ -176,6 +181,14 @@ export function BacklogPage() {
               ))}
             </SelectContent>
           </Select>
+        )}
+
+        {hasPersonas && (
+          <PersonaSelect
+            value={assigneeFilter}
+            onChange={selectAssignee}
+            noneLabel={PERSONAS_TEXTS.allAssignees}
+          />
         )}
 
         {projectFilter && (

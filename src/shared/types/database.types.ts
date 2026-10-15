@@ -197,6 +197,30 @@ export type Database = {
         }
         Relationships: []
       }
+      personas: {
+        Row: {
+          created_at: string
+          icon: string | null
+          id: string
+          name: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          icon?: string | null
+          id?: string
+          name: string
+          user_id?: string
+        }
+        Update: {
+          created_at?: string
+          icon?: string | null
+          id?: string
+          name?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       projects: {
         Row: {
           color: string | null
@@ -522,6 +546,7 @@ export type Database = {
       }
       tasks: {
         Row: {
+          assignee_id: string | null
           created_at: string | null
           deleted_at: string | null
           description: string | null
@@ -550,6 +575,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          assignee_id?: string | null
           created_at?: string | null
           deleted_at?: string | null
           description?: string | null
@@ -579,6 +605,7 @@ export type Database = {
           user_id?: string
         }
         Update: {
+          assignee_id?: string | null
           created_at?: string | null
           deleted_at?: string | null
           description?: string | null
@@ -608,6 +635,13 @@ export type Database = {
           user_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: 'tasks_assignee_fkey'
+            columns: ['assignee_id', 'user_id']
+            isOneToOne: false
+            referencedRelation: 'personas'
+            referencedColumns: ['id', 'user_id']
+          },
           {
             foreignKeyName: 'tasks_epic_id_fkey'
             columns: ['epic_id']

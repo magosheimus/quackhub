@@ -25,3 +25,7 @@ export function invalidateTagQueries(queryClient: QueryClient) {
 export function invalidateDailyTrackerQueries(queryClient: QueryClient) {
   queryClient.invalidateQueries({ queryKey: queryKeys.dailyTracker.root })
 }
+
+export function invalidatePersonaQueries(queryClient: QueryClient) {
+  queryClient.invalidateQueries({ queryKey: queryKeys.personas.root })
+}

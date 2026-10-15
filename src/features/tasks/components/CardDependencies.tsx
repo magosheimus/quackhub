@@ -5,7 +5,7 @@ import { useAddDependency } from '@/features/tasks/hooks/dependencies/useAddDepe
 import { useRemoveDependency } from '@/features/tasks/hooks/dependencies/useRemoveDependency'
 import { DependencyPicker } from '@/features/tasks/components/DependencyPicker'
 import { TASKS_TEXTS } from '@/features/tasks/constants/texts'
-import { InfoTip } from '@/components/ui/info-tip'
+import { HintTooltip } from '@/components/ui/hint-tooltip'
 
 type CardDependenciesProps = {
   taskId: string
@@ -19,10 +19,9 @@ export function CardDependencies({ taskId, projectId }: CardDependenciesProps) {
 
   return (
     <div className="flex flex-col gap-2">
-      <span className="flex items-center gap-1.5">
+      <HintTooltip text={TASKS_TEXTS.hintDependsOn}>
         <SectionLabel icon={IconLink}>{TASKS_TEXTS.dependsOn}</SectionLabel>
-        <InfoTip text={TASKS_TEXTS.hintDependsOn} />
-      </span>
+      </HintTooltip>
       <DependencyPicker
         projectId={projectId}
         dependencies={dependencies ?? []}

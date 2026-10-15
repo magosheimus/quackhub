@@ -41,7 +41,9 @@ import { TASKS_TEXTS } from '@/features/tasks/constants/texts'
 import { useCreateEpic } from '@/features/epics/hooks/useCreateEpic'
 import { isStudyProject } from '@/features/projects/lib/project'
 import { DEFAULT_PALETTE_COLOR } from '@/shared/lib/palette'
-import { InfoTip } from '@/components/ui/info-tip'
+import { AssigneeCombobox } from '@/features/personas/components/AssigneeCombobox'
+import { PERSONAS_TEXTS } from '@/features/personas/constants/texts'
+import { HintTooltip } from '@/components/ui/hint-tooltip'
 import { DependencyPicker } from '@/features/tasks/components/DependencyPicker'
 
 const NONE_VALUE = '__backlog__'
@@ -72,6 +74,7 @@ export function CardCreateModal({
   const [newEpicName, setNewEpicName] = useState<string | null>(null)
   const [epicId, setEpicId] = useState<string | null>(null)
   const [sprintId, setSprintId] = useState<string | null>(null)
+  const [assigneeId, setAssigneeId] = useState<string | null>(null)
   const [title, setTitle] = useState(initialTitle ?? '')
   const [description, setDescription] = useState('')
   const [priority, setPriority] = useState<TaskPriority>('medium')
@@ -112,6 +115,7 @@ export function CardCreateModal({
     setNewEpicName(null)
     setEpicId(null)
     setSprintId(null)
+    setAssigneeId(null)
     setTitle('')
     setDescription('')
     setPriority('medium')
@@ -151,6 +155,7 @@ export function CardCreateModal({
       project_id: projectId,
       epic_id: epicId,
       sprint_id: sprintId,
+      assignee_id: assigneeId,
       title: title.trim(),
       description: description.trim() || null,
       priority,
@@ -267,10 +272,9 @@ export function CardCreateModal({
               </Select>
             </div>
             <div className="flex min-w-0 flex-col gap-1.5">
-              <span className="flex items-center gap-1.5 text-caption">
-                {TASKS_TEXTS.epic}
-                <InfoTip text={TASKS_TEXTS.hintEpic} />
-              </span>
+              <HintTooltip text={TASKS_TEXTS.hintEpic}>
+                <span className="text-caption">{TASKS_TEXTS.epic}</span>
+              </HintTooltip>
               {projectId ? (
                 <EpicSelector
                   newEpicName={newEpicName}
@@ -288,12 +292,11 @@ export function CardCreateModal({
               )}
             </div>
             <div className="flex min-w-0 flex-col gap-1.5">
-              <span className="flex items-center gap-1.5">
+              <HintTooltip text={TASKS_TEXTS.hintSprint}>
                 <span id="card-sprint-label" className="text-caption">
                   {TASKS_TEXTS.sprintOptional}
                 </span>
-                <InfoTip text={TASKS_TEXTS.hintSprint} />
-              </span>
+              </HintTooltip>
               <Select
                 value={sprintId ?? NONE_VALUE}
                 onValueChange={(v) => setSprintId(v === NONE_VALUE ? null : v)}
@@ -369,6 +372,14 @@ export function CardCreateModal({
             </div>
 
             <div className="flex min-w-0 flex-col gap-1.5">
+              <span id="card-assignee-label" className="pt-1 text-caption">
+                {PERSONAS_TEXTS.assignee}
+              </span>
+              <AssigneeCombobox
+                value={assigneeId}
+                onChange={setAssigneeId}
+                labelId="card-assignee-label"
+              />
               <span className="text-caption">{TASKS_TEXTS.tags}</span>
               <TagInput
                 tags={tags}
@@ -393,10 +404,11 @@ export function CardCreateModal({
               </div>
               <div className="flex min-w-0 flex-col gap-1.5">
                 {!recurrence.type && (
-                  <span className="flex items-center gap-1.5 text-caption">
-                    {TASKS_TEXTS.recurrence}
-                    <InfoTip text={TASKS_TEXTS.hintRecurrence} />
-                  </span>
+                  <HintTooltip text={TASKS_TEXTS.hintRecurrence}>
+                    <span className="text-caption">
+                      {TASKS_TEXTS.recurrence}
+                    </span>
+                  </HintTooltip>
                 )}
                 {recurrenceDetected && (
                   <div className="flex flex-col gap-2 rounded-md border border-accent bg-surface p-2 text-sm">
@@ -451,10 +463,9 @@ export function CardCreateModal({
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <span className="flex items-center gap-1.5 text-caption">
-              {TASKS_TEXTS.dependsOn}
-              <InfoTip text={TASKS_TEXTS.hintDependsOn} />
-            </span>
+            <HintTooltip text={TASKS_TEXTS.hintDependsOn}>
+              <span className="text-caption">{TASKS_TEXTS.dependsOn}</span>
+            </HintTooltip>
             <DependencyPicker
               projectId={projectId}
               dependencies={dependencies}

@@ -30,6 +30,7 @@ import type {
   TaskStatus,
 } from '@/shared/types/entities'
 import { buildProjectLabels } from '@/features/projects/lib/project'
+import { usePersonaOptions } from '@/features/personas/hooks/usePersonaOptions'
 
 export function useBacklogPage() {
   const [searchParams] = useSearchParams()
@@ -46,6 +47,7 @@ export function useBacklogPage() {
   )
   const [epicFilter, setEpicFilter] = useState<string | null>(null)
   const [tagFilter, setTagFilter] = useState<string | null>(null)
+  const [assigneeFilter, setAssigneeFilter] = useState<string | null>(null)
   const [isEpicModalOpen, setIsEpicModalOpen] = useState(false)
   const collapsedProjects = useToggleSet<string>()
 
@@ -66,6 +68,7 @@ export function useBacklogPage() {
   const colorScope: ColorScope = projectFilter ? 'epic' : 'project'
   const { data: allEpics } = useAllEpics()
   const epicLabels = buildEpicLabels(allEpics ?? [])
+  const hasPersonas = usePersonaOptions().length > 0
 
   const filteredTasks = filterBacklogTasks(
     tasks ?? [],
@@ -74,6 +77,7 @@ export function useBacklogPage() {
       priority: priorityFilter,
       epicId: epicFilter,
       tag: tagFilter,
+      assigneeId: assigneeFilter,
     },
     tagsByTask ?? {},
   )
@@ -134,6 +138,9 @@ export function useBacklogPage() {
     priorityFilter,
     epicFilter,
     tagFilter,
+    assigneeFilter,
+    hasPersonas,
+    selectAssignee: setAssigneeFilter,
     tags: collectTags(tagsByTask ?? {}),
     selectedProject,
     selectedEpicName,
