@@ -7,6 +7,7 @@ export const APP_TEXTS = {
   offlineBanner: 'Modo offline — Inbox disponível',
   editProject: (name: string) => `Editar projeto ${name}`,
   hintDailyTracker: 'Hábitos do dia, humor e o resumo da sprint.',
+  hintSettings: 'Atalho: Ctrl + ,',
   hintInbox:
     'O que pede atenção hoje: urgentes, revisões vencidas e cards com data de hoje.',
   hintDrafts: 'Ideias soltas capturadas rápido, para virar card depois.',

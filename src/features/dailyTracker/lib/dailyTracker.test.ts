@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import type { DailyLog, Habit, HabitLog } from '@/shared/types/entities'
-import { makeSprint } from '@/test/factories'
+import type { DailyLog, HabitLog } from '@/shared/types/entities'
+import { makeHabit, makeSprint } from '@/test/factories'
 
 import {
   getCurrentTrackerPeriod,
@@ -32,22 +32,6 @@ import {
   DAY_WINDOW_SIZE,
 } from './dailyTracker'
 import { getDateRange } from '@/shared/lib/date'
-
-function makeHabit(overrides: Partial<Habit> = {}): Habit {
-  return {
-    weekdays: null,
-    icon: 'target',
-    duration_minutes: null,
-    id: 'h1',
-    user_id: 'user-1',
-    name: 'Academia',
-    type: 'boolean',
-    goal: null,
-    active: true,
-    created_at: '2026-10-01T00:00:00Z',
-    ...overrides,
-  }
-}
 
 function makeLog(date: string, value = 1, habitId = 'h1'): HabitLog {
   return {

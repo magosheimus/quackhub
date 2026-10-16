@@ -12,6 +12,7 @@ export async function getHabits(): Promise<Habit[]> {
     .from('habits')
     .select('*')
     .eq('active', true)
+    .order('position')
     .order('created_at', { ascending: true })
   if (error) throw new Error(`Falha ao buscar hábitos: ${error.message}`)
   return data
@@ -21,6 +22,7 @@ export async function getAllHabits(): Promise<Habit[]> {
   const { data, error } = await supabase
     .from('habits')
     .select('*')
+    .order('position')
     .order('created_at', { ascending: true })
   if (error) throw new Error(`Falha ao buscar hábitos: ${error.message}`)
   return data

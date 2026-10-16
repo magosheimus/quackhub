@@ -1,18 +1,19 @@
 import { supabase } from '@/shared/api/supabase'
 import { todayLocal } from '@/shared/lib/date'
 import { sortByPriorityThenDate } from '@/features/tasks/lib/taskPriority'
+import { sortByDueThenPriority } from '@/features/inbox/lib/inboxDue'
 import type { Task } from '@/shared/types/entities'
 
 export type InboxData = {
   urgent: Task[]
   srsOverdue: Task[]
-  dueToday: Task[]
+  dueByToday: Task[]
 }
 
 export async function getInboxItems(): Promise<InboxData> {
   const today = todayLocal()
 
-  const [urgentRes, srsOverdueRes, dueTodayRes] = await Promise.all([
+  const [urgentRes, srsOverdueRes, dueByTodayRes] = await Promise.all([
     supabase
       .from('tasks')
       .select('*')
@@ -29,7 +30,7 @@ export async function getInboxItems(): Promise<InboxData> {
     supabase
       .from('tasks')
       .select('*')
-      .eq('due_date', today)
+      .lte('due_date', today)
       .eq('flagged', false)
       .not('status', 'in', '(done,blocked)')
       .is('deleted_at', null)
@@ -42,12 +43,12 @@ export async function getInboxItems(): Promise<InboxData> {
     throw new Error(
       `Falha ao buscar SRS vencido: ${srsOverdueRes.error.message}`,
     )
-  if (dueTodayRes.error)
-    throw new Error(`Falha ao buscar prazo hoje: ${dueTodayRes.error.message}`)
+  if (dueByTodayRes.error)
+    throw new Error(`Falha ao buscar prazos: ${dueByTodayRes.error.message}`)
 
   return {
     urgent: sortByPriorityThenDate(urgentRes.data),
     srsOverdue: sortByPriorityThenDate(srsOverdueRes.data),
-    dueToday: sortByPriorityThenDate(dueTodayRes.data),
+    dueByToday: sortByDueThenPriority(dueByTodayRes.data),
   }
 }

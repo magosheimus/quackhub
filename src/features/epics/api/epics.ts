@@ -52,15 +52,3 @@ export async function getAllEpics(): Promise<Epic[]> {
   if (error) throw new Error(`Falha ao buscar épicos: ${error.message}`)
   return data
 }
-
-export async function reorderEpics(orderedIds: string[]): Promise<void> {
-  const results = await Promise.all(
-    orderedIds.map((id, position) =>
-      supabase.from('epics').update({ position }).eq('id', id),
-    ),
-  )
-  const failed = results.find((result) => result.error)
-  if (failed?.error) {
-    throw new Error(`Falha ao reordenar épicos: ${failed.error.message}`)
-  }
-}

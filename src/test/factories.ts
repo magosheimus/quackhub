@@ -1,4 +1,10 @@
-import type { Epic, Project, Sprint, Task } from '@/shared/types/entities'
+import type {
+  Epic,
+  Habit,
+  Project,
+  Sprint,
+  Task,
+} from '@/shared/types/entities'
 
 export function makeTask(overrides: Partial<Task> = {}): Task {
   return {
@@ -42,6 +48,7 @@ export function makeProject(overrides: Partial<Project> = {}): Project {
     color: null,
     prefix: null,
     last_task_number: 0,
+    position: 0,
     created_at: '2026-01-01T00:00:00Z',
     deleted_at: null,
     ...overrides,
@@ -80,6 +87,23 @@ export function makeEpic(overrides: Partial<Epic> = {}): Epic {
     position: 0,
     created_at: '2026-01-01T00:00:00Z',
     deleted_at: null,
+    ...overrides,
+  }
+}
+
+export function makeHabit(overrides: Partial<Habit> = {}): Habit {
+  return {
+    weekdays: null,
+    icon: 'target',
+    duration_minutes: null,
+    position: 0,
+    id: 'h1',
+    user_id: 'user-1',
+    name: 'Academia',
+    type: 'boolean',
+    goal: null,
+    active: true,
+    created_at: '2026-10-01T00:00:00Z',
     ...overrides,
   }
 }

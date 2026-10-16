@@ -1,3 +1,5 @@
+import { COMMON_TEXTS } from '@/shared/constants/texts'
+
 export const EPICS_TEXTS = {
   title: 'Épicos',
   titleFor: (projectName: string) => `Épicos · ${projectName}`,
@@ -5,7 +7,7 @@ export const EPICS_TEXTS = {
   projectLabel: 'Projeto do épico',
   colorLabel: 'Cor do épico',
   changeColor: (name: string) => `Trocar a cor de ${name}`,
-  reorder: (name: string) => `Arrastar para reordenar ${name}`,
+  reorder: COMMON_TEXTS.reorder,
   namePlaceholder: 'Nome do novo épico',
   selectProject: 'Selecione o projeto',
   noEpic: 'Sem épico',

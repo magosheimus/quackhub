@@ -9,6 +9,8 @@ import {
   formatDuration,
 } from '@/features/dailyTracker/lib/dailyTracker'
 import type { Habit } from '@/shared/types/entities'
+import { useReorderList } from '@/shared/hooks/useReorderList'
+import { queryKeys } from '@/shared/query/queryKeys'
 
 export type HabitManagerRow = {
   habit: Habit
@@ -37,9 +39,16 @@ export function useHabitManager(habits: Habit[]) {
   const [editingHabit, setEditingHabit] = useState<Habit | null>(null)
   const [deletingHabit, setDeletingHabit] = useState<Habit | null>(null)
   const { mutate: archiveHabit } = useArchiveHabit()
+  const { handleDragEnd } = useReorderList({
+    table: 'habits',
+    items: habits,
+    queryKey: queryKeys.dailyTracker.habits,
+    invalidateKey: queryKeys.dailyTracker.root,
+  })
 
   return {
     rows: habits.map(toManagerRow),
+    handleDragEnd,
     editingHabit,
     startEditing: setEditingHabit,
     stopEditing: () => setEditingHabit(null),

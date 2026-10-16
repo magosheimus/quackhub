@@ -2,17 +2,16 @@ import { IconBookOpen } from '@/shared/lib/icons'
 import { Button } from '@/components/ui/button'
 import { StaticBoardCard } from '@/features/board/components/BoardCard'
 import { canRegisterPerformance } from '@/features/srs/lib/review'
-import { todayLocal } from '@/shared/lib/date'
+import { daysBetween, todayLocal } from '@/shared/lib/date'
 import type { Project, Task } from '@/shared/types/entities'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
 import { INBOX_TEXTS } from '@/features/inbox/constants/texts'
 import { buildProjectLabels } from '@/features/projects/lib/project'
+import { describeDue } from '@/features/inbox/lib/inboxDue'
 
 function describeReview(nextReview: string | null, today: string): string {
   if (!nextReview) return INBOX_TEXTS.reviewWithoutDate
-  const days = Math.round(
-    (Date.parse(today) - Date.parse(nextReview)) / 86_400_000,
-  )
+  const days = daysBetween(nextReview, today)
   if (days === 0) return INBOX_TEXTS.reviewToday
   if (days > 0) return INBOX_TEXTS.reviewOverdue(COMMON_TEXTS.dayCount(days))
   const ahead = -days
@@ -48,6 +47,7 @@ export function InboxSection({
       {tasks.map((task) => {
         const project = projects.find((p) => p.id === task.project_id)
         const isSrsEligible = canRegisterPerformance(project?.type, task.status)
+        const due = describeDue(task.due_date, today)
 
         return (
           <StaticBoardCard
@@ -71,14 +71,25 @@ export function InboxSection({
                   </Button>
                 </div>
               ) : (
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={() => onComplete(task.id)}
-                >
-                  {INBOX_TEXTS.complete}
-                </Button>
+                <div className="flex flex-col items-end gap-1">
+                  {due && (
+                    <span
+                      className={
+                        due.isOverdue ? 'text-xs text-danger' : 'text-caption'
+                      }
+                    >
+                      {due.text}
+                    </span>
+                  )}
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => onComplete(task.id)}
+                  >
+                    {INBOX_TEXTS.complete}
+                  </Button>
+                </div>
               )
             }
           />

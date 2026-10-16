@@ -32,7 +32,7 @@ export function InboxPage() {
     retry,
     urgent,
     srsOverdue,
-    dueToday,
+    dueByToday,
     totalCount,
     isEmpty,
     counters,
@@ -88,6 +88,11 @@ export function InboxPage() {
               )}
             </span>
             <span className="text-caption">{counter.label}</span>
+            {counter.overdueDetail && (
+              <span className="text-xs text-danger">
+                {counter.overdueDetail}
+              </span>
+            )}
           </Panel>
         ))}
       </div>
@@ -127,8 +132,8 @@ export function InboxPage() {
             onRegisterPerformance={startRegistering}
           />
           <InboxSection
-            title={INBOX_TEXTS.dueTodaySection}
-            tasks={dueToday}
+            title={INBOX_TEXTS.dueSection}
+            tasks={dueByToday}
             projects={projects}
             onComplete={completeTask}
             onRegisterPerformance={startRegistering}

@@ -29,6 +29,9 @@ export type ChecklistItem = Tables<'task_checklist_items'>
 export type NewChecklistItem = TablesInsert<'task_checklist_items'>
 export type ChecklistItemUpdate = TablesUpdate<'task_checklist_items'>
 
+export type TaskLink = Tables<'task_links'>
+export type NewTaskLink = TablesInsert<'task_links'>
+
 export type NewDraftsItem = TablesInsert<'drafts_items'>
 export type DraftsItem = Tables<'drafts_items'>
 export type SrsLog = Tables<'srs_logs'>

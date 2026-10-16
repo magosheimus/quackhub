@@ -7,7 +7,9 @@ import { NewHabitForm } from '@/features/dailyTracker/components/NewHabitForm'
 import { WeekdayPicker } from '@/features/dailyTracker/components/WeekdayPicker'
 import { useHabitManager } from '@/features/dailyTracker/hooks/useHabitManager'
 import { DAILY_TRACKER_TEXTS } from '@/features/dailyTracker/constants/texts'
-import { IconPencil, IconPlus, IconTrash } from '@/shared/lib/icons'
+import { IconMenu, IconPencil, IconPlus, IconTrash } from '@/shared/lib/icons'
+import { COMMON_TEXTS } from '@/shared/constants/texts'
+import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd'
 import type { Habit } from '@/shared/types/entities'
 
 type HabitManagerProps = {
@@ -32,6 +34,7 @@ const ACTIONS_CELL =
 export function HabitManager({ habits, weekdayOrder }: HabitManagerProps) {
   const {
     rows,
+    handleDragEnd,
     editingHabit,
     startEditing,
     stopEditing,
@@ -68,59 +71,116 @@ export function HabitManager({ habits, weekdayOrder }: HabitManagerProps) {
               </span>
               <span className={ACTIONS_CELL} />
             </div>
-            <ul className={ROW}>
-              {rows.map(
-                ({ habit, typeLabel, goalLabel, weekdays, durationLabel }) => (
-                  <li
-                    key={habit.id}
-                    className={`${ROW} border-b border-border text-sm *:py-3`}
+            <DragDropContext onDragEnd={handleDragEnd}>
+              <Droppable
+                droppableId="habits"
+                renderClone={(drag, _snapshot, rubric) => (
+                  <div
+                    ref={drag.innerRef}
+                    {...drag.draggableProps}
+                    {...drag.dragHandleProps}
+                    className="flex items-center gap-2 rounded-md border border-border bg-card px-3 py-2 text-sm text-fg"
                   >
-                    <span className={NAME_CELL}>
-                      <HabitIcon habit={habit} />
-                      <span className="truncate text-fg">{habit.name}</span>
-                    </span>
-                    <span className={`${COLUMN_CELL} text-caption`}>
-                      {typeLabel}
-                    </span>
-                    <span className={`${CENTERED_CELL} text-fg`}>
-                      {goalLabel}
-                    </span>
-                    <span className={COLUMN_CELL}>
-                      <WeekdayPicker
-                        order={weekdayOrder}
-                        selected={weekdays}
-                        label={DAILY_TRACKER_TEXTS.columnDays}
-                      />
-                    </span>
-                    <span className={`${CENTERED_CELL} text-caption`}>
-                      {durationLabel}
-                    </span>
-                    <span className={ACTIONS_CELL}>
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="icon-sm"
-                        aria-label={DAILY_TRACKER_TEXTS.edit(habit.name)}
-                        title={DAILY_TRACKER_TEXTS.editLabel}
-                        onClick={() => startEditing(habit)}
-                      >
-                        <IconPencil size={14} aria-hidden="true" />
-                      </Button>
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="icon-sm"
-                        aria-label={DAILY_TRACKER_TEXTS.delete(habit.name)}
-                        title={DAILY_TRACKER_TEXTS.deleteLabel}
-                        onClick={() => startDeleting(habit)}
-                      >
-                        <IconTrash size={14} aria-hidden="true" />
-                      </Button>
-                    </span>
-                  </li>
-                ),
-              )}
-            </ul>
+                    <IconMenu size={14} aria-hidden="true" />
+                    <HabitIcon habit={rows[rubric.source.index].habit} />
+                    {rows[rubric.source.index].habit.name}
+                  </div>
+                )}
+              >
+                {(provided) => (
+                  <ul
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                    className={ROW}
+                  >
+                    {rows.map(
+                      (
+                        {
+                          habit,
+                          typeLabel,
+                          goalLabel,
+                          weekdays,
+                          durationLabel,
+                        },
+                        index,
+                      ) => (
+                        <Draggable
+                          key={habit.id}
+                          draggableId={habit.id}
+                          index={index}
+                        >
+                          {(drag) => (
+                            <li
+                              ref={drag.innerRef}
+                              {...drag.draggableProps}
+                              className={`${ROW} border-b border-border text-sm *:py-3`}
+                            >
+                              <span className={NAME_CELL}>
+                                <span
+                                  {...drag.dragHandleProps}
+                                  aria-label={COMMON_TEXTS.reorder(habit.name)}
+                                  title={COMMON_TEXTS.reorder(habit.name)}
+                                  className="flex shrink-0 cursor-grab text-fg-muted hover:text-fg active:cursor-grabbing"
+                                >
+                                  <IconMenu size={14} aria-hidden="true" />
+                                </span>
+                                <HabitIcon habit={habit} />
+                                <span className="truncate text-fg">
+                                  {habit.name}
+                                </span>
+                              </span>
+                              <span className={`${COLUMN_CELL} text-caption`}>
+                                {typeLabel}
+                              </span>
+                              <span className={`${CENTERED_CELL} text-fg`}>
+                                {goalLabel}
+                              </span>
+                              <span className={COLUMN_CELL}>
+                                <WeekdayPicker
+                                  order={weekdayOrder}
+                                  selected={weekdays}
+                                  label={DAILY_TRACKER_TEXTS.columnDays}
+                                />
+                              </span>
+                              <span className={`${CENTERED_CELL} text-caption`}>
+                                {durationLabel}
+                              </span>
+                              <span className={ACTIONS_CELL}>
+                                <Button
+                                  type="button"
+                                  variant="ghost"
+                                  size="icon-sm"
+                                  aria-label={DAILY_TRACKER_TEXTS.edit(
+                                    habit.name,
+                                  )}
+                                  title={DAILY_TRACKER_TEXTS.editLabel}
+                                  onClick={() => startEditing(habit)}
+                                >
+                                  <IconPencil size={14} aria-hidden="true" />
+                                </Button>
+                                <Button
+                                  type="button"
+                                  variant="ghost"
+                                  size="icon-sm"
+                                  aria-label={DAILY_TRACKER_TEXTS.delete(
+                                    habit.name,
+                                  )}
+                                  title={DAILY_TRACKER_TEXTS.deleteLabel}
+                                  onClick={() => startDeleting(habit)}
+                                >
+                                  <IconTrash size={14} aria-hidden="true" />
+                                </Button>
+                              </span>
+                            </li>
+                          )}
+                        </Draggable>
+                      ),
+                    )}
+                    {provided.placeholder}
+                  </ul>
+                )}
+              </Droppable>
+            </DragDropContext>
           </div>
         )}
       </div>

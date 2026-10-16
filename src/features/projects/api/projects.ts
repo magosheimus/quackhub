@@ -10,6 +10,8 @@ export async function getProjects(): Promise<Project[]> {
     .from('projects')
     .select('*')
     .is('deleted_at', null)
+    .order('position')
+    .order('created_at')
   if (error) throw new Error(`Falha ao buscar projetos: ${error.message}`)
   return data
 }

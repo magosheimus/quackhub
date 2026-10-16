@@ -28,6 +28,7 @@ export const COMMON_TEXTS = {
   startSprint: 'Iniciar sprint',
   startingSprint: 'Iniciando...',
   selectColor: (color: string) => `Selecionar cor ${color}`,
+  reorder: (name: string) => `Arrastar para reordenar ${name}`,
   progressOf: (name: string) => `Progresso de ${name}`,
   dayCount: (days: number) => (days === 1 ? '1 dia' : `${days} dias`),
 } as const

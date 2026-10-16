@@ -51,6 +51,7 @@ export async function getDraftsItems(): Promise<DraftsItem[]> {
     .from('drafts_items')
     .select('*')
     .is('triaged_at', null)
+    .order('position')
     .order('created_at', { ascending: false })
   if (error)
     throw new Error(`Falha ao buscar itens do drafts: ${error.message}`)
