@@ -9,6 +9,7 @@ import { CardSidePanel } from '@/features/tasks/components/cardPage/CardSidePane
 import { CardChecklist } from '@/features/tasks/components/CardChecklist'
 import { CardDependencies } from '@/features/tasks/components/CardDependencies'
 import { CardAttachments } from '@/features/tasks/components/CardAttachments'
+import { CardLinks } from '@/features/tasks/components/CardLinks'
 import { CardHistory } from '@/features/tasks/components/CardHistory'
 import { RegisterPerformanceModal } from '@/features/srs/components/RegisterPerformanceModal'
 import { LoadingText } from '@/components/ui/loading-text'
@@ -106,8 +107,6 @@ function CardPageBody({ task }: { task: Task }) {
             onProjectChange={requestProjectChange}
             projectType={project?.type}
             status={task.status}
-            priority={task.priority}
-            flagged={task.flagged}
             epicId={task.epic_id}
             epicLabel={epicLabel}
             epicOptions={epicOptions}
@@ -115,6 +114,8 @@ function CardPageBody({ task }: { task: Task }) {
             sprints={assignableSprints}
             tags={tags ?? []}
             tagSuggestions={tagSuggestions ?? []}
+            priority={task.priority}
+            flagged={task.flagged}
             onUpdate={(data) => updateTask({ id: task.id, data })}
             onStatusChange={changeStatus}
             onTagsChange={handleTagsChange}
@@ -127,6 +128,8 @@ function CardPageBody({ task }: { task: Task }) {
           />
 
           <CardAttachments taskId={task.id} />
+
+          <CardLinks taskId={task.id} />
 
           <CardChecklist taskId={task.id} />
 

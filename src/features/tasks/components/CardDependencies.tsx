@@ -1,5 +1,5 @@
 import { SectionLabel } from '@/components/ui/section-label'
-import { IconLink } from '@/shared/lib/icons'
+import { IconRedo } from '@/shared/lib/icons'
 import { useDependencies } from '@/features/tasks/hooks/dependencies/useDependencies'
 import { useAddDependency } from '@/features/tasks/hooks/dependencies/useAddDependency'
 import { useRemoveDependency } from '@/features/tasks/hooks/dependencies/useRemoveDependency'
@@ -20,7 +20,7 @@ export function CardDependencies({ taskId, projectId }: CardDependenciesProps) {
   return (
     <div className="flex flex-col gap-2">
       <HintTooltip text={TASKS_TEXTS.hintDependsOn}>
-        <SectionLabel icon={IconLink}>{TASKS_TEXTS.dependsOn}</SectionLabel>
+        <SectionLabel icon={IconRedo}>{TASKS_TEXTS.dependsOn}</SectionLabel>
       </HintTooltip>
       <DependencyPicker
         projectId={projectId}

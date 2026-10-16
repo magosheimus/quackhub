@@ -339,7 +339,6 @@ export function CardCreateModal({
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder={TASKS_TEXTS.titlePlaceholder}
-              disabled={!projectId}
             />
             <SimilarCardsHint cards={similarCards ?? []} />
           </div>

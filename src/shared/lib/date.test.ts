@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import {
+  daysBetween,
   formatDayMonth,
   formatFullDate,
   getDateRange,
@@ -72,5 +73,17 @@ describe('getDateRange', () => {
 
   it('início depois do fim devolve lista vazia', () => {
     expect(getDateRange('2026-10-05', '2026-10-01')).toEqual([])
+  })
+})
+
+describe('daysBetween', () => {
+  it('conta dias de calendário entre duas datas', () => {
+    expect(daysBetween('2026-10-13', '2026-10-15')).toBe(2)
+    expect(daysBetween('2026-10-15', '2026-10-15')).toBe(0)
+    expect(daysBetween('2026-10-15', '2026-10-13')).toBe(-2)
+  })
+
+  it('atravessa troca de mês', () => {
+    expect(daysBetween('2026-09-30', '2026-10-01')).toBe(1)
   })
 })

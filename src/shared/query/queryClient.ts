@@ -37,9 +37,13 @@ const persister = createAsyncStoragePersister({
   key: STORAGE_KEYS.queryCache,
 })
 
+// Subir ao mudar o formato de algum dado em cache: o cache salvo com outra versão é descartado
+const QUERY_CACHE_VERSION = '2'
+
 persistQueryClient({
   queryClient,
   persister,
+  buster: QUERY_CACHE_VERSION,
   maxAge: 1000 * 60 * 60 * 24,
   dehydrateOptions: {
     shouldDehydrateQuery: (query) =>

@@ -20,6 +20,9 @@ import type { DraftsItem } from '@/shared/types/entities'
 import { DRAFTS_TEXTS } from '@/features/drafts/constants/texts'
 import { EmptyMessage } from '@/components/ui/empty-message'
 import { Panel } from '@/components/ui/panel'
+import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd'
+import { useReorderList } from '@/shared/hooks/useReorderList'
+import { queryKeys } from '@/shared/query/queryKeys'
 
 type DraftEditInputProps = {
   value: string
@@ -67,6 +70,11 @@ export function DraftsList() {
     null,
   )
   const { mutate: toggleChecked } = useToggleDraftChecked()
+  const { handleDragEnd } = useReorderList({
+    table: 'drafts_items',
+    items: items ?? [],
+    queryKey: queryKeys.drafts.root,
+  })
 
   function handleDiscard(item: DraftsItem) {
     triage({
@@ -100,69 +108,98 @@ export function DraftsList() {
   }
 
   return (
-    <div className="flex flex-col gap-2">
-      {items.map((item) => (
-        <Panel
-          key={item.id}
-          className="flex items-center gap-3 text-base hover:bg-card-hover"
-        >
-          <Checkbox
-            checked={item.checked_at !== null}
-            onCheckedChange={(checked) =>
-              toggleChecked({ id: item.id, checked: checked === true })
-            }
-            aria-label={DRAFTS_TEXTS.pendingItem}
-          />
-          {editing?.id === item.id ? (
-            <DraftEditInput
-              value={editing.text}
-              onChange={(text) => setEditing({ id: item.id, text })}
-              onSave={saveEdit}
-              onCancel={() => setEditing(null)}
-            />
-          ) : (
-            <span
-              className={
-                item.checked_at !== null
-                  ? 'min-w-0 flex-1 wrap-break-word text-fg-muted line-through'
-                  : 'min-w-0 flex-1 wrap-break-word text-fg'
-              }
+    <div className="flex flex-col">
+      <DragDropContext onDragEnd={handleDragEnd}>
+        <Droppable droppableId="drafts">
+          {(provided) => (
+            <div
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+              className="flex flex-col gap-2"
             >
-              {item.content}
-            </span>
+              {items.map((item, index) => (
+                <Draggable
+                  key={item.id}
+                  draggableId={item.id}
+                  index={index}
+                  isDragDisabled={editing?.id === item.id}
+                >
+                  {(drag) => (
+                    <Panel
+                      ref={drag.innerRef}
+                      {...drag.draggableProps}
+                      {...drag.dragHandleProps}
+                      className="flex items-center gap-3 text-base hover:bg-card-hover"
+                    >
+                      <Checkbox
+                        checked={item.checked_at !== null}
+                        onCheckedChange={(checked) =>
+                          toggleChecked({
+                            id: item.id,
+                            checked: checked === true,
+                          })
+                        }
+                        aria-label={DRAFTS_TEXTS.pendingItem}
+                      />
+                      {editing?.id === item.id ? (
+                        <DraftEditInput
+                          value={editing.text}
+                          onChange={(text) => setEditing({ id: item.id, text })}
+                          onSave={saveEdit}
+                          onCancel={() => setEditing(null)}
+                        />
+                      ) : (
+                        <span
+                          className={
+                            item.checked_at !== null
+                              ? 'min-w-0 flex-1 wrap-break-word text-fg-muted line-through'
+                              : 'min-w-0 flex-1 wrap-break-word text-fg'
+                          }
+                        >
+                          {item.content}
+                        </span>
+                      )}
+                      <Button
+                        type="button"
+                        title={DRAFTS_TEXTS.edit}
+                        variant="ghost"
+                        onClick={() =>
+                          setEditing({ id: item.id, text: item.content })
+                        }
+                        aria-label={DRAFTS_TEXTS.edit}
+                        className="size-8 shrink-0 p-0 hover:bg-surface! hover:text-fg!"
+                      >
+                        <IconPencil size={16} />
+                      </Button>
+                      <Button
+                        type="button"
+                        title={DRAFTS_TEXTS.discard}
+                        variant="ghost"
+                        onClick={() => handleDiscard(item)}
+                        aria-label={DRAFTS_TEXTS.discard}
+                        className="size-8 shrink-0 p-0 hover:bg-surface! hover:text-fg!"
+                      >
+                        <IconTrash size={16} />
+                      </Button>
+                      <Button
+                        type="button"
+                        title={DRAFTS_TEXTS.toCard}
+                        variant="ghost"
+                        onClick={() => setCreatingCardFor(item)}
+                        aria-label={DRAFTS_TEXTS.toCard}
+                        className="size-8 shrink-0 p-0 hover:bg-surface! hover:text-fg!"
+                      >
+                        <IconStickyNoteSharp size={16} />
+                      </Button>
+                    </Panel>
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
+            </div>
           )}
-          <Button
-            type="button"
-            title={DRAFTS_TEXTS.edit}
-            variant="ghost"
-            onClick={() => setEditing({ id: item.id, text: item.content })}
-            aria-label={DRAFTS_TEXTS.edit}
-            className="size-8 shrink-0 p-0 hover:bg-surface! hover:text-fg!"
-          >
-            <IconPencil size={16} />
-          </Button>
-          <Button
-            type="button"
-            title={DRAFTS_TEXTS.discard}
-            variant="ghost"
-            onClick={() => handleDiscard(item)}
-            aria-label={DRAFTS_TEXTS.discard}
-            className="size-8 shrink-0 p-0 hover:bg-surface! hover:text-fg!"
-          >
-            <IconTrash size={16} />
-          </Button>
-          <Button
-            type="button"
-            title={DRAFTS_TEXTS.toCard}
-            variant="ghost"
-            onClick={() => setCreatingCardFor(item)}
-            aria-label={DRAFTS_TEXTS.toCard}
-            className="size-8 shrink-0 p-0 hover:bg-surface! hover:text-fg!"
-          >
-            <IconStickyNoteSharp size={16} />
-          </Button>
-        </Panel>
-      ))}
+        </Droppable>
+      </DragDropContext>
 
       <CardCreateModal
         open={creatingCardFor !== null}

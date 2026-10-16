@@ -61,6 +61,9 @@ export const queryKeys = {
   checklist: {
     byTask: (taskId: string) => ['checklist', taskId] as const,
   },
+  links: {
+    byTask: (taskId: string) => ['links', taskId] as const,
+  },
   dependencies: {
     byTask: (taskId: string) => ['dependencies', taskId] as const,
   },

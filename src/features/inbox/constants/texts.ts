@@ -2,8 +2,10 @@ export const INBOX_TEXTS = {
   title: 'Inbox',
   urgentSection: 'Urgentes',
   srsOverdueSection: 'SRS vencido',
-  dueTodaySection: 'Prazo hoje',
-  tasksCounter: 'tarefas',
+  dueSection: 'Prazo até hoje',
+  deadlinesCounter: 'prazo até hoje',
+  overdueDetail: (count: number) =>
+    count === 1 ? '1 atrasado' : `${count} atrasados`,
   reviewsCounter: 'revisões',
   urgentCounter: 'urgentes',
   emptyTitle: 'Sem pendências para hoje',
@@ -16,4 +18,6 @@ export const INBOX_TEXTS = {
   reviewToday: 'revisar hoje',
   reviewOverdue: (dayCount: string) => `revisão vencida há ${dayCount}`,
   reviewIn: (dayCount: string) => `revisar em ${dayCount}`,
+  dueToday: 'vence hoje',
+  dueOverdue: (dayCount: string) => `atrasado há ${dayCount}`,
 } as const

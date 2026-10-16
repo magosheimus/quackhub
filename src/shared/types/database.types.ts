@@ -47,6 +47,7 @@ export type Database = {
           content: string
           created_at: string | null
           id: string
+          position: number
           triaged_at: string | null
           triaged_task_id: string | null
           triaged_to: Database['public']['Enums']['draft_triage_target'] | null
@@ -57,6 +58,7 @@ export type Database = {
           content: string
           created_at?: string | null
           id?: string
+          position?: number
           triaged_at?: string | null
           triaged_task_id?: string | null
           triaged_to?: Database['public']['Enums']['draft_triage_target'] | null
@@ -67,6 +69,7 @@ export type Database = {
           content?: string
           created_at?: string | null
           id?: string
+          position?: number
           triaged_at?: string | null
           triaged_task_id?: string | null
           triaged_to?: Database['public']['Enums']['draft_triage_target'] | null
@@ -167,6 +170,7 @@ export type Database = {
           icon: string
           id: string
           name: string
+          position: number
           type: Database['public']['Enums']['habit_type']
           user_id: string
           weekdays: number[] | null
@@ -179,6 +183,7 @@ export type Database = {
           icon?: string
           id?: string
           name: string
+          position?: number
           type: Database['public']['Enums']['habit_type']
           user_id?: string
           weekdays?: number[] | null
@@ -191,6 +196,7 @@ export type Database = {
           icon?: string
           id?: string
           name?: string
+          position?: number
           type?: Database['public']['Enums']['habit_type']
           user_id?: string
           weekdays?: number[] | null
@@ -229,6 +235,7 @@ export type Database = {
           id: string
           last_task_number: number
           name: string
+          position: number
           prefix: string | null
           type: Database['public']['Enums']['project_type']
           user_id: string
@@ -240,6 +247,7 @@ export type Database = {
           id?: string
           last_task_number?: number
           name: string
+          position?: number
           prefix?: string | null
           type: Database['public']['Enums']['project_type']
           user_id?: string
@@ -251,6 +259,7 @@ export type Database = {
           id?: string
           last_task_number?: number
           name?: string
+          position?: number
           prefix?: string | null
           type?: Database['public']['Enums']['project_type']
           user_id?: string
@@ -511,6 +520,41 @@ export type Database = {
           },
           {
             foreignKeyName: 'task_dependencies_task_id_fkey'
+            columns: ['task_id']
+            isOneToOne: false
+            referencedRelation: 'tasks'
+            referencedColumns: ['id']
+          },
+        ]
+      }
+      task_links: {
+        Row: {
+          created_at: string
+          id: string
+          position: number
+          task_id: string
+          title: string | null
+          url: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          position?: number
+          task_id: string
+          title?: string | null
+          url: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          position?: number
+          task_id?: string
+          title?: string | null
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'task_links_task_id_fkey'
             columns: ['task_id']
             isOneToOne: false
             referencedRelation: 'tasks'

@@ -8,6 +8,7 @@ import { useOnlineStatus } from '@/shared/hooks/useOnlineStatus'
 import { CartuchoPicker } from '@/features/settings/components/CartuchoPicker'
 import { APP_TEXTS } from '@/app/constants/texts'
 import { useSettingsSync } from '@/features/settings/hooks/useSettingsSync'
+import { useSettingsShortcut } from '@/features/settings/hooks/useSettingsShortcut'
 
 interface AppShellProps {
   children: ReactNode
@@ -15,6 +16,7 @@ interface AppShellProps {
 
 export function AppShell({ children }: AppShellProps) {
   useSettingsSync()
+  useSettingsShortcut()
   useEffect(() => {
     window.addEventListener('online', syncDraftsQueue)
     return () => window.removeEventListener('online', syncDraftsQueue)

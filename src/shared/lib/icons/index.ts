@@ -37,6 +37,7 @@ import { Crown } from 'pixelarticons/react/Crown'
 import { DiamondGem } from 'pixelarticons/react/DiamondGem'
 import { Discord } from 'pixelarticons/react/Discord'
 import { Dog } from 'pixelarticons/react/Dog'
+import { ExternalLink } from 'pixelarticons/react/ExternalLink'
 import { Eye } from 'pixelarticons/react/Eye'
 import { Feather } from 'pixelarticons/react/Feather'
 import { File } from 'pixelarticons/react/File'
@@ -74,6 +75,7 @@ import { Plus } from 'pixelarticons/react/Plus'
 import { PlusBox } from 'pixelarticons/react/PlusBox'
 import { PlusBoxSharp } from 'pixelarticons/react/PlusBoxSharp'
 import { Potion } from 'pixelarticons/react/Potion'
+import { Redo } from 'pixelarticons/react/Redo'
 import { RefreshSolid } from 'pixelarticons/react/RefreshSolid'
 import { Robot } from 'pixelarticons/react/Robot'
 import { RobotFaceHappySharp } from 'pixelarticons/react/RobotFaceHappySharp'
@@ -146,6 +148,7 @@ export const IconCrown = createIcon(Crown)
 export const IconDiscord = createIcon(Discord)
 export const IconDog = createIcon(Dog)
 export const IconExercise = createIcon(HumanArmsUp)
+export const IconExternalLink = createIcon(ExternalLink)
 export const IconEye = createIcon(Eye)
 export const IconFeather = createIcon(Feather)
 export const IconFile = createIcon(File)
@@ -189,6 +192,7 @@ export const IconPlus = createIcon(Plus)
 export const IconPlusBox = createIcon(PlusBox)
 export const IconPlusBoxSharp = createIcon(PlusBoxSharp)
 export const IconPotion = createIcon(Potion)
+export const IconRedo = createIcon(Redo)
 export const IconRefresh = createIcon(RefreshSolid)
 export const IconRobot = createIcon(Robot)
 export const IconScale = createIcon(Scale)

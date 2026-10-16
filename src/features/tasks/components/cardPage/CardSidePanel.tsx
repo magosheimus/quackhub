@@ -78,7 +78,7 @@ export function CardSidePanel({
       </Panel>
 
       {projectType === 'general' && (
-        <>
+        <Panel className="flex flex-col gap-3 p-3">
           <div className="flex flex-col gap-1.5">
             <label htmlFor="card-due-date" className="text-caption">
               {TASKS_TEXTS.dueDate}
@@ -95,7 +95,7 @@ export function CardSidePanel({
             value={recurrenceValue}
             onChange={onRecurrenceChange}
           />
-        </>
+        </Panel>
       )}
 
       {canRegisterPerformance(projectType, status) && (

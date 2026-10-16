@@ -64,6 +64,7 @@
   /* Efeitos */
   --glow: 0 0 #0000;
   --glow-filter: none;
+  --glow-color: var(--accent);
   --scanline-opacity: 0;
   --overlay: color-mix(in srgb, var(--lcd-ink) 65%, transparent);
 
@@ -188,9 +189,9 @@
   --lcd-screen: #f1dca7;
   --lcd-ink: #3d2f22;
 
-  --bg-surface: #d9ae94;
-  --bg-card: #f8ecd7;
-  --bg-card-hover: #fff5df;
+  --bg-surface: #daaa8c;
+  --bg-card: #f2e3cb;
+  --bg-card-hover: #f5ebda;
   --bg-selected: #d8dcad;
   --bg-input: #fff3db;
 
@@ -200,7 +201,7 @@
   --border: #b99a6b;
   --border-strong: #896c46;
 
-  --accent: #59632d;
+  --accent: #5d6b1f;
   --on-accent: #fff5dc;
 
   /* Signal */
@@ -286,7 +287,7 @@
   --glow-color: var(--accent);
 
   /* Signal */
-  --signal-danger: #ff9974;
+  --signal-danger: #ff6519;
   --signal-warning: #f2c362;
   --signal-success: #b7d77b;
 
@@ -309,13 +310,8 @@
   --scanline-opacity: 1;
 }
 
+/* Pato da logo: drop-shadow em px */
 .glow-on {
-  --glow:
-    0 0 1px color-mix(in oklch, var(--glow-color) 70%, transparent),
-    0 0 6px color-mix(in oklch, var(--glow-color) 50%, transparent),
-    0 0 16px color-mix(in oklch, var(--glow-color) 35%, transparent),
-    0 0 32px color-mix(in oklch, var(--glow-color) 15%, transparent);
-
   --glow-filter: drop-shadow(
       0 0 1px color-mix(in oklch, var(--glow-color) 70%, transparent)
     )
@@ -326,15 +322,35 @@
 }
 
 .glow-on:not(.theme-dark) {
-  --glow:
-    1px 1px 0 color-mix(in oklch, var(--lcd-ink) 20%, transparent),
-    0 0 3px color-mix(in oklch, var(--accent) 35%, transparent),
-    0 0 8px color-mix(in oklch, var(--accent) 15%, transparent);
-
   --glow-filter: drop-shadow(
-      2px 2px 0 color-mix(in oklch, var(--lcd-ink) 20%, transparent)
+      1.5px 0 0 color-mix(in oklch, var(--glow-color) 45%, transparent)
     )
-    drop-shadow(0 0 3px color-mix(in oklch, var(--accent) 30%, transparent));
+    drop-shadow(0 0 4px color-mix(in oklch, var(--glow-color) 50%, transparent));
+}
+
+/* Glow do texto declarado no próprio elemento (um var() é resolvido onde a
+   variável é declarada), para --glow-color poder mudar por elemento.
+   Valores em em: o efeito acompanha o tamanho da fonte (base: títulos de ~32px) */
+.glow-on :is(.font-heading, [aria-current='page'], .glow-active) {
+  --glow:
+    0 0 0.03em color-mix(in oklch, var(--glow-color) 70%, transparent),
+    0 0 0.19em color-mix(in oklch, var(--glow-color) 50%, transparent),
+    0 0 0.5em color-mix(in oklch, var(--glow-color) 35%, transparent),
+    0 0 1em color-mix(in oklch, var(--glow-color) 15%, transparent);
+}
+
+/* Temas claros: ghosting de LCD (cópia clara deslocada na horizontal) + halo suave */
+.glow-on:not(.theme-dark)
+  :is(.font-heading, [aria-current='page'], .glow-active) {
+  --glow:
+    0.05em 0 0 color-mix(in oklch, var(--glow-color) 45%, transparent),
+    0 0 0.06em color-mix(in oklch, var(--glow-color) 60%, transparent),
+    0 0 0.25em color-mix(in oklch, var(--glow-color) 40%, transparent);
+}
+
+/* Texto em cor de sinal brilha na própria cor, não no destaque */
+.glow-on :is(.text-danger, .text-warning, .text-success) {
+  --glow-color: currentColor;
 }
 
 .font-ibm-plex {

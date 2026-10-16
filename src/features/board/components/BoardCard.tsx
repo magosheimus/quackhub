@@ -36,6 +36,7 @@ function getBorderStyle(task: Task) {
 type BoardCardBodyProps = {
   task: Task
   projectLabels: ProjectLabels
+  showAssignee?: boolean
   showStatus?: boolean
   tag?: string
   colorScope?: ColorScope
@@ -44,6 +45,7 @@ type BoardCardBodyProps = {
 function BoardCardBody({
   task,
   projectLabels,
+  showAssignee = true,
   showStatus = false,
   tag,
   colorScope = 'project',
@@ -98,9 +100,11 @@ function BoardCardBody({
         )}
       </div>
 
-      <div className="shrink-0 self-start">
-        <AssigneeBadge assigneeId={task.assignee_id} />
-      </div>
+      {showAssignee && (
+        <div className="shrink-0 self-start">
+          <AssigneeBadge assigneeId={task.assignee_id} />
+        </div>
+      )}
     </>
   )
 }
@@ -225,14 +229,14 @@ export function StaticBoardCard({
       <BoardCardBody
         task={task}
         projectLabels={projectLabels}
+        showAssignee={false}
         showStatus={showStatus}
         colorScope={colorScope}
       />
-      {actions && (
-        <div className="ml-auto flex items-center gap-2 self-center">
-          {actions}
-        </div>
-      )}
+      <div className="ml-auto flex items-center gap-3 self-center">
+        <AssigneeBadge assigneeId={task.assignee_id} />
+        {actions}
+      </div>
     </div>
   )
 }

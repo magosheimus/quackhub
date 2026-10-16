@@ -36,6 +36,8 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 import { DAILY_TRACKER_TEXTS } from '@/features/dailyTracker/constants/texts'
+import { SETTINGS_PATH } from '@/features/settings/constants/paths'
+import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd'
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
   `flex h-10 items-center gap-3 border px-3 py-2 rounded-md text-base ${
@@ -79,14 +81,18 @@ type SidebarProps = {
 }
 
 export function Sidebar({ className }: SidebarProps) {
-  const { isLoading, items: projectItems } = useProjectNavItems()
+  const {
+    isLoading,
+    items: projectItems,
+    handleDragEnd: handleProjectDragEnd,
+  } = useProjectNavItems()
   const { data: draftsItems } = useDraftsItems()
   const draftsCount = draftsItems?.length ?? 0
   const { data: inboxData } = useInboxItems()
   const inboxCount =
     (inboxData?.urgent.length ?? 0) +
     (inboxData?.srsOverdue.length ?? 0) +
-    (inboxData?.dueToday.length ?? 0)
+    (inboxData?.dueByToday.length ?? 0)
   const [editingProject, setEditingProject] = useState<Project | null>(null)
   const [isProjectsOpen, setIsProjectsOpen] = useState(false)
 
@@ -172,31 +178,65 @@ export function Sidebar({ className }: SidebarProps) {
         {isProjectsOpen && (
           <div className="flex flex-col gap-1">
             {isLoading && <LoadingText />}
-            {projectItems.map(({ project, color }) => (
-              <Panel key={project.id} className="group flex items-center p-0">
-                <NavLink
-                  to={`/board?project=${project.id}`}
-                  className="flex flex-1 items-center gap-2 px-3 py-2 text-sm text-fg"
-                >
-                  <IconFolder size={12} aria-hidden="true" style={{ color }} />
-                  {project.name}
-                </NavLink>
-                <button
-                  type="button"
-                  onClick={() => setEditingProject(project)}
-                  className="p-2 text-fg-muted opacity-0 group-hover:opacity-100 focus-visible:opacity-100 pointer-coarse:opacity-100"
-                  aria-label={APP_TEXTS.editProject(project.name)}
-                >
-                  <IconPencil size={12} />
-                </button>
-              </Panel>
-            ))}
+            <DragDropContext onDragEnd={handleProjectDragEnd}>
+              <Droppable droppableId="sidebar-projects">
+                {(provided) => (
+                  <div
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                    className="flex flex-col gap-1"
+                  >
+                    {projectItems.map(({ project, color }, index) => (
+                      <Draggable
+                        key={project.id}
+                        draggableId={project.id}
+                        index={index}
+                      >
+                        {(drag) => (
+                          <Panel
+                            ref={drag.innerRef}
+                            {...drag.draggableProps}
+                            {...drag.dragHandleProps}
+                            className="group flex items-center p-0"
+                          >
+                            <NavLink
+                              to={`/board?project=${project.id}`}
+                              className="flex flex-1 items-center gap-2 px-3 py-2 text-sm text-fg"
+                            >
+                              <IconFolder
+                                size={12}
+                                aria-hidden="true"
+                                style={{ color }}
+                              />
+                              {project.name}
+                            </NavLink>
+                            <button
+                              type="button"
+                              onClick={() => setEditingProject(project)}
+                              className="p-2 text-fg-muted opacity-0 group-hover:opacity-100 focus-visible:opacity-100 pointer-coarse:opacity-100"
+                              aria-label={APP_TEXTS.editProject(project.name)}
+                            >
+                              <IconPencil size={12} />
+                            </button>
+                          </Panel>
+                        )}
+                      </Draggable>
+                    ))}
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
+            </DragDropContext>
           </div>
         )}
       </nav>
 
       <div className="mt-auto flex flex-col gap-1 pt-4">
-        <NavItem to="/configuracoes" icon={IconSettings}>
+        <NavItem
+          to={SETTINGS_PATH}
+          icon={IconSettings}
+          hint={APP_TEXTS.hintSettings}
+        >
           {APP_TEXTS.settings}
         </NavItem>
       </div>

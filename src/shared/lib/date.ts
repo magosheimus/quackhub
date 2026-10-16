@@ -75,3 +75,9 @@ export function getDateRange(start: string, end: string): string[] {
   }
   return dates
 }
+
+export function daysBetween(from: string, to: string): number {
+  return Math.round(
+    (parseDbDate(to).getTime() - parseDbDate(from).getTime()) / 86_400_000,
+  )
+}

@@ -196,34 +196,6 @@ export function CardDetailsSection({
               </SelectContent>
             </Select>
           </DetailRow>
-          <DetailRow label={TASKS_TEXTS.priorityLabel} labelId="priority-label">
-            <Select
-              value={priority}
-              onValueChange={(v) => {
-                if (isTaskPriority(v)) {
-                  onUpdate({ priority: v })
-                }
-              }}
-            >
-              <SelectTrigger
-                aria-labelledby="priority-label"
-                className={INLINE_TRIGGER_CLASS}
-              >
-                <SelectValue>{PRIORITY_CONFIG[priority].text}</SelectValue>
-              </SelectTrigger>
-              <SelectContent>
-                {TASK_PRIORITIES.map((option) => (
-                  <SelectItem key={option} value={option}>
-                    {PRIORITY_CONFIG[option].text}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </DetailRow>
-          <UrgentToggle
-            flagged={flagged}
-            onToggle={() => onUpdate({ flagged: !flagged })}
-          />
         </div>
 
         <div className="flex flex-col gap-3">
@@ -267,6 +239,34 @@ export function CardDetailsSection({
               suggestions={tagSuggestions}
             />
           </DetailRow>
+          <DetailRow label={TASKS_TEXTS.priorityLabel} labelId="priority-label">
+            <Select
+              value={priority}
+              onValueChange={(v) => {
+                if (isTaskPriority(v)) {
+                  onUpdate({ priority: v })
+                }
+              }}
+            >
+              <SelectTrigger
+                aria-labelledby="priority-label"
+                className={INLINE_TRIGGER_CLASS}
+              >
+                <SelectValue>{PRIORITY_CONFIG[priority].text}</SelectValue>
+              </SelectTrigger>
+              <SelectContent>
+                {TASK_PRIORITIES.map((option) => (
+                  <SelectItem key={option} value={option}>
+                    {PRIORITY_CONFIG[option].text}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </DetailRow>
+          <UrgentToggle
+            flagged={flagged}
+            onToggle={() => onUpdate({ flagged: !flagged })}
+          />
         </div>
       </div>
     </Panel>

@@ -22,6 +22,7 @@ import { CardPage } from '@/features/tasks/pages/CardPage'
 import { InboxPage } from '@/features/inbox/pages/InboxPage'
 import { DraftsPage } from '@/features/drafts/pages/DraftsPage'
 import { SettingsPage } from '@/features/settings/pages/SettingsPage'
+import { SETTINGS_PATH } from '@/features/settings/constants/paths'
 import { AnalyticsPage } from '@/features/analytics/pages/AnalyticsPage'
 import { Toaster } from '@/components/ui/toaster'
 import { PrivacyPage } from '@/features/privacy/pages/PrivacyPage'
@@ -53,7 +54,7 @@ function App() {
             <Route path="/diario" element={<DailyTrackerPage />} />
             <Route path="/board" element={<BoardPage />} />
             <Route path="/backlog" element={<BacklogPage />} />
-            <Route path="/configuracoes" element={<SettingsPage />} />
+            <Route path={SETTINGS_PATH} element={<SettingsPage />} />
             <Route path="/analytics" element={<AnalyticsPage />} />
             <Route path="/sprints" element={<SprintHistoryPage />} />
             <Route path="/cards/:id" element={<CardPage />} />

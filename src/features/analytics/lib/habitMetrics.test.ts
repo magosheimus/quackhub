@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { DailyLog, Habit, HabitLog } from '@/shared/types/entities'
-import { makeSprint } from '@/test/factories'
+import { makeHabit as makeBaseHabit, makeSprint } from '@/test/factories'
 import {
   buildSprintHabitTrend,
   getEarliestSprintStart,
@@ -8,19 +8,7 @@ import {
 } from './habitMetrics'
 
 function makeHabit(overrides: Partial<Habit> = {}): Habit {
-  return {
-    weekdays: null,
-    icon: 'target',
-    duration_minutes: null,
-    id: 'h1',
-    user_id: 'user-1',
-    name: 'Academia',
-    type: 'boolean',
-    goal: null,
-    active: true,
-    created_at: '2026-09-01T00:00:00Z',
-    ...overrides,
-  }
+  return makeBaseHabit({ created_at: '2026-09-01T00:00:00Z', ...overrides })
 }
 
 function makeLog(date: string, habitId = 'h1', value = 1): HabitLog {

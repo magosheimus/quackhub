@@ -15,12 +15,14 @@ import { reportError } from '@/shared/lib/errors'
 import { useAuth } from '@/features/auth/hooks/useAuth'
 import { useSignOut } from '@/features/auth/hooks/useAuthMutations'
 import { SETTINGS_TEXTS } from '@/features/settings/constants/texts'
+import { useLeaveSettingsOnEscape } from '@/features/settings/hooks/useLeaveSettingsOnEscape'
 
 export function useSettingsPage() {
   const { settings, updateSettings: update } = useSettings()
   const [isExporting, setIsExporting] = useState(false)
   const { session } = useAuth()
   const { mutate: signOut, isPending: isSigningOut } = useSignOut()
+  useLeaveSettingsOnEscape()
 
   function setTextureOpacity(value: number | readonly number[]) {
     const opacity = typeof value === 'number' ? value : value[0]

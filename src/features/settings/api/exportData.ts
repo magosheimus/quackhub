@@ -8,6 +8,7 @@ const TABLES = [
   'task_tags',
   'task_dependencies',
   'task_checklist_items',
+  'task_links',
   'task_attachments',
   'sprints',
   'srs_logs',

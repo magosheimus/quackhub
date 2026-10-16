@@ -1,3 +1,4 @@
+import { countOverdue } from '@/features/inbox/lib/inboxDue'
 import { buildInboxCounters } from '@/features/inbox/lib/inboxCounters'
 import { hasLoadError, retryFailedQueries } from '@/shared/query/queryState'
 import { useState } from 'react'
@@ -6,7 +7,7 @@ import { useCompleteTask } from '@/features/inbox/hooks/useCompleteTask'
 import { useActiveSprint } from '@/features/sprints/hooks/useActiveSprint'
 import { useProjects } from '@/features/projects/hooks/useProjects'
 import { formatSprintBanner } from '@/features/sprints/lib/sprint'
-import { formatWeekdayShort } from '@/shared/lib/date'
+import { formatWeekdayShort, todayLocal } from '@/shared/lib/date'
 import type { Task } from '@/shared/types/entities'
 
 export function useInboxPage() {
@@ -19,8 +20,8 @@ export function useInboxPage() {
 
   const urgent = inbox?.urgent ?? []
   const srsOverdue = inbox?.srsOverdue ?? []
-  const dueToday = inbox?.dueToday ?? []
-  const totalCount = urgent.length + srsOverdue.length + dueToday.length
+  const dueByToday = inbox?.dueByToday ?? []
+  const totalCount = urgent.length + srsOverdue.length + dueByToday.length
 
   return {
     isLoading,
@@ -28,11 +29,12 @@ export function useInboxPage() {
     retry: () => retryFailedQueries(inboxQuery),
     urgent,
     srsOverdue,
-    dueToday,
+    dueByToday,
     totalCount,
     isEmpty: totalCount === 0,
     counters: buildInboxCounters({
-      dueToday: dueToday.length,
+      dueByToday: dueByToday.length,
+      overdue: countOverdue(dueByToday, todayLocal()),
       srsOverdue: srsOverdue.length,
       urgent: urgent.length,
     }),
