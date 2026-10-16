@@ -6,6 +6,7 @@ import {
   getLabelScope,
   getProjectsInTasks,
   groupTasksByColumn,
+  shouldFlagOnDrop,
   isBoardColumnKey,
   getMoveOptions,
 } from './board'
@@ -158,6 +159,34 @@ describe('groupTasksByColumn', () => {
     expect(groups.todo.map((t) => t.id)).toEqual(['t1'])
     expect(groups.doing.map((t) => t.id)).toEqual(['t2'])
     expect(Object.values(groups).flat()).toHaveLength(2)
+  })
+})
+
+describe('urgentes no topo da coluna', () => {
+  it('coloca os cards flagged antes dos demais, mantendo a ordem', () => {
+    const groups = groupTasksByColumn([
+      makeTask({ id: 'a', status: 'todo' }),
+      makeTask({ id: 'b', status: 'todo', flagged: true }),
+      makeTask({ id: 'c', status: 'todo' }),
+      makeTask({ id: 'd', status: 'todo', flagged: true }),
+    ])
+    expect(groups.todo.map((t) => t.id)).toEqual(['b', 'd', 'a', 'c'])
+  })
+})
+
+describe('shouldFlagOnDrop', () => {
+  const card = makeTask({ flagged: false })
+
+  it('marca como urgente ao soltar na primeira posição', () => {
+    expect(shouldFlagOnDrop(card, 'doing', 0)).toBe(true)
+  })
+
+  it('não marca em outra posição, em Finalizado ou se já é urgente', () => {
+    expect(shouldFlagOnDrop(card, 'doing', 2)).toBe(false)
+    expect(shouldFlagOnDrop(card, 'done', 0)).toBe(false)
+    expect(shouldFlagOnDrop(makeTask({ flagged: true }), 'doing', 0)).toBe(
+      false,
+    )
   })
 })
 

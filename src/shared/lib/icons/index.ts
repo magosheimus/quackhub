@@ -3,8 +3,6 @@ import { Alien } from 'pixelarticons/react/Alien'
 import { Android } from 'pixelarticons/react/Android'
 import { Apple } from 'pixelarticons/react/Apple'
 import { Archive } from 'pixelarticons/react/Archive'
-import { ArrowBigDown } from 'pixelarticons/react/ArrowBigDown'
-import { ArrowBigUp } from 'pixelarticons/react/ArrowBigUp'
 import { ArrowDown } from 'pixelarticons/react/ArrowDown'
 import { ArrowLeft } from 'pixelarticons/react/ArrowLeft'
 import { ArrowUp } from 'pixelarticons/react/ArrowUp'
@@ -42,7 +40,6 @@ import { Eye } from 'pixelarticons/react/Eye'
 import { Feather } from 'pixelarticons/react/Feather'
 import { File } from 'pixelarticons/react/File'
 import { Fire } from 'pixelarticons/react/Fire'
-import { Flag } from 'pixelarticons/react/Flag'
 import { Folder } from 'pixelarticons/react/Folder'
 import { Gamepad } from 'pixelarticons/react/Gamepad'
 import { Github } from 'pixelarticons/react/Github'
@@ -115,8 +112,6 @@ export const IconAlien = createIcon(Alien)
 export const IconAndroid = createIcon(Android)
 export const IconApple = createIcon(Apple)
 export const IconArchive = createIcon(Archive)
-export const IconArrowBigDown = createIcon(ArrowBigDown)
-export const IconArrowBigUp = createIcon(ArrowBigUp)
 export const IconArrowDown = createIcon(ArrowDown)
 export const IconArrowLeft = createIcon(ArrowLeft)
 export const IconArrowUp = createIcon(ArrowUp)
@@ -153,7 +148,6 @@ export const IconEye = createIcon(Eye)
 export const IconFeather = createIcon(Feather)
 export const IconFile = createIcon(File)
 export const IconFire = createIcon(Fire)
-export const IconFlag = createIcon(Flag)
 export const IconFolder = createIcon(Folder)
 export const IconGamepad = createIcon(Gamepad)
 export const IconGem = createIcon(DiamondGem)
@@ -221,5 +215,11 @@ export const IconUsers = createIcon(Users)
 export const IconWarning = createIcon(WarningDiamond)
 export const IconWaves = createIcon(Waves)
 
+export {
+  IconFlag,
+  IconPriorityHigh,
+  IconPriorityLow,
+  IconPriorityMedium,
+} from './customIcons'
 export { IconDuck } from './duck'
 export { LETTER_ICONS } from './letters'

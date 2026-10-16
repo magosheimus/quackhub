@@ -2,14 +2,17 @@ import { IconPlus, IconFlag } from '@/shared/lib/icons'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { STATUS_LABELS } from '@/features/tasks/lib/taskStatus'
-import { PRIORITY_CONFIG } from '@/features/tasks/lib/taskPriority'
+import {
+  PRIORITY_CONFIG,
+  PRIORITY_ICON_SIZE,
+} from '@/features/tasks/lib/taskPriority'
 import { Button } from '@/components/ui/button'
 import type { Task } from '@/shared/types/entities'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
 import { BACKLOG_TEXTS } from '@/features/backlog/constants/texts'
 import type { ProjectLabels } from '@/features/projects/lib/project'
 import { ProjectCode } from '@/features/projects/components/ProjectCode'
-import { EpicTag } from '@/features/epics/components/EpicTag'
+import { EpicChip } from '@/features/epics/components/EpicChip'
 import type { EpicLabel } from '@/features/epics/lib/epic'
 import type { ColorScope } from '@/shared/lib/palette'
 import { AssigneeBadge } from '@/features/personas/components/AssigneeBadge'
@@ -48,14 +51,14 @@ export function BacklogRow({
         <div className="flex w-4 shrink-0 flex-col items-center gap-1">
           {task.flagged && (
             <IconFlag
-              size={12}
+              size={PRIORITY_ICON_SIZE}
               className="text-danger"
               aria-label={COMMON_TEXTS.urgent}
             />
           )}
           <span title={priority.ariaLabel} className="inline-flex">
             <PriorityIcon
-              size={12}
+              size={PRIORITY_ICON_SIZE}
               className={priority.className}
               aria-label={priority.ariaLabel}
             />
@@ -80,9 +83,7 @@ export function BacklogRow({
 
         <span className="text-caption">{STATUS_LABELS[task.status]}</span>
 
-        {epicLabel && (
-          <EpicTag label={epicLabel} withColor={colorScope === 'epic'} />
-        )}
+        {epicLabel && <EpicChip label={epicLabel} />}
 
         <AssigneeBadge assigneeId={task.assignee_id} />
 

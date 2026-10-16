@@ -1,8 +1,8 @@
 import type { IconComponent } from '@/shared/lib/icons'
 import {
-  IconArrowBigDown,
-  IconArrowBigUp,
-  IconChevronUp,
+  IconPriorityHigh,
+  IconPriorityLow,
+  IconPriorityMedium,
 } from '@/shared/lib/icons'
 import type { Task, TaskPriority } from '@/shared/types/entities'
 
@@ -14,27 +14,29 @@ type PriorityConfig = {
   colorVar: string
 }
 
+export const PRIORITY_ICON_SIZE = 16
+
 export const PRIORITY_CONFIG: Record<TaskPriority, PriorityConfig> = {
   high: {
-    icon: IconArrowBigUp,
+    icon: IconPriorityHigh,
     ariaLabel: 'Prioridade alta',
     text: 'ALTA',
     className: 'text-danger',
     colorVar: '--signal-danger',
   },
   medium: {
-    icon: IconChevronUp,
+    icon: IconPriorityMedium,
     ariaLabel: 'Prioridade média',
     text: 'MÉDIA',
-    className: 'text-fg-muted',
-    colorVar: '--text-muted',
+    className: 'text-priority-medium',
+    colorVar: '--priority-medium',
   },
   low: {
-    icon: IconArrowBigDown,
+    icon: IconPriorityLow,
     ariaLabel: 'Prioridade baixa',
     text: 'BAIXA',
-    className: 'text-success',
-    colorVar: '--signal-success',
+    className: 'text-priority-low',
+    colorVar: '--priority-low',
   },
 }
 

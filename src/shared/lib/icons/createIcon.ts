@@ -4,6 +4,9 @@ import {
   type ReactElement,
   type SVGProps,
 } from 'react'
+import { cn } from '@/shared/lib/utils'
+
+export const ICON_CLASS = 'icon-shadow'
 
 export type IconSize = number
 
@@ -16,9 +19,10 @@ export type IconProps = Omit<SVGProps<SVGSVGElement>, 'width' | 'height'> & {
 export type IconComponent = (props: IconProps) => ReactElement
 
 export function createIcon(Svg: PixelarticonSvg): IconComponent {
-  function Icon({ size = 16, style, ...props }: IconProps) {
+  function Icon({ size = 16, style, className, ...props }: IconProps) {
     return createElement(Svg, {
       ...props,
+      className: cn(ICON_CLASS, className),
       width: size,
       height: size,
       style: { ...style, width: size, height: size },

@@ -7,6 +7,7 @@ import { useActiveSprint } from '@/features/sprints/hooks/useActiveSprint'
 import { useSprints } from '@/features/sprints/hooks/useSprints'
 import { useTasksBySprintId } from '@/features/tasks/hooks/sprint/useTasksBySprintId'
 import { useUpdateTaskStatus } from '@/features/tasks/hooks/sprint/useUpdateTaskStatus'
+import { useUpdateTask } from '@/features/tasks/hooks/useUpdateTask'
 import { useBulkTaskTags } from '@/features/tasks/hooks/tags/useBulkTaskTags'
 import { useAllEpics } from '@/features/epics/hooks/useAllEpics'
 import { useBoardFilters } from '@/features/board/hooks/useBoardFilters'
@@ -19,6 +20,7 @@ import {
   getProjectsInTasks,
   getStatusForColumn,
   groupTasksByColumn,
+  shouldFlagOnDrop,
   isBoardColumnKey,
   getMoveOptions,
   type BoardColumnKey,
@@ -47,6 +49,7 @@ export function useBoardPage() {
   const { data: tasks, isLoading: isLoadingTasks } = tasksQuery
   const { data: projectTasks } = useTasksByProjectId(projectId)
   const { mutate: updateTaskStatus } = useUpdateTaskStatus()
+  const { mutate: updateTask } = useUpdateTask()
   const { data: epics } = useAllEpics()
   const personaOptions = usePersonaOptions()
   const { filters, updateFilter } = useBoardFilters()
@@ -94,11 +97,18 @@ export function useBoardPage() {
   }
 
   function handleDragEnd(result: DropResult) {
-    const { destination, draggableId } = result
+    const { source, destination, draggableId } = result
     if (!destination || !isBoardColumnKey(destination.droppableId)) {
       return
     }
-    moveTask(draggableId, destination.droppableId)
+    const column = destination.droppableId
+    if (column !== source.droppableId) {
+      moveTask(draggableId, column)
+    }
+    const task = sprintTasks.find((t) => t.id === draggableId)
+    if (task && shouldFlagOnDrop(task, column, destination.index)) {
+      updateTask({ id: task.id, data: { flagged: true } })
+    }
   }
 
   function getMoveOptionsFor(task: Task): MoveOption[] {

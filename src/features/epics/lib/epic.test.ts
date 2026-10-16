@@ -1,6 +1,11 @@
 import { describe, expect, it } from 'vitest'
 import { makeEpic } from '@/test/factories'
-import { buildEpicLabels, buildEpicOptions } from './epic'
+import {
+  buildEpicLabels,
+  buildEpicOptions,
+  epicChipStyle,
+  findEpicLabel,
+} from './epic'
 
 describe('rótulos de épico', () => {
   it('nome e cor do tema; sem cor fica neutro', () => {
@@ -21,5 +26,27 @@ describe('rótulos de épico', () => {
       makeEpic({ id: 'e2', name: 'B' }),
     ])
     expect(options.map((option) => option.id)).toEqual(['e1', 'e2'])
+  })
+})
+
+describe('findEpicLabel', () => {
+  const epics = [makeEpic({ id: 'e1', name: 'Física', color: 'blue' })]
+
+  it('acha o rótulo do épico do card', () => {
+    expect(findEpicLabel(epics, 'e1')?.name).toBe('Física')
+  })
+
+  it('card sem épico ou épico removido não tem rótulo', () => {
+    expect(findEpicLabel(epics, null)).toBeNull()
+    expect(findEpicLabel(epics, 'e9')).toBeNull()
+  })
+})
+
+describe('epicChipStyle', () => {
+  it('suaviza a cor do épico no fundo', () => {
+    expect(epicChipStyle('var(--palette-blue)')).toEqual({
+      backgroundColor:
+        'color-mix(in oklch, var(--palette-blue) 50%, transparent)',
+    })
   })
 })

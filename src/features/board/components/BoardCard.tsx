@@ -16,7 +16,10 @@ import {
   STATUS_BADGE_CLASS,
   STATUS_LABELS,
 } from '@/features/tasks/lib/taskStatus'
-import { PRIORITY_CONFIG } from '@/features/tasks/lib/taskPriority'
+import {
+  PRIORITY_CONFIG,
+  PRIORITY_ICON_SIZE,
+} from '@/features/tasks/lib/taskPriority'
 import type { ReactNode } from 'react'
 import type { Task } from '@/shared/types/entities'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
@@ -24,6 +27,7 @@ import { ProjectCode } from '@/features/projects/components/ProjectCode'
 import type { ColorScope } from '@/shared/lib/palette'
 import type { ProjectLabels } from '@/features/projects/lib/project'
 import { AssigneeBadge } from '@/features/personas/components/AssigneeBadge'
+import { CardEpicChip } from '@/features/epics/components/CardEpicChip'
 
 const CARD_CLASS =
   'flex gap-2 rounded-md border border-l-4 border-border bg-card p-3 text-sm hover:bg-card-hover'
@@ -37,6 +41,7 @@ type BoardCardBodyProps = {
   task: Task
   projectLabels: ProjectLabels
   showAssignee?: boolean
+  showEpic?: boolean
   showStatus?: boolean
   tag?: string
   colorScope?: ColorScope
@@ -46,6 +51,7 @@ function BoardCardBody({
   task,
   projectLabels,
   showAssignee = true,
+  showEpic = true,
   showStatus = false,
   tag,
   colorScope = 'project',
@@ -58,14 +64,14 @@ function BoardCardBody({
       <div className="flex w-4 shrink-0 flex-col items-center gap-1 pt-0.5">
         {task.flagged && (
           <IconFlag
-            size={12}
+            size={PRIORITY_ICON_SIZE}
             className="text-danger"
             aria-label={COMMON_TEXTS.urgent}
           />
         )}
         <span title={priority.ariaLabel} className="inline-flex">
           <PriorityIcon
-            size={12}
+            size={PRIORITY_ICON_SIZE}
             className={priority.className}
             aria-label={priority.ariaLabel}
           />
@@ -86,9 +92,8 @@ function BoardCardBody({
         >
           {task.title}
         </Link>
-        <span className="text-caption">
-          {tag ? `${priority.text} · ${tag}` : priority.text}
-        </span>
+        {showEpic && <CardEpicChip epicId={task.epic_id} />}
+        {tag && <span className="text-caption">{tag}</span>}
         {showStatus && (
           <span
             className={`w-fit rounded-sm px-2 py-0.5 text-xs font-medium text-page ${
@@ -115,6 +120,7 @@ type BoardCardProps<T extends string> = {
   projectLabels: ProjectLabels
   tag?: string
   colorScope?: ColorScope
+  showEpic?: boolean
   moveOptions?: MoveOption<T>[]
   onMove?: (column: T) => void
 }
@@ -172,6 +178,7 @@ export function BoardCard<T extends string = BoardColumnKey>({
   projectLabels,
   tag,
   colorScope,
+  showEpic,
   moveOptions,
   onMove,
 }: BoardCardProps<T>) {
@@ -195,6 +202,7 @@ export function BoardCard<T extends string = BoardColumnKey>({
             projectLabels={projectLabels}
             tag={tag}
             colorScope={colorScope}
+            showEpic={showEpic}
           />
           {moveOptions && onMove && (
             <MoveMenu

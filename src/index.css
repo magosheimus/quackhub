@@ -76,6 +76,8 @@
   --color-danger: var(--signal-danger);
   --color-warning: var(--signal-warning);
   --color-success: var(--signal-success);
+  --color-priority-medium: var(--priority-medium);
+  --color-priority-low: var(--priority-low);
 
   --radius-sm: 2px;
   --radius-md: 4px;
