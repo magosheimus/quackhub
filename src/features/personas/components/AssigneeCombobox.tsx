@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input'
 import { PersonaIcon } from '@/features/personas/components/PersonaIcon'
 import { PERSONAS_TEXTS } from '@/features/personas/constants/texts'
 import { usePersonaSelect } from '@/features/personas/hooks/usePersonaOptions'
-import type { PersonaOption } from '@/features/personas/lib/persona'
+import type { Persona } from '@/features/personas/model/persona'
 import { IconClose } from '@/shared/lib/icons'
 import { cn } from '@/shared/lib/utils'
 
@@ -29,11 +29,9 @@ export function AssigneeCombobox({
     <Combobox.Root
       items={personaOptions}
       value={selected}
-      onValueChange={(persona: PersonaOption | null) =>
-        onChange(persona?.id ?? null)
-      }
-      itemToStringLabel={(persona: PersonaOption) => persona.name}
-      isItemEqualToValue={(item: PersonaOption, current: PersonaOption) =>
+      onValueChange={(persona: Persona | null) => onChange(persona?.id ?? null)}
+      itemToStringLabel={(persona: Persona) => persona.name}
+      isItemEqualToValue={(item: Persona, current: Persona) =>
         item.id === current.id
       }
     >
@@ -80,7 +78,7 @@ export function AssigneeCombobox({
               {PERSONAS_TEXTS.noMatches}
             </Combobox.Empty>
             <Combobox.List>
-              {(persona: PersonaOption) => (
+              {(persona: Persona) => (
                 <Combobox.Item
                   key={persona.id}
                   value={persona}

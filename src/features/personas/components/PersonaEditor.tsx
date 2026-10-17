@@ -11,7 +11,7 @@ import { usePersonaEditor } from '@/features/personas/hooks/usePersonaEditor'
 import { PERSONA_ICON_KEYS } from '@/features/personas/lib/persona'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
 import { cn } from '@/shared/lib/utils'
-import type { Persona } from '@/shared/types/entities'
+import type { Persona } from '@/features/personas/model/persona'
 
 type PersonaEditorProps = {
   persona: Persona | null

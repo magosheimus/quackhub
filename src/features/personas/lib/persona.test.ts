@@ -1,13 +1,12 @@
 import { describe, expect, it } from 'vitest'
 import {
-  findPersonaOption,
-  getPersonaIconKey,
+  findPersona,
   getPersonasInTasks,
   hasPersonaGlyph,
   normalizePersonaName,
   resolvePersonaGlyph,
-  toPersonaOption,
 } from './persona'
+import type { Persona } from '@/features/personas/model/persona'
 
 describe('normalizePersonaName', () => {
   it('remove espaços nas pontas', () => {
@@ -16,17 +15,6 @@ describe('normalizePersonaName', () => {
 
   it('retorna null para nome vazio', () => {
     expect(normalizePersonaName('   ')).toBeNull()
-  })
-})
-
-describe('getPersonaIconKey', () => {
-  it('retorna o ícone salvo quando é válido', () => {
-    expect(getPersonaIconKey({ icon: 'crown' })).toBe('crown')
-  })
-
-  it('retorna null sem ícone ou com valor desconhecido', () => {
-    expect(getPersonaIconKey({ icon: null })).toBeNull()
-    expect(getPersonaIconKey({ icon: 'unknown' })).toBeNull()
   })
 })
 
@@ -50,25 +38,21 @@ describe('resolvePersonaGlyph', () => {
   })
 })
 
-describe('opções de persona', () => {
-  const options = [
-    toPersonaOption({ id: 'p1', name: 'Mago Sheimus', icon: 'crown' }),
-    toPersonaOption({ id: 'p2', name: 'Shimi', icon: 'unknown' }),
+describe('personas atribuídas', () => {
+  const personas: Persona[] = [
+    { id: 'p1', name: 'Mago Sheimus', icon: 'crown' },
+    { id: 'p2', name: 'Shimi', icon: null },
   ]
 
-  it('normaliza o ícone na opção', () => {
-    expect(options[1]).toEqual({ id: 'p2', name: 'Shimi', icon: null })
-  })
-
   it('encontra a persona atribuída', () => {
-    expect(findPersonaOption(options, 'p1')?.name).toBe('Mago Sheimus')
-    expect(findPersonaOption(options, 'p9')).toBeNull()
-    expect(findPersonaOption(options, null)).toBeNull()
+    expect(findPersona(personas, 'p1')?.name).toBe('Mago Sheimus')
+    expect(findPersona(personas, 'p9')).toBeNull()
+    expect(findPersona(personas, null)).toBeNull()
   })
 
   it('mantém só as personas atribuídas a algum card', () => {
     const tasks = [{ assignee_id: 'p2' }, { assignee_id: null }]
-    expect(getPersonasInTasks(options, tasks).map((p) => p.id)).toEqual(['p2'])
+    expect(getPersonasInTasks(personas, tasks).map((p) => p.id)).toEqual(['p2'])
   })
 })
 

@@ -8,7 +8,7 @@ import { PersonaAvatar } from '@/features/personas/components/PersonaAvatar'
 import { PersonaEditor } from '@/features/personas/components/PersonaEditor'
 import { usePersonaManager } from '@/features/personas/hooks/usePersonaManager'
 import { usePersonaRow } from '@/features/personas/hooks/usePersonaRow'
-import type { Persona } from '@/shared/types/entities'
+import type { Persona } from '@/features/personas/model/persona'
 
 export function PersonaManager() {
   const {

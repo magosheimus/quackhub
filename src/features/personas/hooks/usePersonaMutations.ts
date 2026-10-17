@@ -8,7 +8,7 @@ import {
   invalidatePersonaQueries,
   invalidateTaskQueries,
 } from '@/shared/query/queryInvalidation'
-import type { PersonaUpdate } from '@/shared/types/entities'
+import type { PersonaUpdate } from '@/features/personas/model/persona'
 
 export function useCreatePersona() {
   const queryClient = useQueryClient()
