@@ -5,14 +5,12 @@ import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { useSrsLogs } from '@/features/srs/hooks/useSrsLogs'
 import { useAddManualComment } from '@/features/srs/hooks/useAddManualComment'
-import { useActivityLog } from '@/features/tasks/hooks/activityLog/useActivityLog'
-import { useSprints } from '@/features/sprints/hooks/useSprints'
-import { getStatusLabel } from '@/features/tasks/lib/taskStatus'
 import { formatFullDate } from '@/shared/lib/date'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
 import { TASKS_TEXTS } from '@/features/tasks/constants/texts'
 import { EmptyMessage } from '@/components/ui/empty-message'
 import { Panel } from '@/components/ui/panel'
+import { useActivityEntries } from '@/features/tasks/hooks/activityLog/useActivityEntries'
 
 const PAGE_SIZE = 5
 
@@ -22,25 +20,13 @@ type CardHistoryProps = {
   taskId: string
 }
 
-function formatDisplayDateTime(isoStr: string | null): string {
-  if (!isoStr) return '—'
-  const date = new Date(isoStr)
-  return date.toLocaleDateString('pt-BR')
-}
-
 export function CardHistory({ taskId }: CardHistoryProps) {
   const [tab, setTab] = useState<HistoryTab>('movimentacao')
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE)
   const [draft, setDraft] = useState('')
   const { data: logs } = useSrsLogs(taskId)
-  const { data: activity } = useActivityLog(taskId)
-  const { data: sprints } = useSprints()
+  const activity = useActivityEntries(taskId)
   const { mutate: addComment, isPending } = useAddManualComment()
-
-  function formatSprintValue(value: string | null): string {
-    if (!value) return COMMON_TEXTS.backlog
-    return sprints?.find((s) => s.id === value)?.name ?? value
-  }
 
   function handleTabChange(next: HistoryTab) {
     setTab(next)
@@ -108,19 +94,10 @@ export function CardHistory({ taskId }: CardHistoryProps) {
             <div className="flex flex-col gap-2">
               {visibleActivity.map((entry) => (
                 <Panel key={entry.id} className="p-2 text-sm">
-                  <div className="flex flex-wrap items-center gap-2 text-caption">
-                    <span>{formatDisplayDateTime(entry.created_at)}</span>
-                    <span>·</span>
-                    <span>
-                      {entry.event_type === 'status_change'
-                        ? TASKS_TEXTS.statusEvent
-                        : TASKS_TEXTS.sprintEvent}
-                    </span>
-                  </div>
-                  <p className="mt-1 text-fg">
-                    {entry.event_type === 'status_change'
-                      ? `${getStatusLabel(entry.old_value)} → ${getStatusLabel(entry.new_value)}`
-                      : `${formatSprintValue(entry.old_value)} → ${formatSprintValue(entry.new_value)}`}
+                  <span className="text-caption">{entry.dateTime}</span>
+                  <p className="mt-1 flex flex-wrap gap-x-2 text-fg">
+                    <span className="text-fg-muted">{entry.label}:</span>
+                    <span>{entry.change}</span>
                   </p>
                 </Panel>
               ))}

@@ -91,3 +91,14 @@ export function formatMonthYear(yearMonth: string): string {
   }).format(new Date(year, month - 1, 1))
   return label.charAt(0).toUpperCase() + label.slice(1)
 }
+
+// Timestamp do banco no horário local: '17/10/2026 · 20:52'
+export function formatDateTime(timestamp: string | null): string {
+  if (!timestamp) {
+    return MISSING_DATE
+  }
+  const date = new Date(timestamp)
+  const hours = String(date.getHours()).padStart(2, '0')
+  const minutes = String(date.getMinutes()).padStart(2, '0')
+  return `${formatFullDate(toDbDate(date))} · ${hours}:${minutes}`
+}
