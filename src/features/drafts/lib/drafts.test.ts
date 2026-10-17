@@ -1,6 +1,12 @@
 import { describe, expect, it } from 'vitest'
 import type { DraftsItem } from '@/shared/types/entities'
-import { groupArchivedDrafts, splitDrafts } from './drafts'
+import {
+  findAdjacentDraft,
+  findDraftAfterTriage,
+  getDraftPosition,
+  groupArchivedDrafts,
+  splitDrafts,
+} from './drafts'
 
 function makeDraft(id: string, checkedAt: string | null = null): DraftsItem {
   return {
@@ -48,5 +54,26 @@ describe('groupArchivedDrafts', () => {
       ['Este mês', 1],
       ['Setembro de 2026', 1],
     ])
+  })
+})
+
+describe('navegação entre rascunhos', () => {
+  const pending = [makeDraft('a'), makeDraft('b'), makeDraft('c')]
+
+  it('anda para o anterior e o seguinte, sem passar das pontas', () => {
+    expect(findAdjacentDraft(pending, 'b', -1)?.id).toBe('a')
+    expect(findAdjacentDraft(pending, 'b', 1)?.id).toBe('c')
+    expect(findAdjacentDraft(pending, 'a', -1)).toBeNull()
+    expect(findAdjacentDraft(pending, 'c', 1)).toBeNull()
+  })
+
+  it('depois de virar card, vai para o seguinte ou volta ao primeiro que sobrou', () => {
+    expect(findDraftAfterTriage(pending, 'b')?.id).toBe('c')
+    expect(findDraftAfterTriage(pending, 'c')?.id).toBe('a')
+    expect(findDraftAfterTriage([makeDraft('a')], 'a')).toBeNull()
+  })
+
+  it('mostra a posição na lista', () => {
+    expect(getDraftPosition(pending, 'b')).toEqual({ current: 2, total: 3 })
   })
 })

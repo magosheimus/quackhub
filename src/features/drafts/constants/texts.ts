@@ -13,4 +13,8 @@ export const DRAFTS_TEXTS = {
   thisMonth: 'Este mês',
   showMore: (remaining: number) => `Mostrar mais (${remaining} restantes)`,
   restore: (content: string) => `Voltar "${content}" para os rascunhos`,
+  position: (current: number, total: number) =>
+    `Rascunho ${current} de ${total}`,
+  previousDraft: 'Rascunho anterior',
+  nextDraft: 'Próximo rascunho',
 } as const

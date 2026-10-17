@@ -4,7 +4,7 @@ import { isDueWithinSprint } from '@/features/sprints/lib/sprint'
 import { formatDueTime } from '@/features/tasks/lib/due'
 import { UrgentToggle } from '@/features/tasks/components/UrgentToggle'
 import { InlineHint } from '@/components/ui/inline-hint'
-import { useRef, useState } from 'react'
+import { useRef, useState, type ReactNode } from 'react'
 import {
   Dialog,
   DialogContent,
@@ -54,17 +54,21 @@ const NONE_VALUE = '__backlog__'
 type CardCreateModalProps = {
   open?: boolean
   onOpenChange?: (open: boolean) => void
-  initialTitle?: string
-  onCreated?: (task: Task) => void
+  prefill?: { id: string; title: string }
+  titleSlot?: ReactNode
+  onCreated?: (task: Task, context: CardCreatedContext) => void
   hideTrigger?: boolean
   initialProjectId?: string | null
 }
+
+export type CardCreatedContext = { willCreateAnother: boolean }
 
 export function CardCreateModal({
   open: controlledOpen,
   onOpenChange: controlledOnOpenChange,
   initialProjectId,
-  initialTitle,
+  prefill,
+  titleSlot,
   onCreated,
   hideTrigger = false,
 }: CardCreateModalProps = {}) {
@@ -79,7 +83,7 @@ export function CardCreateModal({
   const [sprintId, setSprintId] = useState<string | null>(null)
   const [isSprintTouched, setIsSprintTouched] = useState(false)
   const [assigneeId, setAssigneeId] = useState<string | null>(null)
-  const [title, setTitle] = useState(initialTitle ?? '')
+  const [title, setTitle] = useState(prefill?.title ?? '')
   const [description, setDescription] = useState('')
   const [priority, setPriority] = useState<TaskPriority>('medium')
   const [flagged, setFlagged] = useState(false)
@@ -152,7 +156,6 @@ export function CardCreateModal({
   }
 
   function handleOpenChange(nextOpen: boolean) {
-    if (!nextOpen) resetForm()
     if (isControlled) {
       controlledOnOpenChange?.(nextOpen)
     } else {
@@ -161,10 +164,14 @@ export function CardCreateModal({
   }
 
   const [prevOpen, setPrevOpen] = useState(open)
-  if (open !== prevOpen) {
+  const [prevPrefillId, setPrevPrefillId] = useState(prefill?.id)
+  if (open !== prevOpen || prefill?.id !== prevPrefillId) {
     setPrevOpen(open)
-    if (open && initialTitle !== undefined) {
-      setTitle(initialTitle)
+    setPrevPrefillId(prefill?.id)
+    if (!open) {
+      resetForm()
+    } else if (prefill) {
+      setTitle(prefill.title)
     }
   }
 
@@ -203,6 +210,7 @@ export function CardCreateModal({
       endDate: null,
     })
     setRecurrenceBannerDismissed(false)
+    setDependencies([])
   }
 
   async function resolveEpicId(): Promise<string | null> {
@@ -238,12 +246,12 @@ export function CardCreateModal({
       },
       {
         onSuccess: (task) => {
+          onCreated?.(task, { willCreateAnother: createAnother })
           if (createAnother) {
             resetPartial()
             titleInputRef.current?.focus()
             return
           }
-          onCreated?.(task)
           handleOpenChange(false)
         },
       },
@@ -261,7 +269,7 @@ export function CardCreateModal({
 
       <DialogContent className="sm:max-w-156">
         <DialogHeader>
-          <DialogTitle>{TASKS_TEXTS.newCard}</DialogTitle>
+          <DialogTitle>{titleSlot ?? TASKS_TEXTS.newCard}</DialogTitle>
         </DialogHeader>
 
         <div className="-mx-4 flex max-h-[65vh] flex-col gap-4 overflow-y-auto px-4">
