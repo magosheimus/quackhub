@@ -15,11 +15,19 @@ import {
   IconChevronLeft,
   IconChevronRight,
 } from '@/shared/lib/icons'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
+import { CounterControl } from '@/features/dailyTracker/components/CounterControl'
+import type { Habit } from '@/shared/types/entities'
 
 type HabitHeatmapProps = {
   days: HeatDay[]
   rows: HeatRow[]
   dayWindow: DayWindowNav
+  actions: HeatCellActions
 }
 
 const CELL = 'flex size-7 items-center justify-center rounded-sm text-xs'
@@ -49,7 +57,34 @@ const MISSED_CLASS = 'border-border hatch'
 
 const BEFORE_START_CLASS = 'border-(--border-card-empty) stripes'
 
-function Cell({ cell }: { cell: HeatCell }) {
+export type HeatCellActions = {
+  onToggle: (habit: Habit, date: string) => void
+  onSetValue: (habit: Habit, date: string, value: number) => void
+  onCommitValue: (habit: Habit, date: string, text: string) => void
+}
+
+const EDITABLE_CLASS =
+  'cursor-pointer outline-none hover:ring-1 hover:ring-accent focus-visible:ring-2 focus-visible:ring-accent'
+
+function cellToneClass(cell: HeatCell): string {
+  if (cell.isFuture) {
+    return 'border-dashed border-(--border-card-empty)'
+  }
+  if (cell.isMissed) {
+    return MISSED_CLASS
+  }
+  return TONE_CLASS[cell.tone]
+}
+
+function Cell({
+  habit,
+  cell,
+  actions,
+}: {
+  habit: Habit
+  cell: HeatCell
+  actions: HeatCellActions
+}) {
   if (cell.isBeforeStart) {
     return (
       <span
@@ -73,24 +108,67 @@ function Cell({ cell }: { cell: HeatCell }) {
     )
   }
 
+  const className = cn(CELL, 'border', cellToneClass(cell))
+  const content = cell.isMet && <IconCheck size={12} aria-hidden="true" />
+
+  if (!cell.isEditable) {
+    return (
+      <span
+        role="img"
+        aria-label={cell.label}
+        title={cell.label}
+        style={hueShiftStyle(cell)}
+        className={className}
+      >
+        {content}
+      </span>
+    )
+  }
+
+  if (habit.type === 'counter') {
+    return (
+      <Popover>
+        <PopoverTrigger
+          render={
+            <button
+              type="button"
+              aria-label={cell.label}
+              title={cell.label}
+              style={hueShiftStyle(cell)}
+              className={cn(className, EDITABLE_CLASS)}
+            />
+          }
+        >
+          {content}
+        </PopoverTrigger>
+        <PopoverContent className="p-2">
+          <CounterControl
+            habit={habit}
+            value={cell.value}
+            onSetValue={(target, value) =>
+              actions.onSetValue(target, cell.date, value)
+            }
+            onCommitValue={(target, text) =>
+              actions.onCommitValue(target, cell.date, text)
+            }
+          />
+        </PopoverContent>
+      </Popover>
+    )
+  }
+
   return (
-    <span
-      role="img"
+    <button
+      type="button"
       aria-label={cell.label}
+      aria-pressed={cell.isMet}
       title={cell.label}
       style={hueShiftStyle(cell)}
-      className={cn(
-        CELL,
-        'border',
-        cell.isFuture
-          ? 'border-dashed border-(--border-card-empty)'
-          : cell.isMissed
-            ? MISSED_CLASS
-            : TONE_CLASS[cell.tone],
-      )}
+      onClick={() => actions.onToggle(habit, cell.date)}
+      className={cn(className, EDITABLE_CLASS)}
     >
-      {cell.isMet && <IconCheck size={12} aria-hidden="true" />}
-    </span>
+      {content}
+    </button>
   )
 }
 
@@ -170,7 +248,12 @@ function Legend() {
   )
 }
 
-export function HabitHeatmap({ days, rows, dayWindow }: HabitHeatmapProps) {
+export function HabitHeatmap({
+  days,
+  rows,
+  dayWindow,
+  actions,
+}: HabitHeatmapProps) {
   return (
     <div className="flex flex-col gap-3">
       {dayWindow.isWindowed && <WindowNav dayWindow={dayWindow} />}
@@ -214,7 +297,7 @@ export function HabitHeatmap({ days, rows, dayWindow }: HabitHeatmapProps) {
                 </th>
                 {cells.map((cell) => (
                   <td key={cell.date} className="text-center">
-                    <Cell cell={cell} />
+                    <Cell habit={habit} cell={cell} actions={actions} />
                   </td>
                 ))}
                 <td className="pl-3 text-xs whitespace-nowrap text-fg-muted">

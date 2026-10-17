@@ -1,12 +1,12 @@
 import { Button } from '@/components/ui/button'
 import { EmptyMessage } from '@/components/ui/empty-message'
-import { Input } from '@/components/ui/input'
 import { HabitIcon } from '@/features/dailyTracker/components/HabitIcon'
 import { DAILY_TRACKER_TEXTS } from '@/features/dailyTracker/constants/texts'
 import type { TodayHabitItem } from '@/features/dailyTracker/hooks/useDailyTrackerPage'
-import { IconCheck, IconMinus, IconPlus } from '@/shared/lib/icons'
+import { IconCheck, IconPlus } from '@/shared/lib/icons'
 import { cn } from '@/shared/lib/utils'
 import type { Habit } from '@/shared/types/entities'
+import { CounterControl } from '@/features/dailyTracker/components/CounterControl'
 
 type TodayHabitsProps = {
   hasHabits: boolean
@@ -16,55 +16,6 @@ type TodayHabitsProps = {
   onCommitValue: (habit: Habit, text: string) => void
   onToggle: (habit: Habit) => void
   onCreateHabit: () => void
-}
-
-function CounterControl({
-  item,
-  onSetValue,
-  onCommitValue,
-}: {
-  item: TodayHabitItem
-  onSetValue: (habit: Habit, value: number) => void
-  onCommitValue: (habit: Habit, text: string) => void
-}) {
-  const { habit, value } = item
-  return (
-    <div className="flex items-center gap-1">
-      <Button
-        type="button"
-        variant="outline"
-        size="icon-sm"
-        aria-label={DAILY_TRACKER_TEXTS.decrease(habit.name)}
-        onClick={() => onSetValue(habit, value - 1)}
-        disabled={value === 0}
-      >
-        <IconMinus size={12} aria-hidden="true" />
-      </Button>
-      <Input
-        key={value}
-        type="text"
-        inputMode="numeric"
-        defaultValue={value}
-        aria-label={DAILY_TRACKER_TEXTS.counterValue(habit.name)}
-        onBlur={(e) => onCommitValue(habit, e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter') {
-            e.currentTarget.blur()
-          }
-        }}
-        className="h-7 w-16 text-center"
-      />
-      <Button
-        type="button"
-        variant="outline"
-        size="icon-sm"
-        aria-label={DAILY_TRACKER_TEXTS.increase(habit.name)}
-        onClick={() => onSetValue(habit, value + 1)}
-      >
-        <IconPlus size={12} aria-hidden="true" />
-      </Button>
-    </div>
-  )
 }
 
 export function TodayHabits({
@@ -124,7 +75,8 @@ export function TodayHabits({
             </div>
             {item.habit.type === 'counter' ? (
               <CounterControl
-                item={item}
+                habit={item.habit}
+                value={item.value}
                 onSetValue={onSetValue}
                 onCommitValue={onCommitValue}
               />

@@ -59,6 +59,9 @@ export function DailyTrackerPage() {
     setTodayValue,
     commitTodayValue,
     toggleToday,
+    toggleDay,
+    setDayValue,
+    commitDayValue,
     heatDays,
     heatRows,
     dayWindow,
@@ -141,6 +144,11 @@ export function DailyTrackerPage() {
               days={heatDays}
               rows={heatRows}
               dayWindow={dayWindow}
+              actions={{
+                onToggle: toggleDay,
+                onSetValue: setDayValue,
+                onCommitValue: commitDayValue,
+              }}
             />
           </SectionPanel>
         )}

@@ -75,7 +75,7 @@ export function GridPicker<T>({
                   'flex size-8 items-center justify-center rounded-sm border',
                   isSelected
                     ? 'border-strong bg-selected text-fg'
-                    : 'border-transparent text-fg-muted hover:bg-hover hover:text-fg',
+                    : 'border-transparent text-fg hover:bg-hover',
                 )}
               >
                 {renderOption(option)}
