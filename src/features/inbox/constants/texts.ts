@@ -18,7 +18,4 @@ export const INBOX_TEXTS = {
   reviewToday: 'revisar hoje',
   reviewOverdue: (dayCount: string) => `revisão vencida há ${dayCount}`,
   reviewIn: (dayCount: string) => `revisar em ${dayCount}`,
-  dueToday: 'vence hoje',
-  dueTodayAt: (time: string) => `vence hoje às ${time}`,
-  dueOverdue: (dayCount: string) => `atrasado há ${dayCount}`,
 } as const

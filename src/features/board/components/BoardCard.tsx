@@ -229,6 +229,7 @@ type StaticBoardCardProps = {
   showStatus?: boolean
   showDue?: boolean
   colorScope?: ColorScope
+  info?: ReactNode
   actions?: ReactNode
 }
 
@@ -238,6 +239,7 @@ export function StaticBoardCard({
   showStatus,
   showDue,
   colorScope,
+  info,
   actions,
 }: StaticBoardCardProps) {
   return (
@@ -250,8 +252,11 @@ export function StaticBoardCard({
         showDue={showDue}
         colorScope={colorScope}
       />
-      <div className="ml-auto flex items-center gap-3 self-center">
-        <AssigneeBadge assigneeId={task.assignee_id} />
+      <div className="ml-auto flex items-center gap-6 self-stretch">
+        <div className="flex w-44 flex-col justify-evenly self-stretch">
+          <AssigneeBadge assigneeId={task.assignee_id} compact />
+          {info}
+        </div>
         {actions}
       </div>
     </div>
