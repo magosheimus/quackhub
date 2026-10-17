@@ -1,5 +1,9 @@
 import { PersonaIcon } from '@/features/personas/components/PersonaIcon'
-import type { PersonaIconOption } from '@/features/personas/lib/persona'
+import {
+  hasPersonaGlyph,
+  type PersonaIconOption,
+} from '@/features/personas/lib/persona'
+import { IconAvatar } from '@/shared/lib/icons'
 import { cn } from '@/shared/lib/utils'
 
 const AVATAR_SIZES = {
@@ -22,7 +26,15 @@ export function PersonaAvatar({ icon, name, size }: PersonaAvatarProps) {
         box,
       )}
     >
-      <PersonaIcon icon={icon} name={name} size={iconSize} />
+      {hasPersonaGlyph(icon, name) ? (
+        <PersonaIcon icon={icon} name={name} size={iconSize} />
+      ) : (
+        <IconAvatar
+          size={iconSize}
+          aria-hidden="true"
+          className="icon-flat opacity-30"
+        />
+      )}
     </span>
   )
 }

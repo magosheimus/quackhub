@@ -3,6 +3,7 @@ import {
   findPersonaOption,
   getPersonaIconKey,
   getPersonasInTasks,
+  hasPersonaGlyph,
   normalizePersonaName,
   resolvePersonaGlyph,
   toPersonaOption,
@@ -68,5 +69,16 @@ describe('opções de persona', () => {
   it('mantém só as personas atribuídas a algum card', () => {
     const tasks = [{ assignee_id: 'p2' }, { assignee_id: null }]
     expect(getPersonasInTasks(options, tasks).map((p) => p.id)).toEqual(['p2'])
+  })
+})
+
+describe('hasPersonaGlyph', () => {
+  it('sem ícone e sem nome não tem o que mostrar', () => {
+    expect(hasPersonaGlyph(null, '')).toBe(false)
+  })
+
+  it('com nome ou ícone tem', () => {
+    expect(hasPersonaGlyph(null, 'Shimi')).toBe(true)
+    expect(hasPersonaGlyph('crown', '')).toBe(true)
   })
 })

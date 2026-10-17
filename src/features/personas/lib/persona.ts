@@ -59,6 +59,13 @@ export function resolvePersonaGlyph(
   return letter ? { kind: 'letter', letter } : { kind: 'empty' }
 }
 
+export function hasPersonaGlyph(
+  icon: PersonaIconOption,
+  name: string,
+): boolean {
+  return resolvePersonaGlyph(icon, name).kind !== 'empty'
+}
+
 export type PersonaOption = {
   id: string
   name: string

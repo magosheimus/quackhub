@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { setDraftChecked } from '@/features/drafts/api/drafts'
 import { queryKeys } from '@/shared/query/queryKeys'
+import { invalidateDraftQueries } from '@/shared/query/queryInvalidation'
 import type { DraftsItem } from '@/shared/types/entities'
 
 type ToggleVars = {
@@ -33,7 +34,7 @@ export function useToggleDraftChecked() {
     },
 
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey })
+      invalidateDraftQueries(queryClient)
     },
   })
 }

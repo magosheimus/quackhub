@@ -23,6 +23,7 @@ import { InboxPage } from '@/features/inbox/pages/InboxPage'
 import { DraftsPage } from '@/features/drafts/pages/DraftsPage'
 import { SettingsPage } from '@/features/settings/pages/SettingsPage'
 import { SETTINGS_PATH } from '@/features/settings/constants/paths'
+import { DRAFTS_PATH } from '@/features/drafts/constants/paths'
 import { AnalyticsPage } from '@/features/analytics/pages/AnalyticsPage'
 import { Toaster } from '@/components/ui/toaster'
 import { PrivacyPage } from '@/features/privacy/pages/PrivacyPage'
@@ -50,7 +51,7 @@ function App() {
           <Route element={<Layout />}>
             <Route path="/" element={<Navigate to={HOME_PATH} replace />} />
             <Route path="/inbox" element={<InboxPage />} />
-            <Route path="/rascunhos" element={<DraftsPage />} />
+            <Route path={DRAFTS_PATH} element={<DraftsPage />} />
             <Route path="/diario" element={<DailyTrackerPage />} />
             <Route path="/board" element={<BoardPage />} />
             <Route path="/backlog" element={<BacklogPage />} />

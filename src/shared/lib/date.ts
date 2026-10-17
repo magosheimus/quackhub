@@ -81,3 +81,13 @@ export function daysBetween(from: string, to: string): number {
     (parseDbDate(to).getTime() - parseDbDate(from).getTime()) / 86_400_000,
   )
 }
+
+// '2026-09' → 'Setembro de 2026'
+export function formatMonthYear(yearMonth: string): string {
+  const [year, month] = yearMonth.split('-').map(Number)
+  const label = new Intl.DateTimeFormat('pt-BR', {
+    month: 'long',
+    year: 'numeric',
+  }).format(new Date(year, month - 1, 1))
+  return label.charAt(0).toUpperCase() + label.slice(1)
+}

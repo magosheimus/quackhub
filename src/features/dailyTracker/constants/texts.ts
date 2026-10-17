@@ -30,6 +30,7 @@ export const DAILY_TRACKER_TEXTS = {
   legendEmpty: 'Sem registro',
   legendMissed: 'Falta',
   legendOff: 'Fora da agenda',
+  legendBeforeStart: 'Antes do hábito',
   legendPartial: 'Parcial',
   legendDone: 'Feito · mais forte a cada dia seguido',
   cellLabel: (habit: string, day: string, status: string) =>

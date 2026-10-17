@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import {
   daysBetween,
+  formatMonthYear,
   formatDayMonth,
   formatFullDate,
   getDateRange,
@@ -85,5 +86,11 @@ describe('daysBetween', () => {
 
   it('atravessa troca de mês', () => {
     expect(daysBetween('2026-09-30', '2026-10-01')).toBe(1)
+  })
+})
+
+describe('formatMonthYear', () => {
+  it('mês por extenso com inicial maiúscula', () => {
+    expect(formatMonthYear('2026-09')).toBe('Setembro de 2026')
   })
 })

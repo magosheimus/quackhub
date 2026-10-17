@@ -10,7 +10,8 @@ import {
   IconStickyNoteSharp,
   IconTrash,
 } from '@/shared/lib/icons'
-import { useDraftsItems } from '@/features/drafts/hooks/useDraftsItems'
+import { useDraftsSections } from '@/features/drafts/hooks/useDraftsSections'
+import { DraftsArchive } from '@/features/drafts/components/DraftsArchive'
 import { useTriageDraft } from '@/features/drafts/hooks/useTriageDraft'
 import { useUpdateDraft } from '@/features/drafts/hooks/useUpdateDraft'
 import { useToggleDraftChecked } from '@/features/drafts/hooks/useToggleDraftChecked'
@@ -59,8 +60,8 @@ function DraftEditInput({
 }
 
 export function DraftsList() {
-  const itemsQuery = useDraftsItems()
-  const { data: items, isLoading } = itemsQuery
+  const { itemsQuery, pending, archived } = useDraftsSections()
+  const { isLoading } = itemsQuery
   const { mutate: triage } = useTriageDraft()
   const { mutate: updateDraft } = useUpdateDraft()
   const [creatingCardFor, setCreatingCardFor] = useState<DraftsItem | null>(
@@ -72,7 +73,7 @@ export function DraftsList() {
   const { mutate: toggleChecked } = useToggleDraftChecked()
   const { handleDragEnd } = useReorderList({
     table: 'drafts_items',
-    items: items ?? [],
+    items: [...pending, ...archived],
     queryKey: queryKeys.drafts.root,
   })
 
@@ -98,7 +99,7 @@ export function DraftsList() {
     return <ErrorState onRetry={() => retryFailedQueries(itemsQuery)} />
   }
 
-  if (!items || items.length === 0) {
+  if (pending.length === 0 && archived.length === 0) {
     return (
       <div className="flex flex-col items-center gap-2 rounded-md border border-(--border-card-empty) bg-card-empty px-6 py-8 text-center">
         <IconNotes size={24} aria-hidden="true" className="text-fg-muted" />
@@ -108,7 +109,10 @@ export function DraftsList() {
   }
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col gap-6">
+      {pending.length === 0 && (
+        <EmptyMessage>{DRAFTS_TEXTS.allDone}</EmptyMessage>
+      )}
       <DragDropContext onDragEnd={handleDragEnd}>
         <Droppable droppableId="drafts">
           {(provided) => (
@@ -117,7 +121,7 @@ export function DraftsList() {
               {...provided.droppableProps}
               className="flex flex-col gap-2"
             >
-              {items.map((item, index) => (
+              {pending.map((item, index) => (
                 <Draggable
                   key={item.id}
                   draggableId={item.id}
@@ -132,12 +136,9 @@ export function DraftsList() {
                       className="flex items-center gap-3 text-base hover:bg-card-hover"
                     >
                       <Checkbox
-                        checked={item.checked_at !== null}
-                        onCheckedChange={(checked) =>
-                          toggleChecked({
-                            id: item.id,
-                            checked: checked === true,
-                          })
+                        checked={false}
+                        onCheckedChange={() =>
+                          toggleChecked({ id: item.id, checked: true })
                         }
                         aria-label={DRAFTS_TEXTS.pendingItem}
                       />
@@ -149,13 +150,7 @@ export function DraftsList() {
                           onCancel={() => setEditing(null)}
                         />
                       ) : (
-                        <span
-                          className={
-                            item.checked_at !== null
-                              ? 'min-w-0 flex-1 wrap-break-word text-fg-muted line-through'
-                              : 'min-w-0 flex-1 wrap-break-word text-fg'
-                          }
-                        >
+                        <span className="min-w-0 flex-1 wrap-break-word text-fg">
                           {item.content}
                         </span>
                       )}
@@ -200,6 +195,12 @@ export function DraftsList() {
           )}
         </Droppable>
       </DragDropContext>
+
+      <DraftsArchive
+        items={archived}
+        onRestore={(item) => toggleChecked({ id: item.id, checked: false })}
+        onDiscard={handleDiscard}
+      />
 
       <CardCreateModal
         open={creatingCardFor !== null}
