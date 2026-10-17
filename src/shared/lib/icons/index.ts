@@ -18,6 +18,7 @@ import { Bulletlist } from 'pixelarticons/react/Bulletlist'
 import { Calendar } from 'pixelarticons/react/Calendar'
 import { CalendarWeeks } from 'pixelarticons/react/CalendarWeeks'
 import { Card } from 'pixelarticons/react/Card'
+import { CardTextSharp } from 'pixelarticons/react/CardTextSharp'
 import { ChartBarBig } from 'pixelarticons/react/ChartBarBig'
 import { Check } from 'pixelarticons/react/Check'
 import { CheckboxOn } from 'pixelarticons/react/CheckboxOn'
@@ -97,6 +98,7 @@ import { Sun } from 'pixelarticons/react/Sun'
 import { SunglassesSharp } from 'pixelarticons/react/SunglassesSharp'
 import { Target } from 'pixelarticons/react/Target'
 import { Tea } from 'pixelarticons/react/Tea'
+import { ToolCaseSharp } from 'pixelarticons/react/ToolCaseSharp'
 import { Trash } from 'pixelarticons/react/Trash'
 import { TreePine } from 'pixelarticons/react/TreePine'
 import { TRex } from 'pixelarticons/react/TRex'
@@ -127,6 +129,7 @@ export const IconBulletlist = createIcon(Bulletlist)
 export const IconCalendar = createIcon(Calendar)
 export const IconCalendarWeeks = createIcon(CalendarWeeks)
 export const IconCard = createIcon(Card)
+export const IconCardText = createIcon(CardTextSharp)
 export const IconChartBar = createIcon(ChartBarBig)
 export const IconCheck = createIcon(Check)
 export const IconChecklist = createIcon(CheckboxOn)
@@ -206,6 +209,7 @@ export const IconSun = createIcon(Sun)
 export const IconSunglasses = createIcon(SunglassesSharp)
 export const IconTarget = createIcon(Target)
 export const IconTea = createIcon(Tea)
+export const IconToolCase = createIcon(ToolCaseSharp)
 export const IconTrash = createIcon(Trash)
 export const IconTree = createIcon(TreePine)
 export const IconTRex = createIcon(TRex)

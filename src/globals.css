@@ -422,6 +422,11 @@
   filter: var(--icon-shadow);
 }
 
+/* Ícone que dispensa a sombra (ex.: avatares de persona, que já têm traço engrossado) */
+.icon-shadow.icon-flat {
+  filter: none;
+}
+
 .logo-mark {
   filter: var(--glow-filter);
 }

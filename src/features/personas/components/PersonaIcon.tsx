@@ -28,7 +28,7 @@ export function PersonaIcon({ icon, name, size = 16 }: PersonaIconProps) {
       stroke="currentColor"
       strokeWidth={ICON_STROKE_WIDTH}
       aria-hidden="true"
-      className="shrink-0"
+      className="icon-flat shrink-0"
     />
   )
 }

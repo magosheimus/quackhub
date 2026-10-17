@@ -31,6 +31,9 @@ describe('queryKeys', () => {
     expect(queryKeys.search.byQuery('x').slice(0, 1)).toEqual(
       queryKeys.search.root,
     )
+    expect(queryKeys.search.drafts('x').slice(0, 1)).toEqual(
+      queryKeys.search.root,
+    )
     expect(queryKeys.analytics.srsByTag().slice(0, 1)).toEqual(
       queryKeys.analytics.root,
     )

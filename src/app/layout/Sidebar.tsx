@@ -15,7 +15,7 @@ import {
   type IconComponent,
 } from '@/shared/lib/icons'
 import { useProjectNavItems } from '@/features/projects/hooks/useProjectNavItems'
-import { useDraftsItems } from '@/features/drafts/hooks/useDraftsItems'
+import { useDraftsSections } from '@/features/drafts/hooks/useDraftsSections'
 import { ProjectCreateModal } from '@/features/projects/components/ProjectCreateModal'
 import { ProjectEditModal } from '@/features/projects/components/ProjectEditModal'
 import { CardCreateModal } from '@/features/tasks/components/CardCreateModal'
@@ -37,6 +37,7 @@ import {
 } from '@/components/ui/tooltip'
 import { DAILY_TRACKER_TEXTS } from '@/features/dailyTracker/constants/texts'
 import { SETTINGS_PATH } from '@/features/settings/constants/paths'
+import { DRAFTS_PATH } from '@/features/drafts/constants/paths'
 import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd'
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
@@ -86,8 +87,8 @@ export function Sidebar({ className }: SidebarProps) {
     items: projectItems,
     handleDragEnd: handleProjectDragEnd,
   } = useProjectNavItems()
-  const { data: draftsItems } = useDraftsItems()
-  const draftsCount = draftsItems?.length ?? 0
+  const { pending: pendingDrafts } = useDraftsSections()
+  const draftsCount = pendingDrafts.length
   const { data: inboxData } = useInboxItems()
   const inboxCount =
     (inboxData?.urgent.length ?? 0) +
@@ -132,7 +133,7 @@ export function Sidebar({ className }: SidebarProps) {
             <span className="ml-auto text-caption">{inboxCount}</span>
           )}
         </NavItem>
-        <NavItem to="/rascunhos" icon={IconNotes} hint={APP_TEXTS.hintDrafts}>
+        <NavItem to={DRAFTS_PATH} icon={IconNotes} hint={APP_TEXTS.hintDrafts}>
           {DRAFTS_TEXTS.title}
           {draftsCount > 0 && (
             <span className="ml-auto text-caption">{draftsCount}</span>

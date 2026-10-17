@@ -47,7 +47,20 @@ const DONE_SCALE: HeatTone[] = ['done-1', 'done-2', 'done-3', 'done-4']
 
 const MISSED_CLASS = 'border-border hatch'
 
+const BEFORE_START_CLASS = 'border-(--border-card-empty) stripes'
+
 function Cell({ cell }: { cell: HeatCell }) {
+  if (cell.isBeforeStart) {
+    return (
+      <span
+        role="img"
+        aria-label={cell.label}
+        title={cell.label}
+        className={cn(CELL, 'border', BEFORE_START_CLASS)}
+      />
+    )
+  }
+
   if (!cell.isScheduled) {
     return (
       <span
@@ -69,7 +82,7 @@ function Cell({ cell }: { cell: HeatCell }) {
       className={cn(
         CELL,
         'border',
-        cell.isFuture || cell.isBeforeStart
+        cell.isFuture
           ? 'border-dashed border-(--border-card-empty)'
           : cell.isMissed
             ? MISSED_CLASS
@@ -124,6 +137,10 @@ function Legend() {
     {
       label: DAILY_TRACKER_TEXTS.legendPartial,
       className: TONE_CLASS['partial-2'],
+    },
+    {
+      label: DAILY_TRACKER_TEXTS.legendBeforeStart,
+      className: BEFORE_START_CLASS,
     },
   ]
   return (

@@ -7,4 +7,10 @@ export const DRAFTS_TEXTS = {
   toCard: 'Transformar em card',
   capturePlaceholder: 'Capturar rapidamente...',
   captureHint: 'Ctrl + Enter para adicionar',
+  allDone: 'Tudo concluído. Os itens marcados estão em Arquivados.',
+  archivedToggle: (count: number) => `Arquivados (${count})`,
+  thisWeek: 'Esta semana',
+  thisMonth: 'Este mês',
+  showMore: (remaining: number) => `Mostrar mais (${remaining} restantes)`,
+  restore: (content: string) => `Voltar "${content}" para os rascunhos`,
 } as const

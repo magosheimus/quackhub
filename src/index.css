@@ -107,6 +107,15 @@
     4px 4px;
 }
 
+/* Listras horizontais de 1px a cada 3px: dias antes de o hábito existir */
+@utility stripes {
+  background: repeating-linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--text-muted) 45%, transparent) 0 1px,
+    transparent 1px 3px
+  );
+}
+
 @utility hatch {
   background: repeating-linear-gradient(
     -45deg,

@@ -1,5 +1,5 @@
 import { supabase } from '@/shared/api/supabase'
-import type { Task } from '@/shared/types/entities'
+import type { DraftsItem, Task } from '@/shared/types/entities'
 
 export async function searchTasks(query: string): Promise<Task[]> {
   const trimmed = query.trim()
@@ -40,4 +40,22 @@ export async function searchTasks(query: string): Promise<Task[]> {
     merged.set(task.id, task)
   }
   return Array.from(merged.values())
+}
+
+const DRAFT_RESULTS_LIMIT = 20
+
+// Rascunhos pendentes e arquivados; descartados e transformados em card ficam de fora
+export async function searchDrafts(query: string): Promise<DraftsItem[]> {
+  const trimmed = query.trim()
+  if (!trimmed) return []
+
+  const { data, error } = await supabase
+    .from('drafts_items')
+    .select('*')
+    .is('triaged_at', null)
+    .ilike('content', `%${trimmed}%`)
+    .order('created_at', { ascending: false })
+    .limit(DRAFT_RESULTS_LIMIT)
+  if (error) throw new Error(`Falha ao buscar rascunhos: ${error.message}`)
+  return data
 }

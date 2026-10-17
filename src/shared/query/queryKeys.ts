@@ -48,6 +48,7 @@ export const queryKeys = {
   search: {
     root: ['search'] as const,
     byQuery: (query: string) => ['search', query] as const,
+    drafts: (query: string) => ['search', 'drafts', query] as const,
   },
   activityLog: {
     byTask: (taskId: string) => ['activity-log', taskId] as const,

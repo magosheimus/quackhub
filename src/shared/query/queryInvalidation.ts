@@ -29,3 +29,9 @@ export function invalidateDailyTrackerQueries(queryClient: QueryClient) {
 export function invalidatePersonaQueries(queryClient: QueryClient) {
   queryClient.invalidateQueries({ queryKey: queryKeys.personas.root })
 }
+
+// Rascunhos também aparecem na busca global
+export function invalidateDraftQueries(queryClient: QueryClient) {
+  queryClient.invalidateQueries({ queryKey: queryKeys.drafts.root })
+  queryClient.invalidateQueries({ queryKey: queryKeys.search.root })
+}
