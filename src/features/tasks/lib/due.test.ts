@@ -23,11 +23,14 @@ describe('datas relativas', () => {
     expect(dateOf('renovar @em 2 meses')).toBe('2026-12-16')
   })
 
-  it('próxima semana, próximo mês e próximo ano', () => {
-    expect(dateOf('revisar @semana que vem')).toBe('2026-10-19')
-    expect(find('revisar @próxima semana', 0)?.dueDate).toBe('2026-10-18')
+  it('próxima semana (+7 dias), próximo mês e próximo ano', () => {
+    expect(dateOf('revisar @semana que vem')).toBe('2026-10-23')
+    expect(find('revisar @próxima semana', 0)?.dueDate).toBe('2026-10-23')
+    expect(dateOf('revisar @semana q vem')).toBe('2026-10-23')
     expect(dateOf('fatura @próximo mês')).toBe('2026-11-16')
-    expect(dateOf('planejar @próximo ano')).toBe('2027-01-01')
+    expect(dateOf('fatura @mês q vem')).toBe('2026-11-16')
+    expect(dateOf('planejar @próximo ano')).toBe('2027-10-16')
+    expect(dateOf('planejar @ano q vem')).toBe('2027-10-16')
   })
 
   it('fim de semana, fim do mês e meio do mês', () => {

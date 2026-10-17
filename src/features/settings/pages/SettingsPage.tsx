@@ -15,12 +15,14 @@ import { ClearCacheButton } from '@/features/settings/components/ClearCacheButto
 import {
   DATE_FORMATS,
   FONT_BODIES,
+  LCD_GHOSTS,
   type Settings,
 } from '@/features/settings/lib/settings'
 import { useSettingsPage } from '@/features/settings/hooks/useSettingsPage'
 import { PageTitle } from '@/components/ui/page-title'
 import {
   FONT_LABELS,
+  LCD_GHOST_LABELS,
   SETTINGS_TEXTS,
   TEXTURE_LABELS,
   WEEK_START_LABELS,
@@ -135,6 +137,24 @@ export function SettingsPage() {
                 {SETTINGS_TEXTS.glow}
               </span>
             </div>
+            {settings.glow && (
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-caption">{SETTINGS_TEXTS.lcdGhost}</span>
+                {LCD_GHOSTS.map((lcdGhost) => (
+                  <Button
+                    key={lcdGhost}
+                    type="button"
+                    size="sm"
+                    variant={
+                      settings.lcdGhost === lcdGhost ? 'selected' : 'outline'
+                    }
+                    onClick={() => update({ lcdGhost })}
+                  >
+                    {LCD_GHOST_LABELS[lcdGhost]}
+                  </Button>
+                ))}
+              </div>
+            )}
           </div>
         </SettingsCard>
 

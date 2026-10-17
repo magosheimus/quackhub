@@ -10,6 +10,7 @@ export type Settings = {
   dotsOpacity: number
   scanlines: boolean
   glow: boolean
+  lcdGhost: 'off' | 'subtle' | 'glitch'
   fontBody: 'jetbrains' | 'ibm-plex'
   dateFormat: 'dd/MM/yyyy' | 'MM/dd/yyyy'
   weekStartsOn: 0 | 1
@@ -41,10 +42,17 @@ export const TEXTURES = [
   'dots',
 ] as const satisfies readonly Settings['texture'][]
 
+export const LCD_GHOSTS = [
+  'off',
+  'subtle',
+  'glitch',
+] as const satisfies readonly Settings['lcdGhost'][]
+
 export const isFontBody = createEnumGuard(FONT_BODIES)
 export const isDateFormat = createEnumGuard(DATE_FORMATS)
 export const isCartucho = createEnumGuard(CARTUCHOS)
 export const isTexture = createEnumGuard(TEXTURES)
+export const isLcdGhost = createEnumGuard(LCD_GHOSTS)
 
 // Valores de Select chegam como texto ('0' | '1')
 export function parseWeekStart(
@@ -82,6 +90,7 @@ export const DEFAULT_SETTINGS: Settings = {
   dotsOpacity: 70,
   scanlines: false,
   glow: false,
+  lcdGhost: 'subtle',
   fontBody: 'jetbrains',
   dateFormat: 'dd/MM/yyyy',
   weekStartsOn: 0,
@@ -122,6 +131,9 @@ export function normalizeSettings(raw: unknown): Settings {
       : DEFAULT_SETTINGS.dotsOpacity,
     scanlines: pickBoolean(source.scanlines, DEFAULT_SETTINGS.scanlines),
     glow: pickBoolean(source.glow, DEFAULT_SETTINGS.glow),
+    lcdGhost: isLcdGhost(source.lcdGhost)
+      ? source.lcdGhost
+      : DEFAULT_SETTINGS.lcdGhost,
     fontBody: isFontBody(source.fontBody)
       ? source.fontBody
       : DEFAULT_SETTINGS.fontBody,
@@ -176,6 +188,12 @@ const TEXTURE_CLASS: Record<Settings['texture'], string> = {
   dots: 'texture-dots',
 }
 
+const LCD_GHOST_CLASS: Record<Settings['lcdGhost'], string> = {
+  off: 'lcd-off',
+  subtle: '',
+  glitch: 'lcd-glitch',
+}
+
 const FONT_CLASS: Record<Settings['fontBody'], string> = {
   jetbrains: '',
   'ibm-plex': 'font-ibm-plex',
@@ -188,6 +206,7 @@ export function applySettings(s: Settings): void {
     FONT_CLASS[s.fontBody],
     s.scanlines ? 'scanlines-on' : '',
     s.glow ? 'glow-on' : '',
+    s.glow ? LCD_GHOST_CLASS[s.lcdGhost] : '',
     isDarkCartucho(s.cartucho) ? 'theme-dark' : '',
   ]
     .filter(Boolean)

@@ -94,6 +94,14 @@ describe('applySettings', () => {
     applySettings({ ...DEFAULT_SETTINGS, glow: true, scanlines: true })
     expect(document.documentElement).toHaveClass('glow-on', 'scanlines-on')
   })
+
+  it('efeito LCD só aplica classe com o glow ligado', () => {
+    applySettings({ ...DEFAULT_SETTINGS, lcdGhost: 'glitch' })
+    expect(document.documentElement).not.toHaveClass('lcd-glitch')
+
+    applySettings({ ...DEFAULT_SETTINGS, glow: true, lcdGhost: 'glitch' })
+    expect(document.documentElement).toHaveClass('glow-on', 'lcd-glitch')
+  })
 })
 
 describe('normalizeSettings', () => {
@@ -109,11 +117,13 @@ describe('normalizeSettings', () => {
       texture: 'neon',
       gridOpacity: 150,
       scanlines: 'sim',
+      lcdGhost: 'neon',
     })
     expect(result.cartucho).toBe('sage-dark')
     expect(result.glow).toBe(true)
     expect(result.texture).toBe(DEFAULT_SETTINGS.texture)
     expect(result.gridOpacity).toBe(DEFAULT_SETTINGS.gridOpacity)
     expect(result.scanlines).toBe(DEFAULT_SETTINGS.scanlines)
+    expect(result.lcdGhost).toBe(DEFAULT_SETTINGS.lcdGhost)
   })
 })
