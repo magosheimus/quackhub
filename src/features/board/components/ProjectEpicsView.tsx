@@ -75,6 +75,7 @@ function EpicColumn({
                 index={index}
                 projectLabels={projectLabels}
                 colorScope="epic"
+                showEpic={false}
                 tag={tag}
                 moveOptions={moveOptions}
                 onMove={(columnId) => onMove(task.id, columnId)}

@@ -53,6 +53,9 @@
   --elevation-none: var(--bg-card);
   --elevation-active: var(--bg-selected);
   --bg-hover: color-mix(in srgb, var(--bg-selected) 70%, var(--border));
+  /* Prioridade: herda o tom de cada cartucho */
+  --priority-medium: var(--accent);
+  --priority-low: var(--palette-teal);
 
   /* Controles (botões outline, selects, inputs) */
   --control-bg: var(--bg-surface);
@@ -65,6 +68,9 @@
   --glow: 0 0 #0000;
   --glow-filter: none;
   --glow-color: var(--accent);
+  --icon-shadow: drop-shadow(
+    1px 1px 0 color-mix(in srgb, var(--lcd-ink) 22%, transparent)
+  );
   --scanline-opacity: 0;
   --overlay: color-mix(in srgb, var(--lcd-ink) 65%, transparent);
 
@@ -166,23 +172,23 @@
   --on-accent: #f5faff;
 
   /* Signal */
-  --signal-danger: #a11a45;
+  --signal-danger: #b20038;
   --signal-warning: #8b460b;
   --signal-success: #00634e;
 
   /* Paleta de categorias: slate moderno */
-  --palette-amber: #cf5c36;
-  --palette-sage: #6b8e23;
+  --palette-amber: #da4f21;
+  --palette-sage: #749f1f;
   --palette-blue: #5f86a3;
-  --palette-rose: #a35d6a;
-  --palette-lavender: #7a7397;
-  --palette-sand: #708090;
-  --palette-magenta: #c0388a;
-  --palette-teal: #8fbc8f;
+  --palette-rose: #cc445d;
+  --palette-lavender: #897cc1;
+  --palette-sand: #f5f3ca;
+  --palette-magenta: #c10877;
+  --palette-teal: #71a3a1;
   --palette-indigo: #3a4a9a;
-  --palette-brown: #8a5a3a;
-  --palette-lime: #b0a020;
-  --palette-graphite: #2f4f4f;
+  --palette-brown: #964c1b;
+  --palette-lime: #9dc20a;
+  --palette-graphite: #2d3d3d;
 }
 
 .cartucho-earth {
@@ -246,7 +252,7 @@
   --glow-color: var(--accent);
 
   /* Signal */
-  --signal-danger: #ff8567;
+  --signal-danger: #ff3d0c;
   --signal-warning: #ebbd58;
   --signal-success: #5abe5c;
 
@@ -411,6 +417,11 @@
   text-shadow: var(--glow);
 }
 
+/* Sombra leve em todos os ícones (createIcon, createPixelIcon e o pato) */
+.icon-shadow {
+  filter: var(--icon-shadow);
+}
+
 .logo-mark {
   filter: var(--glow-filter);
 }
@@ -428,6 +439,9 @@
 
 .theme-dark {
   --overlay: color-mix(in srgb, black 55%, transparent);
+  --icon-shadow: drop-shadow(
+    1px 1px 0 color-mix(in srgb, black 50%, transparent)
+  );
 }
 
 /* Janela de exclusão: inverte a paleta do cartucho (fundo = destaque, texto = sobre destaque) */

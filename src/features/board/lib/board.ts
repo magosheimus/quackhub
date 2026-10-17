@@ -194,7 +194,28 @@ export function groupTasksByColumn(
       groups[column].push(task)
     }
   }
+  for (const column of BOARD_COLUMNS) {
+    groups[column] = flaggedFirst(groups[column])
+  }
   return groups
+}
+
+// Urgentes no topo da coluna, mantendo a ordem original dentro de cada grupo
+function flaggedFirst(tasks: Task[]): Task[] {
+  return [
+    ...tasks.filter((task) => task.flagged),
+    ...tasks.filter((task) => !task.flagged),
+  ]
+}
+
+// Soltar um card na primeira posição de uma coluna marca como urgente.
+// Em Finalizado não: card concluído não precisa de atenção
+export function shouldFlagOnDrop(
+  task: Pick<Task, 'flagged'>,
+  column: BoardColumnKey,
+  index: number,
+): boolean {
+  return index === 0 && column !== 'done' && !task.flagged
 }
 
 export type MoveOption<T extends string = BoardColumnKey> = {
