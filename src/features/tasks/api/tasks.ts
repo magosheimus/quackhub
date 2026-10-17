@@ -159,6 +159,7 @@ export async function getTagsByProject(projectId: string): Promise<string[]> {
   const { data, error } = await supabase
     .from('task_tags')
     .select('tag_name, tasks!inner(project_id)')
+    .is('tasks.deleted_at', null)
     .eq('tasks.project_id', projectId)
   if (error) throw new Error(`Falha ao buscar tags: ${error.message}`)
   return Array.from(new Set(data.map((row) => row.tag_name)))
@@ -245,6 +246,7 @@ export async function getDependencies(taskId: string): Promise<Task[]> {
   const { data: tasks, error: tasksError } = await supabase
     .from('tasks')
     .select('*')
+    .is('deleted_at', null)
     .in(
       'id',
       deps.map((d) => d.depends_on_task_id),
@@ -288,7 +290,16 @@ export async function getTaskById(id: string): Promise<Task> {
     .from('tasks')
     .select('*')
     .eq('id', id)
+    .is('deleted_at', null)
     .single()
   if (error) throw new Error(`Falha ao buscar card: ${error.message}`)
   return data
+}
+
+export async function softDeleteTask(id: string): Promise<void> {
+  const { error } = await supabase
+    .from('tasks')
+    .update({ deleted_at: new Date().toISOString() })
+    .eq('id', id)
+  if (error) throw new Error(`Falha ao excluir card: ${error.message}`)
 }

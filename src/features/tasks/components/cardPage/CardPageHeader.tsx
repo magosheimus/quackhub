@@ -1,5 +1,16 @@
 import type { KeyboardEvent } from 'react'
-import { IconArrowLeft, IconFolder } from '@/shared/lib/icons'
+import {
+  IconArrowLeft,
+  IconFolder,
+  IconDeleteSharp,
+  IconMore,
+} from '@/shared/lib/icons'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 import { Button } from '@/components/ui/button'
 import { PageTitle } from '@/components/ui/page-title'
 import { TASKS_TEXTS } from '@/features/tasks/constants/texts'
@@ -19,6 +30,7 @@ type CardPageHeaderProps = {
   onTitleBlur: () => void
   onTitleKeyDown: (event: KeyboardEvent<HTMLInputElement>) => void
   onBack: () => void
+  onDelete: () => void
 }
 
 export function CardPageHeader({
@@ -32,6 +44,7 @@ export function CardPageHeader({
   onTitleBlur,
   onTitleKeyDown,
   onBack,
+  onDelete,
 }: CardPageHeaderProps) {
   return (
     <div className="flex items-center gap-3">
@@ -68,6 +81,28 @@ export function CardPageHeader({
           />
         </div>
       </PageTitle>
+      <DropdownMenu>
+        <DropdownMenuTrigger
+          render={
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              aria-label={TASKS_TEXTS.cardActions}
+              title={TASKS_TEXTS.cardActions}
+              className="shrink-0 text-fg-muted ml-auto"
+            />
+          }
+        >
+          <IconMore size={24} aria-hidden="true" />
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="w-auto">
+          <DropdownMenuItem variant="destructive" onClick={onDelete}>
+            <IconDeleteSharp size={16} aria-hidden="true" />
+            {TASKS_TEXTS.deleteCard}
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   )
 }

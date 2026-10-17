@@ -16,7 +16,7 @@ export function Toaster() {
         <div
           key={toast.id}
           role="alert"
-          className="flex items-center gap-3 border border-danger bg-danger p-3 text-sm text-on-accent"
+          className="flex items-center gap-3 border border-danger surface-danger p-3 text-sm"
         >
           <IconWarning size={14} aria-hidden="true" className="shrink-0" />
           <span>{toast.message}</span>

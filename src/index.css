@@ -92,6 +92,10 @@
   @apply text-sm text-fg-muted;
 }
 
+@utility surface-danger {
+  @apply bg-danger text-on-accent;
+}
+
 @utility dither-25 {
   background: conic-gradient(at 2px 2px, transparent 75%, var(--accent) 0) 0 0 /
     4px 4px;
