@@ -28,6 +28,7 @@ import type { ColorScope } from '@/shared/lib/palette'
 import type { ProjectLabels } from '@/features/projects/lib/project'
 import { AssigneeBadge } from '@/features/personas/components/AssigneeBadge'
 import { CardEpicChip } from '@/features/epics/components/CardEpicChip'
+import { DueBadge } from '@/features/tasks/components/DueBadge'
 
 const CARD_CLASS =
   'flex gap-2 rounded-md border border-l-4 border-border bg-card p-3 text-sm hover:bg-card-hover'
@@ -42,6 +43,7 @@ type BoardCardBodyProps = {
   projectLabels: ProjectLabels
   showAssignee?: boolean
   showEpic?: boolean
+  showDue?: boolean
   showStatus?: boolean
   tag?: string
   colorScope?: ColorScope
@@ -52,6 +54,7 @@ function BoardCardBody({
   projectLabels,
   showAssignee = true,
   showEpic = true,
+  showDue = true,
   showStatus = false,
   tag,
   colorScope = 'project',
@@ -93,6 +96,9 @@ function BoardCardBody({
           {task.title}
         </Link>
         {showEpic && <CardEpicChip epicId={task.epic_id} />}
+        {showDue && (
+          <DueBadge dueDate={task.due_date} dueTime={task.due_time} />
+        )}
         {tag && <span className="text-caption">{tag}</span>}
         {showStatus && (
           <span
@@ -221,6 +227,7 @@ type StaticBoardCardProps = {
   task: Task
   projectLabels: ProjectLabels
   showStatus?: boolean
+  showDue?: boolean
   colorScope?: ColorScope
   actions?: ReactNode
 }
@@ -229,6 +236,7 @@ export function StaticBoardCard({
   task,
   projectLabels,
   showStatus,
+  showDue,
   colorScope,
   actions,
 }: StaticBoardCardProps) {
@@ -239,6 +247,7 @@ export function StaticBoardCard({
         projectLabels={projectLabels}
         showAssignee={false}
         showStatus={showStatus}
+        showDue={showDue}
         colorScope={colorScope}
       />
       <div className="ml-auto flex items-center gap-3 self-center">

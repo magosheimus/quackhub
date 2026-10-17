@@ -20,5 +20,9 @@ export function useToggleSet<T>() {
     return items.has(item)
   }
 
-  return { has, toggle }
+  function clear() {
+    setItems(new Set())
+  }
+
+  return { has, toggle, clear }
 }

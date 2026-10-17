@@ -1,5 +1,9 @@
 export const BOARD_TEXTS = {
   quickFilters: 'Filtros rápidos:',
+  customizeQuickFilters: 'Escolha o que aparece nos filtros rápidos:',
+  quickFilterEpics: 'Épicos',
+  quickFilterProjects: 'Projetos',
+  quickFilterPersonas: 'Personas',
   emptyColumn: '— vazio —',
   moveCard: (title: string) => `Mover ${title}`,
   moveTo: 'Mover para',

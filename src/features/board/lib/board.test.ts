@@ -7,6 +7,11 @@ import {
   getProjectsInTasks,
   groupTasksByColumn,
   shouldFlagOnDrop,
+  readBoardFilters,
+  clearHiddenFilter,
+  quickFilterKey,
+  withoutHidden,
+  writeBoardFilters,
   isBoardColumnKey,
   getMoveOptions,
 } from './board'
@@ -205,6 +210,60 @@ describe('getMoveOptions', () => {
       { column: 'to_review', label: 'A REVISAR' },
       { column: 'blocked', label: 'IMPEDIDO' },
       { column: 'done', label: 'FINALIZADO' },
+    ])
+  })
+})
+
+describe('filtros do Board na URL', () => {
+  it('ida e volta mantém os filtros', () => {
+    const filters = {
+      ...DEFAULT_BOARD_FILTERS,
+      epicId: 'e1',
+      projectIds: ['p1', 'p2'],
+      assigneeIds: ['a1'],
+      priority: 'high' as const,
+      flagged: true,
+    }
+    const params = writeBoardFilters(new URLSearchParams(), filters)
+    expect(readBoardFilters(params)).toEqual(filters)
+  })
+
+  it('omite filtros vazios e mantém outros parâmetros', () => {
+    const params = writeBoardFilters(
+      new URLSearchParams('project=p9&projects=old'),
+      DEFAULT_BOARD_FILTERS,
+    )
+    expect(params.toString()).toBe('project=p9')
+  })
+
+  it('ignora valores inválidos', () => {
+    const filters = readBoardFilters(
+      new URLSearchParams('priority=urgentissima&status=xyz'),
+    )
+    expect(filters.priority).toBeNull()
+    expect(filters.status).toBeNull()
+  })
+})
+
+describe('itens escondidos dos filtros rápidos', () => {
+  const items = [{ id: 'a' }, { id: 'b' }]
+
+  it('esconde só o tipo e o id marcados', () => {
+    const hidden = [quickFilterKey('project', 'a'), quickFilterKey('epic', 'b')]
+    expect(withoutHidden(items, 'project', hidden).map((i) => i.id)).toEqual([
+      'b',
+    ])
+  })
+
+  it('esconder um filtro ativo tira ele da seleção', () => {
+    const filters = {
+      ...DEFAULT_BOARD_FILTERS,
+      epicId: 'e1',
+      projectIds: ['p1', 'p2'],
+    }
+    expect(clearHiddenFilter(filters, 'epic', 'e1').epicId).toBeNull()
+    expect(clearHiddenFilter(filters, 'project', 'p1').projectIds).toEqual([
+      'p2',
     ])
   })
 })

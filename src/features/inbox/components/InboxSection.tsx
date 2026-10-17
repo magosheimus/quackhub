@@ -47,13 +47,14 @@ export function InboxSection({
       {tasks.map((task) => {
         const project = projects.find((p) => p.id === task.project_id)
         const isSrsEligible = canRegisterPerformance(project?.type, task.status)
-        const due = describeDue(task.due_date, today)
+        const due = describeDue(task.due_date, today, task.due_time)
 
         return (
           <StaticBoardCard
             key={task.id}
             task={task}
             projectLabels={projectLabels}
+            showDue={false}
             actions={
               isSrsEligible ? (
                 <div className="flex flex-col items-end gap-1">

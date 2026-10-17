@@ -595,6 +595,7 @@ export type Database = {
           deleted_at: string | null
           description: string | null
           due_date: string | null
+          due_time: string | null
           ease_factor: number | null
           epic_id: string | null
           estimated_minutes: number | null
@@ -624,6 +625,7 @@ export type Database = {
           deleted_at?: string | null
           description?: string | null
           due_date?: string | null
+          due_time?: string | null
           ease_factor?: number | null
           epic_id?: string | null
           estimated_minutes?: number | null
@@ -654,6 +656,7 @@ export type Database = {
           deleted_at?: string | null
           description?: string | null
           due_date?: string | null
+          due_time?: string | null
           ease_factor?: number | null
           epic_id?: string | null
           estimated_minutes?: number | null

@@ -66,6 +66,7 @@ function CardPageBody({ task }: { task: Task }) {
     isEditingTitle,
     setIsEditingTitle,
     handleTitleBlur,
+    handleTitleKeyDown,
     isSrsModalOpen,
     setIsSrsModalOpen,
     description,
@@ -95,6 +96,7 @@ function CardPageBody({ task }: { task: Task }) {
         onTitleChange={setTitle}
         onTitleFocus={() => setIsEditingTitle(true)}
         onTitleBlur={handleTitleBlur}
+        onTitleKeyDown={handleTitleKeyDown}
         onBack={() => navigate(-1)}
       />
 
@@ -145,6 +147,7 @@ function CardPageBody({ task }: { task: Task }) {
           createdAt={task.created_at}
           updatedAt={task.updated_at}
           dueDate={task.due_date}
+          dueTime={task.due_time}
           easeFactor={task.ease_factor}
           nextReview={task.next_review}
           recurrenceValue={recurrenceValue}
@@ -152,7 +155,15 @@ function CardPageBody({ task }: { task: Task }) {
             updateTask({ id: task.id, data: { assignee_id: assigneeId } })
           }
           onDueDateChange={(value) =>
-            updateTask({ id: task.id, data: { due_date: value } })
+            updateTask({
+              id: task.id,
+              data: value
+                ? { due_date: value }
+                : { due_date: null, due_time: null },
+            })
+          }
+          onDueTimeChange={(value) =>
+            updateTask({ id: task.id, data: { due_time: value } })
           }
           onRecurrenceChange={handleRecurrenceChange}
           onRegisterPerformance={() => setIsSrsModalOpen(true)}

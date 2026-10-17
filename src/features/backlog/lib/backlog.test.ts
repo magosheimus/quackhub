@@ -1,6 +1,12 @@
 import { describe, it, expect } from 'vitest'
 import { makeProject, makeTask } from '@/test/factories'
-import { filterBacklogTasks, groupTasksByProject } from './backlog'
+import {
+  EMPTY_BACKLOG_FILTERS,
+  filterBacklogTasks,
+  groupTasksByProject,
+  readBacklogFilters,
+  writeBacklogFilters,
+} from './backlog'
 
 const NO_FILTERS = {
   status: null,
@@ -80,5 +86,30 @@ describe('groupTasksByProject', () => {
 
     expect(groups.map((group) => group.project.id)).toEqual(['p1', 'p3'])
     expect(groups[1].tasks.map((task) => task.id)).toEqual(['t1', 't3'])
+  })
+})
+
+describe('filtros do Backlog na URL', () => {
+  it('ida e volta mantém os filtros', () => {
+    const filters = {
+      ...EMPTY_BACKLOG_FILTERS,
+      projectId: 'p1',
+      status: 'todo' as const,
+      assigneeId: 'a1',
+    }
+    const params = writeBacklogFilters(new URLSearchParams(), filters)
+    expect(readBacklogFilters(params)).toEqual(filters)
+  })
+
+  it('omite os vazios e ignora valores inválidos', () => {
+    expect(
+      writeBacklogFilters(
+        new URLSearchParams('tag=x'),
+        EMPTY_BACKLOG_FILTERS,
+      ).toString(),
+    ).toBe('')
+    expect(readBacklogFilters(new URLSearchParams('status=xyz')).status).toBe(
+      null,
+    )
   })
 })

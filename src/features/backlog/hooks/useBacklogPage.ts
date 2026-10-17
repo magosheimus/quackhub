@@ -1,6 +1,5 @@
 import { hasLoadError, retryFailedQueries } from '@/shared/query/queryState'
 import { useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
 import { useProjects } from '@/features/projects/hooks/useProjects'
 import type { ColorScope } from '@/shared/lib/palette'
 import { useAllEpics } from '@/features/epics/hooks/useAllEpics'
@@ -10,6 +9,7 @@ import {
   type EpicLabel,
 } from '@/features/epics/lib/epic'
 import { useBacklogTasks } from '@/features/tasks/hooks/useBacklogTasks'
+import { useBacklogFilters } from '@/features/backlog/hooks/useBacklogFilters'
 import { useActiveSprint } from '@/features/sprints/hooks/useActiveSprint'
 import { useSprints } from '@/features/sprints/hooks/useSprints'
 import { useAddTaskToSprint } from '@/features/tasks/hooks/sprint/useAddTaskToSprint'
@@ -23,31 +23,20 @@ import { isTaskPriority, isTaskStatus } from '@/shared/lib/enums'
 import { useToggleSet } from '@/shared/hooks/useToggleSet'
 import { useBulkTaskTags } from '@/features/tasks/hooks/tags/useBulkTaskTags'
 import { collectTags } from '@/features/tasks/lib/taskTags'
-import type {
-  Project,
-  Task,
-  TaskPriority,
-  TaskStatus,
-} from '@/shared/types/entities'
+import type { Project, Task } from '@/shared/types/entities'
 import { buildProjectLabels } from '@/features/projects/lib/project'
 import { usePersonaOptions } from '@/features/personas/hooks/usePersonaOptions'
 
 export function useBacklogPage() {
-  const [searchParams] = useSearchParams()
-  const initialStatus = searchParams.get('status')
-
-  const [projectFilter, setProjectFilter] = useState<string | null>(
-    searchParams.get('project') || null,
-  )
-  const [statusFilter, setStatusFilter] = useState<TaskStatus | null>(
-    isTaskStatus(initialStatus) ? initialStatus : null,
-  )
-  const [priorityFilter, setPriorityFilter] = useState<TaskPriority | null>(
-    null,
-  )
-  const [epicFilter, setEpicFilter] = useState<string | null>(null)
-  const [tagFilter, setTagFilter] = useState<string | null>(null)
-  const [assigneeFilter, setAssigneeFilter] = useState<string | null>(null)
+  const { filters, update } = useBacklogFilters()
+  const {
+    projectId: projectFilter,
+    status: statusFilter,
+    priority: priorityFilter,
+    epicId: epicFilter,
+    tag: tagFilter,
+    assigneeId: assigneeFilter,
+  } = filters
   const [isEpicModalOpen, setIsEpicModalOpen] = useState(false)
   const collapsedProjects = useToggleSet<string>()
 
@@ -91,17 +80,15 @@ export function useBacklogPage() {
     : undefined
 
   function selectProject(projectId: string | null) {
-    setProjectFilter(projectId)
-    setEpicFilter(null)
-    setTagFilter(null)
+    update({ projectId, epicId: null, tag: null })
   }
 
   function selectStatus(value: unknown) {
-    setStatusFilter(isTaskStatus(value) ? value : null)
+    update({ status: isTaskStatus(value) ? value : null })
   }
 
   function selectPriority(value: unknown) {
-    setPriorityFilter(isTaskPriority(value) ? value : null)
+    update({ priority: isTaskPriority(value) ? value : null })
   }
 
   function getEpicLabel(task: Task): EpicLabel | null {
@@ -140,15 +127,15 @@ export function useBacklogPage() {
     tagFilter,
     assigneeFilter,
     hasPersonas,
-    selectAssignee: setAssigneeFilter,
+    selectAssignee: (assigneeId: string | null) => update({ assigneeId }),
     tags: collectTags(tagsByTask ?? {}),
     selectedProject,
     selectedEpicName,
     selectProject,
     selectStatus,
     selectPriority,
-    selectTag: setTagFilter,
-    selectEpic: setEpicFilter,
+    selectTag: (tag: string | null) => update({ tag }),
+    selectEpic: (epicId: string | null) => update({ epicId }),
     isEpicModalOpen,
     setIsEpicModalOpen,
     filteredTasks,

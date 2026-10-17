@@ -63,6 +63,8 @@ export function buildRecurrentCard(original: Task, nextDue: Date): NewTask {
     priority: original.priority,
     status: 'todo',
     due_date: toDbDate(nextDue),
+    due_time: original.due_time,
+    assignee_id: original.assignee_id,
     recurrence_type: original.recurrence_type,
     recurrence_interval: original.recurrence_interval,
     recurrence_day_of_month: original.recurrence_day_of_month,

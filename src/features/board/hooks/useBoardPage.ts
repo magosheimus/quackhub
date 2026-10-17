@@ -11,6 +11,8 @@ import { useUpdateTask } from '@/features/tasks/hooks/useUpdateTask'
 import { useBulkTaskTags } from '@/features/tasks/hooks/tags/useBulkTaskTags'
 import { useAllEpics } from '@/features/epics/hooks/useAllEpics'
 import { useBoardFilters } from '@/features/board/hooks/useBoardFilters'
+import { useQuickFilterVisibility } from '@/features/board/hooks/useQuickFilterVisibility'
+import { BOARD_TEXTS } from '@/features/board/constants/texts'
 import {
   BOARD_COLUMNS,
   applyBoardFilters,
@@ -20,6 +22,10 @@ import {
   getProjectsInTasks,
   getStatusForColumn,
   groupTasksByColumn,
+  clearHiddenFilter,
+  withoutHidden,
+  type QuickFilterKind,
+  type QuickFilterMenuGroup,
   shouldFlagOnDrop,
   isBoardColumnKey,
   getMoveOptions,
@@ -52,7 +58,8 @@ export function useBoardPage() {
   const { mutate: updateTask } = useUpdateTask()
   const { data: epics } = useAllEpics()
   const personaOptions = usePersonaOptions()
-  const { filters, updateFilter } = useBoardFilters()
+  const { filters, updateFilter, setFilters } = useBoardFilters()
+  const visibility = useQuickFilterVisibility()
   const { data: tagsByTask } = useBulkTaskTags((tasks ?? []).map((t) => t.id))
 
   const sprintTasks = tasks ?? []
@@ -111,6 +118,42 @@ export function useBoardPage() {
     }
   }
 
+  const hidden = visibility.hidden
+  const sprintProjectOptions = buildProjectOptions(
+    getProjectsInTasks(projects ?? [], sprintTasks),
+  )
+  const sprintEpicOptions = buildEpicOptions(
+    getEpicsInTasks(epics ?? [], sprintTasks),
+  )
+  const sprintPersonaOptions = getPersonasInTasks(personaOptions, sprintTasks)
+
+  function buildMenu(): QuickFilterMenuGroup[] {
+    const groups: [QuickFilterKind, string, { id: string; name: string }[]][] =
+      [
+        ['epic', BOARD_TEXTS.quickFilterEpics, sprintEpicOptions],
+        ['project', BOARD_TEXTS.quickFilterProjects, sprintProjectOptions],
+        ['persona', BOARD_TEXTS.quickFilterPersonas, sprintPersonaOptions],
+      ]
+    return groups
+      .filter(([, , items]) => items.length > 0)
+      .map(([kind, label, items]) => ({
+        kind,
+        label,
+        items: items.map((item) => ({
+          id: item.id,
+          name: item.name,
+          isVisible: visibility.isVisible(kind, item.id),
+        })),
+      }))
+  }
+
+  function toggleQuickFilter(kind: QuickFilterKind, id: string) {
+    if (visibility.isVisible(kind, id)) {
+      setFilters(clearHiddenFilter(filters, kind, id))
+    }
+    visibility.toggle(kind, id)
+  }
+
   function getMoveOptionsFor(task: Task): MoveOption[] {
     const taskType = projectTypeById.get(task.project_id)
     return taskType ? getMoveOptions(task.status, taskType) : []
@@ -129,11 +172,11 @@ export function useBoardPage() {
     projectLabels,
     filters,
     updateFilter,
-    sprintProjects: buildProjectOptions(
-      getProjectsInTasks(projects ?? [], sprintTasks),
-    ),
-    sprintEpics: buildEpicOptions(getEpicsInTasks(epics ?? [], sprintTasks)),
-    sprintPersonas: getPersonasInTasks(personaOptions, sprintTasks),
+    sprintProjects: withoutHidden(sprintProjectOptions, 'project', hidden),
+    sprintEpics: withoutHidden(sprintEpicOptions, 'epic', hidden),
+    sprintPersonas: withoutHidden(sprintPersonaOptions, 'persona', hidden),
+    quickFilterMenu: buildMenu(),
+    toggleQuickFilter,
     visibleTasks,
     columns,
     handleDragEnd,

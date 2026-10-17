@@ -1,5 +1,9 @@
 import type { TagsByTask } from '@/features/tasks/lib/taskTags'
-import { createEnumGuard } from '@/shared/lib/enums'
+import {
+  createEnumGuard,
+  isTaskPriority,
+  isTaskStatus,
+} from '@/shared/lib/enums'
 import type {
   Epic,
   Project,
@@ -117,6 +121,99 @@ export const DEFAULT_BOARD_FILTERS: BoardFilters = {
   srsOverdue: false,
   projectIds: [],
   assigneeIds: [],
+}
+
+// Itens dos filtros rápidos que o usuário escondeu (preferência da conta)
+export type QuickFilterKind = 'epic' | 'project' | 'persona'
+
+export type QuickFilterMenuGroup = {
+  kind: QuickFilterKind
+  label: string
+  items: { id: string; name: string; isVisible: boolean }[]
+}
+
+export function quickFilterKey(kind: QuickFilterKind, id: string): string {
+  return `${kind}:${id}`
+}
+
+export function withoutHidden<T extends { id: string }>(
+  items: T[],
+  kind: QuickFilterKind,
+  hidden: readonly string[],
+): T[] {
+  return items.filter((item) => !hidden.includes(quickFilterKey(kind, item.id)))
+}
+
+// Esconder um item que está ativo também tira ele do filtro
+export function clearHiddenFilter(
+  filters: BoardFilters,
+  kind: QuickFilterKind,
+  id: string,
+): BoardFilters {
+  if (kind === 'epic') {
+    return filters.epicId === id ? { ...filters, epicId: null } : filters
+  }
+  const key = kind === 'project' ? 'projectIds' : 'assigneeIds'
+  return { ...filters, [key]: filters[key].filter((item) => item !== id) }
+}
+
+// Filtros na URL do Board: sobrevivem a abrir um card e voltar, e a recarregar
+const FILTER_PARAMS = {
+  epicId: 'epic',
+  projectIds: 'projects',
+  assigneeIds: 'assignees',
+  priority: 'priority',
+  status: 'status',
+  tag: 'tag',
+  flagged: 'flagged',
+  srsOverdue: 'srs',
+} as const satisfies Record<keyof BoardFilters, string>
+
+function readList(value: string | null): string[] {
+  return value ? value.split(',').filter(Boolean) : []
+}
+
+export function readBoardFilters(params: URLSearchParams): BoardFilters {
+  const priority = params.get(FILTER_PARAMS.priority)
+  const status = params.get(FILTER_PARAMS.status)
+  const flagged = params.get(FILTER_PARAMS.flagged)
+  return {
+    epicId: params.get(FILTER_PARAMS.epicId),
+    projectIds: readList(params.get(FILTER_PARAMS.projectIds)),
+    assigneeIds: readList(params.get(FILTER_PARAMS.assigneeIds)),
+    priority: isTaskPriority(priority) ? priority : null,
+    status: isTaskStatus(status) ? status : null,
+    tag: params.get(FILTER_PARAMS.tag),
+    flagged: flagged === 'true' ? true : flagged === 'false' ? false : null,
+    srsOverdue: params.get(FILTER_PARAMS.srsOverdue) === 'true',
+  }
+}
+
+// Mantém os outros parâmetros (ex.: ?project=) e omite filtros vazios
+export function writeBoardFilters(
+  params: URLSearchParams,
+  filters: BoardFilters,
+): URLSearchParams {
+  const next = new URLSearchParams(params)
+  const values: Record<keyof BoardFilters, string | null> = {
+    epicId: filters.epicId,
+    projectIds: filters.projectIds.join(',') || null,
+    assigneeIds: filters.assigneeIds.join(',') || null,
+    priority: filters.priority,
+    status: filters.status,
+    tag: filters.tag,
+    flagged: filters.flagged === null ? null : String(filters.flagged),
+    srsOverdue: filters.srsOverdue ? 'true' : null,
+  }
+  for (const key of Object.keys(FILTER_PARAMS) as (keyof BoardFilters)[]) {
+    const value = values[key]
+    if (value) {
+      next.set(FILTER_PARAMS[key], value)
+    } else {
+      next.delete(FILTER_PARAMS[key])
+    }
+  }
+  return next
 }
 
 export function applyBoardFilters(

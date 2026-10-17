@@ -1,3 +1,4 @@
+import type { KeyboardEvent } from 'react'
 import { IconArrowLeft, IconFolder } from '@/shared/lib/icons'
 import { Button } from '@/components/ui/button'
 import { PageTitle } from '@/components/ui/page-title'
@@ -16,6 +17,7 @@ type CardPageHeaderProps = {
   onTitleChange: (value: string) => void
   onTitleFocus: () => void
   onTitleBlur: () => void
+  onTitleKeyDown: (event: KeyboardEvent<HTMLInputElement>) => void
   onBack: () => void
 }
 
@@ -28,6 +30,7 @@ export function CardPageHeader({
   onTitleChange,
   onTitleFocus,
   onTitleBlur,
+  onTitleKeyDown,
   onBack,
 }: CardPageHeaderProps) {
   return (
@@ -55,6 +58,7 @@ export function CardPageHeader({
             onChange={(e) => onTitleChange(e.target.value)}
             onFocus={onTitleFocus}
             onBlur={onTitleBlur}
+            onKeyDown={onTitleKeyDown}
             aria-label={TASKS_TEXTS.titleLabel}
             className={`h-8 rounded-md px-2 py-0 font-heading text-3xl leading-tight text-fg outline-none ${
               isEditingTitle

@@ -21,6 +21,7 @@ export function makeTask(overrides: Partial<Task> = {}): Task {
     flagged: false,
     flag_note: null,
     due_date: null,
+    due_time: null,
     recurrence_type: null,
     recurrence_interval: null,
     recurrence_day_of_month: null,
