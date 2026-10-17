@@ -13,6 +13,7 @@ export type Settings = {
   fontBody: 'jetbrains' | 'ibm-plex'
   dateFormat: 'dd/MM/yyyy' | 'MM/dd/yyyy'
   weekStartsOn: 0 | 1
+  hiddenQuickFilters: string[]
 }
 
 export const FONT_BODIES = [
@@ -84,10 +85,17 @@ export const DEFAULT_SETTINGS: Settings = {
   fontBody: 'jetbrains',
   dateFormat: 'dd/MM/yyyy',
   weekStartsOn: 0,
+  hiddenQuickFilters: [],
 }
 
 function isOpacity(value: unknown): value is number {
   return typeof value === 'number' && value >= 0 && value <= 100
+}
+
+function pickStringList(value: unknown): string[] {
+  return Array.isArray(value) && value.every((item) => typeof item === 'string')
+    ? value
+    : []
 }
 
 function pickBoolean(value: unknown, fallback: boolean): boolean {
@@ -124,6 +132,7 @@ export function normalizeSettings(raw: unknown): Settings {
       source.weekStartsOn === 0 || source.weekStartsOn === 1
         ? source.weekStartsOn
         : DEFAULT_SETTINGS.weekStartsOn,
+    hiddenQuickFilters: pickStringList(source.hiddenQuickFilters),
   }
 }
 

@@ -26,6 +26,8 @@ export function BoardPage() {
     sprintProjects,
     sprintEpics,
     sprintPersonas,
+    quickFilterMenu,
+    toggleQuickFilter,
     visibleTasks,
     columns,
     handleDragEnd,
@@ -75,6 +77,8 @@ export function BoardPage() {
         epics={sprintEpics}
         projects={sprintProjects}
         personas={sprintPersonas}
+        menuGroups={quickFilterMenu}
+        onToggleQuickFilter={toggleQuickFilter}
       />
 
       <DragDropContext onDragEnd={handleDragEnd}>

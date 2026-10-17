@@ -51,3 +51,24 @@ describe('countOverdue', () => {
     expect(countOverdue(tasks, '2026-10-15')).toBe(2)
   })
 })
+
+describe('prazo com horário na Inbox', () => {
+  it('mostra o horário em "vence hoje"', () => {
+    expect(describeDue('2026-10-15', '2026-10-15', '14:00:00')?.text).toBe(
+      'vence hoje às 14:00',
+    )
+  })
+
+  it('no mesmo dia ordena pelo horário, sem horário por último', () => {
+    const tasks = [
+      makeTask({ id: 'sem-hora', due_date: '2026-10-15', due_time: null }),
+      makeTask({ id: 'tarde', due_date: '2026-10-15', due_time: '16:00:00' }),
+      makeTask({ id: 'manha', due_date: '2026-10-15', due_time: '09:00:00' }),
+    ]
+    expect(sortByDueThenPriority(tasks).map((task) => task.id)).toEqual([
+      'manha',
+      'tarde',
+      'sem-hora',
+    ])
+  })
+})

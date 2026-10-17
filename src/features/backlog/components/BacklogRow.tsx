@@ -16,6 +16,7 @@ import { EpicChip } from '@/features/epics/components/EpicChip'
 import type { EpicLabel } from '@/features/epics/lib/epic'
 import type { ColorScope } from '@/shared/lib/palette'
 import { AssigneeBadge } from '@/features/personas/components/AssigneeBadge'
+import { DueBadge } from '@/features/tasks/components/DueBadge'
 
 type BacklogRowProps = {
   task: Task
@@ -80,6 +81,8 @@ export function BacklogRow({
             {task.title}
           </Link>
         </div>
+
+        <DueBadge dueDate={task.due_date} dueTime={task.due_time} />
 
         <span className="text-caption">{STATUS_LABELS[task.status]}</span>
 

@@ -3,6 +3,9 @@ export const SPRINT_ERRORS = {
 } as const
 
 export const SPRINTS_TEXTS = {
+  dueInPeriod: (count: number) => `Cards com prazo neste período (${count})`,
+  dueOverdue: (count: number) => `Atrasados no Backlog (${count})`,
+  dueCandidatesHint: 'Os marcados entram na sprint ao criar.',
   noClosedSprints: '— nenhuma sprint encerrada ainda —',
   historyEmptyTitle: 'Nenhuma sprint encerrada',
   historyEmptyDescription:

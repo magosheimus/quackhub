@@ -111,4 +111,16 @@ describe('buildRecurrentCard', () => {
     expect(result.recurrence_parent_id).toBe('task-original')
     expect(result.flagged).toBe(false)
   })
+
+  it('mantém o horário e o responsável na próxima ocorrência', () => {
+    const original = makeTask({
+      due_date: '2026-01-05',
+      due_time: '14:00:00',
+      assignee_id: 'persona-1',
+      recurrence_type: 'weekly',
+    })
+    const result = buildRecurrentCard(original, new Date(2026, 0, 12))
+    expect(result.due_time).toBe('14:00:00')
+    expect(result.assignee_id).toBe('persona-1')
+  })
 })

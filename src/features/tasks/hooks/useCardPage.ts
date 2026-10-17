@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState, type KeyboardEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useUpdateTask } from '@/features/tasks/hooks/useUpdateTask'
 import { useUpdateTaskStatus } from '@/features/tasks/hooks/sprint/useUpdateTaskStatus'
@@ -18,6 +18,8 @@ import { useRemoveTaskTag } from '@/features/tasks/hooks/tags/useRemoveTaskTag'
 import { useProjectTags } from '@/features/tasks/hooks/tags/useProjectTags'
 import type { RecurrenceValue } from '@/features/tasks/components/RecurrenceFields'
 import type { Task, TaskStatus } from '@/shared/types/entities'
+import { useSettings } from '@/features/settings/hooks/useSettings'
+import { findDueToken, removeDueToken } from '@/features/tasks/lib/due'
 
 export function useCardPage(task: Task) {
   const [title, setTitle] = useState(task.title)
@@ -26,6 +28,7 @@ export function useCardPage(task: Task) {
   const [description, setDescription] = useState(task.description ?? '')
   const [pendingProjectId, setPendingProjectId] = useState<string | null>(null)
   const navigate = useNavigate()
+  const { settings } = useSettings()
 
   const { mutate: updateTask } = useUpdateTask()
   const { mutate: updateTaskStatus } = useUpdateTaskStatus()
@@ -47,14 +50,42 @@ export function useCardPage(task: Task) {
     endDate: task.recurrence_end_date,
   }
 
+  const discardTitleRef = useRef(false)
+
+  function handleTitleKeyDown(event: KeyboardEvent<HTMLInputElement>) {
+    if (event.key === 'Escape') {
+      discardTitleRef.current = true
+    }
+    if (event.key === 'Enter' || event.key === 'Escape') {
+      event.currentTarget.blur()
+    }
+  }
+
   function handleTitleBlur() {
     setIsEditingTitle(false)
-    const trimmed = title.trim()
-    if (!trimmed || trimmed === task.title) {
+    if (discardTitleRef.current) {
+      discardTitleRef.current = false
       setTitle(task.title)
       return
     }
-    updateTask({ id: task.id, data: { title: trimmed } })
+    const token =
+      project?.type === 'general'
+        ? findDueToken(title, new Date(), settings.weekStartsOn)
+        : null
+    const cleanedTitle = token ? removeDueToken(title, token) : title.trim()
+    // Título só com "@amanhã 14h": aplica o prazo e mantém o nome atual
+    const nextTitle = cleanedTitle || (token ? task.title : '')
+    if (!nextTitle || (nextTitle === task.title && !token)) {
+      setTitle(task.title)
+      return
+    }
+    setTitle(nextTitle)
+    updateTask({
+      id: task.id,
+      data: token
+        ? { title: nextTitle, due_date: token.dueDate, due_time: token.dueTime }
+        : { title: nextTitle },
+    })
   }
 
   function handleDescriptionBlur() {
@@ -134,6 +165,7 @@ export function useCardPage(task: Task) {
     isEditingTitle,
     setIsEditingTitle,
     handleTitleBlur,
+    handleTitleKeyDown,
     isSrsModalOpen,
     setIsSrsModalOpen,
     description,

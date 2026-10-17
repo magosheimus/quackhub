@@ -13,27 +13,28 @@ import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
 import { useCreateSprint } from '@/features/sprints/hooks/useCreateSprint'
 import { useSprints } from '@/features/sprints/hooks/useSprints'
-import { todayLocal } from '@/shared/lib/date'
+import { shiftDbDate, todayLocal } from '@/shared/lib/date'
+import { useSprintDueCandidates } from '@/features/sprints/hooks/useSprintDueCandidates'
+import { SprintDueCandidates } from '@/features/sprints/components/SprintDueCandidates'
+import { useAddTaskToSprint } from '@/features/tasks/hooks/sprint/useAddTaskToSprint'
+import { useProjects } from '@/features/projects/hooks/useProjects'
+import { getInitialStatusForType } from '@/features/tasks/lib/taskStatus'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
 import { SPRINTS_TEXTS } from '@/features/sprints/constants/texts'
 
 const SPRINT_DURATION_DAYS = 14
-
-function addDays(date: string, days: number): string {
-  const [year, month, day] = date.split('-').map(Number)
-  return new Date(Date.UTC(year, month - 1, day + days))
-    .toISOString()
-    .slice(0, 10)
-}
 
 export function SprintCreateModal() {
   const [open, setOpen] = useState(false)
   const [name, setName] = useState('')
   const [startDate, setStartDate] = useState(todayLocal())
   const [endDate, setEndDate] = useState(
-    addDays(todayLocal(), SPRINT_DURATION_DAYS),
+    shiftDbDate(todayLocal(), SPRINT_DURATION_DAYS),
   )
   const [goal, setGoal] = useState('')
+  const candidates = useSprintDueCandidates(startDate, endDate)
+  const { mutate: addTaskToSprint } = useAddTaskToSprint()
+  const { data: projects } = useProjects()
 
   const { data: sprints } = useSprints()
   const { mutate: createSprint, isPending } = useCreateSprint()
@@ -44,8 +45,9 @@ export function SprintCreateModal() {
       setName(SPRINTS_TEXTS.defaultName((sprints?.length ?? 0) + 1))
     } else {
       setStartDate(todayLocal())
-      setEndDate(addDays(todayLocal(), SPRINT_DURATION_DAYS))
+      setEndDate(shiftDbDate(todayLocal(), SPRINT_DURATION_DAYS))
       setGoal('')
+      candidates.reset()
     }
     setOpen(nextOpen)
   }
@@ -60,8 +62,28 @@ export function SprintCreateModal() {
         end_date: endDate || null,
         goal: goal.trim() || null,
       },
-      { onSuccess: () => handleOpenChange(false) },
+      {
+        onSuccess: (sprint) => {
+          addSelectedTasks(sprint.id)
+          handleOpenChange(false)
+        },
+      },
     )
+  }
+
+  function addSelectedTasks(sprintId: string) {
+    for (const task of candidates.selectedTasks) {
+      const project = projects?.find((item) => item.id === task.project_id)
+      if (!project) {
+        continue
+      }
+      addTaskToSprint({
+        taskId: task.id,
+        sprintId,
+        status: getInitialStatusForType(project.type),
+        projectId: task.project_id,
+      })
+    }
   }
 
   return (
@@ -124,6 +146,13 @@ export function SprintCreateModal() {
               placeholder={SPRINTS_TEXTS.goalPlaceholder}
             />
           </div>
+
+          <SprintDueCandidates
+            inPeriod={candidates.inPeriod}
+            overdue={candidates.overdue}
+            isSelected={candidates.isSelected}
+            onToggle={candidates.toggle}
+          />
         </div>
 
         <DialogFooter>

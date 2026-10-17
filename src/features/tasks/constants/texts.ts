@@ -61,6 +61,13 @@ export const TASKS_TEXTS = {
   createdAt: (date: string) => `Criado: ${date}`,
   updatedAt: (date: string) => `Atualizado: ${date}`,
   dueDate: 'Due Date',
+  dueTime: 'Horário',
+  dueToday: 'Hoje',
+  dueTomorrow: 'Amanhã',
+  noDue: 'sem data',
+  dueFromTitle: (label: string) => `Prazo: ${label}`,
+  keepInTitle: 'Desfazer',
+  dueLabel: (label: string) => `Prazo ${label}`,
   srs: 'SRS',
   // histórico
   activityTab: 'Movimentação',
@@ -150,3 +157,8 @@ export const TASKS_TEXTS = {
   pendingDependencies: (count: number, titles: string) =>
     `Não é possível concluir — ${count} dependência(s) pendente(s): ${titles}`,
 } as const
+
+export const DUE_LABELS = {
+  today: TASKS_TEXTS.dueToday,
+  tomorrow: TASKS_TEXTS.dueTomorrow,
+}

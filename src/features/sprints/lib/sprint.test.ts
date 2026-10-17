@@ -1,6 +1,8 @@
 import { describe, it, expect } from 'vitest'
 import {
   applyCarryover,
+  findDueCandidates,
+  isDueWithinSprint,
   computeSprintMetrics,
   getClosedSprintsByRecency,
   formatSprintBanner,
@@ -162,5 +164,37 @@ describe('formatSprintBanner', () => {
   it('omite a meta quando vazia', () => {
     const sprint = makeSprint({ name: 'Sprint 8', goal: null })
     expect(formatSprintBanner(sprint)).toBe('Sprint 8 (05/01 - 11/01)')
+  })
+})
+
+describe('findDueCandidates', () => {
+  const tasks = [
+    makeBaseTask({ id: 'no-periodo', due_date: '2026-10-30' }),
+    makeBaseTask({ id: 'cedo', due_date: '2026-10-27', due_time: '09:00:00' }),
+    makeBaseTask({ id: 'atrasado', due_date: '2026-10-20' }),
+    makeBaseTask({ id: 'depois', due_date: '2026-11-20' }),
+    makeBaseTask({ id: 'sem-prazo', due_date: null }),
+    makeBaseTask({ id: 'feito', due_date: '2026-10-29', status: 'done' }),
+    makeBaseTask({ id: 'em-sprint', due_date: '2026-10-29', sprint_id: 's1' }),
+  ]
+
+  it('separa os do período (pelo prazo) e os atrasados', () => {
+    const { inPeriod, overdue } = findDueCandidates(
+      tasks,
+      '2026-10-27',
+      '2026-11-09',
+    )
+    expect(inPeriod.map((t) => t.id)).toEqual(['cedo', 'no-periodo'])
+    expect(overdue.map((t) => t.id)).toEqual(['atrasado'])
+  })
+})
+
+describe('isDueWithinSprint', () => {
+  const sprint = { start_date: '2026-10-13', end_date: '2026-10-26' }
+
+  it('vale para prazos entre o início e o fim, inclusive', () => {
+    expect(isDueWithinSprint('2026-10-26', sprint)).toBe(true)
+    expect(isDueWithinSprint('2026-10-30', sprint)).toBe(false)
+    expect(isDueWithinSprint(null, sprint)).toBe(false)
   })
 })

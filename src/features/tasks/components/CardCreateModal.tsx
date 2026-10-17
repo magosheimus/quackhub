@@ -1,4 +1,7 @@
-import { IconPlus, IconRefresh } from '@/shared/lib/icons'
+import { IconCalendar, IconPlus, IconRefresh } from '@/shared/lib/icons'
+import { useTitleDue } from '@/features/tasks/hooks/useTitleDue'
+import { isDueWithinSprint } from '@/features/sprints/lib/sprint'
+import { formatDueTime } from '@/features/tasks/lib/due'
 import { UrgentToggle } from '@/features/tasks/components/UrgentToggle'
 import { InlineHint } from '@/components/ui/inline-hint'
 import { useRef, useState } from 'react'
@@ -74,12 +77,14 @@ export function CardCreateModal({
   const [newEpicName, setNewEpicName] = useState<string | null>(null)
   const [epicId, setEpicId] = useState<string | null>(null)
   const [sprintId, setSprintId] = useState<string | null>(null)
+  const [isSprintTouched, setIsSprintTouched] = useState(false)
   const [assigneeId, setAssigneeId] = useState<string | null>(null)
   const [title, setTitle] = useState(initialTitle ?? '')
   const [description, setDescription] = useState('')
   const [priority, setPriority] = useState<TaskPriority>('medium')
   const [flagged, setFlagged] = useState(false)
   const [dueDate, setDueDate] = useState<string | null>(null)
+  const [dueTime, setDueTime] = useState<string | null>(null)
   const [tags, setTags] = useState<string[]>([])
   const [dependencies, setDependencies] = useState<Task[]>([])
   const [createAnother, setCreateAnother] = useState(false)
@@ -99,13 +104,25 @@ export function CardCreateModal({
   const { mutateAsync: createEpic, isPending: isCreatingEpic } = useCreateEpic()
 
   const project = projects?.find((p) => p.id === projectId)
-  const debouncedTitle = useDebouncedValue(title, 300)
+  const titleDue = useTitleDue(title, project?.type === 'general')
+  const effectiveDueDate = titleDue.token ? titleDue.token.dueDate : dueDate
+  const effectiveDueTime = titleDue.token ? titleDue.token.dueTime : dueTime
+  const debouncedTitle = useDebouncedValue(titleDue.cleanTitle, 300)
   const { data: similarCards } = useSimilarCards(debouncedTitle, projectId)
   const { data: tagSuggestions } = useProjectTags(projectId)
 
   const eligibleSprints = sprints?.filter(
     (s) => s.status === 'planned' || s.status === 'active',
   )
+  // Prazo dentro da sprint ativa: sugere ela, até o usuário escolher outra coisa
+  const activeSprint = eligibleSprints?.find((s) => s.status === 'active')
+  const suggestedSprintId =
+    !isSprintTouched &&
+    activeSprint &&
+    isDueWithinSprint(effectiveDueDate, activeSprint)
+      ? activeSprint.id
+      : null
+  const effectiveSprintId = sprintId ?? suggestedSprintId
 
   const recurrenceDetected =
     !recurrenceBannerDismissed && detectRecurrencePattern(similarCards ?? [])
@@ -115,12 +132,14 @@ export function CardCreateModal({
     setNewEpicName(null)
     setEpicId(null)
     setSprintId(null)
+    setIsSprintTouched(false)
     setAssigneeId(null)
     setTitle('')
     setDescription('')
     setPriority('medium')
     setFlagged(false)
     setDueDate(null)
+    setDueTime(null)
     setRecurrence({
       type: null,
       interval: null,
@@ -150,17 +169,19 @@ export function CardCreateModal({
   }
 
   function buildTaskPayload() {
-    if (!projectId || !title.trim() || !project) return null
+    if (!projectId || !titleDue.cleanTitle || !project) return null
+    const isGeneral = project.type === 'general'
     return {
       project_id: projectId,
       epic_id: epicId,
-      sprint_id: sprintId,
+      sprint_id: effectiveSprintId,
       assignee_id: assigneeId,
-      title: title.trim(),
+      title: titleDue.cleanTitle,
       description: description.trim() || null,
       priority,
       flagged,
-      due_date: project.type === 'general' ? dueDate : null,
+      due_date: isGeneral ? effectiveDueDate : null,
+      due_time: isGeneral && effectiveDueDate ? effectiveDueTime : null,
       status: getInitialStatusForType(project.type),
       recurrence_type: recurrence.type,
       recurrence_interval: recurrence.interval,
@@ -174,6 +195,7 @@ export function CardCreateModal({
     setDescription('')
     setFlagged(false)
     setDueDate(null)
+    setDueTime(null)
     setRecurrence({
       type: null,
       interval: null,
@@ -298,14 +320,18 @@ export function CardCreateModal({
                 </span>
               </HintTooltip>
               <Select
-                value={sprintId ?? NONE_VALUE}
-                onValueChange={(v) => setSprintId(v === NONE_VALUE ? null : v)}
+                value={effectiveSprintId ?? NONE_VALUE}
+                onValueChange={(v) => {
+                  setIsSprintTouched(true)
+                  setSprintId(v === NONE_VALUE ? null : v)
+                }}
               >
                 <SelectTrigger aria-labelledby="card-sprint-label">
                   <SelectValue>
-                    {sprintId
-                      ? (eligibleSprints?.find((s) => s.id === sprintId)
-                          ?.name ?? TASKS_TEXTS.sprint)
+                    {effectiveSprintId
+                      ? (eligibleSprints?.find(
+                          (s) => s.id === effectiveSprintId,
+                        )?.name ?? TASKS_TEXTS.sprint)
                       : TASKS_TEXTS.backlogDefault}
                   </SelectValue>
                 </SelectTrigger>
@@ -340,6 +366,18 @@ export function CardCreateModal({
               onChange={(e) => setTitle(e.target.value)}
               placeholder={TASKS_TEXTS.titlePlaceholder}
             />
+            {titleDue.hint && (
+              <InlineHint icon={IconCalendar}>
+                {titleDue.hint}
+                <button
+                  type="button"
+                  onClick={titleDue.keepInTitle}
+                  className="underline hover:text-accent"
+                >
+                  {TASKS_TEXTS.keepInTitle}
+                </button>
+              </InlineHint>
+            )}
             <SimilarCardsHint cards={similarCards ?? []} />
           </div>
 
@@ -390,16 +428,38 @@ export function CardCreateModal({
 
           {project?.type === 'general' && (
             <div className="grid grid-cols-1 items-start gap-4 sm:grid-cols-2">
-              <div className="flex min-w-0 flex-col gap-1.5">
-                <label htmlFor="card-due-date" className="text-caption">
-                  {TASKS_TEXTS.dueDate}
-                </label>
-                <Input
-                  id="card-due-date"
-                  type="date"
-                  value={dueDate ?? ''}
-                  onChange={(e) => setDueDate(e.target.value || null)}
-                />
+              <div className="flex min-w-0 gap-2">
+                <div className="flex min-w-0 flex-1 flex-col gap-1.5">
+                  <label htmlFor="card-due-date" className="text-caption">
+                    {TASKS_TEXTS.dueDate}
+                  </label>
+                  <Input
+                    id="card-due-date"
+                    type="date"
+                    value={effectiveDueDate ?? ''}
+                    onChange={(e) => {
+                      titleDue.keepInTitle()
+                      setDueTime(effectiveDueTime)
+                      setDueDate(e.target.value || null)
+                    }}
+                  />
+                </div>
+                <div className="flex w-28 shrink-0 flex-col gap-1.5">
+                  <label htmlFor="card-due-time" className="text-caption">
+                    {TASKS_TEXTS.dueTime}
+                  </label>
+                  <Input
+                    id="card-due-time"
+                    type="time"
+                    value={formatDueTime(effectiveDueTime) ?? ''}
+                    onChange={(e) => {
+                      titleDue.keepInTitle()
+                      setDueDate(effectiveDueDate)
+                      setDueTime(e.target.value || null)
+                    }}
+                    disabled={!effectiveDueDate}
+                  />
+                </div>
               </div>
               <div className="flex min-w-0 flex-col gap-1.5">
                 {!recurrence.type && (
@@ -492,7 +552,7 @@ export function CardCreateModal({
           <Button
             onClick={handleSubmit}
             disabled={
-              !projectId || !title.trim() || isPending || isCreatingEpic
+              !projectId || !titleDue.cleanTitle || isPending || isCreatingEpic
             }
           >
             {isPending || isCreatingEpic

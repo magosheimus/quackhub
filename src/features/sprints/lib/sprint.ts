@@ -95,3 +95,49 @@ export function formatSprintBanner(sprint: Sprint): string {
   const period = `${formatDayMonth(sprint.start_date)} - ${formatDayMonth(sprint.end_date)}`
   return `${sprint.name}${goal} (${period})`
 }
+
+export type DueCandidates = {
+  inPeriod: Task[]
+  overdue: Task[]
+}
+
+function byDue(a: Task, b: Task): number {
+  return (
+    (a.due_date ?? '').localeCompare(b.due_date ?? '') ||
+    (a.due_time ?? '99').localeCompare(b.due_time ?? '99')
+  )
+}
+
+// Cards do Backlog (sem sprint, não finalizados) com prazo no período da sprint
+// nova; os já vencidos antes do início vêm à parte
+export function findDueCandidates(
+  tasks: Task[],
+  startDate: string,
+  endDate: string,
+): DueCandidates {
+  const open = tasks.filter(
+    (task) =>
+      task.sprint_id === null && task.status !== 'done' && task.due_date,
+  )
+  return {
+    inPeriod: open
+      .filter((task) => {
+        const due = task.due_date ?? ''
+        return due >= startDate && due <= endDate
+      })
+      .sort(byDue),
+    overdue: open
+      .filter((task) => (task.due_date ?? '') < startDate)
+      .sort(byDue),
+  }
+}
+
+export function isDueWithinSprint(
+  dueDate: string | null,
+  sprint: Pick<Sprint, 'start_date' | 'end_date'>,
+): boolean {
+  if (!dueDate || !sprint.start_date || !sprint.end_date) {
+    return false
+  }
+  return dueDate >= sprint.start_date && dueDate <= sprint.end_date
+}

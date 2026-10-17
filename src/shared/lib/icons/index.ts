@@ -62,6 +62,7 @@ import { Meh } from 'pixelarticons/react/Meh'
 import { Menu } from 'pixelarticons/react/Menu'
 import { Minus } from 'pixelarticons/react/Minus'
 import { Moon } from 'pixelarticons/react/Moon'
+import { ChevronsVertical2 } from 'pixelarticons/react/ChevronsVertical2'
 import { Move } from 'pixelarticons/react/Move'
 import { Mug } from 'pixelarticons/react/Mug'
 import { Music } from 'pixelarticons/react/Music'
@@ -177,6 +178,7 @@ export const IconMoodGreat = createIcon(RobotFaceHappySharp)
 export const IconMoodNeutral = createIcon(RobotSharp)
 export const IconMoodTired = createIcon(RobotFaceSad)
 export const IconMoon = createIcon(Moon)
+export const IconChevronsVertical = createIcon(ChevronsVertical2)
 export const IconMove = createIcon(Move)
 export const IconMug = createIcon(Mug)
 export const IconMusic = createIcon(Music)

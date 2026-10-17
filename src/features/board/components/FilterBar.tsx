@@ -1,5 +1,4 @@
 import { Button } from '@/components/ui/button'
-import type { BoardFilters } from '@/features/board/lib/board'
 import { ColorDot } from '@/components/ui/color-dot'
 import type { EpicOption } from '@/features/epics/lib/epic'
 import type { ProjectOption } from '@/features/projects/lib/project'
@@ -7,6 +6,12 @@ import { BOARD_TEXTS } from '@/features/board/constants/texts'
 import { PersonaIcon } from '@/features/personas/components/PersonaIcon'
 import type { PersonaOption } from '@/features/personas/lib/persona'
 import { toggleItem } from '@/shared/lib/array'
+import { QuickFilterMenu } from '@/features/board/components/QuickFilterMenu'
+import type {
+  BoardFilters,
+  QuickFilterKind,
+  QuickFilterMenuGroup,
+} from '@/features/board/lib/board'
 
 type FilterBarProps = {
   filters: BoardFilters
@@ -17,6 +22,8 @@ type FilterBarProps = {
   epics: EpicOption[]
   projects: ProjectOption[]
   personas: PersonaOption[]
+  menuGroups: QuickFilterMenuGroup[]
+  onToggleQuickFilter: (kind: QuickFilterKind, id: string) => void
 }
 
 const CHIP_CLASS = 'bg-card hover:bg-hover'
@@ -34,6 +41,8 @@ export function FilterBar({
   epics,
   projects,
   personas,
+  menuGroups,
+  onToggleQuickFilter,
 }: FilterBarProps) {
   return (
     <div className="flex flex-wrap items-center gap-2">
@@ -96,6 +105,7 @@ export function FilterBar({
           {persona.name}
         </Button>
       ))}
+      <QuickFilterMenu groups={menuGroups} onToggle={onToggleQuickFilter} />
     </div>
   )
 }
