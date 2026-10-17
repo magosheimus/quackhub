@@ -48,3 +48,5 @@ export type ProjectType = Enums<'project_type'>
 export type RecurrenceType = Enums<'recurrence_type'>
 export type DraftTriageTarget = Enums<'draft_triage_target'>
 export type HabitType = Enums<'habit_type'>
+
+export type ActivityEventType = Enums<'activity_event_type'>

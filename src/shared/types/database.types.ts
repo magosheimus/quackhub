@@ -777,7 +777,13 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      activity_event_type: 'status_change' | 'sprint_change'
+      activity_event_type:
+        | 'status_change'
+        | 'sprint_change'
+        | 'priority_change'
+        | 'flag_change'
+        | 'epic_change'
+        | 'project_change'
       draft_triage_target: 'task' | 'project' | 'habit' | 'discarded' | 'done'
       habit_type: 'boolean' | 'counter'
       project_type: 'general' | 'study'
@@ -919,7 +925,14 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      activity_event_type: ['status_change', 'sprint_change'],
+      activity_event_type: [
+        'status_change',
+        'sprint_change',
+        'priority_change',
+        'flag_change',
+        'epic_change',
+        'project_change',
+      ],
       draft_triage_target: ['task', 'project', 'habit', 'discarded', 'done'],
       habit_type: ['boolean', 'counter'],
       project_type: ['general', 'study'],

@@ -8,6 +8,7 @@ import {
   getWeekDays,
   shiftDbDate,
   toDbDate,
+  formatDateTime,
 } from './date'
 
 describe('formatDayMonth', () => {
@@ -92,5 +93,16 @@ describe('daysBetween', () => {
 describe('formatMonthYear', () => {
   it('mês por extenso com inicial maiúscula', () => {
     expect(formatMonthYear('2026-09')).toBe('Setembro de 2026')
+  })
+})
+
+describe('formatDateTime', () => {
+  it('mostra data e hora no horário local', () => {
+    const timestamp = new Date(2026, 9, 17, 20, 52).toISOString()
+    expect(formatDateTime(timestamp)).toBe('17/10/2026 · 20:52')
+  })
+
+  it('usa ? para data ausente', () => {
+    expect(formatDateTime(null)).toBe('?')
   })
 })
