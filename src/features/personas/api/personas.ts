@@ -1,10 +1,15 @@
 import { supabase } from '@/shared/api/supabase'
 import { UserFacingError } from '@/shared/lib/errors'
+import {
+  toPersona,
+  toPersonaInsert,
+  toPersonaUpdate,
+} from '@/features/personas/api/personaMapper'
 import type {
   NewPersona,
   Persona,
   PersonaUpdate,
-} from '@/shared/types/entities'
+} from '@/features/personas/model/persona'
 import { PERSONAS_TEXTS } from '@/features/personas/constants/texts'
 
 export async function getPersonas(): Promise<Persona[]> {
@@ -13,13 +18,13 @@ export async function getPersonas(): Promise<Persona[]> {
     .select('*')
     .order('name')
   if (error) throw new Error(`Falha ao buscar personas: ${error.message}`)
-  return data
+  return data.map(toPersona)
 }
 
 export async function createPersona(data: NewPersona): Promise<Persona> {
   const { data: persona, error } = await supabase
     .from('personas')
-    .insert(data)
+    .insert(toPersonaInsert(data))
     .select()
     .single()
   if (error) {
@@ -28,7 +33,7 @@ export async function createPersona(data: NewPersona): Promise<Persona> {
     }
     throw new Error(`Falha ao criar persona: ${error.message}`)
   }
-  return persona
+  return toPersona(persona)
 }
 
 export async function updatePersona(
@@ -37,7 +42,7 @@ export async function updatePersona(
 ): Promise<Persona> {
   const { data: persona, error } = await supabase
     .from('personas')
-    .update(data)
+    .update(toPersonaUpdate(data))
     .eq('id', id)
     .select()
     .single()
@@ -47,7 +52,7 @@ export async function updatePersona(
     }
     throw new Error(`Falha ao atualizar persona: ${error.message}`)
   }
-  return persona
+  return toPersona(persona)
 }
 
 export async function deletePersona(id: string): Promise<void> {

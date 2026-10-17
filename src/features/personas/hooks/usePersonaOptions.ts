@@ -1,23 +1,20 @@
 import { usePersonas } from '@/features/personas/hooks/usePersonas'
-import {
-  findPersonaOption,
-  toPersonaOption,
-  type PersonaOption,
-} from '@/features/personas/lib/persona'
+import { findPersona } from '@/features/personas/lib/persona'
+import type { Persona } from '@/features/personas/model/persona'
 
-export function usePersonaOptions(): PersonaOption[] {
+export function usePersonaOptions(): Persona[] {
   const { data: personas = [] } = usePersonas()
-  return personas.map(toPersonaOption)
+  return personas
 }
 
-export function useAssignee(assigneeId: string | null): PersonaOption | null {
-  return findPersonaOption(usePersonaOptions(), assigneeId)
+export function useAssignee(assigneeId: string | null): Persona | null {
+  return findPersona(usePersonaOptions(), assigneeId)
 }
 
 export function usePersonaSelect(value: string | null) {
   const personaOptions = usePersonaOptions()
   return {
     personaOptions,
-    selected: findPersonaOption(personaOptions, value),
+    selected: findPersona(personaOptions, value),
   }
 }

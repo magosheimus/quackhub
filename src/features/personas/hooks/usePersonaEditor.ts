@@ -10,18 +10,15 @@ import {
   useUpdatePersona,
 } from '@/features/personas/hooks/usePersonaMutations'
 import {
-  getPersonaIconKey,
   normalizePersonaName,
   type PersonaIconOption,
 } from '@/features/personas/lib/persona'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
-import type { Persona } from '@/shared/types/entities'
+import type { Persona } from '@/features/personas/model/persona'
 
 export function usePersonaEditor(persona: Persona | null, onDone: () => void) {
   const [name, setName] = useState(persona?.name ?? '')
-  const [icon, setIcon] = useState<PersonaIconOption>(
-    persona ? getPersonaIconKey(persona) : null,
-  )
+  const [icon, setIcon] = useState<PersonaIconOption>(persona?.icon ?? null)
   const nameInputRef = useRef<HTMLInputElement>(null)
   const { mutate: createPersona, isPending: isCreating } = useCreatePersona()
   const { mutate: updatePersona, isPending: isUpdating } = useUpdatePersona()

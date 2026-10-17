@@ -4,7 +4,7 @@ import type { EpicOption } from '@/features/epics/lib/epic'
 import type { ProjectOption } from '@/features/projects/lib/project'
 import { BOARD_TEXTS } from '@/features/board/constants/texts'
 import { PersonaIcon } from '@/features/personas/components/PersonaIcon'
-import type { PersonaOption } from '@/features/personas/lib/persona'
+import type { Persona } from '@/features/personas/model/persona'
 import { toggleItem } from '@/shared/lib/array'
 import { QuickFilterMenu } from '@/features/board/components/QuickFilterMenu'
 import type {
@@ -21,7 +21,7 @@ type FilterBarProps = {
   ) => void
   epics: EpicOption[]
   projects: ProjectOption[]
-  personas: PersonaOption[]
+  personas: Persona[]
   menuGroups: QuickFilterMenuGroup[]
   onToggleQuickFilter: (kind: QuickFilterKind, id: string) => void
 }
