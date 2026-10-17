@@ -30,6 +30,7 @@ import {
   pickHabitHighlights,
   getDayWindow,
   DAY_WINDOW_SIZE,
+  canLogDay,
 } from './dailyTracker'
 import { getDateRange } from '@/shared/lib/date'
 
@@ -497,5 +498,25 @@ describe('getDayWindow', () => {
     const end = getDayWindow(longSprint, '2026-10-19', 0)
     expect(end.days.at(-1)).toBe('2026-10-20')
     expect(end.canGoForward).toBe(false)
+  })
+})
+
+describe('canLogDay', () => {
+  const today = '2026-10-17'
+  const habit = makeHabit()
+
+  it('libera hoje e ontem, trava os dias anteriores e o futuro', () => {
+    expect(canLogDay(habit, today, today)).toBe(true)
+    expect(canLogDay(habit, '2026-10-16', today)).toBe(true)
+    expect(canLogDay(habit, '2026-10-15', today)).toBe(false)
+    expect(canLogDay(habit, '2026-10-18', today)).toBe(false)
+  })
+
+  it('trava o dia se o hábito não estava agendado ou ainda não existia', () => {
+    const onlyMondays = makeHabit({ weekdays: [1] })
+    expect(canLogDay(onlyMondays, '2026-10-16', today)).toBe(false)
+    const createdToday = makeHabit({ created_at: '2026-10-17T10:00:00Z' })
+    expect(canLogDay(createdToday, '2026-10-16', today)).toBe(false)
+    expect(canLogDay(createdToday, today, today)).toBe(true)
   })
 })

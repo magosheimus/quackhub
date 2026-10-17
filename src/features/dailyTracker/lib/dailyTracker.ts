@@ -10,6 +10,7 @@ import {
   getDateRange,
   getWeekDays,
   parseDbDate,
+  shiftDbDate,
   toDbDate,
 } from '@/shared/lib/date'
 import {
@@ -76,6 +77,11 @@ export function isMissedDay(
   value: number,
 ): boolean {
   return date < today && value <= 0 && trackedDays(habit, [date]).length > 0
+}
+
+export function canLogDay(habit: Habit, date: string, today: string): boolean {
+  const isTodayOrYesterday = date === today || date === shiftDbDate(today, -1)
+  return isTodayOrYesterday && trackedDays(habit, [date]).length > 0
 }
 
 export function getWeekdayOrder(weekStartsOn: 0 | 1): number[] {

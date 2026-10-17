@@ -33,6 +33,7 @@ import {
   splitTodayHabits,
   type MoodLevel,
   type TodayHabit,
+  canLogDay,
 } from '@/features/dailyTracker/lib/dailyTracker'
 import {
   DAILY_TRACKER_TEXTS,
@@ -64,6 +65,7 @@ export type HeatCell = {
   isBeforeStart: boolean
   isFuture: boolean
   isMissed: boolean
+  isEditable: boolean
   label: string
 }
 
@@ -194,6 +196,7 @@ export function useDailyTrackerPage() {
           isBeforeStart,
           isFuture: date > today,
           isMissed: isMissedDay(habit, date, today, value),
+          isEditable: canLogDay(habit, date, today),
           label: DAILY_TRACKER_TEXTS.cellLabel(
             habit.name,
             formatDayMonth(date),
@@ -225,22 +228,22 @@ export function useDailyTrackerPage() {
     logHabit({ habitId: habit.id, date, value })
   }
 
-  function setTodayValue(habit: Habit, value: number) {
-    setValue(habit, today, Math.max(value, 0))
+  function setDayValue(habit: Habit, date: string, value: number) {
+    setValue(habit, date, Math.max(value, 0))
   }
 
-  function commitTodayValue(habit: Habit, text: string) {
+  function commitDayValue(habit: Habit, date: string, text: string) {
     const value = parseCounterValue(text)
     if (value !== null) {
-      setValue(habit, today, value)
+      setValue(habit, date, value)
     }
   }
 
-  function toggleToday(habit: Habit) {
+  function toggleDay(habit: Habit, date: string) {
     setValue(
       habit,
-      today,
-      nextHabitValue(habit, getLogValue(logs, habit.id, today)),
+      date,
+      nextHabitValue(habit, getLogValue(logs, habit.id, date)),
     )
   }
 
@@ -278,9 +281,14 @@ export function useDailyTrackerPage() {
       todayTotal > 0
         ? DAILY_TRACKER_TEXTS.todayProgress(done.length, todayTotal)
         : undefined,
-    setTodayValue,
-    commitTodayValue,
-    toggleToday,
+    setTodayValue: (habit: Habit, value: number) =>
+      setDayValue(habit, today, value),
+    commitTodayValue: (habit: Habit, text: string) =>
+      commitDayValue(habit, today, text),
+    toggleToday: (habit: Habit) => toggleDay(habit, today),
+    setDayValue,
+    commitDayValue,
+    toggleDay,
     heatDays,
     heatRows,
     dayWindow: dayWindowNav,
