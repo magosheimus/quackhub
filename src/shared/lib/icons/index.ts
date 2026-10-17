@@ -26,6 +26,7 @@ import { ChevronDown } from 'pixelarticons/react/ChevronDown'
 import { ChevronLeft } from 'pixelarticons/react/ChevronLeft'
 import { ChevronRight } from 'pixelarticons/react/ChevronRight'
 import { ChevronUp } from 'pixelarticons/react/ChevronUp'
+import { ChevronsVertical2 } from 'pixelarticons/react/ChevronsVertical2'
 import { CigaretteOff } from 'pixelarticons/react/CigaretteOff'
 import { Clock } from 'pixelarticons/react/Clock'
 import { Close } from 'pixelarticons/react/Close'
@@ -33,6 +34,7 @@ import { Cloud } from 'pixelarticons/react/Cloud'
 import { Code } from 'pixelarticons/react/Code'
 import { Coins } from 'pixelarticons/react/Coins'
 import { Crown } from 'pixelarticons/react/Crown'
+import { DeleteSharp } from 'pixelarticons/react/DeleteSharp'
 import { DiamondGem } from 'pixelarticons/react/DiamondGem'
 import { Discord } from 'pixelarticons/react/Discord'
 import { Dog } from 'pixelarticons/react/Dog'
@@ -62,7 +64,7 @@ import { Meh } from 'pixelarticons/react/Meh'
 import { Menu } from 'pixelarticons/react/Menu'
 import { Minus } from 'pixelarticons/react/Minus'
 import { Moon } from 'pixelarticons/react/Moon'
-import { ChevronsVertical2 } from 'pixelarticons/react/ChevronsVertical2'
+import { MoreHorizontalSharp } from 'pixelarticons/react/MoreHorizontalSharp'
 import { Move } from 'pixelarticons/react/Move'
 import { Mug } from 'pixelarticons/react/Mug'
 import { Music } from 'pixelarticons/react/Music'
@@ -138,12 +140,14 @@ export const IconChevronDown = createIcon(ChevronDown)
 export const IconChevronLeft = createIcon(ChevronLeft)
 export const IconChevronRight = createIcon(ChevronRight)
 export const IconChevronUp = createIcon(ChevronUp)
+export const IconChevronsVertical = createIcon(ChevronsVertical2)
 export const IconClock = createIcon(Clock)
 export const IconClose = createIcon(Close)
 export const IconCloud = createIcon(Cloud)
 export const IconCode = createIcon(Code)
 export const IconCoins = createIcon(Coins)
 export const IconCrown = createIcon(Crown)
+export const IconDeleteSharp = createIcon(DeleteSharp)
 export const IconDiscord = createIcon(Discord)
 export const IconDog = createIcon(Dog)
 export const IconExercise = createIcon(HumanArmsUp)
@@ -178,7 +182,7 @@ export const IconMoodGreat = createIcon(RobotFaceHappySharp)
 export const IconMoodNeutral = createIcon(RobotSharp)
 export const IconMoodTired = createIcon(RobotFaceSad)
 export const IconMoon = createIcon(Moon)
-export const IconChevronsVertical = createIcon(ChevronsVertical2)
+export const IconMore = createIcon(MoreHorizontalSharp)
 export const IconMove = createIcon(Move)
 export const IconMug = createIcon(Mug)
 export const IconMusic = createIcon(Music)

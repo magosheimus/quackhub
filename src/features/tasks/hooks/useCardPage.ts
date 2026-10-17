@@ -20,6 +20,7 @@ import type { RecurrenceValue } from '@/features/tasks/components/RecurrenceFiel
 import type { Task, TaskStatus } from '@/shared/types/entities'
 import { useSettings } from '@/features/settings/hooks/useSettings'
 import { findDueToken, removeDueToken } from '@/features/tasks/lib/due'
+import { useSoftDeleteTask } from '@/features/tasks/hooks/useSoftDeleteTask'
 
 export function useCardPage(task: Task) {
   const [title, setTitle] = useState(task.title)
@@ -42,6 +43,13 @@ export function useCardPage(task: Task) {
   const { data: tagSuggestions } = useProjectTags(task.project_id)
   const { mutate: addTaskTag } = useAddTaskTag()
   const { mutate: removeTaskTag } = useRemoveTaskTag()
+  const [isConfirmingDelete, setIsConfirmingDelete] = useState(false)
+  const { mutate: softDeleteTask } = useSoftDeleteTask()
+
+  function deleteTask() {
+    navigate(-1)
+    softDeleteTask(task.id)
+  }
 
   const recurrenceValue: RecurrenceValue = {
     type: task.recurrence_type,
@@ -174,5 +182,8 @@ export function useCardPage(task: Task) {
     handleTagsChange,
     recurrenceValue,
     handleRecurrenceChange,
+    isConfirmingDelete,
+    setIsConfirmingDelete,
+    deleteTask,
   }
 }

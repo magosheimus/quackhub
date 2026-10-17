@@ -83,6 +83,9 @@ function CardPageBody({ task }: { task: Task }) {
     requestProjectChange,
     confirmProjectChange,
     cancelProjectChange,
+    isConfirmingDelete,
+    setIsConfirmingDelete,
+    deleteTask,
   } = useCardPage(task)
 
   return (
@@ -98,6 +101,7 @@ function CardPageBody({ task }: { task: Task }) {
         onTitleBlur={handleTitleBlur}
         onTitleKeyDown={handleTitleKeyDown}
         onBack={() => navigate(-1)}
+        onDelete={() => setIsConfirmingDelete(true)}
       />
 
       <div className="grid gap-6 sm:grid-cols-[1fr_240px]">
@@ -182,6 +186,14 @@ function CardPageBody({ task }: { task: Task }) {
         description={projectMoveDescription ?? ''}
         confirmLabel={TASKS_TEXTS.moveProjectConfirm}
         onConfirm={confirmProjectChange}
+      />
+      <ConfirmDialog
+        open={isConfirmingDelete}
+        onOpenChange={setIsConfirmingDelete}
+        title={TASKS_TEXTS.deleteCard}
+        description={TASKS_TEXTS.deleteCardDescription(task.title)}
+        confirmLabel={TASKS_TEXTS.deleteCardConfirm}
+        onConfirm={deleteTask}
       />
     </div>
   )

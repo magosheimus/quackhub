@@ -49,12 +49,17 @@ export const TASKS_TEXTS = {
     ]
       .filter(Boolean)
       .join(' '),
+  deleteCard: 'Excluir card',
+  deleteCardConfirm: 'Excluir',
+  deleteCardDescription: (title: string) =>
+    `"${title}" sai do Board, do Backlog e da Inbox.`,
   epicLabel: 'Épico:',
   none: 'Nenhum',
   sprintLabel: 'Sprint:',
   priorityLabel: 'Prioridade:',
   statusLabel: 'Situação:',
   tagsLabel: 'Tags:',
+  cardActions: 'Ações do card',
   description: 'Descrição',
   descriptionPlaceholder: 'Adicionar contexto...',
   dates: 'Datas',
