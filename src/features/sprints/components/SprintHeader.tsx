@@ -32,7 +32,7 @@ export function SprintHeader({ activeSprint, tasks }: SprintHeaderProps) {
           <span className="flex flex-wrap items-baseline gap-x-2 font-heading text-2xl text-fg">
             {activeSprint.name}
             {(activeSprint.start_date || activeSprint.end_date) && (
-              <span className="font-body text-caption">
+              <span className="font-body text-base">
                 ({formatFullDate(activeSprint.start_date)} →{' '}
                 {formatFullDate(activeSprint.end_date)})
               </span>

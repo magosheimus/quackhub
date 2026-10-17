@@ -68,6 +68,8 @@
   --glow: 0 0 #0000;
   --glow-filter: none;
   --glow-color: var(--accent);
+  --glitch-red: oklch(0.63 0.26 25);
+  --glitch-cyan: oklch(0.82 0.14 205);
   --icon-shadow: drop-shadow(
     1px 1px 0 color-mix(in srgb, var(--lcd-ink) 22%, transparent)
   );
@@ -316,11 +318,48 @@
   --scanline-opacity: 1;
 }
 
+/* Cores redeclaradas nos elementos para --glow-color valer por elemento */
+.glow-on,
+.glow-on :is(.font-heading, [aria-current='page'], .glow-active) {
+  --ghost-a: transparent;
+  --ghost-b: var(--glow-color);
+}
+
+.glow-on.lcd-glitch,
+.glow-on.lcd-glitch :is(.font-heading, [aria-current='page'], .glow-active) {
+  --ghost-a: var(--glitch-red);
+  --ghost-b: var(--glitch-cyan);
+}
+
+.glow-on {
+  --ghost-offset: 0.05em;
+  --ghost-logo-offset: 1.5px;
+  --ghost-alpha: 45%;
+}
+
+.glow-on.lcd-glitch {
+  --ghost-offset: 0.06em;
+  --ghost-logo-offset: 2px;
+  --ghost-alpha: 75%;
+}
+
+.glow-on.lcd-off {
+  --ghost-offset: 0em;
+  --ghost-logo-offset: 0px;
+  --ghost-alpha: 0%;
+}
+
 /* Pato da logo: drop-shadow em px */
 .glow-on {
   --glow-filter: drop-shadow(
-      0 0 1px color-mix(in oklch, var(--glow-color) 70%, transparent)
+      calc(var(--ghost-logo-offset) * -1) 0 0
+        color-mix(in oklch, var(--ghost-a) var(--ghost-alpha), transparent)
     )
+    drop-shadow(
+      var(--ghost-logo-offset) 0 0
+        color-mix(in oklch, var(--ghost-b) var(--ghost-alpha), transparent)
+    )
+    drop-shadow(0 0 1px color-mix(in oklch, var(--glow-color) 70%, transparent))
     drop-shadow(0 0 5px color-mix(in oklch, var(--glow-color) 45%, transparent))
     drop-shadow(
       0 0 12px color-mix(in oklch, var(--glow-color) 25%, transparent)
@@ -329,7 +368,12 @@
 
 .glow-on:not(.theme-dark) {
   --glow-filter: drop-shadow(
-      1.5px 0 0 color-mix(in oklch, var(--glow-color) 45%, transparent)
+      calc(var(--ghost-logo-offset) * -1) 0 0
+        color-mix(in oklch, var(--ghost-a) var(--ghost-alpha), transparent)
+    )
+    drop-shadow(
+      var(--ghost-logo-offset) 0 0
+        color-mix(in oklch, var(--ghost-b) var(--ghost-alpha), transparent)
     )
     drop-shadow(0 0 4px color-mix(in oklch, var(--glow-color) 50%, transparent));
 }
@@ -339,17 +383,24 @@
    Valores em em: o efeito acompanha o tamanho da fonte (base: títulos de ~32px) */
 .glow-on :is(.font-heading, [aria-current='page'], .glow-active) {
   --glow:
+    calc(var(--ghost-offset) * -1) 0 0
+      color-mix(in oklch, var(--ghost-a) var(--ghost-alpha), transparent),
+    var(--ghost-offset) 0 0
+      color-mix(in oklch, var(--ghost-b) var(--ghost-alpha), transparent),
     0 0 0.03em color-mix(in oklch, var(--glow-color) 70%, transparent),
     0 0 0.19em color-mix(in oklch, var(--glow-color) 50%, transparent),
     0 0 0.5em color-mix(in oklch, var(--glow-color) 35%, transparent),
     0 0 1em color-mix(in oklch, var(--glow-color) 15%, transparent);
 }
 
-/* Temas claros: ghosting de LCD (cópia clara deslocada na horizontal) + halo suave */
+/* Temas claros trocam o halo largo do escuro por um suave */
 .glow-on:not(.theme-dark)
   :is(.font-heading, [aria-current='page'], .glow-active) {
   --glow:
-    0.05em 0 0 color-mix(in oklch, var(--glow-color) 45%, transparent),
+    calc(var(--ghost-offset) * -1) 0 0
+      color-mix(in oklch, var(--ghost-a) var(--ghost-alpha), transparent),
+    var(--ghost-offset) 0 0
+      color-mix(in oklch, var(--ghost-b) var(--ghost-alpha), transparent),
     0 0 0.06em color-mix(in oklch, var(--glow-color) 60%, transparent),
     0 0 0.25em color-mix(in oklch, var(--glow-color) 40%, transparent);
 }

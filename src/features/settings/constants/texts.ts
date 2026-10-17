@@ -16,6 +16,12 @@ export const WEEK_START_LABELS: Record<Settings['weekStartsOn'], string> = {
   1: 'Segunda',
 }
 
+export const LCD_GHOST_LABELS: Record<Settings['lcdGhost'], string> = {
+  off: 'Desligado',
+  subtle: 'Sutil',
+  glitch: 'Glitch RGB',
+}
+
 export const CARTUCHO_LABELS: Record<Settings['cartucho'], string> = {
   sage: 'Sage',
   amber: 'Amber',
@@ -31,6 +37,7 @@ export const SETTINGS_TEXTS = {
   intensity: 'Intensidade',
   scanlines: 'Scanlines',
   glow: 'Glow',
+  lcdGhost: 'Efeito LCD',
   preferences: 'Preferências',
   bodyFont: 'Fonte do corpo',
   dateFormat: 'Formato de data',

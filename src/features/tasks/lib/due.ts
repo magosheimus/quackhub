@@ -1,14 +1,11 @@
 import {
   daysBetween,
-  getWeekDays,
   parseDbDate,
   shiftDbDate,
   toDbDate,
 } from '@/shared/lib/date'
 
-// Sintaxe inspirada na do Todoist (help/articles/introduction-to-due-dates-and-due-times):
-// relativos, dias da semana, datas exatas, "em N dias", períodos do dia e horários.
-// Recorrência ("toda segunda") fica de fora: o card tem campo próprio.
+// Baseada na sintaxe do Todoist, mas "semana/mês/ano que vem" somam o período a partir de hoje
 
 export type DueToken = {
   dueDate: string | null
@@ -155,18 +152,16 @@ const DATE_RULES: DateRule[] = [
     resolve: (m, { today }) => shiftDbDate(today, m[1] === 'amanha' ? 1 : 0),
   },
   {
-    pattern: sticky('(?:proxima semana|semana que vem)'),
-    resolve: (_, { today, weekStartsOn }) =>
-      shiftDbDate(getWeekDays(today, weekStartsOn)[0] ?? today, 7),
+    pattern: sticky('(?:proxima semana|semana (?:que|q) vem)'),
+    resolve: (_, { today }) => shiftDbDate(today, 7),
   },
   {
-    pattern: sticky('(?:proximo mes|mes que vem)'),
+    pattern: sticky('(?:proximo mes|mes (?:que|q) vem)'),
     resolve: (_, { today }) => addMonths(today, 1),
   },
   {
-    pattern: sticky('(?:proximo ano|ano que vem)'),
-    resolve: (_, { today }) =>
-      buildDate(parseDbDate(today).getFullYear() + 1, 1, 1),
+    pattern: sticky('(?:proximo ano|ano (?:que|q) vem)'),
+    resolve: (_, { today }) => addMonths(today, 12),
   },
   {
     pattern: sticky('(proximo )?fim de semana|(?:neste|este) fim de semana'),
