@@ -57,3 +57,34 @@ export function groupArchivedDrafts(
   }
   return [...groups.values()]
 }
+
+export function findAdjacentDraft(
+  pending: DraftsItem[],
+  currentId: string,
+  step: 1 | -1,
+): DraftsItem | null {
+  const index = pending.findIndex((item) => item.id === currentId)
+  if (index === -1) {
+    return null
+  }
+  return pending[index + step] ?? null
+}
+
+export function findDraftAfterTriage(
+  pending: DraftsItem[],
+  currentId: string,
+): DraftsItem | null {
+  return (
+    findAdjacentDraft(pending, currentId, 1) ??
+    pending.find((item) => item.id !== currentId) ??
+    null
+  )
+}
+
+export function getDraftPosition(
+  pending: DraftsItem[],
+  currentId: string,
+): { current: number; total: number } {
+  const index = pending.findIndex((item) => item.id === currentId)
+  return { current: index + 1, total: pending.length }
+}

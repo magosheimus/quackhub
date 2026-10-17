@@ -24,6 +24,8 @@ import { Panel } from '@/components/ui/panel'
 import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd'
 import { useReorderList } from '@/shared/hooks/useReorderList'
 import { queryKeys } from '@/shared/query/queryKeys'
+import { useDraftToCard } from '@/features/drafts/hooks/useDraftToCard'
+import { DraftNavigator } from '@/features/drafts/components/DraftNavigator'
 
 type DraftEditInputProps = {
   value: string
@@ -64,9 +66,7 @@ export function DraftsList() {
   const { isLoading } = itemsQuery
   const { mutate: triage } = useTriageDraft()
   const { mutate: updateDraft } = useUpdateDraft()
-  const [creatingCardFor, setCreatingCardFor] = useState<DraftsItem | null>(
-    null,
-  )
+  const draftToCard = useDraftToCard(pending)
   const [editing, setEditing] = useState<{ id: string; text: string } | null>(
     null,
   )
@@ -180,7 +180,7 @@ export function DraftsList() {
                         type="button"
                         title={DRAFTS_TEXTS.toCard}
                         variant="ghost"
-                        onClick={() => setCreatingCardFor(item)}
+                        onClick={() => draftToCard.open(item)}
                         aria-label={DRAFTS_TEXTS.toCard}
                         className="size-8 shrink-0 p-0 hover:bg-surface! hover:text-fg!"
                       >
@@ -203,17 +203,27 @@ export function DraftsList() {
       />
 
       <CardCreateModal
-        open={creatingCardFor !== null}
-        onOpenChange={(open) => !open && setCreatingCardFor(null)}
-        initialTitle={creatingCardFor?.content}
-        hideTrigger
-        onCreated={(task) => {
-          if (!creatingCardFor) return
-          triage({
-            id: creatingCardFor.id,
-            decision: { triaged_to: 'task', triaged_task_id: task.id },
-          })
+        open={draftToCard.isOpen}
+        onOpenChange={(open) => {
+          if (!open) {
+            draftToCard.close()
+          }
         }}
+        prefill={draftToCard.prefill}
+        titleSlot={
+          draftToCard.position && (
+            <DraftNavigator
+              current={draftToCard.position.current}
+              total={draftToCard.position.total}
+              canGoPrevious={draftToCard.canGoPrevious}
+              canGoNext={draftToCard.canGoNext}
+              onPrevious={draftToCard.goPrevious}
+              onNext={draftToCard.goNext}
+            />
+          )
+        }
+        hideTrigger
+        onCreated={draftToCard.handleCreated}
       />
     </div>
   )
