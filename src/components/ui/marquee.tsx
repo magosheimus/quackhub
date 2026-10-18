@@ -8,7 +8,7 @@ export function Marquee({ children, speed = 30, repeat = 4 }: MarqueeProps) {
   const items = Array.from({ length: repeat * 2 })
 
   return (
-    <div className="overflow-hidden border-y border-border py-1.5 bg-selected">
+    <div className="overflow-hidden border-y border-border py-1.5 bg-(--marquee-bg)">
       <div
         className="flex w-max"
         style={{ animation: `marquee-loop ${speed}s linear infinite` }}
@@ -16,7 +16,7 @@ export function Marquee({ children, speed = 30, repeat = 4 }: MarqueeProps) {
         {items.map((_, i) => (
           <span
             key={i}
-            className="inline-block whitespace-nowrap font-heading text-3xl text-fg-muted px-6"
+            className="inline-block whitespace-nowrap font-heading text-3xl text-fg px-6"
             aria-hidden={i > 0 || undefined}
           >
             {children}

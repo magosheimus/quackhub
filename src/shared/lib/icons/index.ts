@@ -19,7 +19,7 @@ import { Calendar } from 'pixelarticons/react/Calendar'
 import { CalendarWeeks } from 'pixelarticons/react/CalendarWeeks'
 import { Card } from 'pixelarticons/react/Card'
 import { CardTextSharp } from 'pixelarticons/react/CardTextSharp'
-import { ChartBarBig } from 'pixelarticons/react/ChartBarBig'
+import { ChartColumnDecreasingSharp } from 'pixelarticons/react/ChartColumnDecreasingSharp'
 import { Check } from 'pixelarticons/react/Check'
 import { CheckboxOn } from 'pixelarticons/react/CheckboxOn'
 import { ChevronDown } from 'pixelarticons/react/ChevronDown'
@@ -133,7 +133,7 @@ export const IconCalendar = createIcon(Calendar)
 export const IconCalendarWeeks = createIcon(CalendarWeeks)
 export const IconCard = createIcon(Card)
 export const IconCardText = createIcon(CardTextSharp)
-export const IconChartBar = createIcon(ChartBarBig)
+export const IconChartColumnDecreasing = createIcon(ChartColumnDecreasingSharp)
 export const IconCheck = createIcon(Check)
 export const IconChecklist = createIcon(CheckboxOn)
 export const IconChevronDown = createIcon(ChevronDown)
@@ -227,6 +227,7 @@ export const IconWaves = createIcon(Waves)
 
 export {
   IconFlag,
+  IconFolderFilled,
   IconPriorityHigh,
   IconPriorityLow,
   IconPriorityMedium,

@@ -15,6 +15,7 @@ export type Settings = {
   dateFormat: 'dd/MM/yyyy' | 'MM/dd/yyyy'
   weekStartsOn: 0 | 1
   hiddenQuickFilters: string[]
+  sidebarCollapsed: boolean
 }
 
 export const FONT_BODIES = [
@@ -95,6 +96,7 @@ export const DEFAULT_SETTINGS: Settings = {
   dateFormat: 'dd/MM/yyyy',
   weekStartsOn: 0,
   hiddenQuickFilters: [],
+  sidebarCollapsed: false,
 }
 
 function isOpacity(value: unknown): value is number {
@@ -145,6 +147,10 @@ export function normalizeSettings(raw: unknown): Settings {
         ? source.weekStartsOn
         : DEFAULT_SETTINGS.weekStartsOn,
     hiddenQuickFilters: pickStringList(source.hiddenQuickFilters),
+    sidebarCollapsed: pickBoolean(
+      source.sidebarCollapsed,
+      DEFAULT_SETTINGS.sidebarCollapsed,
+    ),
   }
 }
 

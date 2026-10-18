@@ -17,7 +17,7 @@ import {
 } from '@/features/dailyTracker/constants/texts'
 import {
   IconCalendarWeeks,
-  IconChartBar,
+  IconChartColumnDecreasing,
   IconChecklist,
   IconSettings,
   type IconComponent,
@@ -107,7 +107,7 @@ export function DailyTrackerPage() {
           history={moodDays}
         />
         <SectionPanel
-          icon={IconChartBar}
+          icon={IconChartColumnDecreasing}
           title={DAILY_TRACKER_TEXTS.summaryTitle(isSprintPeriod)}
         >
           <WeeklyStats

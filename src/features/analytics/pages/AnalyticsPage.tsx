@@ -1,4 +1,4 @@
-import { IconChartBar } from '@/shared/lib/icons'
+import { IconChartColumnDecreasing } from '@/shared/lib/icons'
 import { PageTitle } from '@/components/ui/page-title'
 import { AnalyticsScopeSelect } from '@/features/analytics/components/AnalyticsScopeSelect'
 import { StudySection } from '@/features/analytics/components/StudySection'
@@ -34,7 +34,10 @@ export function AnalyticsPage() {
   return (
     <div className="flex flex-col gap-8">
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <PageTitle title={ANALYTICS_TEXTS.title} icon={IconChartBar} />
+        <PageTitle
+          title={ANALYTICS_TEXTS.title}
+          icon={IconChartColumnDecreasing}
+        />
         <AnalyticsScopeSelect
           scope={scope}
           scopeLabel={scopeLabel}
@@ -45,7 +48,7 @@ export function AnalyticsPage() {
 
       {hasNoActiveSprint ? (
         <EmptyState
-          icon={IconChartBar}
+          icon={IconChartColumnDecreasing}
           title={ANALYTICS_TEXTS.noActiveSprintTitle}
           description={ANALYTICS_TEXTS.noActiveSprintDescription}
         >

@@ -1,0 +1,56 @@
+/* ==========================================================================
+   Paleta invertida e barras do app (top bar e sidebar)
+   ========================================================================== */
+
+/* Paleta invertida (fundo = destaque, texto = sobre destaque): modais de
+   exclusão e, nos temas claros, as barras do app */
+.dialog-inverted,
+html:not(.theme-dark) .app-chrome {
+  --bg-card: var(--accent);
+  --card: var(--accent);
+  --popover: var(--accent);
+  --bg-surface: color-mix(in oklch, var(--accent) 82%, var(--on-accent));
+  --bg-input: color-mix(in oklch, var(--accent) 88%, var(--on-accent));
+  --input: var(--bg-input);
+  --bg-hover: color-mix(in oklch, var(--accent) 75%, var(--on-accent));
+  --text-primary: var(--on-accent);
+  --text-muted: color-mix(in oklch, var(--on-accent) 78%, var(--accent));
+  --muted-foreground: var(--text-muted);
+  --border: color-mix(in oklch, var(--on-accent) 55%, var(--accent));
+  --border-strong: var(--on-accent);
+  --control-bg: var(--bg-input);
+  --control-border: var(--border);
+  --control-hover: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+/* Barras do app. Fundo e borda vêm de cada cartucho (--chrome-bg e
+   --chrome-edge, em cartuchos.css), já resolvidos na raiz — por isso a borda
+   não herda a versão clara da paleta invertida */
+.app-chrome {
+  --bg-surface: var(--chrome-bg);
+}
+
+/* Temas claros: dentro das barras invertidas, hover e selecionado partem da
+   cor da barra, e o que usa o destaque passa a usar o tom claro */
+html:not(.theme-dark) .app-chrome {
+  --bg-surface: var(--chrome-bg);
+  --bg-selected: color-mix(in oklch, var(--bg-surface) 80%, var(--on-accent));
+  --bg-hover: color-mix(in oklch, var(--bg-surface) 90%, var(--on-accent));
+  --primary: var(--on-accent);
+  --primary-foreground: var(--accent);
+  --glow-color: var(--on-accent);
+}
+
+html:not(.theme-dark) .app-chrome .text-accent {
+  color: var(--on-accent);
+}
+
+html:not(.theme-dark) .app-chrome .border-accent {
+  border-color: var(--on-accent);
+}
+
+html:not(.theme-dark) .app-chrome .bg-accent {
+  background-color: var(--on-accent);
+  color: var(--accent);
+}

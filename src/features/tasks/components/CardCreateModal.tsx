@@ -58,6 +58,7 @@ type CardCreateModalProps = {
   titleSlot?: ReactNode
   onCreated?: (task: Task, context: CardCreatedContext) => void
   hideTrigger?: boolean
+  triggerClassName?: string
   initialProjectId?: string | null
 }
 
@@ -71,6 +72,7 @@ export function CardCreateModal({
   titleSlot,
   onCreated,
   hideTrigger = false,
+  triggerClassName,
 }: CardCreateModalProps = {}) {
   const [internalOpen, setInternalOpen] = useState(false)
   const isControlled = controlledOpen !== undefined
@@ -261,7 +263,9 @@ export function CardCreateModal({
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       {!hideTrigger && (
-        <DialogTrigger render={<Button size="sm" />}>
+        <DialogTrigger
+          render={<Button size="sm" className={triggerClassName} />}
+        >
           <IconPlus size={12} aria-hidden="true" />
           {TASKS_TEXTS.newCardTitle}
         </DialogTrigger>

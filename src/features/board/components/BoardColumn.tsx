@@ -28,7 +28,7 @@ export function BoardColumn({
 }: BoardColumnProps) {
   return (
     <div className="flex w-[78vw] max-w-72 shrink-0 snap-start flex-col gap-2 lg:w-auto lg:max-w-none lg:min-w-0 lg:flex-1 lg:shrink">
-      <div className="flex items-center justify-between px-1">
+      <div className="page-backdrop sticky top-0 z-10 flex items-center justify-between px-1 py-1">
         <span className="font-heading text-xl text-fg">{label}</span>
         <span className="flex size-6 items-center justify-center rounded-md border border-(--border-card-empty) bg-card-empty text-caption">
           {tasks.length}
@@ -40,7 +40,7 @@ export function BoardColumn({
           <div
             ref={provided.innerRef}
             {...provided.droppableProps}
-            className="flex min-h-16 flex-col gap-1"
+            className="flex min-h-16 flex-1 flex-col gap-1"
           >
             {tasks.length === 0 && (
               <div className="flex h-21 flex-col items-center justify-center gap-1 rounded-md border border-(--border-card-empty) bg-card-empty px-2 text-caption">

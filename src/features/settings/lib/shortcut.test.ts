@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import { isSettingsShortcut, shouldLeaveSettings } from './shortcut'
+import {
+  isSettingsShortcut,
+  isSidebarShortcut,
+  shouldLeaveSettings,
+} from './shortcut'
 
 describe('isSettingsShortcut', () => {
   it('reconhece Ctrl + , e Cmd + ,', () => {
@@ -41,5 +45,25 @@ describe('shouldLeaveSettings', () => {
 
   it('ignora outras teclas', () => {
     expect(shouldLeaveSettings({ ...escape, key: 'Enter' }, idle)).toBe(false)
+  })
+})
+
+describe('isSidebarShortcut', () => {
+  it('reconhece Ctrl + B e Cmd + B, com ou sem Shift', () => {
+    expect(isSidebarShortcut({ key: 'b', ctrlKey: true, metaKey: false })).toBe(
+      true,
+    )
+    expect(isSidebarShortcut({ key: 'B', ctrlKey: false, metaKey: true })).toBe(
+      true,
+    )
+  })
+
+  it('ignora o B sozinho e outras teclas', () => {
+    expect(
+      isSidebarShortcut({ key: 'b', ctrlKey: false, metaKey: false }),
+    ).toBe(false)
+    expect(isSidebarShortcut({ key: 'k', ctrlKey: true, metaKey: false })).toBe(
+      false,
+    )
   })
 })

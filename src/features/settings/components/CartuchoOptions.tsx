@@ -11,14 +11,17 @@ const CARTUCHO_OPTIONS = (Object.keys(CARTUCHO_LABELS) as CartuchoValue[]).map(
 type CartuchoOptionsProps = {
   selected: CartuchoValue
   onSelect: (value: CartuchoValue) => void
+  size?: 'default' | 'compact'
   className?: string
 }
 
 export function CartuchoOptions({
   selected,
   onSelect,
+  size = 'default',
   className,
 }: CartuchoOptionsProps) {
+  const dimensions = size === 'compact' ? 'h-16 w-12' : 'h-20 w-14'
   return (
     <div className={cn('flex gap-2', className)}>
       {CARTUCHO_OPTIONS.map((option) => {
@@ -34,7 +37,7 @@ export function CartuchoOptions({
             className="rounded-sm p-0.5"
           >
             <div
-              className={`cartucho-${option.value} flex h-20 w-14 flex-col justify-between rounded-sm border-2 border-(--lcd-ink) bg-(--lcd-screen) p-1 shadow-[2px_2px_0_0_var(--lcd-ink)] motion-safe:transition-transform motion-safe:hover:-translate-y-1 ${
+              className={`cartucho-${option.value} ${dimensions} flex flex-col justify-between rounded-sm border-2 border-(--accent) bg-(--lcd-screen) p-1 shadow-[2px_2px_0_0_var(--accent)] motion-safe:transition-transform motion-safe:hover:-translate-y-1 ${
                 isActive
                   ? 'outline-2 outline-offset-2 outline-fg motion-safe:animate-[cartucho-pulse_2s_ease-in-out_infinite]'
                   : ''
@@ -44,7 +47,7 @@ export function CartuchoOptions({
               <span className="text-left text-[10px] leading-tight text-(--lcd-ink)">
                 {option.label}
               </span>
-              <span className="h-1 w-full bg-accent" />
+              <span className="h-1 w-full bg-(--accent)" />
             </div>
           </button>
         )

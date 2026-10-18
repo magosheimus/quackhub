@@ -3,6 +3,7 @@ import {
   buildProjectLabels,
   buildProjectOptions,
   formatTaskCode,
+  getProjectInitial,
   isStudyProject,
 } from './project'
 import { makeProject } from '@/test/factories'
@@ -46,5 +47,16 @@ describe('rótulos de projeto', () => {
   it('código do card usa o prefixo, ou # quando o projeto não tem', () => {
     expect(formatTaskCode('REV', 4)).toBe('REV-4')
     expect(formatTaskCode('', 4)).toBe('#4')
+  })
+})
+
+describe('getProjectInitial', () => {
+  it('usa a primeira letra em maiúscula, ignorando espaços', () => {
+    expect(getProjectInitial('  quackHub')).toBe('Q')
+    expect(getProjectInitial('Revalida 2ª fase')).toBe('R')
+  })
+
+  it('usa ? para nome vazio', () => {
+    expect(getProjectInitial('   ')).toBe('?')
   })
 })

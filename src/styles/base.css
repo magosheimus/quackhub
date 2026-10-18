@@ -1,0 +1,69 @@
+/* ==========================================================================
+   Reset
+   ========================================================================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1279px) {
+  html {
+    font-size: 15px;
+  }
+}
+
+body {
+  background: var(--bg-page);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  margin: 0;
+}
+
+.font-heading {
+  -webkit-text-stroke: 0.2px currentColor;
+}
+
+input,
+textarea,
+select {
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  box-shadow:
+    inset 1px 1px 2px color-mix(in srgb, var(--lcd-ink) 20%, transparent),
+    inset -1px -1px 0 color-mix(in srgb, var(--lcd-screen) 40%, transparent);
+}
+
+/* Campo editável que, fora de edição, parece texto (título do card, comentário do dia) */
+.input-static {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.input-static:hover {
+  border-color: var(--border);
+}
+
+input:autofill,
+input:-webkit-autofill {
+  -webkit-text-fill-color: var(--text-primary);
+  caret-color: var(--text-primary);
+  box-shadow:
+    var(--tw-ring-offset-shadow, 0 0 #0000),
+    var(--tw-ring-shadow, 0 0 #0000),
+    inset 1px 1px 2px color-mix(in srgb, var(--lcd-ink) 20%, transparent),
+    inset -1px -1px 0 color-mix(in srgb, var(--lcd-screen) 40%, transparent),
+    inset 0 0 0 1000px var(--bg-input);
+}

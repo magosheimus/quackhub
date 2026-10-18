@@ -1,6 +1,9 @@
 export const APP_TEXTS = {
   openMenu: 'Abrir menu',
   navigation: 'Navegação',
+  dailyNavigation: 'Dia a dia',
+  collapseSidebar: 'Recolher menu (Ctrl + B)',
+  expandSidebar: 'Expandir menu (Ctrl + B)',
   projects: 'Projetos',
   analytics: 'Analytics',
   settings: 'Configurações',
