@@ -16,7 +16,6 @@ import {
   DATE_FORMATS,
   FONT_BODIES,
   LCD_GHOSTS,
-  type Settings,
 } from '@/features/settings/lib/settings'
 import { useSettingsPage } from '@/features/settings/hooks/useSettingsPage'
 import { PageTitle } from '@/components/ui/page-title'
@@ -24,7 +23,6 @@ import {
   FONT_LABELS,
   LCD_GHOST_LABELS,
   SETTINGS_TEXTS,
-  TEXTURE_LABELS,
   WEEK_START_LABELS,
 } from '@/features/settings/constants/texts'
 import { Panel } from '@/components/ui/panel'
@@ -35,8 +33,7 @@ import { PRIVACY_PATH } from '@/features/privacy/constants/paths'
 import { PRIVACY_TEXTS } from '@/features/privacy/constants/texts'
 import { PersonaManager } from '@/features/personas/components/PersonaManager'
 import { PERSONAS_TEXTS } from '@/features/personas/constants/texts'
-
-const TEXTURES: Settings['texture'][] = ['none', 'grid', 'dots']
+import { TextureOptions } from '@/features/settings/components/TextureOptions'
 
 function SettingsCard({
   title,
@@ -86,19 +83,11 @@ export function SettingsPage() {
             />
           </div>
 
-          <div className="flex flex-wrap gap-2">
-            {TEXTURES.map((texture) => (
-              <Button
-                key={texture}
-                type="button"
-                size="sm"
-                variant={settings.texture === texture ? 'selected' : 'outline'}
-                onClick={() => update({ texture })}
-              >
-                {TEXTURE_LABELS[texture]}
-              </Button>
-            ))}
-          </div>
+          <TextureOptions
+            selected={settings.texture}
+            opacity={settings.textureOpacity}
+            onSelect={(texture) => update({ texture })}
+          />
 
           {settings.texture !== 'none' && (
             <div className="flex items-center gap-3">

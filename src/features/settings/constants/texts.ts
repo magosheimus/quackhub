@@ -1,9 +1,12 @@
 import type { Settings } from '@/features/settings/lib/settings'
 
 export const TEXTURE_LABELS: Record<Settings['texture'], string> = {
-  none: 'Nenhuma',
+  none: 'Sem textura',
+  lines: 'Pautado',
   grid: 'Grade',
+  graph: 'Milimetrado',
   dots: 'Pontos',
+  lcd: 'Malha LCD',
 }
 
 export const FONT_LABELS: Record<Settings['fontBody'], string> = {

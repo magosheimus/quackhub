@@ -3,11 +3,13 @@ import { STORAGE_KEYS } from '@/shared/constants/storageKeys'
 
 const SETTINGS_KEY = STORAGE_KEYS.settings
 
+export type Texture = 'none' | 'lines' | 'grid' | 'graph' | 'dots' | 'lcd'
+export type PatternTexture = Exclude<Texture, 'none'>
+
 export type Settings = {
   cartucho: 'sage' | 'amber' | 'slate' | 'earth' | 'sage-dark' | 'amber-dark'
-  texture: 'none' | 'grid' | 'dots'
-  gridOpacity: number
-  dotsOpacity: number
+  texture: Texture
+  textureOpacity: Record<PatternTexture, number>
   scanlines: boolean
   glow: boolean
   lcdGhost: 'off' | 'subtle' | 'glitch'
@@ -37,11 +39,18 @@ export const CARTUCHOS = [
   'amber-dark',
 ] as const satisfies readonly Settings['cartucho'][]
 
+export const PATTERN_TEXTURES = [
+  'lines',
+  'grid',
+  'graph',
+  'dots',
+  'lcd',
+] as const satisfies readonly PatternTexture[]
+
 export const TEXTURES = [
   'none',
-  'grid',
-  'dots',
-] as const satisfies readonly Settings['texture'][]
+  ...PATTERN_TEXTURES,
+] as const satisfies readonly Texture[]
 
 export const LCD_GHOSTS = [
   'off',
@@ -70,25 +79,27 @@ export function parseWeekStart(
 
 // O slider de intensidade controla a opacidade da textura ativa
 export function getTextureOpacity(settings: Settings): number {
-  return settings.texture === 'dots'
-    ? settings.dotsOpacity
-    : settings.gridOpacity
+  return settings.texture === 'none'
+    ? 0
+    : settings.textureOpacity[settings.texture]
 }
 
 export function textureOpacityUpdate(
   settings: Settings,
   value: number,
 ): Partial<Settings> {
-  return settings.texture === 'dots'
-    ? { dotsOpacity: value }
-    : { gridOpacity: value }
+  if (settings.texture === 'none') {
+    return {}
+  }
+  return {
+    textureOpacity: { ...settings.textureOpacity, [settings.texture]: value },
+  }
 }
 
 export const DEFAULT_SETTINGS: Settings = {
   cartucho: 'sage',
   texture: 'none',
-  gridOpacity: 45,
-  dotsOpacity: 70,
+  textureOpacity: { lines: 50, grid: 50, graph: 50, dots: 50, lcd: 35 },
   scanlines: false,
   glow: false,
   lcdGhost: 'subtle',
@@ -113,11 +124,33 @@ function pickBoolean(value: unknown, fallback: boolean): boolean {
   return typeof value === 'boolean' ? value : fallback
 }
 
+type LegacySettingsKey = 'gridOpacity' | 'dotsOpacity'
+
+function normalizeTextureOpacity(
+  saved: unknown,
+  legacy: Partial<Record<PatternTexture, unknown>>,
+): Settings['textureOpacity'] {
+  const savedOpacity =
+    typeof saved === 'object' && saved !== null
+      ? (saved as Partial<Record<PatternTexture, unknown>>)
+      : {}
+  const opacity = { ...DEFAULT_SETTINGS.textureOpacity }
+  for (const texture of PATTERN_TEXTURES) {
+    const value = savedOpacity[texture] ?? legacy[texture]
+    if (isOpacity(value)) {
+      opacity[texture] = value
+    }
+  }
+  return opacity
+}
+
 export function normalizeSettings(raw: unknown): Settings {
   if (typeof raw !== 'object' || raw === null) {
     return DEFAULT_SETTINGS
   }
-  const source = raw as Partial<Record<keyof Settings, unknown>>
+  const source = raw as Partial<
+    Record<keyof Settings | LegacySettingsKey, unknown>
+  >
   return {
     cartucho: isCartucho(source.cartucho)
       ? source.cartucho
@@ -125,12 +158,10 @@ export function normalizeSettings(raw: unknown): Settings {
     texture: isTexture(source.texture)
       ? source.texture
       : DEFAULT_SETTINGS.texture,
-    gridOpacity: isOpacity(source.gridOpacity)
-      ? source.gridOpacity
-      : DEFAULT_SETTINGS.gridOpacity,
-    dotsOpacity: isOpacity(source.dotsOpacity)
-      ? source.dotsOpacity
-      : DEFAULT_SETTINGS.dotsOpacity,
+    textureOpacity: normalizeTextureOpacity(source.textureOpacity, {
+      grid: source.gridOpacity,
+      dots: source.dotsOpacity,
+    }),
     scanlines: pickBoolean(source.scanlines, DEFAULT_SETTINGS.scanlines),
     glow: pickBoolean(source.glow, DEFAULT_SETTINGS.glow),
     lcdGhost: isLcdGhost(source.lcdGhost)
@@ -188,10 +219,13 @@ const CARTUCHO_CLASS: Record<Settings['cartucho'], string> = {
   'amber-dark': 'cartucho-amber-dark',
 }
 
-const TEXTURE_CLASS: Record<Settings['texture'], string> = {
+const TEXTURE_CLASS: Record<Texture, string> = {
   none: '',
+  lines: 'texture-lines',
   grid: 'texture-grid',
+  graph: 'texture-graph',
   dots: 'texture-dots',
+  lcd: 'texture-lcd',
 }
 
 const LCD_GHOST_CLASS: Record<Settings['lcdGhost'], string> = {
@@ -220,11 +254,7 @@ export function applySettings(s: Settings): void {
 
   document.documentElement.className = rootClasses
 
-  const opacity =
-    s.texture === 'grid'
-      ? s.gridOpacity
-      : s.texture === 'dots'
-        ? s.dotsOpacity
-        : 0
+  const opacity = getTextureOpacity(s)
+
   document.documentElement.style.setProperty('--texture-opacity', `${opacity}%`)
 }
