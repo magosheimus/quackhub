@@ -1,5 +1,6 @@
 import { formatDayMonth } from '@/shared/lib/date'
-import type { Sprint, Task } from '@/shared/types/entities'
+import type { Sprint } from '@/shared/types/entities'
+import type { Task } from '@/features/tasks/model/task'
 
 export type CarryoverDecision = 'next_sprint' | 'backlog'
 
@@ -52,10 +53,10 @@ export function computeSprintMetrics(
 
   const byProject = new Map<string, { total: number; completed: number }>()
   for (const task of tasks) {
-    const entry = byProject.get(task.project_id) ?? { total: 0, completed: 0 }
+    const entry = byProject.get(task.projectId) ?? { total: 0, completed: 0 }
     entry.total += 1
     if (task.status === 'done') entry.completed += 1
-    byProject.set(task.project_id, entry)
+    byProject.set(task.projectId, entry)
   }
 
   const completion_by_project: ProjectCompletion[] = Array.from(
@@ -103,8 +104,8 @@ export type DueCandidates = {
 
 function byDue(a: Task, b: Task): number {
   return (
-    (a.due_date ?? '').localeCompare(b.due_date ?? '') ||
-    (a.due_time ?? '99').localeCompare(b.due_time ?? '99')
+    (a.due?.date ?? '').localeCompare(b.due?.date ?? '') ||
+    (a.due?.time ?? '99').localeCompare(b.due?.time ?? '99')
   )
 }
 
@@ -116,18 +117,17 @@ export function findDueCandidates(
   endDate: string,
 ): DueCandidates {
   const open = tasks.filter(
-    (task) =>
-      task.sprint_id === null && task.status !== 'done' && task.due_date,
+    (task) => task.sprintId === null && task.status !== 'done' && task.due,
   )
   return {
     inPeriod: open
       .filter((task) => {
-        const due = task.due_date ?? ''
+        const due = task.due?.date ?? ''
         return due >= startDate && due <= endDate
       })
       .sort(byDue),
     overdue: open
-      .filter((task) => (task.due_date ?? '') < startDate)
+      .filter((task) => (task.due?.date ?? '') < startDate)
       .sort(byDue),
   }
 }

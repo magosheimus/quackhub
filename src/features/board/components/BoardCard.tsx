@@ -21,7 +21,7 @@ import {
   PRIORITY_ICON_SIZE,
 } from '@/features/tasks/lib/taskPriority'
 import type { ReactNode } from 'react'
-import type { Task } from '@/shared/types/entities'
+import type { Task } from '@/features/tasks/model/task'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
 import { ProjectCode } from '@/features/projects/components/ProjectCode'
 import type { ColorScope } from '@/shared/lib/palette'
@@ -65,7 +65,7 @@ function BoardCardBody({
   return (
     <>
       <div className="flex w-4 shrink-0 flex-col items-center gap-1 pt-0.5">
-        {task.flagged && (
+        {task.flag && (
           <IconFlag
             size={PRIORITY_ICON_SIZE}
             className="text-danger"
@@ -82,10 +82,10 @@ function BoardCardBody({
       </div>
 
       <div className="flex min-w-0 flex-1 flex-col gap-1">
-        {task.task_number && (
+        {task.number && (
           <ProjectCode
-            label={projectLabels.get(task.project_id)}
-            taskNumber={task.task_number}
+            label={projectLabels.get(task.projectId)}
+            taskNumber={task.number}
             withColor={colorScope === 'project'}
           />
         )}
@@ -95,10 +95,8 @@ function BoardCardBody({
         >
           {task.title}
         </Link>
-        {showEpic && <CardEpicChip epicId={task.epic_id} />}
-        {showDue && (
-          <DueBadge dueDate={task.due_date} dueTime={task.due_time} />
-        )}
+        {showEpic && <CardEpicChip epicId={task.epicId} />}
+        {showDue && <DueBadge due={task.due} />}
         {tag && <span className="text-caption">{tag}</span>}
         {showStatus && (
           <span
@@ -113,7 +111,7 @@ function BoardCardBody({
 
       {showAssignee && (
         <div className="shrink-0 self-start">
-          <AssigneeBadge assigneeId={task.assignee_id} />
+          <AssigneeBadge assigneeId={task.assigneeId} />
         </div>
       )}
     </>
@@ -254,7 +252,7 @@ export function StaticBoardCard({
       />
       <div className="ml-auto flex items-center gap-6 self-stretch">
         <div className="flex w-44 flex-col justify-evenly self-stretch">
-          <AssigneeBadge assigneeId={task.assignee_id} compact />
+          <AssigneeBadge assigneeId={task.assigneeId} compact />
           {info}
         </div>
         {actions}

@@ -1,7 +1,7 @@
 import { IconCalendar, IconPlus, IconRefresh } from '@/shared/lib/icons'
 import { useTitleDue } from '@/features/tasks/hooks/useTitleDue'
 import { isDueWithinSprint } from '@/features/sprints/lib/sprint'
-import { formatDueTime } from '@/features/tasks/lib/due'
+import { formatDueTime, toTaskDue } from '@/features/tasks/lib/due'
 import { UrgentToggle } from '@/features/tasks/components/UrgentToggle'
 import { InlineHint } from '@/components/ui/inline-hint'
 import { useRef, useState, type ReactNode } from 'react'
@@ -33,12 +33,18 @@ import { TASK_PRIORITIES } from '@/shared/lib/enums'
 import { useDebouncedValue } from '@/shared/hooks/useDebouncedValue'
 import { useSimilarCards } from '@/features/tasks/hooks/useSimilarCards'
 import { SimilarCardsHint } from './SimilarCardsHint'
-import { RecurrenceFields, type RecurrenceValue } from './RecurrenceFields'
+import { RecurrenceFields } from './RecurrenceFields'
+import {
+  EMPTY_RECURRENCE_VALUE,
+  fromRecurrenceValue,
+  type RecurrenceValue,
+} from '@/features/tasks/lib/recurrence'
 import { detectRecurrencePattern } from '@/features/tasks/lib/cardSearch'
 import { TagInput } from './TagInput'
 import { useProjectTags } from '@/features/tasks/hooks/tags/useProjectTags'
 import { useSprints } from '@/features/sprints/hooks/useSprints'
-import type { Task, TaskPriority } from '@/shared/types/entities'
+import type { TaskPriority } from '@/shared/types/entities'
+import type { Task } from '@/features/tasks/model/task'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
 import { TASKS_TEXTS } from '@/features/tasks/constants/texts'
 import { useCreateEpic } from '@/features/epics/hooks/useCreateEpic'
@@ -95,12 +101,9 @@ export function CardCreateModal({
   const [dependencies, setDependencies] = useState<Task[]>([])
   const [createAnother, setCreateAnother] = useState(false)
   const titleInputRef = useRef<HTMLInputElement>(null)
-  const [recurrence, setRecurrence] = useState<RecurrenceValue>({
-    type: null,
-    interval: null,
-    dayOfMonth: null,
-    endDate: null,
-  })
+  const [recurrence, setRecurrence] = useState<RecurrenceValue>(
+    EMPTY_RECURRENCE_VALUE,
+  )
   const [recurrenceBannerDismissed, setRecurrenceBannerDismissed] =
     useState(false)
 
@@ -146,12 +149,7 @@ export function CardCreateModal({
     setFlagged(false)
     setDueDate(null)
     setDueTime(null)
-    setRecurrence({
-      type: null,
-      interval: null,
-      dayOfMonth: null,
-      endDate: null,
-    })
+    setRecurrence(EMPTY_RECURRENCE_VALUE)
     setRecurrenceBannerDismissed(false)
     setTags([])
     setDependencies([])
@@ -181,21 +179,17 @@ export function CardCreateModal({
     if (!projectId || !titleDue.cleanTitle || !project) return null
     const isGeneral = project.type === 'general'
     return {
-      project_id: projectId,
-      epic_id: epicId,
-      sprint_id: effectiveSprintId,
-      assignee_id: assigneeId,
+      projectId,
+      epicId,
+      sprintId: effectiveSprintId,
+      assigneeId,
       title: titleDue.cleanTitle,
       description: description.trim() || null,
       priority,
-      flagged,
-      due_date: isGeneral ? effectiveDueDate : null,
-      due_time: isGeneral && effectiveDueDate ? effectiveDueTime : null,
+      flag: flagged ? { note: null } : null,
+      due: isGeneral ? toTaskDue(effectiveDueDate, effectiveDueTime) : null,
       status: getInitialStatusForType(project.type),
-      recurrence_type: recurrence.type,
-      recurrence_interval: recurrence.interval,
-      recurrence_day_of_month: recurrence.dayOfMonth,
-      recurrence_end_date: recurrence.endDate,
+      recurrence: fromRecurrenceValue(recurrence),
     }
   }
 
@@ -242,7 +236,7 @@ export function CardCreateModal({
     }
     createTask(
       {
-        data: { ...data, epic_id: resolvedEpicId },
+        data: { ...data, epicId: resolvedEpicId },
         tags,
         dependsOnTaskIds: dependencies.map((dep) => dep.id),
       },

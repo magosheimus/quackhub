@@ -33,7 +33,8 @@ import {
   type MoveOption,
 } from '@/features/board/lib/board'
 import { todayLocal } from '@/shared/lib/date'
-import type { ProjectType, Task } from '@/shared/types/entities'
+import type { ProjectType } from '@/shared/types/entities'
+import type { Task } from '@/features/tasks/model/task'
 import {
   buildProjectLabels,
   buildProjectOptions,
@@ -94,7 +95,7 @@ export function useBoardPage() {
       return
     }
     const task = sprintTasks.find((t) => t.id === taskId)
-    const taskType = task ? projectTypeById.get(task.project_id) : undefined
+    const taskType = task ? projectTypeById.get(task.projectId) : undefined
     if (!taskType) {
       return
     }
@@ -116,7 +117,7 @@ export function useBoardPage() {
     }
     const task = sprintTasks.find((t) => t.id === draggableId)
     if (task && shouldFlagOnDrop(task, column, destination.index)) {
-      updateTask({ id: task.id, data: { flagged: true } })
+      updateTask({ id: task.id, data: { flag: { note: null } } })
     }
   }
 
@@ -157,7 +158,7 @@ export function useBoardPage() {
   }
 
   function getMoveOptionsFor(task: Task): MoveOption[] {
-    const taskType = projectTypeById.get(task.project_id)
+    const taskType = projectTypeById.get(task.projectId)
     return taskType ? getMoveOptions(task.status, taskType) : []
   }
 

@@ -8,10 +8,10 @@ import type {
   Epic,
   Project,
   ProjectType,
-  Task,
   TaskPriority,
   TaskStatus,
 } from '@/shared/types/entities'
+import type { Task } from '@/features/tasks/model/task'
 
 export const COLUMNS_GENERAL = ['todo', 'blocked', 'doing', 'done']
 export const COLUMNS_STUDY = [
@@ -223,17 +223,17 @@ export function applyBoardFilters(
   today: string,
 ): Task[] {
   return tasks.filter((task) => {
-    if (filters.flagged !== null && task.flagged !== filters.flagged)
+    if (filters.flagged !== null && (task.flag !== null) !== filters.flagged)
       return false
-    if (filters.epicId && task.epic_id !== filters.epicId) return false
+    if (filters.epicId && task.epicId !== filters.epicId) return false
     if (
       filters.projectIds.length > 0 &&
-      !filters.projectIds.includes(task.project_id)
+      !filters.projectIds.includes(task.projectId)
     )
       return false
     if (
       filters.assigneeIds.length > 0 &&
-      !(task.assignee_id && filters.assigneeIds.includes(task.assignee_id))
+      !(task.assigneeId && filters.assigneeIds.includes(task.assigneeId))
     )
       return false
     if (filters.priority && task.priority !== filters.priority) return false
@@ -243,7 +243,8 @@ export function applyBoardFilters(
       if (!tags.includes(filters.tag)) return false
     }
     if (filters.srsOverdue) {
-      if (!task.next_review || task.next_review > today) return false
+      const nextReview = task.srs?.nextReview
+      if (!nextReview || nextReview > today) return false
     }
     return true
   })
@@ -266,12 +267,12 @@ export function getProjectsInTasks(
   projects: Project[],
   tasks: Task[],
 ): Project[] {
-  const projectIds = new Set(tasks.map((task) => task.project_id))
+  const projectIds = new Set(tasks.map((task) => task.projectId))
   return projects.filter((project) => projectIds.has(project.id))
 }
 
 export function getEpicsInTasks(epics: Epic[], tasks: Task[]): Epic[] {
-  const epicIds = new Set(tasks.map((task) => task.epic_id))
+  const epicIds = new Set(tasks.map((task) => task.epicId))
   return epics.filter((epic) => epicIds.has(epic.id))
 }
 
@@ -303,7 +304,7 @@ export function getVisibleBoardColumns(
   projectTypeById: Map<string, ProjectType>,
 ): BoardColumnKey[] {
   const hasStudyTask = tasks.some(
-    (task) => projectTypeById.get(task.project_id) === 'study',
+    (task) => projectTypeById.get(task.projectId) === 'study',
   )
   const hasReviewTask = tasks.some(
     (task) => getBoardColumnKey(task.status) === 'to_review',
@@ -316,19 +317,19 @@ export function getVisibleBoardColumns(
 // Urgentes no topo da coluna, mantendo a ordem original dentro de cada grupo
 function flaggedFirst(tasks: Task[]): Task[] {
   return [
-    ...tasks.filter((task) => task.flagged),
-    ...tasks.filter((task) => !task.flagged),
+    ...tasks.filter((task) => task.flag !== null),
+    ...tasks.filter((task) => task.flag === null),
   ]
 }
 
 // Soltar um card na primeira posição de uma coluna marca como urgente.
 // Em Finalizado não: card concluído não precisa de atenção
 export function shouldFlagOnDrop(
-  task: Pick<Task, 'flagged'>,
+  task: Pick<Task, 'flag'>,
   column: BoardColumnKey,
   index: number,
 ): boolean {
-  return index === 0 && column !== 'done' && !task.flagged
+  return index === 0 && column !== 'done' && task.flag === null
 }
 
 export type MoveOption<T extends string = BoardColumnKey> = {

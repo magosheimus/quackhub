@@ -1,5 +1,53 @@
 import { todayLocal, toDbDate } from '@/shared/lib/date'
-import type { NewTask, Task } from '@/shared/types/entities'
+import type { NewTask, Task, TaskRecurrence } from '@/features/tasks/model/task'
+import type { RecurrenceType } from '@/shared/types/entities'
+
+// Estado do formulário de recorrência: campos soltos, editáveis um a um
+export type RecurrenceValue = {
+  type: RecurrenceType | null
+  interval: number | null
+  dayOfMonth: number | null
+  endDate: string | null
+}
+
+export const EMPTY_RECURRENCE_VALUE: RecurrenceValue = {
+  type: null,
+  interval: null,
+  dayOfMonth: null,
+  endDate: null,
+}
+
+export function toRecurrenceValue(
+  recurrence: TaskRecurrence | null,
+): RecurrenceValue {
+  if (!recurrence) {
+    return EMPTY_RECURRENCE_VALUE
+  }
+  return {
+    type: recurrence.type,
+    interval: recurrence.interval,
+    dayOfMonth: recurrence.type === 'monthly' ? recurrence.dayOfMonth : null,
+    endDate: recurrence.endDate,
+  }
+}
+
+export function fromRecurrenceValue(
+  value: RecurrenceValue,
+): TaskRecurrence | null {
+  if (!value.type) {
+    return null
+  }
+  const interval = value.interval ?? 1
+  if (value.type === 'monthly') {
+    return {
+      type: 'monthly',
+      interval,
+      dayOfMonth: value.dayOfMonth,
+      endDate: value.endDate,
+    }
+  }
+  return { type: value.type, interval, endDate: value.endDate }
+}
 
 function parseDate(dateStr: string): {
   year: number
@@ -15,13 +63,14 @@ function lastDayOfMonth(year: number, month: number): number {
 }
 
 export function calculateNextDueDate(task: Task): Date | null {
-  if (!task.recurrence_type) return null
+  const { recurrence } = task
+  if (!recurrence) return null
 
-  const base = parseDate(task.due_date ?? todayLocal())
-  const interval = task.recurrence_interval ?? 1
+  const base = parseDate(task.due?.date ?? todayLocal())
+  const { interval } = recurrence
 
   let next: Date
-  switch (task.recurrence_type) {
+  switch (recurrence.type) {
     case 'daily':
       next = new Date(base.year, base.month, base.day + interval)
       break
@@ -30,7 +79,7 @@ export function calculateNextDueDate(task: Task): Date | null {
       break
     case 'monthly': {
       const targetMonth = base.month + interval
-      const day = task.recurrence_day_of_month ?? base.day
+      const day = recurrence.dayOfMonth ?? base.day
       const daysInTarget = lastDayOfMonth(base.year, targetMonth)
       next = new Date(base.year, targetMonth, Math.min(day, daysInTarget))
       break
@@ -45,8 +94,8 @@ export function calculateNextDueDate(task: Task): Date | null {
       return null
   }
 
-  if (task.recurrence_end_date) {
-    const end = parseDate(task.recurrence_end_date)
+  if (recurrence.endDate) {
+    const end = parseDate(recurrence.endDate)
     const endDate = new Date(end.year, end.month, end.day)
     if (next > endDate) return null
   }
@@ -56,22 +105,18 @@ export function calculateNextDueDate(task: Task): Date | null {
 
 export function buildRecurrentCard(original: Task, nextDue: Date): NewTask {
   return {
-    project_id: original.project_id,
-    epic_id: original.epic_id,
+    projectId: original.projectId,
+    epicId: original.epicId,
     title: original.title,
     description: original.description,
     priority: original.priority,
     status: 'todo',
-    due_date: toDbDate(nextDue),
-    due_time: original.due_time,
-    assignee_id: original.assignee_id,
-    recurrence_type: original.recurrence_type,
-    recurrence_interval: original.recurrence_interval,
-    recurrence_day_of_month: original.recurrence_day_of_month,
-    recurrence_end_date: original.recurrence_end_date,
-    recurrence_parent_id: original.id,
+    due: { date: toDbDate(nextDue), time: original.due?.time ?? null },
+    assigneeId: original.assigneeId,
+    recurrence: original.recurrence,
+    recurrenceParentId: original.id,
     origin: 'recurrence',
-    sprint_id: null,
-    flagged: false,
+    sprintId: null,
+    flag: null,
   }
 }

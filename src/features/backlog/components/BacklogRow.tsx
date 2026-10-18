@@ -7,7 +7,7 @@ import {
   PRIORITY_ICON_SIZE,
 } from '@/features/tasks/lib/taskPriority'
 import { Button } from '@/components/ui/button'
-import type { Task } from '@/shared/types/entities'
+import type { Task } from '@/features/tasks/model/task'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
 import { BACKLOG_TEXTS } from '@/features/backlog/constants/texts'
 import type { ProjectLabels } from '@/features/projects/lib/project'
@@ -50,7 +50,7 @@ export function BacklogRow({
         className="flex flex-wrap items-center gap-3 rounded-md border border-l-4 border-border bg-card p-3 text-sm"
       >
         <div className="flex w-4 shrink-0 flex-col items-center gap-1">
-          {task.flagged && (
+          {task.flag && (
             <IconFlag
               size={PRIORITY_ICON_SIZE}
               className="text-danger"
@@ -67,10 +67,10 @@ export function BacklogRow({
         </div>
 
         <div className="flex min-w-40 flex-1 flex-col gap-0.5">
-          {task.task_number && (
+          {task.number && (
             <ProjectCode
-              label={projectLabels.get(task.project_id)}
-              taskNumber={task.task_number}
+              label={projectLabels.get(task.projectId)}
+              taskNumber={task.number}
               withColor={colorScope === 'project'}
             />
           )}
@@ -82,13 +82,13 @@ export function BacklogRow({
           </Link>
         </div>
 
-        <DueBadge dueDate={task.due_date} dueTime={task.due_time} />
+        <DueBadge due={task.due} />
 
         <span className="text-caption">{STATUS_LABELS[task.status]}</span>
 
         {epicLabel && <EpicChip label={epicLabel} />}
 
-        <AssigneeBadge assigneeId={task.assignee_id} />
+        <AssigneeBadge assigneeId={task.assigneeId} />
 
         {onAddToSprint && (
           <Button variant="outline" size="sm" onClick={onAddToSprint}>

@@ -5,7 +5,7 @@ describe('buildProjectMove', () => {
   it('troca o projeto e tira o épico, que era do projeto antigo', () => {
     expect(
       buildProjectMove({ status: 'doing' }, { id: 'p2', type: 'general' }),
-    ).toEqual({ project_id: 'p2', epic_id: null, status: 'doing' })
+    ).toEqual({ projectId: 'p2', epicId: null, status: 'doing' })
   })
 
   it('status que não existe no novo tipo volta ao inicial', () => {

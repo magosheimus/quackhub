@@ -16,10 +16,21 @@ import { useTaskTags } from '@/features/tasks/hooks/tags/useTaskTags'
 import { useAddTaskTag } from '@/features/tasks/hooks/tags/useAddTaskTag'
 import { useRemoveTaskTag } from '@/features/tasks/hooks/tags/useRemoveTaskTag'
 import { useProjectTags } from '@/features/tasks/hooks/tags/useProjectTags'
-import type { RecurrenceValue } from '@/features/tasks/components/RecurrenceFields'
-import type { Task, TaskStatus } from '@/shared/types/entities'
+import {
+  fromRecurrenceValue,
+  toRecurrenceValue,
+  type RecurrenceValue,
+} from '@/features/tasks/lib/recurrence'
+import type { TaskStatus } from '@/shared/types/entities'
+import type { Task } from '@/features/tasks/model/task'
 import { useSettings } from '@/features/settings/hooks/useSettings'
-import { findDueToken, removeDueToken } from '@/features/tasks/lib/due'
+import {
+  findDueToken,
+  removeDueToken,
+  toTaskDue,
+  withDueDate,
+  withDueTime,
+} from '@/features/tasks/lib/due'
 import { useSoftDeleteTask } from '@/features/tasks/hooks/useSoftDeleteTask'
 
 export function useCardPage(task: Task) {
@@ -34,13 +45,13 @@ export function useCardPage(task: Task) {
   const { mutate: updateTask } = useUpdateTask()
   const { mutate: updateTaskStatus } = useUpdateTaskStatus()
   const { data: projects } = useProjects()
-  const project = projects?.find((p) => p.id === task.project_id)
-  const { data: epics } = useEpics(task.project_id)
-  const epic = epics?.find((e) => e.id === task.epic_id)
+  const project = projects?.find((p) => p.id === task.projectId)
+  const { data: epics } = useEpics(task.projectId)
+  const epic = epics?.find((e) => e.id === task.epicId)
   const { data: sprints } = useSprints()
   const assignableSprints = sprints?.filter((s) => s.status !== 'closed')
   const { data: tags } = useTaskTags(task.id)
-  const { data: tagSuggestions } = useProjectTags(task.project_id)
+  const { data: tagSuggestions } = useProjectTags(task.projectId)
   const { mutate: addTaskTag } = useAddTaskTag()
   const { mutate: removeTaskTag } = useRemoveTaskTag()
   const [isConfirmingDelete, setIsConfirmingDelete] = useState(false)
@@ -51,12 +62,7 @@ export function useCardPage(task: Task) {
     softDeleteTask(task.id)
   }
 
-  const recurrenceValue: RecurrenceValue = {
-    type: task.recurrence_type,
-    interval: task.recurrence_interval,
-    dayOfMonth: task.recurrence_day_of_month,
-    endDate: task.recurrence_end_date,
-  }
+  const recurrenceValue = toRecurrenceValue(task.recurrence)
 
   const discardTitleRef = useRef(false)
 
@@ -91,7 +97,7 @@ export function useCardPage(task: Task) {
     updateTask({
       id: task.id,
       data: token
-        ? { title: nextTitle, due_date: token.dueDate, due_time: token.dueTime }
+        ? { title: nextTitle, due: toTaskDue(token.dueDate, token.dueTime) }
         : { title: nextTitle },
     })
   }
@@ -113,12 +119,7 @@ export function useCardPage(task: Task) {
   function handleRecurrenceChange(value: RecurrenceValue) {
     updateTask({
       id: task.id,
-      data: {
-        recurrence_type: value.type,
-        recurrence_interval: value.interval,
-        recurrence_day_of_month: value.dayOfMonth,
-        recurrence_end_date: value.endDate,
-      },
+      data: { recurrence: fromRecurrenceValue(value) },
     })
   }
 
@@ -126,7 +127,7 @@ export function useCardPage(task: Task) {
     projects?.find((p) => p.id === pendingProjectId) ?? null
 
   function requestProjectChange(projectId: string) {
-    if (projectId !== task.project_id) {
+    if (projectId !== task.projectId) {
       setPendingProjectId(projectId)
     }
   }
@@ -138,16 +139,26 @@ export function useCardPage(task: Task) {
     setPendingProjectId(null)
   }
 
+  function changeDueDate(date: string | null) {
+    updateTask({ id: task.id, data: { due: withDueDate(task.due, date) } })
+  }
+
+  function changeDueTime(time: string | null) {
+    updateTask({ id: task.id, data: { due: withDueTime(task.due, time) } })
+  }
+
   function changeStatus(status: TaskStatus) {
     if (status === task.status) {
       return
     }
-    updateTaskStatus({ id: task.id, status, sprintId: task.sprint_id })
+    updateTaskStatus({ id: task.id, status, sprintId: task.sprintId })
   }
 
   return {
     navigate,
     changeStatus,
+    changeDueDate,
+    changeDueTime,
     updateTask,
     projects,
     project,
@@ -158,7 +169,7 @@ export function useCardPage(task: Task) {
     projectMoveDescription: pendingProject
       ? TASKS_TEXTS.moveProjectDescription(
           pendingProject.name,
-          task.epic_id !== null,
+          task.epicId !== null,
           buildProjectMove(task, pendingProject).status !== task.status,
         )
       : null,

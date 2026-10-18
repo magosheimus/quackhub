@@ -1,4 +1,5 @@
-import type { Epic, Task } from '@/shared/types/entities'
+import type { Epic } from '@/shared/types/entities'
+import type { Task } from '@/features/tasks/model/task'
 import { createEnumGuard } from '@/shared/lib/enums'
 
 export type ProjectBucket = 'sprint' | 'done' | 'backlog'
@@ -7,7 +8,7 @@ export function getProjectBucket(
   task: Task,
   activeSprintId: string | null,
 ): ProjectBucket {
-  if (activeSprintId !== null && task.sprint_id === activeSprintId) {
+  if (activeSprintId !== null && task.sprintId === activeSprintId) {
     return 'sprint'
   }
   if (task.status === 'done') {
@@ -48,7 +49,7 @@ export function groupOpenTasksByEpic(
 ): EpicColumn[] {
   const epicIds = new Set(epics.map((epic) => epic.id))
   const columnIdOf = (task: Task) =>
-    task.epic_id && epicIds.has(task.epic_id) ? task.epic_id : NO_EPIC_COLUMN
+    task.epicId && epicIds.has(task.epicId) ? task.epicId : NO_EPIC_COLUMN
   const isInSprint = (task: Task) =>
     getProjectBucket(task, activeSprintId) === 'sprint'
 

@@ -28,8 +28,8 @@ import type {
   Sprint,
   TaskPriority,
   TaskStatus,
-  TaskUpdate,
 } from '@/shared/types/entities'
+import type { TaskUpdate } from '@/features/tasks/model/task'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
 import { PROJECT_TYPE_LABELS } from '@/features/projects/constants/texts'
 import { TASKS_TEXTS } from '@/features/tasks/constants/texts'
@@ -50,7 +50,7 @@ type CardDetailsSectionProps = {
   projectType?: ProjectType | null
   status: TaskStatus
   priority: TaskPriority
-  flagged: boolean
+  isFlagged: boolean
   epicId: string | null
   epicLabel?: EpicLabel
   epicOptions: EpicOption[]
@@ -88,7 +88,7 @@ export function CardDetailsSection({
   projectType,
   status,
   priority,
-  flagged,
+  isFlagged,
   epicId,
   epicLabel,
   epicOptions,
@@ -142,7 +142,7 @@ export function CardDetailsSection({
             <Select
               value={epicId ?? NONE_EPIC}
               onValueChange={(v) =>
-                onUpdate({ epic_id: v === NONE_EPIC ? null : v })
+                onUpdate({ epicId: v === NONE_EPIC ? null : v })
               }
             >
               <SelectTrigger
@@ -175,7 +175,7 @@ export function CardDetailsSection({
             <Select
               value={sprintId ?? NONE_SPRINT}
               onValueChange={(v) =>
-                onUpdate({ sprint_id: v === NONE_SPRINT ? null : v })
+                onUpdate({ sprintId: v === NONE_SPRINT ? null : v })
               }
             >
               <SelectTrigger
@@ -264,8 +264,10 @@ export function CardDetailsSection({
             </Select>
           </DetailRow>
           <UrgentToggle
-            flagged={flagged}
-            onToggle={() => onUpdate({ flagged: !flagged })}
+            flagged={isFlagged}
+            onToggle={() =>
+              onUpdate({ flag: isFlagged ? null : { note: null } })
+            }
           />
         </div>
       </div>

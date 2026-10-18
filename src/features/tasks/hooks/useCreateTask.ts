@@ -4,7 +4,7 @@ import {
   invalidateTagQueries,
   invalidateTaskQueries,
 } from '@/shared/query/queryInvalidation'
-import type { NewTask } from '@/shared/types/entities'
+import type { NewTask } from '@/features/tasks/model/task'
 
 type CreateTaskVars = {
   data: NewTask

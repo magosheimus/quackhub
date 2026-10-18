@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { makeTask as makeBaseTask } from '@/test/factories'
 import { calculateNextDueDate, buildRecurrentCard } from './recurrence'
-import type { Task } from '@/shared/types/entities'
+import type { Task } from '@/features/tasks/model/task'
 
 function makeTask(overrides: Partial<Task> = {}): Task {
   return makeBaseTask({
@@ -14,9 +14,8 @@ function makeTask(overrides: Partial<Task> = {}): Task {
 describe('calculateNextDueDate', () => {
   it('diária: soma o intervalo em dias', () => {
     const task = makeTask({
-      due_date: '2026-01-05',
-      recurrence_type: 'daily',
-      recurrence_interval: 3,
+      due: { date: '2026-01-05', time: null },
+      recurrence: { type: 'daily', interval: 3, endDate: null },
     })
     expect(calculateNextDueDate(task)?.toISOString().slice(0, 10)).toBe(
       '2026-01-08',
@@ -25,9 +24,8 @@ describe('calculateNextDueDate', () => {
 
   it('semanal: soma o intervalo em semanas', () => {
     const task = makeTask({
-      due_date: '2026-01-05',
-      recurrence_type: 'weekly',
-      recurrence_interval: 2,
+      due: { date: '2026-01-05', time: null },
+      recurrence: { type: 'weekly', interval: 2, endDate: null },
     })
     expect(calculateNextDueDate(task)?.toISOString().slice(0, 10)).toBe(
       '2026-01-19',
@@ -36,10 +34,13 @@ describe('calculateNextDueDate', () => {
 
   it('mensal dia 31 em fevereiro → dia 28 (2026 não é bissexto)', () => {
     const task = makeTask({
-      due_date: '2026-01-31',
-      recurrence_type: 'monthly',
-      recurrence_interval: 1,
-      recurrence_day_of_month: 31,
+      due: { date: '2026-01-31', time: null },
+      recurrence: {
+        type: 'monthly',
+        interval: 1,
+        dayOfMonth: 31,
+        endDate: null,
+      },
     })
     expect(calculateNextDueDate(task)?.toISOString().slice(0, 10)).toBe(
       '2026-02-28',
@@ -48,10 +49,13 @@ describe('calculateNextDueDate', () => {
 
   it('mensal dia 30 em fevereiro → dia 28 (2026 não é bissexto)', () => {
     const task = makeTask({
-      due_date: '2026-01-30',
-      recurrence_type: 'monthly',
-      recurrence_interval: 1,
-      recurrence_day_of_month: 30,
+      due: { date: '2026-01-30', time: null },
+      recurrence: {
+        type: 'monthly',
+        interval: 1,
+        dayOfMonth: 30,
+        endDate: null,
+      },
     })
     expect(calculateNextDueDate(task)?.toISOString().slice(0, 10)).toBe(
       '2026-02-28',
@@ -60,28 +64,32 @@ describe('calculateNextDueDate', () => {
 
   it('anual 29/fev em ano não bissexto → 28/fev', () => {
     const task = makeTask({
-      due_date: '2024-02-29',
-      recurrence_type: 'yearly',
-      recurrence_interval: 1,
+      due: { date: '2024-02-29', time: null },
+      recurrence: { type: 'yearly', interval: 1, endDate: null },
     })
     expect(calculateNextDueDate(task)?.toISOString().slice(0, 10)).toBe(
       '2025-02-28',
     )
   })
 
-  it('recurrence_end_date no passado → retorna null (não cria)', () => {
+  it('fim da recorrência no passado → retorna null (não cria)', () => {
     const task = makeTask({
-      due_date: '2026-01-05',
-      recurrence_type: 'monthly',
-      recurrence_interval: 1,
-      recurrence_day_of_month: 5,
-      recurrence_end_date: '2026-01-10',
+      due: { date: '2026-01-05', time: null },
+      recurrence: {
+        type: 'monthly',
+        interval: 1,
+        dayOfMonth: 5,
+        endDate: '2026-01-10',
+      },
     })
     expect(calculateNextDueDate(task)).toBeNull()
   })
 
   it('sem recorrência → retorna null', () => {
-    const task = makeTask({ due_date: '2026-01-05', recurrence_type: null })
+    const task = makeTask({
+      due: { date: '2026-01-05', time: null },
+      recurrence: null,
+    })
     expect(calculateNextDueDate(task)).toBeNull()
   })
 })
@@ -91,12 +99,15 @@ describe('buildRecurrentCard', () => {
     const original = makeTask({
       id: 'task-original',
       title: 'Pagar aluguel',
-      recurrence_type: 'monthly',
-      recurrence_interval: 1,
-      recurrence_day_of_month: 5,
+      recurrence: {
+        type: 'monthly',
+        interval: 1,
+        dayOfMonth: 5,
+        endDate: null,
+      },
       status: 'done',
-      sprint_id: 'sprint-1',
-      flagged: true,
+      sprintId: 'sprint-1',
+      flag: { note: null },
       origin: 'manual',
     })
     const nextDue = new Date(2026, 1, 5)
@@ -104,23 +115,22 @@ describe('buildRecurrentCard', () => {
     const result = buildRecurrentCard(original, nextDue)
 
     expect(result.title).toBe('Pagar aluguel')
-    expect(result.due_date).toBe('2026-02-05')
+    expect(result.due?.date).toBe('2026-02-05')
     expect(result.status).toBe('todo')
-    expect(result.sprint_id).toBeNull()
+    expect(result.sprintId).toBeNull()
     expect(result.origin).toBe('recurrence')
-    expect(result.recurrence_parent_id).toBe('task-original')
-    expect(result.flagged).toBe(false)
+    expect(result.recurrenceParentId).toBe('task-original')
+    expect(result.flag).toBeNull()
   })
 
   it('mantém o horário e o responsável na próxima ocorrência', () => {
     const original = makeTask({
-      due_date: '2026-01-05',
-      due_time: '14:00:00',
-      assignee_id: 'persona-1',
-      recurrence_type: 'weekly',
+      due: { date: '2026-01-05', time: '14:00:00' },
+      assigneeId: 'persona-1',
+      recurrence: { type: 'weekly', interval: 1, endDate: null },
     })
     const result = buildRecurrentCard(original, new Date(2026, 0, 12))
-    expect(result.due_time).toBe('14:00:00')
-    expect(result.assignee_id).toBe('persona-1')
+    expect(result.due?.time).toBe('14:00:00')
+    expect(result.assigneeId).toBe('persona-1')
   })
 })

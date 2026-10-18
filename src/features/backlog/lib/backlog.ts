@@ -1,11 +1,7 @@
 import type { TagsByTask } from '@/features/tasks/lib/taskTags'
 import { isTaskPriority, isTaskStatus } from '@/shared/lib/enums'
-import type {
-  Project,
-  Task,
-  TaskPriority,
-  TaskStatus,
-} from '@/shared/types/entities'
+import type { Project, TaskPriority, TaskStatus } from '@/shared/types/entities'
+import type { Task } from '@/features/tasks/model/task'
 
 export type BacklogFilters = {
   status: TaskStatus | null
@@ -81,8 +77,8 @@ export function filterBacklogTasks(
     (task) =>
       (!filters.status || task.status === filters.status) &&
       (!filters.priority || task.priority === filters.priority) &&
-      (!filters.epicId || task.epic_id === filters.epicId) &&
-      (!filters.assigneeId || task.assignee_id === filters.assigneeId) &&
+      (!filters.epicId || task.epicId === filters.epicId) &&
+      (!filters.assigneeId || task.assigneeId === filters.assigneeId) &&
       (!filters.tag || (tagsByTask[task.id] ?? []).includes(filters.tag)),
   )
 }
@@ -95,7 +91,7 @@ export function groupTasksByProject(
   return projects
     .map((project) => ({
       project,
-      tasks: tasks.filter((task) => task.project_id === project.id),
+      tasks: tasks.filter((task) => task.projectId === project.id),
     }))
     .filter((group) => group.tasks.length > 0)
 }

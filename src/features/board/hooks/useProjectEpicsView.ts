@@ -10,7 +10,7 @@ import type { MoveOption } from '@/features/board/lib/board'
 import { BOARD_TEXTS } from '@/features/board/constants/texts'
 import { NEUTRAL_COLOR } from '@/shared/lib/palette'
 import { toEpicLabel } from '@/features/epics/lib/epic'
-import type { Task } from '@/shared/types/entities'
+import type { Task } from '@/features/tasks/model/task'
 
 export type EpicColumnItem = {
   task: Task

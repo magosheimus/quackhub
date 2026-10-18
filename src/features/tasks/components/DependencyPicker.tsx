@@ -4,7 +4,7 @@ import { IconClose } from '@/shared/lib/icons'
 import { useSimilarCards } from '@/features/tasks/hooks/useSimilarCards'
 import { useDebouncedValue } from '@/shared/hooks/useDebouncedValue'
 import { TASKS_TEXTS } from '@/features/tasks/constants/texts'
-import type { Task } from '@/shared/types/entities'
+import type { Task } from '@/features/tasks/model/task'
 
 const MIN_SEARCH_LENGTH = 3
 const MAX_CANDIDATES = 5

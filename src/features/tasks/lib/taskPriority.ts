@@ -4,7 +4,8 @@ import {
   IconPriorityLow,
   IconPriorityMedium,
 } from '@/shared/lib/icons'
-import type { Task, TaskPriority } from '@/shared/types/entities'
+import type { TaskPriority } from '@/shared/types/entities'
+import type { Task } from '@/features/tasks/model/task'
 
 type PriorityConfig = {
   icon: IconComponent
@@ -53,6 +54,6 @@ export function sortByPriorityThenDate(tasks: Task[]): Task[] {
     if (priorityDiff !== 0) {
       return priorityDiff
     }
-    return (a.created_at ?? '').localeCompare(b.created_at ?? '')
+    return (a.createdAt ?? '').localeCompare(b.createdAt ?? '')
   })
 }

@@ -1,5 +1,5 @@
 import { createEnumGuard } from '@/shared/lib/enums'
-import type { Task } from '@/shared/types/entities'
+import type { Task } from '@/features/tasks/model/task'
 import type { Persona } from '@/features/personas/model/persona'
 import { getInitialLetter, type Letter } from '@/shared/lib/letters'
 
@@ -73,9 +73,9 @@ export function findPersona(
 
 export function getPersonasInTasks<P extends Pick<Persona, 'id'>>(
   personas: P[],
-  tasks: Pick<Task, 'assignee_id'>[],
+  tasks: Pick<Task, 'assigneeId'>[],
 ): P[] {
-  const assigneeIds = new Set(tasks.map((task) => task.assignee_id))
+  const assigneeIds = new Set(tasks.map((task) => task.assigneeId))
   return personas.filter((persona) => assigneeIds.has(persona.id))
 }
 

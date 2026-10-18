@@ -10,7 +10,7 @@ import {
   type EpicColumnView,
 } from '@/features/board/hooks/useProjectEpicsView'
 import type { MoveOption } from '@/features/board/lib/board'
-import type { Task } from '@/shared/types/entities'
+import type { Task } from '@/features/tasks/model/task'
 import { BOARD_TEXTS } from '@/features/board/constants/texts'
 import { IconBulletlist, IconPlus } from '@/shared/lib/icons'
 import type { ProjectLabels } from '@/features/projects/lib/project'

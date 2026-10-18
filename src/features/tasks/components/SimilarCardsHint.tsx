@@ -1,4 +1,4 @@
-import type { Task } from '@/shared/types/entities'
+import type { Task } from '@/features/tasks/model/task'
 import { TASKS_TEXTS } from '@/features/tasks/constants/texts'
 
 type SimilarCardsHintProps = {
@@ -13,7 +13,7 @@ export function SimilarCardsHint({ cards }: SimilarCardsHintProps) {
       <span className="text-caption">{TASKS_TEXTS.similarCards}</span>
       {cards.slice(0, 5).map((card) => (
         <span key={card.id} className="text-xs text-fg">
-          {card.title} — {card.created_at?.slice(0, 10)}
+          {card.title} — {card.createdAt?.slice(0, 10)}
         </span>
       ))}
     </div>

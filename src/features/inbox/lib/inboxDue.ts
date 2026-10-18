@@ -1,13 +1,13 @@
 import { daysBetween } from '@/shared/lib/date'
 import { sortByPriorityThenDate } from '@/features/tasks/lib/taskPriority'
-import type { Task } from '@/shared/types/entities'
+import type { Task } from '@/features/tasks/model/task'
 
 export function countOverdue(
-  tasks: Pick<Task, 'due_date'>[],
+  tasks: Pick<Task, 'due'>[],
   today: string,
 ): number {
   return tasks.filter(
-    (task) => task.due_date !== null && daysBetween(task.due_date, today) > 0,
+    (task) => task.due !== null && daysBetween(task.due.date, today) > 0,
   ).length
 }
 
@@ -16,7 +16,7 @@ export function countOverdue(
 export function sortByDueThenPriority(tasks: Task[]): Task[] {
   return sortByPriorityThenDate(tasks).sort(
     (a, b) =>
-      (a.due_date ?? '').localeCompare(b.due_date ?? '') ||
-      (a.due_time ?? '99').localeCompare(b.due_time ?? '99'),
+      (a.due?.date ?? '').localeCompare(b.due?.date ?? '') ||
+      (a.due?.time ?? '99').localeCompare(b.due?.time ?? '99'),
   )
 }

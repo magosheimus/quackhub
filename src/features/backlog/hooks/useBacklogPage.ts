@@ -23,7 +23,8 @@ import { isTaskPriority, isTaskStatus } from '@/shared/lib/enums'
 import { useToggleSet } from '@/shared/hooks/useToggleSet'
 import { useBulkTaskTags } from '@/features/tasks/hooks/tags/useBulkTaskTags'
 import { collectTags } from '@/features/tasks/lib/taskTags'
-import type { Project, Task } from '@/shared/types/entities'
+import type { Project } from '@/shared/types/entities'
+import type { Task } from '@/features/tasks/model/task'
 import { buildProjectLabels } from '@/features/projects/lib/project'
 import { usePersonaOptions } from '@/features/personas/hooks/usePersonaOptions'
 
@@ -92,10 +93,10 @@ export function useBacklogPage() {
   }
 
   function getEpicLabel(task: Task): EpicLabel | null {
-    if (!task.epic_id) {
+    if (!task.epicId) {
       return null
     }
-    return epicLabels.get(task.epic_id) ?? null
+    return epicLabels.get(task.epicId) ?? null
   }
 
   function addToSprint(task: Task, project: Project) {
@@ -106,7 +107,7 @@ export function useBacklogPage() {
       taskId: task.id,
       sprintId: targetSprint.id,
       status: getInitialStatusForType(project.type),
-      projectId: task.project_id,
+      projectId: task.projectId,
     })
   }
 

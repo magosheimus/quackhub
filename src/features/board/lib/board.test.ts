@@ -32,8 +32,8 @@ describe('applyBoardFilters', () => {
 
   it('filtra por flagged', () => {
     const tasks = [
-      makeTask({ id: 't1', flagged: true }),
-      makeTask({ id: 't2', flagged: false }),
+      makeTask({ id: 't1', flag: { note: null } }),
+      makeTask({ id: 't2', flag: null }),
     ]
     const result = applyBoardFilters(
       tasks,
@@ -60,9 +60,9 @@ describe('applyBoardFilters', () => {
 
   it('filtra pelas personas escolhidas', () => {
     const tasks = [
-      makeTask({ id: 't1', assignee_id: 'p1' }),
-      makeTask({ id: 't2', assignee_id: 'p2' }),
-      makeTask({ id: 't3', assignee_id: null }),
+      makeTask({ id: 't1', assigneeId: 'p1' }),
+      makeTask({ id: 't2', assigneeId: 'p2' }),
+      makeTask({ id: 't3', assigneeId: null }),
     ]
     const result = applyBoardFilters(
       tasks,
@@ -87,9 +87,15 @@ describe('applyBoardFilters', () => {
 
   it('filtra SRS vencido (next_review <= hoje)', () => {
     const tasks = [
-      makeTask({ id: 't1', next_review: '2026-09-28' }),
-      makeTask({ id: 't2', next_review: '2026-09-30' }),
-      makeTask({ id: 't3', next_review: null }),
+      makeTask({
+        id: 't1',
+        srs: { easeFactor: 2.5, interval: 1, nextReview: '2026-09-28' },
+      }),
+      makeTask({
+        id: 't2',
+        srs: { easeFactor: 2.5, interval: 1, nextReview: '2026-09-30' },
+      }),
+      makeTask({ id: 't3', srs: null }),
     ]
     const result = applyBoardFilters(
       tasks,
@@ -102,8 +108,8 @@ describe('applyBoardFilters', () => {
 
   it('combina múltiplos filtros (AND)', () => {
     const tasks = [
-      makeTask({ id: 't1', flagged: true, priority: 'high' }),
-      makeTask({ id: 't2', flagged: true, priority: 'low' }),
+      makeTask({ id: 't1', flag: { note: null }, priority: 'high' }),
+      makeTask({ id: 't2', flag: { note: null }, priority: 'low' }),
     ]
     const result = applyBoardFilters(
       tasks,
@@ -141,8 +147,8 @@ describe('getLabelScope', () => {
 
 describe('opções de filtro da sprint', () => {
   const tasks = [
-    makeTask({ id: 't1', project_id: 'p1', epic_id: 'e1' }),
-    makeTask({ id: 't2', project_id: 'p1', epic_id: null }),
+    makeTask({ id: 't1', projectId: 'p1', epicId: 'e1' }),
+    makeTask({ id: 't2', projectId: 'p1', epicId: null }),
   ]
 
   it('lista só projetos com tarefas na sprint', () => {
@@ -173,16 +179,16 @@ describe('urgentes no topo da coluna', () => {
   it('coloca os cards flagged antes dos demais, mantendo a ordem', () => {
     const groups = groupTasksByColumn([
       makeTask({ id: 'a', status: 'todo' }),
-      makeTask({ id: 'b', status: 'todo', flagged: true }),
+      makeTask({ id: 'b', status: 'todo', flag: { note: null } }),
       makeTask({ id: 'c', status: 'todo' }),
-      makeTask({ id: 'd', status: 'todo', flagged: true }),
+      makeTask({ id: 'd', status: 'todo', flag: { note: null } }),
     ])
     expect(groups.todo.map((t) => t.id)).toEqual(['b', 'd', 'a', 'c'])
   })
 })
 
 describe('shouldFlagOnDrop', () => {
-  const card = makeTask({ flagged: false })
+  const card = makeTask({ flag: null })
 
   it('marca como urgente ao soltar na primeira posição', () => {
     expect(shouldFlagOnDrop(card, 'doing', 0)).toBe(true)
@@ -191,9 +197,9 @@ describe('shouldFlagOnDrop', () => {
   it('não marca em outra posição, em Finalizado ou se já é urgente', () => {
     expect(shouldFlagOnDrop(card, 'doing', 2)).toBe(false)
     expect(shouldFlagOnDrop(card, 'done', 0)).toBe(false)
-    expect(shouldFlagOnDrop(makeTask({ flagged: true }), 'doing', 0)).toBe(
-      false,
-    )
+    expect(
+      shouldFlagOnDrop(makeTask({ flag: { note: null } }), 'doing', 0),
+    ).toBe(false)
   })
 })
 
@@ -277,7 +283,7 @@ describe('getVisibleBoardColumns', () => {
   ])
 
   it('sprint só com cards gerais esconde A REVISAR', () => {
-    const tasks = [makeTask({ project_id: 'general-1', status: 'todo' })]
+    const tasks = [makeTask({ projectId: 'general-1', status: 'todo' })]
     expect(getVisibleBoardColumns(tasks, projectTypeById)).toEqual([
       'todo',
       'doing',
@@ -288,8 +294,8 @@ describe('getVisibleBoardColumns', () => {
 
   it('sprint com card de estudo mostra A REVISAR', () => {
     const tasks = [
-      makeTask({ project_id: 'general-1', status: 'todo' }),
-      makeTask({ project_id: 'study-1', status: 'to_study' }),
+      makeTask({ projectId: 'general-1', status: 'todo' }),
+      makeTask({ projectId: 'study-1', status: 'to_study' }),
     ]
     expect(getVisibleBoardColumns(tasks, projectTypeById)).toEqual(
       BOARD_COLUMNS,
@@ -297,7 +303,7 @@ describe('getVisibleBoardColumns', () => {
   })
 
   it('mantém A REVISAR se já tem card nela, mesmo sem projeto de estudo', () => {
-    const tasks = [makeTask({ project_id: 'general-1', status: 'to_review' })]
+    const tasks = [makeTask({ projectId: 'general-1', status: 'to_review' })]
     expect(getVisibleBoardColumns(tasks, projectTypeById)).toEqual(
       BOARD_COLUMNS,
     )

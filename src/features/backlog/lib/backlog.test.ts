@@ -19,9 +19,9 @@ const NO_TAGS = {}
 
 describe('filterBacklogTasks', () => {
   const tasks = [
-    makeTask({ id: 't1', status: 'todo', priority: 'high', epic_id: 'e1' }),
-    makeTask({ id: 't2', status: 'doing', priority: 'low', epic_id: 'e2' }),
-    makeTask({ id: 't3', status: 'todo', priority: 'low', epic_id: null }),
+    makeTask({ id: 't1', status: 'todo', priority: 'high', epicId: 'e1' }),
+    makeTask({ id: 't2', status: 'doing', priority: 'low', epicId: 'e2' }),
+    makeTask({ id: 't3', status: 'todo', priority: 'low', epicId: null }),
   ]
 
   it('sem filtros devolve todas as tarefas', () => {
@@ -44,8 +44,8 @@ describe('filterBacklogTasks', () => {
 describe('filtro de persona no backlog', () => {
   it('mantém só os cards da persona escolhida', () => {
     const tasks = [
-      makeTask({ id: 't1', assignee_id: 'p1' }),
-      makeTask({ id: 't2', assignee_id: null }),
+      makeTask({ id: 't1', assigneeId: 'p1' }),
+      makeTask({ id: 't2', assigneeId: null }),
     ]
     const result = filterBacklogTasks(
       tasks,
@@ -77,9 +77,9 @@ describe('groupTasksByProject', () => {
       makeProject({ id: 'p3' }),
     ]
     const tasks = [
-      makeTask({ id: 't1', project_id: 'p3' }),
-      makeTask({ id: 't2', project_id: 'p1' }),
-      makeTask({ id: 't3', project_id: 'p3' }),
+      makeTask({ id: 't1', projectId: 'p3' }),
+      makeTask({ id: 't2', projectId: 'p1' }),
+      makeTask({ id: 't3', projectId: 'p3' }),
     ]
 
     const groups = groupTasksByProject(projects, tasks)

@@ -1,5 +1,12 @@
 import { describe, expect, it } from 'vitest'
-import { findDueToken, formatDue, removeDueToken } from './due'
+import {
+  findDueToken,
+  formatDue,
+  removeDueToken,
+  toTaskDue,
+  withDueDate,
+  withDueTime,
+} from './due'
 
 // Sexta-feira, 16/10/2026, 10:00
 const NOW = new Date(2026, 9, 16, 10, 0)
@@ -196,5 +203,33 @@ describe('formatDue', () => {
 
   it('prazo passado fica como atrasado', () => {
     expect(formatDue('2026-10-14', null, TODAY, labels).tone).toBe('overdue')
+  })
+})
+
+describe('prazo agrupado', () => {
+  const due = { date: '2026-10-21', time: '14:00' }
+
+  it('sem data, o prazo some mesmo com hora', () => {
+    expect(toTaskDue(null, '14:00')).toBeNull()
+    expect(toTaskDue('2026-10-21', null)).toEqual({
+      date: '2026-10-21',
+      time: null,
+    })
+  })
+
+  it('trocar a data mantém a hora; limpar a data limpa tudo', () => {
+    expect(withDueDate(due, '2026-10-22')).toEqual({
+      date: '2026-10-22',
+      time: '14:00',
+    })
+    expect(withDueDate(due, null)).toBeNull()
+  })
+
+  it('hora só muda se já houver data', () => {
+    expect(withDueTime(due, '09:00')).toEqual({
+      date: '2026-10-21',
+      time: '09:00',
+    })
+    expect(withDueTime(null, '09:00')).toBeNull()
   })
 })

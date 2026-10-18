@@ -3,6 +3,7 @@ import { todayLocal } from '@/shared/lib/date'
 import { formatDue, type DueTone } from '@/features/tasks/lib/due'
 import { DUE_LABELS, TASKS_TEXTS } from '@/features/tasks/constants/texts'
 import { cn } from '@/shared/lib/utils'
+import type { TaskDue } from '@/features/tasks/model/task'
 
 const TONE_CLASS: Record<DueTone, string> = {
   overdue: 'text-danger',
@@ -11,15 +12,14 @@ const TONE_CLASS: Record<DueTone, string> = {
 }
 
 type DueBadgeProps = {
-  dueDate: string | null
-  dueTime: string | null
+  due: TaskDue | null
 }
 
-export function DueBadge({ dueDate, dueTime }: DueBadgeProps) {
-  if (!dueDate) {
+export function DueBadge({ due: taskDue }: DueBadgeProps) {
+  if (!taskDue) {
     return null
   }
-  const due = formatDue(dueDate, dueTime, todayLocal(), DUE_LABELS)
+  const due = formatDue(taskDue.date, taskDue.time, todayLocal(), DUE_LABELS)
 
   return (
     <span
