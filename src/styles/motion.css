@@ -1,0 +1,139 @@
+/* ==========================================================================
+   Motion — animações decorativas
+   ========================================================================== */
+@keyframes marquee-loop {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Pato da sidebar: farol com halo pulsando e uma piscada de CRT; acelera no hover */
+.logo-beacon {
+  animation: logo-beacon 3.2s ease-in-out infinite;
+}
+
+button:hover > .logo-beacon {
+  animation-duration: 1.2s;
+}
+
+@keyframes logo-beacon {
+  0%,
+  100% {
+    opacity: 1;
+    filter: drop-shadow(
+        0 0 2px color-mix(in oklch, var(--glow-color) 60%, transparent)
+      )
+      drop-shadow(
+        0 0 6px color-mix(in oklch, var(--glow-color) 30%, transparent)
+      );
+  }
+  50% {
+    filter: drop-shadow(
+        0 0 4px color-mix(in oklch, var(--glow-color) 95%, transparent)
+      )
+      drop-shadow(
+        0 0 14px color-mix(in oklch, var(--glow-color) 65%, transparent)
+      )
+      drop-shadow(
+        0 0 28px color-mix(in oklch, var(--glow-color) 35%, transparent)
+      );
+  }
+  92% {
+    opacity: 1;
+  }
+  94% {
+    opacity: 0.55;
+  }
+  96% {
+    opacity: 1;
+  }
+}
+
+/* Botão "+ Novo card" da top bar: no hover (e no foco por teclado), contorno
+   neon na cor de brilho do lugar, com um zumbido de letreiro. O fundo fica
+   sólido: o hover padrão (primary/80) deixava vazar a cor da barra */
+.neon-hover:is(:hover, :focus-visible) {
+  background-color: var(--primary);
+  border-color: var(--glow-color);
+  animation: neon-hum 2.8s ease-in-out infinite;
+}
+
+@keyframes neon-hum {
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow:
+      0 0 3px color-mix(in oklch, var(--glow-color) 70%, transparent),
+      0 0 8px color-mix(in oklch, var(--glow-color) 40%, transparent),
+      inset 0 0 4px color-mix(in oklch, var(--glow-color) 30%, transparent);
+  }
+  50% {
+    box-shadow:
+      0 0 5px color-mix(in oklch, var(--glow-color) 90%, transparent),
+      0 0 14px color-mix(in oklch, var(--glow-color) 60%, transparent),
+      0 0 26px color-mix(in oklch, var(--glow-color) 30%, transparent),
+      inset 0 0 6px color-mix(in oklch, var(--glow-color) 45%, transparent);
+  }
+  96% {
+    opacity: 1;
+  }
+  97% {
+    opacity: 0.7;
+  }
+  98% {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .retro-motion *,
+  .retro-motion *::before,
+  .retro-motion *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .retro-motion .loading-dots::after {
+    content: '...';
+  }
+}
+
+@keyframes loading-dots {
+  0% {
+    content: '';
+  }
+  25% {
+    content: '.';
+  }
+  50% {
+    content: '..';
+  }
+  75% {
+    content: '...';
+  }
+  100% {
+    content: '....';
+  }
+}
+
+.loading-dots::after {
+  content: '';
+  animation: loading-dots 1.2s steps(1, end) infinite;
+}
+
+@keyframes cartucho-pulse {
+  0%,
+  100% {
+    box-shadow:
+      2px 2px 0 0 var(--lcd-ink),
+      0 0 0 0 transparent;
+  }
+  50% {
+    box-shadow:
+      2px 2px 0 0 var(--lcd-ink),
+      0 0 12px 2px var(--accent);
+  }
+}

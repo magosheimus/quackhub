@@ -1,6 +1,10 @@
 import { describe, expect, it } from 'vitest'
-import globalsCss from '../globals.css?raw'
 import indexCss from '../index.css?raw'
+const styleFiles = import.meta.glob<string>('/src/styles/*.css', {
+  query: '?raw',
+  import: 'default',
+  eager: true,
+})
 
 const sourceFiles = import.meta.glob<string>('/src/**/*.{ts,tsx}', {
   query: '?raw',
@@ -17,12 +21,12 @@ const RUNTIME_VARIABLES = new Set([
 ])
 
 function definedVariables(): Set<string> {
-  const css = `${globalsCss}\n${indexCss}`
+  const css = [indexCss, ...Object.values(styleFiles)].join('\n')
   return new Set([...css.matchAll(/(--[a-z0-9-]+)\s*:/g)].map((m) => m[1]))
 }
 
 describe('tokens de tema', () => {
-  it('toda variável CSS usada no código existe no globals.css ou index.css', () => {
+  it('toda variável CSS usada no código existe no index.css ou em styles/', () => {
     const defined = definedVariables()
     const missing: string[] = []
 

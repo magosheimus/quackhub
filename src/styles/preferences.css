@@ -1,0 +1,107 @@
+/* ==========================================================================
+   Preferências de aparência — classes na raiz (scanlines-on, glow-on, lcd-*,
+   font-ibm-plex), ligadas em Configurações
+   ========================================================================== */
+.scanlines-on {
+  --scanline-opacity: 1;
+}
+
+/* Cores redeclaradas nos elementos para --glow-color valer por elemento */
+.glow-on,
+.glow-on :is(.font-heading, [aria-current='page'], .glow-active, .logo-mark) {
+  --ghost-a: transparent;
+  --ghost-b: var(--glow-color);
+}
+
+.glow-on.lcd-glitch,
+.glow-on.lcd-glitch
+  :is(.font-heading, [aria-current='page'], .glow-active, .logo-mark) {
+  --ghost-a: var(--glitch-red);
+  --ghost-b: var(--glitch-cyan);
+}
+
+.glow-on {
+  --ghost-offset: 0.05em;
+  --ghost-logo-offset: 1.5px;
+  --ghost-alpha: 45%;
+}
+
+.glow-on.lcd-glitch {
+  --ghost-offset: 0.06em;
+  --ghost-logo-offset: 2px;
+  --ghost-alpha: 75%;
+}
+
+.glow-on.lcd-off {
+  --ghost-offset: 0em;
+  --ghost-logo-offset: 0px;
+  --ghost-alpha: 0%;
+}
+
+/* Pato da logo: drop-shadow em px, declarado no próprio pato para --glow-color
+   valer por elemento (as barras do app trocam a cor do brilho) */
+.glow-on .logo-mark {
+  --glow-filter: drop-shadow(
+      calc(var(--ghost-logo-offset) * -1) 0 0
+        color-mix(in oklch, var(--ghost-a) var(--ghost-alpha), transparent)
+    )
+    drop-shadow(
+      var(--ghost-logo-offset) 0 0
+        color-mix(in oklch, var(--ghost-b) var(--ghost-alpha), transparent)
+    )
+    drop-shadow(0 0 1px color-mix(in oklch, var(--glow-color) 70%, transparent))
+    drop-shadow(0 0 5px color-mix(in oklch, var(--glow-color) 45%, transparent))
+    drop-shadow(
+      0 0 12px color-mix(in oklch, var(--glow-color) 25%, transparent)
+    );
+}
+
+/* Temas claros: brilho suave, exceto nas barras do app, que têm fundo escuro */
+.glow-on:not(.theme-dark) .logo-mark:not(.app-chrome *) {
+  --glow-filter: drop-shadow(
+      calc(var(--ghost-logo-offset) * -1) 0 0
+        color-mix(in oklch, var(--ghost-a) var(--ghost-alpha), transparent)
+    )
+    drop-shadow(
+      var(--ghost-logo-offset) 0 0
+        color-mix(in oklch, var(--ghost-b) var(--ghost-alpha), transparent)
+    )
+    drop-shadow(0 0 4px color-mix(in oklch, var(--glow-color) 50%, transparent));
+}
+
+/* Glow do texto declarado no próprio elemento (um var() é resolvido onde a
+   variável é declarada), para --glow-color poder mudar por elemento.
+   Valores em em: o efeito acompanha o tamanho da fonte (base: títulos de ~32px) */
+.glow-on :is(.font-heading, [aria-current='page'], .glow-active) {
+  --glow:
+    calc(var(--ghost-offset) * -1) 0 0
+      color-mix(in oklch, var(--ghost-a) var(--ghost-alpha), transparent),
+    var(--ghost-offset) 0 0
+      color-mix(in oklch, var(--ghost-b) var(--ghost-alpha), transparent),
+    0 0 0.03em color-mix(in oklch, var(--glow-color) 70%, transparent),
+    0 0 0.19em color-mix(in oklch, var(--glow-color) 50%, transparent),
+    0 0 0.5em color-mix(in oklch, var(--glow-color) 35%, transparent),
+    0 0 1em color-mix(in oklch, var(--glow-color) 15%, transparent);
+}
+
+/* Temas claros trocam o halo largo do escuro por um suave, exceto nas barras
+   do app, que têm fundo escuro */
+.glow-on:not(.theme-dark)
+  :is(.font-heading, [aria-current='page'], .glow-active):not(.app-chrome *) {
+  --glow:
+    calc(var(--ghost-offset) * -1) 0 0
+      color-mix(in oklch, var(--ghost-a) var(--ghost-alpha), transparent),
+    var(--ghost-offset) 0 0
+      color-mix(in oklch, var(--ghost-b) var(--ghost-alpha), transparent),
+    0 0 0.06em color-mix(in oklch, var(--glow-color) 60%, transparent),
+    0 0 0.25em color-mix(in oklch, var(--glow-color) 40%, transparent);
+}
+
+/* Texto em cor de sinal brilha na própria cor, não no destaque */
+.glow-on :is(.text-danger, .text-warning, .text-success) {
+  --glow-color: currentColor;
+}
+
+.font-ibm-plex {
+  --font-body: 'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
+}

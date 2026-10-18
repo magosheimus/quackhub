@@ -9,6 +9,10 @@ export function isSettingsShortcut(event: ShortcutEvent): boolean {
   return event.key === ',' && (event.ctrlKey || event.metaKey)
 }
 
+export function isSidebarShortcut(event: ShortcutEvent): boolean {
+  return event.key.toLowerCase() === 'b' && (event.ctrlKey || event.metaKey)
+}
+
 export function shouldLeaveSettings(
   event: Pick<KeyboardEvent, 'key' | 'defaultPrevented'>,
   { isTyping, hasOpenOverlay }: EscapeContext,

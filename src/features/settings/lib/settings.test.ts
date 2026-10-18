@@ -127,3 +127,15 @@ describe('normalizeSettings', () => {
     expect(result.lcdGhost).toBe(DEFAULT_SETTINGS.lcdGhost)
   })
 })
+
+describe('sidebarCollapsed', () => {
+  it('começa expandida e só aceita booleano', () => {
+    expect(DEFAULT_SETTINGS.sidebarCollapsed).toBe(false)
+    expect(normalizeSettings({ sidebarCollapsed: true }).sidebarCollapsed).toBe(
+      true,
+    )
+    expect(
+      normalizeSettings({ sidebarCollapsed: 'sim' }).sidebarCollapsed,
+    ).toBe(false)
+  })
+})

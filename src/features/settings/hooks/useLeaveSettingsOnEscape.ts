@@ -2,21 +2,10 @@ import { useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { HOME_PATH } from '@/features/auth/lib/redirect'
 import { shouldLeaveSettings } from '@/features/settings/lib/shortcut'
+import { isEditableTarget } from '@/shared/lib/dom'
 
 const OVERLAY_SELECTOR =
   '[role="dialog"], [role="alertdialog"], [role="listbox"], [role="menu"]'
-
-function isEditable(target: EventTarget | null): boolean {
-  if (!(target instanceof HTMLElement)) {
-    return false
-  }
-  return (
-    target.tagName === 'INPUT' ||
-    target.tagName === 'TEXTAREA' ||
-    target.tagName === 'SELECT' ||
-    target.isContentEditable
-  )
-}
 
 export function useLeaveSettingsOnEscape() {
   const navigate = useNavigate()
@@ -26,7 +15,7 @@ export function useLeaveSettingsOnEscape() {
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
       const context = {
-        isTyping: isEditable(event.target),
+        isTyping: isEditableTarget(event.target),
         hasOpenOverlay: document.querySelector(OVERLAY_SELECTOR) !== null,
       }
       if (!shouldLeaveSettings(event, context)) {

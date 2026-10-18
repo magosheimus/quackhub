@@ -1,0 +1,342 @@
+/* ==========================================================================
+   Tokens — cartucho Sage (padrão)
+   ========================================================================== */
+:root,
+.cartucho-sage {
+  /* Raízes do cartucho */
+  --lcd-screen: #c8cba4;
+  --lcd-ink: #2c2e1a;
+
+  /* Surface */
+  --bg-page: var(--lcd-screen);
+  --bg-surface: #b4ba96;
+  --bg-card: #e6e8d5;
+  --bg-card-hover: #f0f1e3;
+  --bg-selected: #c0d1a7;
+  --bg-input: #f3f4e7;
+
+  --border-card-empty: var(--border);
+  --bg-card-empty: color-mix(in srgb, var(--bg-page) 88%, var(--lcd-ink));
+
+  /* Text */
+  --text-primary: var(--lcd-ink);
+  --text-muted: #50533b;
+
+  /* Border */
+  --border: #929678;
+  --border-strong: #64694a;
+
+  /* Accent */
+  --accent: #004e1e;
+  --on-accent: #f4f5e9;
+
+  /* Signal */
+  --signal-danger: #a52d25;
+  --signal-warning: #765000;
+  --signal-success: #315e35;
+
+  /* Paleta de categorias: oliva, caramelo e terracota */
+  --palette-amber: #bc6c25;
+  --palette-sage: #606c38;
+  --palette-blue: #2f6f73;
+  --palette-rose: #9b3d3d;
+  --palette-lavender: #7d4f86;
+  --palette-sand: #c4952f;
+  --palette-magenta: #b5577a;
+  --palette-teal: #588157;
+  --palette-indigo: #44508f;
+  --palette-brown: #7c4823;
+  --palette-lime: #a3b18a;
+  --palette-graphite: #5f6b72;
+
+  /* Elevation */
+  --elevation-none: var(--bg-card);
+  --elevation-active: var(--bg-selected);
+  --bg-hover: color-mix(in srgb, var(--bg-selected) 70%, var(--border));
+  /* Prioridade: herda o tom de cada cartucho */
+  --priority-medium: var(--accent);
+  --priority-low: var(--palette-teal);
+
+  /* Controles (botões outline, selects, inputs) */
+  --control-bg: var(--bg-surface);
+  --control-border: var(--border);
+  --control-hover: var(--bg-selected);
+  --control-radius: min(var(--radius-md), 12px);
+  --control-height: 1.75rem;
+
+  /* Faixa do marquee (banner da sprint na Inbox) */
+  --marquee-bg: var(--bg-selected);
+
+  /* Efeitos */
+  --glow: 0 0 #0000;
+  --glow-filter: none;
+  --glow-color: var(--accent);
+  --glitch-red: oklch(0.63 0.26 25);
+  --glitch-cyan: oklch(0.82 0.14 205);
+  --icon-shadow: drop-shadow(
+    1px 1px 0 color-mix(in srgb, var(--lcd-ink) 22%, transparent)
+  );
+  --scanline-opacity: 0;
+  --overlay: color-mix(in srgb, var(--lcd-ink) 65%, transparent);
+
+  /* Tipografia */
+  --font-heading: 'VT323', monospace;
+  --font-body: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+
+  --text-xs: 11px;
+  --text-sm: 13px;
+  --text-base: 14px;
+  --text-lg: 17px;
+  --text-xl: 22px;
+  --text-2xl: 28px;
+  --text-3xl: 36px;
+
+  --leading-tight: 1.2;
+  --leading-normal: 1.5;
+
+  /* Espaçamento */
+  --space-1: 2px;
+  --space-2: 4px;
+  --space-3: 6px;
+  --space-4: 8px;
+  --space-6: 12px;
+  --space-8: 16px;
+  --space-10: 20px;
+  --space-12: 24px;
+  --space-16: 32px;
+
+  /* Border Radius */
+  --radius-none: 0;
+  --radius-sm: 1px;
+  --radius-md: 2px;
+  --radius-lg: 3px;
+
+  /* Motion */
+  --motion-fast: 150ms ease;
+
+  /* Barras do app (top bar e sidebar) */
+  --chrome-bg: color-mix(in oklch, var(--accent) 82%, var(--on-accent));
+  --chrome-edge: color-mix(in oklch, var(--accent) 70%, black);
+}
+
+/* ==========================================================================
+   Cartuchos — paletas alternativas
+   ========================================================================== */
+.cartucho-amber {
+  --lcd-screen: #e0b878;
+  --lcd-ink: #3d2308;
+
+  --bg-surface: #cda269;
+  --bg-card: #f4dfc0;
+  --bg-card-hover: #fbebd3;
+  --bg-selected: #e8c696;
+  --bg-input: #f9e9cf;
+
+  --text-primary: var(--lcd-ink);
+  --text-muted: #73502a;
+
+  --border: #b08a56;
+  --border-strong: #8d6132;
+
+  --accent: #7a180b;
+  --on-accent: #fff0d8;
+
+  /* Signal */
+  --signal-danger: #a31a08;
+  --signal-warning: #805100;
+  --signal-success: #597b02;
+
+  /* Paleta de categorias: tons de âmbar */
+  --palette-amber: #cc5500;
+  --palette-sage: #8f7f2a;
+  --palette-blue: #7b6060;
+  --palette-rose: #c0213f;
+  --palette-lavender: #a66e58;
+  --palette-sand: #b8960c;
+  --palette-magenta: #a8326e;
+  --palette-teal: #2f7f7a;
+  --palette-indigo: #4a4a8a;
+  --palette-brown: #6b3f1f;
+  --palette-lime: #5f9a3a;
+  --palette-graphite: #3f3a36;
+
+  /* Barras do app (top bar e sidebar): o accent misturado ao claro desbotava o vinho; aqui escurece */
+  --chrome-bg: color-mix(in oklch, var(--accent) 85%, black);
+  --chrome-edge: color-mix(in oklch, var(--accent) 70%, black);
+}
+
+.cartucho-slate {
+  --lcd-screen: #d8e0e4;
+  --lcd-ink: #16242d;
+
+  --bg-surface: #c0cdd3;
+  --bg-card: #edf2f4;
+  --bg-card-hover: #f7fafb;
+  --bg-selected: #b9c9d7;
+  --bg-input: #f8fbfc;
+
+  --text-primary: var(--lcd-ink);
+  --text-muted: #4b606d;
+
+  --border: #95a8b3;
+  --border-strong: #5e7788;
+
+  --accent: #0f3a68;
+  --on-accent: #f5faff;
+
+  /* Signal */
+  --signal-danger: #b20038;
+  --signal-warning: #8b460b;
+  --signal-success: #00634e;
+
+  /* Paleta de categorias: slate moderno */
+  --palette-amber: #da4f21;
+  --palette-sage: #749f1f;
+  --palette-blue: #5f86a3;
+  --palette-rose: #cc445d;
+  --palette-lavender: #897cc1;
+  --palette-sand: #f5f3ca;
+  --palette-magenta: #c10877;
+  --palette-teal: #71a3a1;
+  --palette-indigo: #3a4a9a;
+  --palette-brown: #964c1b;
+  --palette-lime: #9dc20a;
+  --palette-graphite: #2d3d3d;
+
+  /* Barras do app (top bar e sidebar): borda clara: no azul, contorno nítido fica melhor */
+  --chrome-bg: color-mix(in oklch, var(--accent) 82%, var(--on-accent));
+  --chrome-edge: var(--on-accent);
+}
+
+.cartucho-earth {
+  --lcd-screen: #f1dca7;
+  --lcd-ink: #3d2f22;
+
+  --bg-surface: #daaa8c;
+  --bg-card: #f2e3cb;
+  --bg-card-hover: #f5ebda;
+  --bg-selected: #d8dcad;
+  --bg-input: #fff3db;
+
+  --text-primary: var(--lcd-ink);
+  --text-muted: #705537;
+
+  --border: #b99a6b;
+  --border-strong: #896c46;
+
+  --accent: #5d6b1f;
+  --on-accent: #fff5dc;
+
+  /* Signal */
+  --signal-danger: #a73318;
+  --signal-warning: #80520a;
+  --signal-success: #1d6e1d;
+
+  /* Paleta de categorias: deserto (the earth series) */
+  --palette-amber: #c65d3b;
+  --palette-sage: #9db089;
+  --palette-blue: #3e5c76;
+  --palette-rose: #c08081;
+  --palette-lavender: #8f5b3c;
+  --palette-sand: #c9a66c;
+  --palette-magenta: #9a4a6a;
+  --palette-teal: #8bb0b0;
+  --palette-indigo: #5a5f8a;
+  --palette-brown: #5a3e2b;
+  --palette-lime: #8aa040;
+  --palette-graphite: #7d7c7b;
+
+  /* Barras do app (top bar e sidebar) */
+  --chrome-bg: color-mix(in oklch, var(--accent) 82%, var(--on-accent));
+  --chrome-edge: color-mix(in oklch, var(--accent) 70%, black);
+}
+
+.cartucho-sage-dark {
+  --lcd-screen: #0d1f12;
+  --lcd-ink: #f5f1e6;
+
+  --bg-surface: #17281a;
+  --bg-card: #2a442f;
+  --bg-card-hover: #304f37;
+  --bg-selected: #253c1c;
+  --bg-input: #1c2f22;
+  --bg-card-empty: var(--bg-surface);
+
+  --text-primary: var(--lcd-ink);
+  --text-muted: #b1c5a2;
+
+  --border: #50684c;
+  --border-strong: #91a17d;
+
+  --accent: #9dc94b;
+  --on-accent: #211d0c;
+  --glow-color: var(--accent);
+
+  /* Signal */
+  --signal-danger: #ff3d0c;
+  --signal-warning: #ebbd58;
+  --signal-success: #5abe5c;
+
+  /* Paleta de categorias: rosa vinho, sálvia e cáqui do musgo */
+  --palette-amber: #c2a868;
+  --palette-sage: #95ae97;
+  --palette-blue: #7f9ea8;
+  --palette-rose: #be5f75;
+  --palette-lavender: #d391a1;
+  --palette-sand: #afb28e;
+  --palette-magenta: #c86fb0;
+  --palette-teal: #6fb0a0;
+  --palette-indigo: #8a90c8;
+  --palette-brown: #a07a5a;
+  --palette-lime: #748c41;
+  --palette-graphite: #8a8f94;
+
+  /* Barras do app (top bar e sidebar) */
+  --chrome-bg: color-mix(in oklch, var(--bg-page) 90%, black);
+  --chrome-edge: var(--border-strong);
+}
+
+.cartucho-amber-dark {
+  --lcd-screen: #1d0d02;
+  --lcd-ink: #f5d9a6;
+
+  --bg-surface: #2d1a0b;
+  --bg-card: #3c2713;
+  --bg-card-hover: #49321b;
+  --bg-selected: rgb(58, 37, 10);
+  --bg-input: #160b04;
+  --bg-card-empty: var(--bg-surface);
+
+  --text-primary: var(--lcd-ink);
+  --text-muted: #d0ac78;
+
+  --border: #78552e;
+  --border-strong: #b38b4c;
+
+  --accent: #e8a33d;
+  --on-accent: #261405;
+  --glow-color: var(--accent);
+
+  /* Signal */
+  --signal-danger: #ff6519;
+  --signal-warning: #f2c362;
+  --signal-success: #b7d77b;
+
+  /* Paleta de categorias no estilo gruvbox dark */
+  --palette-amber: #fe8019;
+  --palette-sage: #b8bb26;
+  --palette-blue: #83a598;
+  --palette-rose: #fb4934;
+  --palette-lavender: #d3869b;
+  --palette-sand: #bdae93;
+  --palette-magenta: #8f3f71;
+  --palette-teal: #8ec07c;
+  --palette-indigo: #076678;
+  --palette-brown: #af3a03;
+  --palette-lime: #fabd2f;
+  --palette-graphite: #928374;
+
+  /* Barras do app (top bar e sidebar) */
+  --chrome-bg: color-mix(in oklch, var(--bg-page) 90%, black);
+  --chrome-edge: var(--border-strong);
+}

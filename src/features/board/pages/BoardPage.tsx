@@ -68,7 +68,7 @@ export function BoardPage() {
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex h-full flex-col gap-4">
       <SprintHeader activeSprint={activeSprint} tasks={visibleTasks} />
 
       <FilterBar
@@ -82,18 +82,20 @@ export function BoardPage() {
       />
 
       <DragDropContext onDragEnd={handleDragEnd}>
-        <div className="flex snap-x snap-proximity gap-4 overflow-x-auto pb-2 lg:snap-none">
-          {columns.map((column) => (
-            <BoardColumn
-              key={column.key}
-              column={column.key}
-              label={column.label}
-              tasks={column.tasks}
-              projectLabels={projectLabels}
-              getMoveOptions={getMoveOptionsFor}
-              onMove={moveTask}
-            />
-          ))}
+        <div className="min-h-0 flex-1 snap-x snap-proximity overflow-auto pb-2 lg:snap-none">
+          <div className="flex min-h-full gap-4">
+            {columns.map((column) => (
+              <BoardColumn
+                key={column.key}
+                column={column.key}
+                label={column.label}
+                tasks={column.tasks}
+                projectLabels={projectLabels}
+                getMoveOptions={getMoveOptionsFor}
+                onMove={moveTask}
+              />
+            ))}
+          </div>
         </div>
         {isLoadingTasks && <LoadingText />}
       </DragDropContext>

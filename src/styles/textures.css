@@ -1,0 +1,36 @@
+/* ==========================================================================
+   Texturas
+   ========================================================================== */
+.texture-grid :is(.app-root, .page-backdrop) {
+  background-image:
+    linear-gradient(
+      color-mix(in srgb, var(--border) var(--texture-opacity, 45%), transparent)
+        1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--border) var(--texture-opacity, 45%), transparent)
+        1px,
+      transparent 1px
+    );
+  background-size: 24px 24px;
+}
+
+.texture-dots :is(.app-root, .page-backdrop) {
+  background-image: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--border) var(--texture-opacity, 70%), transparent)
+      1px,
+    transparent 1px
+  );
+  background-size: 20px 20px;
+}
+
+/* Fundo de "página" para elementos fixos sobre o conteúdo (ex.: título das
+   colunas do Board): mesma cor e textura da raiz, presa à tela, para encaixar
+   com o desenho da página */
+.page-backdrop {
+  background-color: var(--bg-page);
+  background-attachment: fixed;
+}
