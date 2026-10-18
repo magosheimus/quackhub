@@ -86,7 +86,7 @@ import { RobotFaceSharp } from 'pixelarticons/react/RobotFaceSharp'
 import { RobotSharp } from 'pixelarticons/react/RobotSharp'
 import { Scale } from 'pixelarticons/react/Scale'
 import { Send } from 'pixelarticons/react/Send'
-import { SettingsCog } from 'pixelarticons/react/SettingsCog'
+import { SettingsCog2 } from 'pixelarticons/react/SettingsCog2'
 import { SkullSharp } from 'pixelarticons/react/SkullSharp'
 import { Smile } from 'pixelarticons/react/Smile'
 import { Snail } from 'pixelarticons/react/Snail'
@@ -200,7 +200,7 @@ export const IconRefresh = createIcon(RefreshSolid)
 export const IconRobot = createIcon(Robot)
 export const IconScale = createIcon(Scale)
 export const IconSend = createIcon(Send)
-export const IconSettings = createIcon(SettingsCog)
+export const IconSettings = createIcon(SettingsCog2)
 export const IconSkull = createIcon(SkullSharp)
 export const IconSmile = createIcon(Smile)
 export const IconSnail = createIcon(Snail)

@@ -1,30 +1,82 @@
 /* ==========================================================================
    Texturas
    ========================================================================== */
-.texture-grid :is(.app-root, .page-backdrop) {
-  background-image:
-    linear-gradient(
-      color-mix(in srgb, var(--border) var(--texture-opacity, 45%), transparent)
-        1px,
-      transparent 1px
-    ),
-    linear-gradient(
-      90deg,
-      color-mix(in srgb, var(--border) var(--texture-opacity, 45%), transparent)
-        1px,
-      transparent 1px
-    );
-  background-size: 24px 24px;
+
+/* Cada textura declara o desenho em variáveis; a página e as miniaturas das
+   Configurações usam a mesma regra. --texture-opacity vem do slider */
+:is(
+  .texture-lines,
+  .texture-grid,
+  .texture-graph,
+  .texture-dots,
+  .texture-lcd
+) {
+  --texture-ink: color-mix(
+    in srgb,
+    var(--border) var(--texture-opacity),
+    transparent
+  );
+  --texture-scale: 1;
+  --texture-ink-soft: color-mix(in srgb, var(--texture-ink) 45%, transparent);
 }
 
-.texture-dots :is(.app-root, .page-backdrop) {
-  background-image: radial-gradient(
+.texture-none {
+  --texture-image: none;
+}
+
+.texture-lines {
+  --texture-image: linear-gradient(var(--texture-ink) 1px, transparent 1px);
+  --texture-size: 100% round(calc(24px * var(--texture-scale)), 1px);
+}
+
+.texture-grid {
+  --texture-image:
+    linear-gradient(var(--texture-ink) 1px, transparent 1px),
+    linear-gradient(90deg, var(--texture-ink) 1px, transparent 1px);
+  --texture-size: calc(24px * var(--texture-scale))
+    calc(24px * var(--texture-scale));
+}
+
+/* Milimetrado: grade fina e uma linha forte a cada 5 quadrados */
+.texture-graph {
+  --texture-image:
+    linear-gradient(var(--texture-ink) 1px, transparent 1px),
+    linear-gradient(90deg, var(--texture-ink) 1px, transparent 1px),
+    linear-gradient(var(--texture-ink-soft) 1px, transparent 1px),
+    linear-gradient(90deg, var(--texture-ink-soft) 1px, transparent 1px);
+  --texture-size:
+    calc(40px * var(--texture-scale)) calc(40px * var(--texture-scale)),
+    calc(40px * var(--texture-scale)) calc(40px * var(--texture-scale)),
+    calc(8px * var(--texture-scale)) calc(8px * var(--texture-scale)),
+    calc(8px * var(--texture-scale)) calc(8px * var(--texture-scale));
+}
+
+.texture-dots {
+  --texture-image: radial-gradient(
     circle,
-    color-mix(in srgb, var(--border) var(--texture-opacity, 70%), transparent)
-      1px,
+    var(--texture-ink) 1px,
     transparent 1px
   );
-  background-size: 20px 20px;
+  --texture-size: calc(20px * var(--texture-scale))
+    calc(20px * var(--texture-scale));
+}
+
+/* Malha LCD: o vão entre os pixels de uma tela de Game Boy */
+.texture-lcd {
+  --texture-image:
+    linear-gradient(var(--texture-ink) 1px, transparent 1px),
+    linear-gradient(90deg, var(--texture-ink) 1px, transparent 1px);
+  --texture-size: 3px 3px;
+}
+
+:is(.app-root, .page-backdrop, .texture-swatch) {
+  background-image: var(--texture-image, none);
+  background-size: var(--texture-size, auto);
+}
+
+/* Miniatura das Configurações: a página inteira reduzida */
+.texture-swatch {
+  --texture-scale: 0.4;
 }
 
 /* Fundo de "página" para elementos fixos sobre o conteúdo (ex.: título das

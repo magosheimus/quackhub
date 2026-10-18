@@ -64,14 +64,22 @@ describe('valores de Select', () => {
 })
 
 describe('opacidade da textura', () => {
-  it('usa a opacidade da textura ativa', () => {
+  it('cada textura tem a sua intensidade', () => {
     const dots = { ...DEFAULT_SETTINGS, texture: 'dots' as const }
-    const grid = { ...DEFAULT_SETTINGS, texture: 'grid' as const }
+    const lcd = { ...DEFAULT_SETTINGS, texture: 'lcd' as const }
 
-    expect(getTextureOpacity(dots)).toBe(DEFAULT_SETTINGS.dotsOpacity)
-    expect(getTextureOpacity(grid)).toBe(DEFAULT_SETTINGS.gridOpacity)
-    expect(textureOpacityUpdate(dots, 30)).toEqual({ dotsOpacity: 30 })
-    expect(textureOpacityUpdate(grid, 30)).toEqual({ gridOpacity: 30 })
+    expect(getTextureOpacity(dots)).toBe(DEFAULT_SETTINGS.textureOpacity.dots)
+    expect(getTextureOpacity(lcd)).toBe(DEFAULT_SETTINGS.textureOpacity.lcd)
+    expect(textureOpacityUpdate(lcd, 30).textureOpacity).toEqual({
+      ...DEFAULT_SETTINGS.textureOpacity,
+      lcd: 30,
+    })
+  })
+
+  it('sem textura não tem intensidade', () => {
+    const none = { ...DEFAULT_SETTINGS, texture: 'none' as const }
+    expect(getTextureOpacity(none)).toBe(0)
+    expect(textureOpacityUpdate(none, 30)).toEqual({})
   })
 })
 
@@ -122,9 +130,18 @@ describe('normalizeSettings', () => {
     expect(result.cartucho).toBe('sage-dark')
     expect(result.glow).toBe(true)
     expect(result.texture).toBe(DEFAULT_SETTINGS.texture)
-    expect(result.gridOpacity).toBe(DEFAULT_SETTINGS.gridOpacity)
+    expect(result.textureOpacity).toEqual(DEFAULT_SETTINGS.textureOpacity)
     expect(result.scanlines).toBe(DEFAULT_SETTINGS.scanlines)
     expect(result.lcdGhost).toBe(DEFAULT_SETTINGS.lcdGhost)
+  })
+
+  it('aproveita a intensidade salva no formato antigo', () => {
+    const result = normalizeSettings({ gridOpacity: 20, dotsOpacity: 90 })
+    expect(result.textureOpacity.grid).toBe(20)
+    expect(result.textureOpacity.dots).toBe(90)
+    expect(result.textureOpacity.lines).toBe(
+      DEFAULT_SETTINGS.textureOpacity.lines,
+    )
   })
 })
 
