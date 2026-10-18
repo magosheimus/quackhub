@@ -297,6 +297,22 @@ export function groupTasksByColumn(
   return groups
 }
 
+// A REVISAR só existe se houver cards de "estudo"
+export function getVisibleBoardColumns(
+  tasks: Task[],
+  projectTypeById: Map<string, ProjectType>,
+): BoardColumnKey[] {
+  const hasStudyTask = tasks.some(
+    (task) => projectTypeById.get(task.project_id) === 'study',
+  )
+  const hasReviewTask = tasks.some(
+    (task) => getBoardColumnKey(task.status) === 'to_review',
+  )
+  return hasStudyTask || hasReviewTask
+    ? BOARD_COLUMNS
+    : BOARD_COLUMNS.filter((column) => column !== 'to_review')
+}
+
 // Urgentes no topo da coluna, mantendo a ordem original dentro de cada grupo
 function flaggedFirst(tasks: Task[]): Task[] {
   return [
