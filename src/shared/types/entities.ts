@@ -44,6 +44,7 @@ export type DailyLog = Tables<'daily_logs'>
 
 export type TaskStatus = Enums<'task_status'>
 export type TaskPriority = Enums<'task_priority'>
+export type TaskOrigin = Enums<'task_origin'>
 export type ProjectType = Enums<'project_type'>
 export type RecurrenceType = Enums<'recurrence_type'>
 export type DraftTriageTarget = Enums<'draft_triage_target'>
