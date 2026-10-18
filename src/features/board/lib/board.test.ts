@@ -14,6 +14,8 @@ import {
   writeBoardFilters,
   isBoardColumnKey,
   getMoveOptions,
+  getVisibleBoardColumns,
+  BOARD_COLUMNS,
 } from './board'
 import { makeEpic, makeProject, makeTask } from '@/test/factories'
 
@@ -265,5 +267,45 @@ describe('itens escondidos dos filtros rápidos', () => {
     expect(clearHiddenFilter(filters, 'project', 'p1').projectIds).toEqual([
       'p2',
     ])
+  })
+})
+
+describe('getVisibleBoardColumns', () => {
+  const projectTypeById = new Map([
+    ['study-1', 'study' as const],
+    ['general-1', 'general' as const],
+  ])
+
+  it('sprint só com cards gerais esconde A REVISAR', () => {
+    const tasks = [makeTask({ project_id: 'general-1', status: 'todo' })]
+    expect(getVisibleBoardColumns(tasks, projectTypeById)).toEqual([
+      'todo',
+      'doing',
+      'blocked',
+      'done',
+    ])
+  })
+
+  it('sprint com card de estudo mostra A REVISAR', () => {
+    const tasks = [
+      makeTask({ project_id: 'general-1', status: 'todo' }),
+      makeTask({ project_id: 'study-1', status: 'to_study' }),
+    ]
+    expect(getVisibleBoardColumns(tasks, projectTypeById)).toEqual(
+      BOARD_COLUMNS,
+    )
+  })
+
+  it('mantém A REVISAR se já tem card nela, mesmo sem projeto de estudo', () => {
+    const tasks = [makeTask({ project_id: 'general-1', status: 'to_review' })]
+    expect(getVisibleBoardColumns(tasks, projectTypeById)).toEqual(
+      BOARD_COLUMNS,
+    )
+  })
+
+  it('sprint vazia esconde A REVISAR', () => {
+    expect(getVisibleBoardColumns([], projectTypeById)).not.toContain(
+      'to_review',
+    )
   })
 })

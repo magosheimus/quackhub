@@ -14,7 +14,7 @@ import { useBoardFilters } from '@/features/board/hooks/useBoardFilters'
 import { useQuickFilterVisibility } from '@/features/board/hooks/useQuickFilterVisibility'
 import { BOARD_TEXTS } from '@/features/board/constants/texts'
 import {
-  BOARD_COLUMNS,
+  getVisibleBoardColumns,
   applyBoardFilters,
   getBoardColumnLabel,
   getEpicsInTasks,
@@ -81,11 +81,13 @@ export function useBoardPage() {
     todayLocal(),
   )
   const tasksByColumn = groupTasksByColumn(visibleTasks)
-  const columns = BOARD_COLUMNS.map((column) => ({
-    key: column,
-    label: getBoardColumnLabel(column, labelScope),
-    tasks: tasksByColumn[column],
-  }))
+  const columns = getVisibleBoardColumns(sprintTasks, projectTypeById).map(
+    (column) => ({
+      key: column,
+      label: getBoardColumnLabel(column, labelScope),
+      tasks: tasksByColumn[column],
+    }),
+  )
 
   function moveTask(taskId: string, column: BoardColumnKey) {
     if (!activeSprint) {
