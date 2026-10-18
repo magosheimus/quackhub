@@ -1,7 +1,7 @@
 import { Checkbox } from '@/components/ui/checkbox'
 import { DueBadge } from '@/features/tasks/components/DueBadge'
 import { SPRINTS_TEXTS } from '@/features/sprints/constants/texts'
-import type { Task } from '@/shared/types/entities'
+import type { Task } from '@/features/tasks/model/task'
 
 type SprintDueCandidatesProps = {
   inPeriod: Task[]
@@ -37,7 +37,7 @@ function CandidateGroup({
             onCheckedChange={() => onToggle(task)}
           />
           <span className="min-w-0 flex-1 truncate text-fg">{task.title}</span>
-          <DueBadge dueDate={task.due_date} dueTime={task.due_time} />
+          <DueBadge due={task.due} />
         </label>
       ))}
     </div>

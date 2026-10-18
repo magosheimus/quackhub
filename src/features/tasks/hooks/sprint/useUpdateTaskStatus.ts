@@ -2,7 +2,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { updateTaskStatus } from '@/features/tasks/api/tasks'
 import { invalidateTaskQueries } from '@/shared/query/queryInvalidation'
 import { queryKeys } from '@/shared/query/queryKeys'
-import type { Task, TaskStatus } from '@/shared/types/entities'
+import type { TaskStatus } from '@/shared/types/entities'
+import type { Task } from '@/features/tasks/model/task'
 
 type UpdateTaskStatusVars = {
   id: string

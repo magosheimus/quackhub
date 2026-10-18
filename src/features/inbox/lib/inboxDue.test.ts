@@ -5,9 +5,21 @@ import { countOverdue, sortByDueThenPriority } from './inboxDue'
 describe('sortByDueThenPriority', () => {
   it('ordena pelo prazo mais antigo e, no mesmo dia, pela prioridade', () => {
     const tasks = [
-      makeTask({ id: 'hoje-baixa', due_date: '2026-10-15', priority: 'low' }),
-      makeTask({ id: 'hoje-alta', due_date: '2026-10-15', priority: 'high' }),
-      makeTask({ id: 'ontem', due_date: '2026-10-14', priority: 'low' }),
+      makeTask({
+        id: 'hoje-baixa',
+        due: { date: '2026-10-15', time: null },
+        priority: 'low',
+      }),
+      makeTask({
+        id: 'hoje-alta',
+        due: { date: '2026-10-15', time: null },
+        priority: 'high',
+      }),
+      makeTask({
+        id: 'ontem',
+        due: { date: '2026-10-14', time: null },
+        priority: 'low',
+      }),
     ]
     expect(sortByDueThenPriority(tasks).map((task) => task.id)).toEqual([
       'ontem',
@@ -20,10 +32,10 @@ describe('sortByDueThenPriority', () => {
 describe('countOverdue', () => {
   it('conta só os prazos que já passaram', () => {
     const tasks = [
-      { due_date: '2026-10-15' },
-      { due_date: '2026-10-14' },
-      { due_date: '2026-10-01' },
-      { due_date: null },
+      { due: { date: '2026-10-15', time: null } },
+      { due: { date: '2026-10-14', time: null } },
+      { due: { date: '2026-10-01', time: null } },
+      { due: null },
     ]
     expect(countOverdue(tasks, '2026-10-15')).toBe(2)
   })
@@ -32,9 +44,9 @@ describe('countOverdue', () => {
 describe('prazo com horário na Inbox', () => {
   it('no mesmo dia ordena pelo horário, sem horário por último', () => {
     const tasks = [
-      makeTask({ id: 'sem-hora', due_date: '2026-10-15', due_time: null }),
-      makeTask({ id: 'tarde', due_date: '2026-10-15', due_time: '16:00:00' }),
-      makeTask({ id: 'manha', due_date: '2026-10-15', due_time: '09:00:00' }),
+      makeTask({ id: 'sem-hora', due: { date: '2026-10-15', time: null } }),
+      makeTask({ id: 'tarde', due: { date: '2026-10-15', time: '16:00:00' } }),
+      makeTask({ id: 'manha', due: { date: '2026-10-15', time: '09:00:00' } }),
     ]
     expect(sortByDueThenPriority(tasks).map((task) => task.id)).toEqual([
       'manha',

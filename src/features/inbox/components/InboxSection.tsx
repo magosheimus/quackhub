@@ -3,7 +3,8 @@ import { StaticBoardCard } from '@/features/board/components/BoardCard'
 import { Button } from '@/components/ui/button'
 import { canRegisterPerformance } from '@/features/srs/lib/review'
 import { daysBetween, todayLocal } from '@/shared/lib/date'
-import type { Project, Task } from '@/shared/types/entities'
+import type { Project } from '@/shared/types/entities'
+import type { Task } from '@/features/tasks/model/task'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
 import { INBOX_TEXTS } from '@/features/inbox/constants/texts'
 import { buildProjectLabels } from '@/features/projects/lib/project'
@@ -45,7 +46,7 @@ export function InboxSection({
         <span className="text-caption">{tasks.length}</span>
       </div>
       {tasks.map((task) => {
-        const project = projects.find((p) => p.id === task.project_id)
+        const project = projects.find((p) => p.id === task.projectId)
         const isSrsEligible = canRegisterPerformance(project?.type, task.status)
 
         return (
@@ -57,10 +58,10 @@ export function InboxSection({
             info={
               isSrsEligible ? (
                 <span className="text-caption">
-                  {describeReview(task.next_review, today)}
+                  {describeReview(task.srs?.nextReview ?? null, today)}
                 </span>
               ) : (
-                <DueBadge dueDate={task.due_date} dueTime={task.due_time} />
+                <DueBadge due={task.due} />
               )
             }
             actions={

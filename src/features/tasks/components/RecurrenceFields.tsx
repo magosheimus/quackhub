@@ -8,19 +8,16 @@ import {
 } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
 import { isRecurrenceType } from '@/shared/lib/enums'
-import type { RecurrenceType } from '@/shared/types/entities'
 import {
   MONTH_NAMES,
   RECURRENCE_TYPE_LABELS,
   TASKS_TEXTS,
 } from '@/features/tasks/constants/texts'
 
-export type RecurrenceValue = {
-  type: RecurrenceType | null
-  interval: number | null
-  dayOfMonth: number | null
-  endDate: string | null
-}
+import {
+  EMPTY_RECURRENCE_VALUE,
+  type RecurrenceValue,
+} from '@/features/tasks/lib/recurrence'
 
 type RecurrenceFieldsProps = {
   value: RecurrenceValue
@@ -54,14 +51,7 @@ export function RecurrenceFields({ value, onChange }: RecurrenceFieldsProps) {
         <span className="text-caption">{TASKS_TEXTS.recurrence}</span>
         <button
           type="button"
-          onClick={() =>
-            onChange({
-              type: null,
-              interval: null,
-              dayOfMonth: null,
-              endDate: null,
-            })
-          }
+          onClick={() => onChange(EMPTY_RECURRENCE_VALUE)}
           className="text-caption underline"
         >
           {TASKS_TEXTS.removeRecurrence}

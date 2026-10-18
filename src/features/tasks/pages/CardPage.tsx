@@ -14,7 +14,7 @@ import { CardHistory } from '@/features/tasks/components/CardHistory'
 import { RegisterPerformanceModal } from '@/features/srs/components/RegisterPerformanceModal'
 import { LoadingText } from '@/components/ui/loading-text'
 import { CardDescription } from '@/features/tasks/components/cardPage/CardDescription'
-import type { Task } from '@/shared/types/entities'
+import type { Task } from '@/features/tasks/model/task'
 import { TASKS_TEXTS } from '@/features/tasks/constants/texts'
 import { EmptyState } from '@/components/ui/empty-state'
 import { ConfirmDialog } from '@/components/ui/confirm-dialog'
@@ -56,6 +56,8 @@ function CardPageBody({ task }: { task: Task }) {
   const {
     navigate,
     changeStatus,
+    changeDueDate,
+    changeDueTime,
     updateTask,
     project,
     assignableSprints,
@@ -91,7 +93,7 @@ function CardPageBody({ task }: { task: Task }) {
   return (
     <div className="flex flex-col gap-4">
       <CardPageHeader
-        taskNumber={task.task_number}
+        taskNumber={task.number}
         projectLabel={projectLabel}
         epicLabel={epicLabel}
         title={title}
@@ -107,21 +109,21 @@ function CardPageBody({ task }: { task: Task }) {
       <div className="grid gap-6 sm:grid-cols-[1fr_240px]">
         <div className="flex flex-col gap-4">
           <CardDetailsSection
-            projectId={task.project_id}
+            projectId={task.projectId}
             projectName={project?.name}
             projectOptions={projectOptions}
             onProjectChange={requestProjectChange}
             projectType={project?.type}
             status={task.status}
-            epicId={task.epic_id}
+            epicId={task.epicId}
             epicLabel={epicLabel}
             epicOptions={epicOptions}
-            sprintId={task.sprint_id}
+            sprintId={task.sprintId}
             sprints={assignableSprints}
             tags={tags ?? []}
             tagSuggestions={tagSuggestions ?? []}
             priority={task.priority}
-            flagged={task.flagged}
+            isFlagged={task.flag !== null}
             onUpdate={(data) => updateTask({ id: task.id, data })}
             onStatusChange={changeStatus}
             onTagsChange={handleTagsChange}
@@ -139,7 +141,7 @@ function CardPageBody({ task }: { task: Task }) {
 
           <CardChecklist taskId={task.id} />
 
-          <CardDependencies taskId={task.id} projectId={task.project_id} />
+          <CardDependencies taskId={task.id} projectId={task.projectId} />
 
           <CardHistory taskId={task.id} />
         </div>
@@ -147,28 +149,17 @@ function CardPageBody({ task }: { task: Task }) {
         <CardSidePanel
           projectType={project?.type}
           status={task.status}
-          assigneeId={task.assignee_id}
-          createdAt={task.created_at}
-          updatedAt={task.updated_at}
-          dueDate={task.due_date}
-          dueTime={task.due_time}
-          easeFactor={task.ease_factor}
-          nextReview={task.next_review}
+          assigneeId={task.assigneeId}
+          createdAt={task.createdAt}
+          updatedAt={task.updatedAt}
+          due={task.due}
+          srs={task.srs}
           recurrenceValue={recurrenceValue}
           onAssigneeChange={(assigneeId) =>
-            updateTask({ id: task.id, data: { assignee_id: assigneeId } })
+            updateTask({ id: task.id, data: { assigneeId } })
           }
-          onDueDateChange={(value) =>
-            updateTask({
-              id: task.id,
-              data: value
-                ? { due_date: value }
-                : { due_date: null, due_time: null },
-            })
-          }
-          onDueTimeChange={(value) =>
-            updateTask({ id: task.id, data: { due_time: value } })
-          }
+          onDueDateChange={changeDueDate}
+          onDueTimeChange={changeDueTime}
           onRecurrenceChange={handleRecurrenceChange}
           onRegisterPerformance={() => setIsSrsModalOpen(true)}
         />

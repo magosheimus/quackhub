@@ -129,10 +129,8 @@ export function GlobalSearch() {
                 count={results.length}
               >
                 {results.map((task) => {
-                  const project = projects?.find(
-                    (p) => p.id === task.project_id,
-                  )
-                  const epic = epics?.find((e) => e.id === task.epic_id)
+                  const project = projects?.find((p) => p.id === task.projectId)
+                  const epic = epics?.find((e) => e.id === task.epicId)
                   return (
                     <Link
                       key={task.id}

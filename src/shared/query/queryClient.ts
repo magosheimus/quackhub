@@ -38,7 +38,7 @@ const persister = createAsyncStoragePersister({
 })
 
 // Subir ao mudar o formato de algum dado em cache: o cache salvo com outra versão é descartado
-const QUERY_CACHE_VERSION = '3'
+const QUERY_CACHE_VERSION = '4'
 
 persistQueryClient({
   queryClient,

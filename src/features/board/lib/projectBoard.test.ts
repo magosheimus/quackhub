@@ -10,18 +10,18 @@ import {
 
 describe('getProjectBucket', () => {
   it('card não concluído na sprint ativa vai para sprint', () => {
-    expect(getProjectBucket(makeTask({ sprint_id: 's1' }), 's1')).toBe('sprint')
+    expect(getProjectBucket(makeTask({ sprintId: 's1' }), 's1')).toBe('sprint')
   })
 
   it('card concluído na sprint ativa continua na sprint', () => {
     expect(
-      getProjectBucket(makeTask({ sprint_id: 's1', status: 'done' }), 's1'),
+      getProjectBucket(makeTask({ sprintId: 's1', status: 'done' }), 's1'),
     ).toBe('sprint')
   })
 
   it('card concluído fora da sprint ativa vai para concluídos', () => {
     expect(
-      getProjectBucket(makeTask({ sprint_id: 's0', status: 'done' }), 's1'),
+      getProjectBucket(makeTask({ sprintId: 's0', status: 'done' }), 's1'),
     ).toBe('done')
   })
 
@@ -30,16 +30,12 @@ describe('getProjectBucket', () => {
   })
 
   it('card não concluído fora da sprint ativa vai para backlog', () => {
-    expect(getProjectBucket(makeTask({ sprint_id: 's0' }), 's1')).toBe(
-      'backlog',
-    )
+    expect(getProjectBucket(makeTask({ sprintId: 's0' }), 's1')).toBe('backlog')
   })
 
   it('sem sprint ativa, concluído vai para concluídos e o resto para backlog', () => {
     expect(getProjectBucket(makeTask({ status: 'done' }), null)).toBe('done')
-    expect(getProjectBucket(makeTask({ sprint_id: 's1' }), null)).toBe(
-      'backlog',
-    )
+    expect(getProjectBucket(makeTask({ sprintId: 's1' }), null)).toBe('backlog')
   })
 })
 
@@ -62,9 +58,9 @@ describe('groupOpenTasksByEpic', () => {
 
   it('uma coluna por épico só com o que falta fazer, sprint antes do backlog', () => {
     const tasks = [
-      makeTask({ id: 't1', epic_id: 'e1' }),
-      makeTask({ id: 't2', epic_id: 'e1', sprint_id: 's1' }),
-      makeTask({ id: 't3', epic_id: 'e1', status: 'done' }),
+      makeTask({ id: 't1', epicId: 'e1' }),
+      makeTask({ id: 't2', epicId: 'e1', sprintId: 's1' }),
+      makeTask({ id: 't3', epicId: 'e1', status: 'done' }),
     ]
     const [first, second] = groupOpenTasksByEpic(
       tasks,
@@ -79,8 +75,8 @@ describe('groupOpenTasksByEpic', () => {
 
   it('sem épico (ou épico apagado) vai para a coluna "Sem épico", que só aparece se tiver card', () => {
     const tasks = [
-      makeTask({ id: 't1', epic_id: null }),
-      makeTask({ id: 't2', epic_id: 'apagado' }),
+      makeTask({ id: 't1', epicId: null }),
+      makeTask({ id: 't2', epicId: 'apagado' }),
     ]
     const columns = groupOpenTasksByEpic(tasks, [physics], null)
     expect(columns.map((column) => column.id)).toEqual(['e1', NO_EPIC_COLUMN])

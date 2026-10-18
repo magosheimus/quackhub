@@ -16,7 +16,7 @@ import {
   calculateNextInterval,
 } from '@/features/srs/lib/review'
 import { addDaysToToday } from '@/shared/lib/date'
-import type { Task } from '@/shared/types/entities'
+import type { Task } from '@/features/tasks/model/task'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
 import { SRS_TEXTS } from '@/features/srs/constants/texts'
 import { Panel } from '@/components/ui/panel'
@@ -40,8 +40,12 @@ export function RegisterPerformanceModal({
   const { mutate: registerPerformance, isPending } = useRegisterPerformance()
 
   const quality = calculateQuality(nota, confianca)
-  const newEF = calculateNewEF(task.ease_factor ?? 2.5, quality)
-  const newInterval = calculateNextInterval(task.interval, newEF, quality)
+  const newEF = calculateNewEF(task.srs?.easeFactor ?? 2.5, quality)
+  const newInterval = calculateNextInterval(
+    task.srs?.interval ?? null,
+    newEF,
+    quality,
+  )
   const nextReviewDate = addDaysToToday(newInterval)
 
   function handleConfirm() {

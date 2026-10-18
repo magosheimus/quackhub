@@ -18,8 +18,8 @@ describe('sortByPriorityThenDate', () => {
 
   it('no empate, a mais antiga vem primeiro', () => {
     const tasks = [
-      makeTask({ id: 'new', created_at: '2026-02-01T00:00:00Z' }),
-      makeTask({ id: 'old', created_at: '2026-01-01T00:00:00Z' }),
+      makeTask({ id: 'new', createdAt: '2026-02-01T00:00:00Z' }),
+      makeTask({ id: 'old', createdAt: '2026-01-01T00:00:00Z' }),
     ]
     expect(sortByPriorityThenDate(tasks).map((t) => t.id)).toEqual([
       'old',

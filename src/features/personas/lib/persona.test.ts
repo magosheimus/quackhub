@@ -51,7 +51,7 @@ describe('personas atribuídas', () => {
   })
 
   it('mantém só as personas atribuídas a algum card', () => {
-    const tasks = [{ assignee_id: 'p2' }, { assignee_id: null }]
+    const tasks = [{ assigneeId: 'p2' }, { assigneeId: null }]
     expect(getPersonasInTasks(personas, tasks).map((p) => p.id)).toEqual(['p2'])
   })
 })

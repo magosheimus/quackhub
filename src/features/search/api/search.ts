@@ -1,5 +1,7 @@
 import { supabase } from '@/shared/api/supabase'
-import type { DraftsItem, Task } from '@/shared/types/entities'
+import { toTask } from '@/features/tasks/api/taskMapper'
+import type { Task } from '@/features/tasks/model/task'
+import type { DraftsItem } from '@/shared/types/entities'
 
 export async function searchTasks(query: string): Promise<Task[]> {
   const trimmed = query.trim()
@@ -32,11 +34,11 @@ export async function searchTasks(query: string): Promise<Task[]> {
       .is('deleted_at', null)
     if (error)
       throw new Error(`Falha ao buscar cards por tag: ${error.message}`)
-    tasksFromTags = data
+    tasksFromTags = data.map(toTask)
   }
 
   const merged = new Map<string, Task>()
-  for (const task of [...byContentRes.data, ...tasksFromTags]) {
+  for (const task of [...byContentRes.data.map(toTask), ...tasksFromTags]) {
     merged.set(task.id, task)
   }
   return Array.from(merged.values())

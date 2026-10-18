@@ -5,10 +5,6 @@ import type {
   TablesUpdate,
 } from './database.types'
 
-export type Task = Tables<'tasks'>
-export type NewTask = TablesInsert<'tasks'>
-export type TaskUpdate = TablesUpdate<'tasks'>
-
 export type Sprint = Tables<'sprints'>
 export type NewSprint = TablesInsert<'sprints'>
 export type SprintUpdate = TablesUpdate<'sprints'>

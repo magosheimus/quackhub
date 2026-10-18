@@ -9,11 +9,11 @@ import {
   getCompletionPercent,
 } from './sprint'
 import { makeSprint, makeTask as makeBaseTask } from '@/test/factories'
-import type { Task } from '@/shared/types/entities'
+import type { Task } from '@/features/tasks/model/task'
 
 function makeTask(overrides: Partial<Task> = {}): Task {
   return makeBaseTask({
-    sprint_id: 'sprint-1',
+    sprintId: 'sprint-1',
     ...overrides,
   })
 }
@@ -93,9 +93,9 @@ describe('computeSprintMetrics', () => {
       ['project-2', 'Revalida'],
     ])
     const tasks = [
-      makeTask({ id: 't1', project_id: 'project-1', status: 'done' }),
-      makeTask({ id: 't2', project_id: 'project-1', status: 'todo' }),
-      makeTask({ id: 't3', project_id: 'project-2', status: 'done' }),
+      makeTask({ id: 't1', projectId: 'project-1', status: 'done' }),
+      makeTask({ id: 't2', projectId: 'project-1', status: 'todo' }),
+      makeTask({ id: 't3', projectId: 'project-2', status: 'done' }),
     ]
     const metrics = computeSprintMetrics(tasks, projectNameById)
 
@@ -169,13 +169,21 @@ describe('formatSprintBanner', () => {
 
 describe('findDueCandidates', () => {
   const tasks = [
-    makeBaseTask({ id: 'no-periodo', due_date: '2026-10-30' }),
-    makeBaseTask({ id: 'cedo', due_date: '2026-10-27', due_time: '09:00:00' }),
-    makeBaseTask({ id: 'atrasado', due_date: '2026-10-20' }),
-    makeBaseTask({ id: 'depois', due_date: '2026-11-20' }),
-    makeBaseTask({ id: 'sem-prazo', due_date: null }),
-    makeBaseTask({ id: 'feito', due_date: '2026-10-29', status: 'done' }),
-    makeBaseTask({ id: 'em-sprint', due_date: '2026-10-29', sprint_id: 's1' }),
+    makeBaseTask({ id: 'no-periodo', due: { date: '2026-10-30', time: null } }),
+    makeBaseTask({ id: 'cedo', due: { date: '2026-10-27', time: '09:00:00' } }),
+    makeBaseTask({ id: 'atrasado', due: { date: '2026-10-20', time: null } }),
+    makeBaseTask({ id: 'depois', due: { date: '2026-11-20', time: null } }),
+    makeBaseTask({ id: 'sem-prazo', due: null }),
+    makeBaseTask({
+      id: 'feito',
+      due: { date: '2026-10-29', time: null },
+      status: 'done',
+    }),
+    makeBaseTask({
+      id: 'em-sprint',
+      due: { date: '2026-10-29', time: null },
+      sprintId: 's1',
+    }),
   ]
 
   it('separa os do período (pelo prazo) e os atrasados', () => {

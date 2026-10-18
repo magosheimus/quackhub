@@ -6,7 +6,8 @@ import {
   getDraftPosition,
 } from '@/features/drafts/lib/drafts'
 import type { CardCreatedContext } from '@/features/tasks/components/CardCreateModal'
-import type { DraftsItem, Task } from '@/shared/types/entities'
+import type { DraftsItem } from '@/shared/types/entities'
+import type { Task } from '@/features/tasks/model/task'
 
 export function useDraftToCard(pending: DraftsItem[]) {
   const { mutate: triage } = useTriageDraft()

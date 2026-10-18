@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { updateTask } from '@/features/tasks/api/tasks'
 import { invalidateTaskQueries } from '@/shared/query/queryInvalidation'
 import { queryKeys } from '@/shared/query/queryKeys'
-import type { Task } from '@/shared/types/entities'
+import type { Task } from '@/features/tasks/model/task'
 
 type MoveTaskToEpicVars = {
   taskId: string
@@ -15,7 +15,7 @@ export function useMoveTaskToEpic(projectId: string) {
 
   return useMutation({
     mutationFn: ({ taskId, epicId }: MoveTaskToEpicVars) =>
-      updateTask(taskId, { epic_id: epicId }),
+      updateTask(taskId, { epicId }),
 
     onMutate: async ({ taskId, epicId }) => {
       await queryClient.cancelQueries({ queryKey })

@@ -1,7 +1,7 @@
 import { useBacklogTasks } from '@/features/tasks/hooks/useBacklogTasks'
 import { findDueCandidates } from '@/features/sprints/lib/sprint'
 import { useToggleSet } from '@/shared/hooks/useToggleSet'
-import type { Task } from '@/shared/types/entities'
+import type { Task } from '@/features/tasks/model/task'
 
 // Cards do período vêm marcados (o usuário desmarca); atrasados vêm desmarcados
 export function useSprintDueCandidates(startDate: string, endDate: string) {

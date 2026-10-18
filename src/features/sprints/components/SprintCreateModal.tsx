@@ -73,7 +73,7 @@ export function SprintCreateModal() {
 
   function addSelectedTasks(sprintId: string) {
     for (const task of candidates.selectedTasks) {
-      const project = projects?.find((item) => item.id === task.project_id)
+      const project = projects?.find((item) => item.id === task.projectId)
       if (!project) {
         continue
       }
@@ -81,7 +81,7 @@ export function SprintCreateModal() {
         taskId: task.id,
         sprintId,
         status: getInitialStatusForType(project.type),
-        projectId: task.project_id,
+        projectId: task.projectId,
       })
     }
   }

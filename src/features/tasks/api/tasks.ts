@@ -4,33 +4,34 @@ import {
   calculateNextDueDate,
   buildRecurrentCard,
 } from '@/features/tasks/lib/recurrence'
-import type {
-  NewTask,
-  Task,
-  TaskStatus,
-  TaskUpdate,
-} from '@/shared/types/entities'
+import type { NewTask, Task, TaskUpdate } from '@/features/tasks/model/task'
+import type { TaskStatus } from '@/shared/types/entities'
+import {
+  toTask,
+  toTaskInsert,
+  toTaskUpdate,
+} from '@/features/tasks/api/taskMapper'
 import { TASKS_TEXTS } from '@/features/tasks/constants/texts'
 
 export async function createTask(data: NewTask): Promise<Task> {
   const { data: task, error } = await supabase
     .from('tasks')
-    .insert(data)
+    .insert(toTaskInsert(data))
     .select()
     .single()
   if (error) throw new Error(`Falha ao criar card: ${error.message}`)
-  return task
+  return toTask(task)
 }
 
 export async function updateTask(id: string, data: TaskUpdate): Promise<Task> {
   const { data: task, error } = await supabase
     .from('tasks')
-    .update(data)
+    .update(toTaskUpdate(data))
     .eq('id', id)
     .select()
     .single()
   if (error) throw new Error(`Falha ao atualizar card: ${error.message}`)
-  return task
+  return toTask(task)
 }
 
 export async function addTaskToSprint(
@@ -40,13 +41,13 @@ export async function addTaskToSprint(
 ): Promise<Task> {
   const { data, error } = await supabase
     .from('tasks')
-    .update({ sprint_id: sprintId, status })
+    .update(toTaskUpdate({ sprintId, status }))
     .eq('id', id)
     .select()
     .single()
   if (error)
     throw new Error(`Falha ao adicionar task à sprint: ${error.message}`)
-  return data
+  return toTask(data)
 }
 
 export async function updateTaskSprint(
@@ -55,12 +56,12 @@ export async function updateTaskSprint(
 ): Promise<Task> {
   const { data, error } = await supabase
     .from('tasks')
-    .update({ sprint_id: sprintId })
+    .update(toTaskUpdate({ sprintId }))
     .eq('id', id)
     .select()
     .single()
   if (error) throw new Error(`Falha ao mover task: ${error.message}`)
-  return data
+  return toTask(data)
 }
 
 export async function getTasksBySprintId(sprintId: string): Promise<Task[]> {
@@ -71,7 +72,7 @@ export async function getTasksBySprintId(sprintId: string): Promise<Task[]> {
     .is('deleted_at', null)
   if (error)
     throw new Error(`Falha ao buscar tasks da sprint: ${error.message}`)
-  return data
+  return data.map(toTask)
 }
 
 export async function getTasksByProjectId(projectId: string): Promise<Task[]> {
@@ -83,7 +84,7 @@ export async function getTasksByProjectId(projectId: string): Promise<Task[]> {
     .order('task_number', { ascending: true })
   if (error)
     throw new Error(`Falha ao buscar tasks do projeto: ${error.message}`)
-  return data
+  return data.map(toTask)
 }
 
 export async function updateTaskStatus(
@@ -102,16 +103,17 @@ export async function updateTaskStatus(
     }
   }
 
-  const { data: task, error } = await supabase
+  const { data, error } = await supabase
     .from('tasks')
-    .update({ status })
+    .update(toTaskUpdate({ status }))
     .eq('id', id)
     .select()
     .single()
   if (error)
     throw new Error(`Falha ao atualizar status da task: ${error.message}`)
 
-  if (status === 'done' && task.recurrence_type) {
+  const task = toTask(data)
+  if (status === 'done' && task.recurrence) {
     const nextDue = calculateNextDueDate(task)
     if (nextDue) {
       await createTask(buildRecurrentCard(task, nextDue))
@@ -134,7 +136,7 @@ export async function searchSimilarCards(
     .order('created_at', { ascending: false })
   if (error)
     throw new Error(`Falha ao buscar cards similares: ${error.message}`)
-  return data
+  return data.map(toTask)
 }
 
 export async function getBacklogTasks(
@@ -152,7 +154,7 @@ export async function getBacklogTasks(
 
   const { data, error } = await query.order('updated_at', { ascending: false })
   if (error) throw new Error(`Falha ao buscar backlog: ${error.message}`)
-  return data
+  return data.map(toTask)
 }
 
 export async function getTagsByProject(projectId: string): Promise<string[]> {
@@ -253,7 +255,7 @@ export async function getDependencies(taskId: string): Promise<Task[]> {
     )
   if (tasksError)
     throw new Error(`Falha ao buscar tasks dependentes: ${tasksError.message}`)
-  return tasks
+  return tasks.map(toTask)
 }
 
 export async function getIncompleteDependencies(
@@ -293,7 +295,7 @@ export async function getTaskById(id: string): Promise<Task> {
     .is('deleted_at', null)
     .single()
   if (error) throw new Error(`Falha ao buscar card: ${error.message}`)
-  return data
+  return toTask(data)
 }
 
 export async function softDeleteTask(id: string): Promise<void> {

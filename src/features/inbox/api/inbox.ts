@@ -2,7 +2,8 @@ import { supabase } from '@/shared/api/supabase'
 import { todayLocal } from '@/shared/lib/date'
 import { sortByPriorityThenDate } from '@/features/tasks/lib/taskPriority'
 import { sortByDueThenPriority } from '@/features/inbox/lib/inboxDue'
-import type { Task } from '@/shared/types/entities'
+import { toTask } from '@/features/tasks/api/taskMapper'
+import type { Task } from '@/features/tasks/model/task'
 
 export type InboxData = {
   urgent: Task[]
@@ -47,8 +48,8 @@ export async function getInboxItems(): Promise<InboxData> {
     throw new Error(`Falha ao buscar prazos: ${dueByTodayRes.error.message}`)
 
   return {
-    urgent: sortByPriorityThenDate(urgentRes.data),
-    srsOverdue: sortByPriorityThenDate(srsOverdueRes.data),
-    dueByToday: sortByDueThenPriority(dueByTodayRes.data),
+    urgent: sortByPriorityThenDate(urgentRes.data.map(toTask)),
+    srsOverdue: sortByPriorityThenDate(srsOverdueRes.data.map(toTask)),
+    dueByToday: sortByDueThenPriority(dueByTodayRes.data.map(toTask)),
   }
 }

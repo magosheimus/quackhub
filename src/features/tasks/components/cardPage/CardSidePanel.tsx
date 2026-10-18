@@ -2,12 +2,11 @@ import { IconCalendar, IconRefresh, IconUsers } from '@/shared/lib/icons'
 import { SectionLabel } from '@/components/ui/section-label'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import {
-  RecurrenceFields,
-  type RecurrenceValue,
-} from '@/features/tasks/components/RecurrenceFields'
+import { RecurrenceFields } from '@/features/tasks/components/RecurrenceFields'
+import type { RecurrenceValue } from '@/features/tasks/lib/recurrence'
 import { canRegisterPerformance } from '@/features/srs/lib/review'
-import type { ProjectType, Task } from '@/shared/types/entities'
+import type { ProjectType } from '@/shared/types/entities'
+import type { Task, TaskDue, TaskSrs } from '@/features/tasks/model/task'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
 import { TASKS_TEXTS } from '@/features/tasks/constants/texts'
 import { Panel } from '@/components/ui/panel'
@@ -26,10 +25,8 @@ type CardSidePanelProps = {
   assigneeId: string | null
   createdAt: string | null
   updatedAt: string | null
-  dueDate: string | null
-  dueTime: string | null
-  easeFactor: number | null
-  nextReview: string | null
+  due: TaskDue | null
+  srs: TaskSrs | null
   recurrenceValue: RecurrenceValue
   onAssigneeChange: (assigneeId: string | null) => void
   onDueDateChange: (value: string | null) => void
@@ -44,10 +41,8 @@ export function CardSidePanel({
   assigneeId,
   createdAt,
   updatedAt,
-  dueDate,
-  dueTime,
-  easeFactor,
-  nextReview,
+  due,
+  srs,
   recurrenceValue,
   onAssigneeChange,
   onDueDateChange,
@@ -92,7 +87,7 @@ export function CardSidePanel({
               <Input
                 id="card-due-date"
                 type="date"
-                value={dueDate ?? ''}
+                value={due?.date ?? ''}
                 onChange={(e) => onDueDateChange(e.target.value || null)}
               />
             </div>
@@ -103,9 +98,9 @@ export function CardSidePanel({
               <Input
                 id="card-due-time"
                 type="time"
-                value={formatDueTime(dueTime) ?? ''}
+                value={formatDueTime(due?.time ?? null) ?? ''}
                 onChange={(e) => onDueTimeChange(e.target.value || null)}
-                disabled={!dueDate}
+                disabled={!due}
               />
             </div>
           </div>
@@ -121,10 +116,10 @@ export function CardSidePanel({
         <Panel className="flex flex-col gap-1.5 p-3">
           <SectionLabel icon={IconRefresh}>{TASKS_TEXTS.srs}</SectionLabel>
           <span className="text-sm text-fg">
-            EF: {(easeFactor ?? 2.5).toFixed(2)}
+            EF: {(srs?.easeFactor ?? 2.5).toFixed(2)}
           </span>
           <span className="text-sm text-fg">
-            Próxima revisão: {nextReview ?? '—'}
+            Próxima revisão: {srs?.nextReview ?? '—'}
           </span>
           <Button type="button" size="sm" onClick={onRegisterPerformance}>
             {COMMON_TEXTS.registerPerformance}

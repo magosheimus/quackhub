@@ -16,22 +16,24 @@ export async function registerPerformance(
 ): Promise<SrsLog> {
   const task = await getTaskById(taskId)
   const quality = calculateQuality(nota, confianca)
-  const newEF = calculateNewEF(task.ease_factor ?? 2.5, quality)
-  const newInterval = calculateNextInterval(task.interval, newEF, quality)
+  const newEF = calculateNewEF(task.srs?.easeFactor ?? 2.5, quality)
+  const newInterval = calculateNextInterval(
+    task.srs?.interval ?? null,
+    newEF,
+    quality,
+  )
   const nextReview = addDaysToToday(newInterval)
 
   await updateTask(taskId, {
-    sprint_id: task.sprint_id,
-    ease_factor: newEF,
-    interval: newInterval,
-    next_review: nextReview,
+    sprintId: task.sprintId,
+    srs: { easeFactor: newEF, interval: newInterval, nextReview },
   })
 
   const { data, error } = await supabase
     .from('srs_logs')
     .insert({
       task_id: taskId,
-      sprint_id: task.sprint_id,
+      sprint_id: task.sprintId,
       log_type: 'srs',
       session_date: todayLocal(),
       nota,

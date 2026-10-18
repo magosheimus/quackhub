@@ -4,6 +4,7 @@ import {
   shiftDbDate,
   toDbDate,
 } from '@/shared/lib/date'
+import type { TaskDue } from '@/features/tasks/model/task'
 
 // Baseada na sintaxe do Todoist, mas "semana/mês/ano que vem" somam o período a partir de hoje
 
@@ -426,4 +427,26 @@ export function formatDue(
     text: time ? `${dateText} · ${time}` : dateText,
     tone: days < 0 ? 'overdue' : days === 0 ? 'today' : 'upcoming',
   }
+}
+
+// Hora só existe com data: sem data, o prazo inteiro some
+export function toTaskDue(
+  date: string | null,
+  time: string | null,
+): TaskDue | null {
+  return date ? { date, time } : null
+}
+
+export function withDueDate(
+  due: TaskDue | null,
+  date: string | null,
+): TaskDue | null {
+  return toTaskDue(date, due?.time ?? null)
+}
+
+export function withDueTime(
+  due: TaskDue | null,
+  time: string | null,
+): TaskDue | null {
+  return due ? { ...due, time } : null
 }

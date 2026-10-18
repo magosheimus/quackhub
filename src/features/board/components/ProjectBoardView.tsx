@@ -15,7 +15,8 @@ import {
   PROJECT_VIEWS,
   type ProjectView,
 } from '@/features/board/lib/projectBoard'
-import type { Project, Task } from '@/shared/types/entities'
+import type { Project } from '@/shared/types/entities'
+import type { Task } from '@/features/tasks/model/task'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
 import { BOARD_TEXTS } from '@/features/board/constants/texts'
 import type { ProjectLabels } from '@/features/projects/lib/project'

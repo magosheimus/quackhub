@@ -2,7 +2,8 @@ import {
   getInitialStatusForType,
   getStatusOptions,
 } from '@/features/tasks/lib/taskStatus'
-import type { Project, Task, TaskUpdate } from '@/shared/types/entities'
+import type { Project } from '@/shared/types/entities'
+import type { Task, TaskUpdate } from '@/features/tasks/model/task'
 
 export function buildProjectMove(
   task: Pick<Task, 'status'>,
@@ -10,8 +11,8 @@ export function buildProjectMove(
 ): TaskUpdate {
   const keepsStatus = getStatusOptions(target.type).includes(task.status)
   return {
-    project_id: target.id,
-    epic_id: null,
+    projectId: target.id,
+    epicId: null,
     status: keepsStatus ? task.status : getInitialStatusForType(target.type),
   }
 }

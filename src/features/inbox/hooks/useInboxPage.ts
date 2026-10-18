@@ -8,7 +8,7 @@ import { useActiveSprint } from '@/features/sprints/hooks/useActiveSprint'
 import { useProjects } from '@/features/projects/hooks/useProjects'
 import { formatSprintBanner } from '@/features/sprints/lib/sprint'
 import { formatWeekdayShort, todayLocal } from '@/shared/lib/date'
-import type { Task } from '@/shared/types/entities'
+import type { Task } from '@/features/tasks/model/task'
 
 export function useInboxPage() {
   const inboxQuery = useInboxItems()

@@ -1,4 +1,4 @@
-import type { Task } from '@/shared/types/entities'
+import type { Task } from '@/features/tasks/model/task'
 
 export function startOfWeek(dateStr: string): string {
   const [year, month, day] = dateStr.split('-').map(Number)

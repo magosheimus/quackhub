@@ -5,7 +5,7 @@ import {
 } from '@/features/board/lib/board'
 import { BoardCard } from './BoardCard'
 import { IconLayout } from '@/shared/lib/icons'
-import type { Task } from '@/shared/types/entities'
+import type { Task } from '@/features/tasks/model/task'
 import { BOARD_TEXTS } from '@/features/board/constants/texts'
 import type { ProjectLabels } from '@/features/projects/lib/project'
 
