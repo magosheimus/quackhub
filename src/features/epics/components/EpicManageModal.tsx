@@ -18,8 +18,8 @@ import { useProjects } from '@/features/projects/hooks/useProjects'
 import { useEpics } from '@/features/epics/hooks/useEpics'
 import { useCreateEpic } from '@/features/epics/hooks/useCreateEpic'
 import { useUpdateEpic } from '@/features/epics/hooks/useUpdateEpic'
-import { LoadingText } from '@/components/ui/loading-text'
-import { ConfirmDialog } from '@/components/ui/confirm-dialog'
+import { LoadingText } from '@/components/feedback/loading-text'
+import { ConfirmDialog } from '@/components/feedback/confirm-dialog'
 import { useSoftDeleteEpic } from '@/features/epics/hooks/useSoftDeleteEpic'
 import { IconMenu, IconTrash } from '@/shared/lib/icons'
 import {
@@ -32,7 +32,7 @@ import {
 import { useReorderEpics } from '@/features/epics/hooks/useReorderEpics'
 import type { Epic } from '@/shared/types/entities'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
-import { ColorSwatchPicker } from '@/components/ui/color-swatch-picker'
+import { ColorSwatchPicker } from '@/components/pickers/color-swatch-picker'
 import {
   DEFAULT_PALETTE_COLOR,
   toPaletteColor,
@@ -43,10 +43,10 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
-import { ColorDot } from '@/components/ui/color-dot'
+import { ColorDot } from '@/components/pickers/color-dot'
 import { toEpicLabel } from '@/features/epics/lib/epic'
 import { EPICS_TEXTS } from '@/features/epics/constants/texts'
-import { EmptyMessage } from '@/components/ui/empty-message'
+import { EmptyMessage } from '@/components/feedback/empty-message'
 
 type EpicManageModalProps = {
   initialProjectId: string | null

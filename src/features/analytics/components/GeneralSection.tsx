@@ -7,15 +7,15 @@ import {
   CartesianGrid,
 } from 'recharts'
 import { ChartCard } from './ChartCard'
-import { SectionTitle } from '@/components/ui/section-title'
-import { SegmentedProgress } from '@/components/ui/segmented-progress'
-import { ColorDot } from '@/components/ui/color-dot'
+import { SectionTitle } from '@/components/layout/section-title'
+import { SegmentedProgress } from '@/components/brand/segmented-progress'
+import { ColorDot } from '@/components/pickers/color-dot'
 import type { ProjectCompletionItem } from '@/features/analytics/hooks/useAnalyticsPage'
 import type { CompletionRateOverTimeItem } from '@/features/analytics/api/analytics'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
 import { SPRINTS_TEXTS } from '@/features/sprints/constants/texts'
 import { ANALYTICS_TEXTS } from '@/features/analytics/constants/texts'
-import { EmptyMessage } from '@/components/ui/empty-message'
+import { EmptyMessage } from '@/components/feedback/empty-message'
 
 type GeneralSectionProps = {
   isAll: boolean

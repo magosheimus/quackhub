@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
-import { LoadingText } from '@/components/ui/loading-text'
+import { LoadingText } from '@/components/feedback/loading-text'
 import { useAuth } from '@/features/auth/hooks/useAuth'
 import { LOGIN_PATH } from '@/features/auth/lib/redirect'
 

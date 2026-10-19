@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
-import { PageTitle } from '@/components/ui/page-title'
-import { SectionTitle } from '@/components/ui/section-title'
+import { PageTitle } from '@/components/layout/page-title'
+import { SectionTitle } from '@/components/layout/section-title'
 import {
   PRIVACY_SECTIONS,
   PRIVACY_TEXTS,

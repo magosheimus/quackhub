@@ -1,4 +1,4 @@
-import { SegmentedProgress } from '@/components/ui/segmented-progress'
+import { SegmentedProgress } from '@/components/brand/segmented-progress'
 import { HabitIcon } from '@/features/dailyTracker/components/HabitIcon'
 import { DAILY_TRACKER_TEXTS } from '@/features/dailyTracker/constants/texts'
 import type { HabitHighlights } from '@/features/dailyTracker/lib/dailyTracker'

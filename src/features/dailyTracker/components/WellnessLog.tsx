@@ -1,5 +1,5 @@
-import { Panel } from '@/components/ui/panel'
-import { SectionLabel } from '@/components/ui/section-label'
+import { Panel } from '@/components/layout/panel'
+import { SectionLabel } from '@/components/layout/section-label'
 import {
   MOOD_LEVELS,
   type MoodLevel,

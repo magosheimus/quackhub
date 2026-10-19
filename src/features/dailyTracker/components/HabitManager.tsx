@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button'
-import { ConfirmDialog } from '@/components/ui/confirm-dialog'
-import { EmptyMessage } from '@/components/ui/empty-message'
+import { ConfirmDialog } from '@/components/feedback/confirm-dialog'
+import { EmptyMessage } from '@/components/feedback/empty-message'
 import { HabitIcon } from '@/features/dailyTracker/components/HabitIcon'
 import { HabitEditDialog } from '@/features/dailyTracker/components/HabitEditDialog'
 import { NewHabitForm } from '@/features/dailyTracker/components/NewHabitForm'

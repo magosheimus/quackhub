@@ -1,4 +1,4 @@
-import { ColorDot } from '@/components/ui/color-dot'
+import { ColorDot } from '@/components/pickers/color-dot'
 import type { EpicLabel } from '@/features/epics/lib/epic'
 
 type EpicTagProps = {

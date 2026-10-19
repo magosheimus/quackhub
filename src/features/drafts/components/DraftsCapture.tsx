@@ -4,7 +4,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { useCaptureDraft } from '@/features/drafts/hooks/useCaptureDraft'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
 import { DRAFTS_TEXTS } from '@/features/drafts/constants/texts'
-import { Panel } from '@/components/ui/panel'
+import { Panel } from '@/components/layout/panel'
 
 export function DraftsCapture() {
   const [content, setContent] = useState('')

@@ -9,7 +9,7 @@ import {
 import type { Sprint } from '@/shared/types/entities'
 import { SPRINTS_TEXTS } from '@/features/sprints/constants/texts'
 import { formatFullDate } from '@/shared/lib/date'
-import { Panel } from '@/components/ui/panel'
+import { Panel } from '@/components/layout/panel'
 
 type ProjectCompletion = {
   project_id: string

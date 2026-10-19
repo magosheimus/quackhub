@@ -1,4 +1,4 @@
-import { HintTooltip } from '@/components/ui/hint-tooltip'
+import { HintTooltip } from '@/components/feedback/hint-tooltip'
 import { PersonaIcon } from '@/features/personas/components/PersonaIcon'
 import { PERSONAS_TEXTS } from '@/features/personas/constants/texts'
 import { useAssignee } from '@/features/personas/hooks/usePersonaOptions'

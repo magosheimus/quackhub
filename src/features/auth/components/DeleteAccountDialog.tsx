@@ -12,7 +12,7 @@ import { Input } from '@/components/ui/input'
 import { AUTH_TEXTS } from '@/features/auth/constants/texts'
 import { useDeleteAccountDialog } from '@/features/auth/hooks/useDeleteAccountDialog'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
-import { INVERTED_CONFIRM_CLASS } from '@/components/ui/confirm-dialog'
+import { INVERTED_CONFIRM_CLASS } from '@/components/feedback/confirm-dialog'
 
 type DeleteAccountDialogProps = {
   accountEmail: string

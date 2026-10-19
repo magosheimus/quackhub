@@ -1,11 +1,11 @@
-import { SectionLabel } from '@/components/ui/section-label'
+import { SectionLabel } from '@/components/layout/section-label'
 import { IconRedo } from '@/shared/lib/icons'
 import { useDependencies } from '@/features/tasks/hooks/dependencies/useDependencies'
 import { useAddDependency } from '@/features/tasks/hooks/dependencies/useAddDependency'
 import { useRemoveDependency } from '@/features/tasks/hooks/dependencies/useRemoveDependency'
 import { DependencyPicker } from '@/features/tasks/components/DependencyPicker'
 import { TASKS_TEXTS } from '@/features/tasks/constants/texts'
-import { HintTooltip } from '@/components/ui/hint-tooltip'
+import { HintTooltip } from '@/components/feedback/hint-tooltip'
 
 type CardDependenciesProps = {
   taskId: string

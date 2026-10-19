@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
-import { EmptyState } from '@/components/ui/empty-state'
+import { EmptyState } from '@/components/feedback/empty-state'
 import { IconHourglass } from '@/shared/lib/icons'
 import { SprintCreateModal } from '@/features/sprints/components/SprintCreateModal'
 import { COMMON_TEXTS } from '@/shared/constants/texts'

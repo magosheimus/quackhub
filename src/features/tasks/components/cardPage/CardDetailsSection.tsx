@@ -1,7 +1,7 @@
 import { IconInfo } from '@/shared/lib/icons'
-import { ColorDot } from '@/components/ui/color-dot'
+import { ColorDot } from '@/components/pickers/color-dot'
 import type { EpicLabel, EpicOption } from '@/features/epics/lib/epic'
-import { SectionLabel } from '@/components/ui/section-label'
+import { SectionLabel } from '@/components/layout/section-label'
 import type { ReactNode } from 'react'
 import {
   Select,
@@ -33,7 +33,7 @@ import type { TaskUpdate } from '@/features/tasks/model/task'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
 import { PROJECT_TYPE_LABELS } from '@/features/projects/constants/texts'
 import { TASKS_TEXTS } from '@/features/tasks/constants/texts'
-import { Panel } from '@/components/ui/panel'
+import { Panel } from '@/components/layout/panel'
 import { cn } from '@/shared/lib/utils'
 import type { ProjectOption } from '@/features/projects/lib/project'
 

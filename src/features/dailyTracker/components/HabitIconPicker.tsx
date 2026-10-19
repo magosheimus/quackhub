@@ -7,7 +7,7 @@ import {
   HABIT_ICON_KEYS,
   type HabitIconKey,
 } from '@/features/dailyTracker/lib/habitAppearance'
-import { GridPicker } from '@/components/ui/grid-picker'
+import { GridPicker } from '@/components/pickers/grid-picker'
 
 type HabitIconPickerProps = {
   idPrefix: string

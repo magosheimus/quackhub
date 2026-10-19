@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { Panel } from '@/components/ui/panel'
+import { Panel } from '@/components/layout/panel'
 
 type SettingsSectionProps = {
   title?: string

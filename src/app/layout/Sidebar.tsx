@@ -16,12 +16,12 @@ import { navLinkClass } from './navLinkClass'
 import { CartuchoMenu } from './CartuchoMenu'
 import { ProjectCreateModal } from '@/features/projects/components/ProjectCreateModal'
 import { ProjectEditModal } from '@/features/projects/components/ProjectEditModal'
-import { LoadingText } from '@/components/ui/loading-text'
+import { LoadingText } from '@/components/feedback/loading-text'
 import type { Project } from '@/shared/types/entities'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
 import { APP_TEXTS } from '@/app/constants/texts'
-import { Panel } from '@/components/ui/panel'
-import { LogoMark } from '@/components/ui/logo-mark'
+import { Panel } from '@/components/layout/panel'
+import { LogoMark } from '@/components/brand/logo-mark'
 import {
   Tooltip,
   TooltipContent,

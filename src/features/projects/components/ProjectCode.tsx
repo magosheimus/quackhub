@@ -1,4 +1,4 @@
-import { ColorDot } from '@/components/ui/color-dot'
+import { ColorDot } from '@/components/pickers/color-dot'
 import {
   formatTaskCode,
   type ProjectLabel,

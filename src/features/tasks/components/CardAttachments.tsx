@@ -1,4 +1,4 @@
-import { SectionLabel } from '@/components/ui/section-label'
+import { SectionLabel } from '@/components/layout/section-label'
 import {
   useEffect,
   useRef,
@@ -20,8 +20,8 @@ import { useAttachments } from '@/features/tasks/hooks/attachments/useAttachment
 import { useUploadAttachment } from '@/features/tasks/hooks/attachments/useUploadAttachment'
 import { useDeleteAttachment } from '@/features/tasks/hooks/attachments/useDeleteAttachment'
 import { TASKS_TEXTS } from '@/features/tasks/constants/texts'
-import { Panel } from '@/components/ui/panel'
-import { ConfirmDialog } from '@/components/ui/confirm-dialog'
+import { Panel } from '@/components/layout/panel'
+import { ConfirmDialog } from '@/components/feedback/confirm-dialog'
 import type { AttachmentWithUrl } from '@/shared/types/entities'
 
 type CardAttachmentsProps = {

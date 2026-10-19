@@ -11,11 +11,11 @@ import {
   CartesianGrid,
 } from 'recharts'
 import { ChartCard } from './ChartCard'
-import { SectionTitle } from '@/components/ui/section-title'
+import { SectionTitle } from '@/components/layout/section-title'
 import type { EpicChartItem } from '@/features/analytics/hooks/useAnalyticsPage'
 import { ANALYTICS_TEXTS } from '@/features/analytics/constants/texts'
-import { EmptyMessage } from '@/components/ui/empty-message'
-import { Panel } from '@/components/ui/panel'
+import { EmptyMessage } from '@/components/feedback/empty-message'
+import { Panel } from '@/components/layout/panel'
 
 type StudySectionProps = {
   totalReviews: number

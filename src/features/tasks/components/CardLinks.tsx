@@ -1,7 +1,7 @@
 import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd'
 import { Input } from '@/components/ui/input'
-import { Panel } from '@/components/ui/panel'
-import { SectionLabel } from '@/components/ui/section-label'
+import { Panel } from '@/components/layout/panel'
+import { SectionLabel } from '@/components/layout/section-label'
 import { TASKS_TEXTS } from '@/features/tasks/constants/texts'
 import { useCardLinks } from '@/features/tasks/hooks/links/useCardLinks'
 import {

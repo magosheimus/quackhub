@@ -1,4 +1,4 @@
-import { ErrorState } from '@/components/ui/error-state'
+import { ErrorState } from '@/components/feedback/error-state'
 import { DragDropContext } from '@hello-pangea/dnd'
 import { BoardColumn } from '@/features/board/components/BoardColumn'
 import { BoardEmptyState } from '@/features/board/components/BoardEmptyState'
@@ -8,7 +8,7 @@ import { useBoardPage } from '@/features/board/hooks/useBoardPage'
 import { SprintHeader } from '@/features/sprints/components/SprintHeader'
 import { SprintPlanningHeader } from '@/features/backlog/components/SprintPlanningHeader'
 import { BacklogPage } from '@/features/backlog/pages/BacklogPage'
-import { LoadingText } from '@/components/ui/loading-text'
+import { LoadingText } from '@/components/feedback/loading-text'
 
 export function BoardPage() {
   const {

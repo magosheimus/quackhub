@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button'
-import { LogoMark } from '@/components/ui/logo-mark'
+import { LogoMark } from '@/components/brand/logo-mark'
 import { GlobalSearch } from '@/features/search/components/GlobalSearch'
 import { CardCreateModal } from '@/features/tasks/components/CardCreateModal'
 import { IconMenu } from '@/shared/lib/icons'

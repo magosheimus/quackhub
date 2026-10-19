@@ -1,5 +1,5 @@
 import { ProjectFormFields } from '@/features/projects/components/ProjectFormFields'
-import { ConfirmDialog } from '@/components/ui/confirm-dialog'
+import { ConfirmDialog } from '@/components/feedback/confirm-dialog'
 import { useState } from 'react'
 import {
   Dialog,

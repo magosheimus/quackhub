@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button'
-import { EmptyMessage } from '@/components/ui/empty-message'
+import { EmptyMessage } from '@/components/feedback/empty-message'
 import { HabitIcon } from '@/features/dailyTracker/components/HabitIcon'
 import { DAILY_TRACKER_TEXTS } from '@/features/dailyTracker/constants/texts'
 import type { TodayHabitItem } from '@/features/dailyTracker/hooks/useDailyTrackerPage'

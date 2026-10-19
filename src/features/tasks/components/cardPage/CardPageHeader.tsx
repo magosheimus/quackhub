@@ -12,7 +12,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Button } from '@/components/ui/button'
-import { PageTitle } from '@/components/ui/page-title'
+import { PageTitle } from '@/components/layout/page-title'
 import { TASKS_TEXTS } from '@/features/tasks/constants/texts'
 import { ProjectCode } from '@/features/projects/components/ProjectCode'
 import { EpicTag } from '@/features/epics/components/EpicTag'
