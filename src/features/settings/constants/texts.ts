@@ -1,4 +1,12 @@
 import type { Settings } from '@/features/settings/lib/settings'
+import type { SettingsTab } from '@/features/settings/lib/settingsTab'
+
+export const SETTINGS_TAB_LABELS: Record<SettingsTab, string> = {
+  appearance: 'Aparência',
+  preferences: 'Preferências',
+  personas: 'Personas',
+  account: 'Conta',
+}
 
 export const TEXTURE_LABELS: Record<Settings['texture'], string> = {
   none: 'Sem textura',
@@ -36,12 +44,10 @@ export const CARTUCHO_LABELS: Record<Settings['cartucho'], string> = {
 
 export const SETTINGS_TEXTS = {
   title: 'Configurações',
-  appearance: 'Aparência',
   intensity: 'Intensidade',
   scanlines: 'Scanlines',
   glow: 'Glow',
   lcdGhost: 'Efeito LCD',
-  preferences: 'Preferências',
   bodyFont: 'Fonte do corpo',
   dateFormat: 'Formato de data',
   weekStart: 'Primeiro dia da semana',

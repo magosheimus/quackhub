@@ -1,282 +1,51 @@
 import { IconSettings } from '@/shared/lib/icons'
-import { Link } from 'react-router-dom'
-import type { ReactNode } from 'react'
-import { Button } from '@/components/ui/button'
-import { Checkbox } from '@/components/ui/checkbox'
-import { Slider } from '@/components/ui/slider'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-import { ClearCacheButton } from '@/features/settings/components/ClearCacheButton'
-import {
-  DATE_FORMATS,
-  FONT_BODIES,
-  LCD_GHOSTS,
-} from '@/features/settings/lib/settings'
-import { useSettingsPage } from '@/features/settings/hooks/useSettingsPage'
 import { PageTitle } from '@/components/ui/page-title'
-import {
-  FONT_LABELS,
-  LCD_GHOST_LABELS,
-  SETTINGS_TEXTS,
-  WEEK_START_LABELS,
-} from '@/features/settings/constants/texts'
-import { Panel } from '@/components/ui/panel'
-import { AUTH_TEXTS } from '@/features/auth/constants/texts'
-import { CartuchoOptions } from '@/features/settings/components/CartuchoOptions'
-import { DeleteAccountDialog } from '@/features/auth/components/DeleteAccountDialog'
-import { PRIVACY_PATH } from '@/features/privacy/constants/paths'
-import { PRIVACY_TEXTS } from '@/features/privacy/constants/texts'
+import { Tabs, TabsList, TabsPanel, TabsTab } from '@/components/ui/tabs'
 import { PersonaManager } from '@/features/personas/components/PersonaManager'
-import { PERSONAS_TEXTS } from '@/features/personas/constants/texts'
-import { TextureOptions } from '@/features/settings/components/TextureOptions'
-
-function SettingsCard({
-  title,
-  children,
-}: {
-  title: string
-  children: ReactNode
-}) {
-  return (
-    <Panel className="flex flex-col gap-4 p-5">
-      <span className="text-xs font-medium uppercase tracking-wide text-fg">
-        {title}
-      </span>
-      {children}
-    </Panel>
-  )
-}
+import { AccountSettings } from '@/features/settings/components/AccountSettings'
+import { AppearanceSettings } from '@/features/settings/components/AppearanceSettings'
+import { PreferenceSettings } from '@/features/settings/components/PreferenceSettings'
+import { SettingsSection } from '@/features/settings/components/SettingsSection'
+import {
+  SETTINGS_TAB_LABELS,
+  SETTINGS_TEXTS,
+} from '@/features/settings/constants/texts'
+import { useSettingsPage } from '@/features/settings/hooks/useSettingsPage'
+import { SETTINGS_TABS } from '@/features/settings/lib/settingsTab'
 
 export function SettingsPage() {
-  const {
-    settings,
-    textureOpacity,
-    update,
-    setTextureOpacity,
-    selectFontBody,
-    selectDateFormat,
-    selectWeekStart,
-    isExporting,
-    exportData,
-    accountEmail,
-    signOut,
-    isSigningOut,
-  } = useSettingsPage()
+  const { tab, selectTab } = useSettingsPage()
 
   return (
-    <div className="flex flex-col gap-6">
-      <PageTitle title={SETTINGS_TEXTS.title} icon={IconSettings} />
-
-      <div className="grid gap-6 lg:grid-cols-2">
-        <SettingsCard title={SETTINGS_TEXTS.appearance}>
-          <div className="flex flex-col gap-2 lg:hidden">
-            <span className="text-caption">{SETTINGS_TEXTS.cartucho}</span>
-            <CartuchoOptions
-              selected={settings.cartucho}
-              onSelect={(cartucho) => update({ cartucho })}
-              className="flex-wrap"
-            />
-          </div>
-
-          <TextureOptions
-            selected={settings.texture}
-            opacity={settings.textureOpacity}
-            onSelect={(texture) => update({ texture })}
-          />
-
-          {settings.texture !== 'none' && (
-            <div className="flex items-center gap-3">
-              <span className="text-caption">{SETTINGS_TEXTS.intensity}</span>
-              <Slider
-                value={[textureOpacity]}
-                onValueChange={setTextureOpacity}
-                className="flex-1"
-              />
-              <span className="w-10 text-caption">{textureOpacity}%</span>
-            </div>
-          )}
-
-          <div className="flex flex-col gap-2 border-t border-border pt-4">
-            <div className="flex items-center gap-2">
-              <Checkbox
-                checked={settings.scanlines}
-                onCheckedChange={(checked) =>
-                  update({ scanlines: checked === true })
-                }
-                aria-labelledby="scanlines-label"
-              />
-              <span id="scanlines-label" className="text-caption">
-                {SETTINGS_TEXTS.scanlines}
-              </span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Checkbox
-                checked={settings.glow}
-                onCheckedChange={(checked) =>
-                  update({ glow: checked === true })
-                }
-                aria-labelledby="glow-label"
-              />
-              <span id="glow-label" className="text-caption">
-                {SETTINGS_TEXTS.glow}
-              </span>
-            </div>
-            {settings.glow && (
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="text-caption">{SETTINGS_TEXTS.lcdGhost}</span>
-                {LCD_GHOSTS.map((lcdGhost) => (
-                  <Button
-                    key={lcdGhost}
-                    type="button"
-                    size="sm"
-                    variant={
-                      settings.lcdGhost === lcdGhost ? 'selected' : 'outline'
-                    }
-                    onClick={() => update({ lcdGhost })}
-                  >
-                    {LCD_GHOST_LABELS[lcdGhost]}
-                  </Button>
-                ))}
-              </div>
-            )}
-          </div>
-        </SettingsCard>
-
-        <SettingsCard title={SETTINGS_TEXTS.preferences}>
-          <div className="flex flex-col gap-1.5">
-            <span id="font-label" className="text-caption">
-              {SETTINGS_TEXTS.bodyFont}
-            </span>
-            <Select value={settings.fontBody} onValueChange={selectFontBody}>
-              <SelectTrigger aria-labelledby="font-label">
-                <SelectValue>{FONT_LABELS[settings.fontBody]}</SelectValue>
-              </SelectTrigger>
-              <SelectContent>
-                {FONT_BODIES.map((font) => (
-                  <SelectItem key={font} value={font}>
-                    {FONT_LABELS[font]}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="flex flex-col gap-1.5">
-            <span id="date-format-label" className="text-caption">
-              {SETTINGS_TEXTS.dateFormat}
-            </span>
-            <Select
-              value={settings.dateFormat}
-              onValueChange={selectDateFormat}
-            >
-              <SelectTrigger aria-labelledby="date-format-label">
-                <SelectValue>{settings.dateFormat}</SelectValue>
-              </SelectTrigger>
-              <SelectContent>
-                {DATE_FORMATS.map((format) => (
-                  <SelectItem key={format} value={format}>
-                    {format}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="flex flex-col gap-1.5">
-            <span id="week-start-label" className="text-caption">
-              {SETTINGS_TEXTS.weekStart}
-            </span>
-            <Select
-              value={String(settings.weekStartsOn)}
-              onValueChange={selectWeekStart}
-            >
-              <SelectTrigger aria-labelledby="week-start-label">
-                <SelectValue>
-                  {WEEK_START_LABELS[settings.weekStartsOn]}
-                </SelectValue>
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="0">{WEEK_START_LABELS[0]}</SelectItem>
-                <SelectItem value="1">{WEEK_START_LABELS[1]}</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        </SettingsCard>
+    <Tabs value={tab} onValueChange={selectTab}>
+      <div className="flex flex-col gap-4">
+        <PageTitle title={SETTINGS_TEXTS.title} icon={IconSettings} />
+        <TabsList aria-label={SETTINGS_TEXTS.title}>
+          {SETTINGS_TABS.map((settingsTab) => (
+            <TabsTab key={settingsTab} value={settingsTab}>
+              {SETTINGS_TAB_LABELS[settingsTab]}
+            </TabsTab>
+          ))}
+        </TabsList>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-2">
-        <SettingsCard title={PERSONAS_TEXTS.title}>
+      <TabsPanel value="appearance">
+        <AppearanceSettings />
+      </TabsPanel>
+
+      <TabsPanel value="preferences">
+        <PreferenceSettings />
+      </TabsPanel>
+
+      <TabsPanel value="personas">
+        <SettingsSection>
           <PersonaManager />
-        </SettingsCard>
+        </SettingsSection>
+      </TabsPanel>
 
-        <SettingsCard title={SETTINGS_TEXTS.data}>
-          <div className="flex items-center justify-between gap-4">
-            <div className="flex flex-col">
-              <span className="text-sm text-fg">
-                {SETTINGS_TEXTS.exportData}
-              </span>
-              <span className="text-caption">
-                {SETTINGS_TEXTS.exportDescription}
-              </span>
-            </div>
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={exportData}
-              disabled={isExporting}
-            >
-              {isExporting ? SETTINGS_TEXTS.exporting : SETTINGS_TEXTS.export}
-            </Button>
-          </div>
-
-          <div className="flex items-center justify-between gap-4 border-t border-border pt-4">
-            <div className="flex flex-col">
-              <span className="text-sm text-fg">
-                {SETTINGS_TEXTS.clearCache}
-              </span>
-              <span className="text-caption">
-                {SETTINGS_TEXTS.clearCacheDescription}
-              </span>
-            </div>
-            <ClearCacheButton />
-          </div>
-        </SettingsCard>
-      </div>
-
-      <SettingsCard title={AUTH_TEXTS.account}>
-        <div className="flex items-center justify-between gap-4">
-          <span className="min-w-0 flex-1 text-sm text-fg">
-            {AUTH_TEXTS.signedInAs(accountEmail)}
-          </span>
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={signOut}
-            disabled={isSigningOut}
-          >
-            {isSigningOut ? AUTH_TEXTS.signingOut : AUTH_TEXTS.signOut}
-          </Button>
-        </div>
-        <div className="flex items-center justify-between gap-4">
-          <span className="min-w-0 flex-1 text-subtle">
-            {AUTH_TEXTS.deleteAccountDescription}
-          </span>
-          <DeleteAccountDialog accountEmail={accountEmail} />
-        </div>
-        <Link
-          to={PRIVACY_PATH}
-          className="text-caption underline hover:text-fg"
-        >
-          {PRIVACY_TEXTS.linkLabel}
-        </Link>
-      </SettingsCard>
-    </div>
+      <TabsPanel value="account">
+        <AccountSettings />
+      </TabsPanel>
+    </Tabs>
   )
 }

@@ -1,7 +1,6 @@
 import type { PersonaIconKey } from '@/features/personas/lib/persona'
 
 export const PERSONAS_TEXTS = {
-  title: 'Personas',
   description: 'Responsáveis que você pode atribuir aos cards.',
   empty: '— nenhuma persona ainda —',
   newPersona: 'Nova persona',
