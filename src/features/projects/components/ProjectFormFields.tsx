@@ -1,6 +1,6 @@
 import type { Ref } from 'react'
-import { ColorSwatchPicker } from '@/components/ui/color-swatch-picker'
-import { InlineHint } from '@/components/ui/inline-hint'
+import { ColorSwatchPicker } from '@/components/pickers/color-swatch-picker'
+import { InlineHint } from '@/components/feedback/inline-hint'
 import { Input } from '@/components/ui/input'
 import {
   Select,
@@ -19,7 +19,7 @@ import { isProjectType, PROJECT_TYPES } from '@/shared/lib/enums'
 import { IconRefresh } from '@/shared/lib/icons'
 import type { PaletteColor } from '@/shared/lib/palette'
 import type { ProjectType } from '@/shared/types/entities'
-import { HintTooltip } from '@/components/ui/hint-tooltip'
+import { HintTooltip } from '@/components/feedback/hint-tooltip'
 
 type ProjectFormFieldsProps = {
   idPrefix: string

@@ -1,10 +1,10 @@
 import { DragDropContext, Droppable } from '@hello-pangea/dnd'
 import { BoardCard } from './BoardCard'
-import { ColorDot } from '@/components/ui/color-dot'
+import { ColorDot } from '@/components/pickers/color-dot'
 import { Button } from '@/components/ui/button'
-import { EmptyState } from '@/components/ui/empty-state'
-import { LoadingText } from '@/components/ui/loading-text'
-import { SegmentedProgress } from '@/components/ui/segmented-progress'
+import { EmptyState } from '@/components/feedback/empty-state'
+import { LoadingText } from '@/components/feedback/loading-text'
+import { SegmentedProgress } from '@/components/brand/segmented-progress'
 import {
   useProjectEpicsView,
   type EpicColumnView,

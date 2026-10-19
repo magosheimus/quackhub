@@ -1,5 +1,5 @@
 import { IconNotes } from '@/shared/lib/icons'
-import { PageTitle } from '@/components/ui/page-title'
+import { PageTitle } from '@/components/layout/page-title'
 import { DraftsCapture } from '@/features/drafts/components/DraftsCapture'
 import { DraftsList } from '@/features/drafts/components/DraftsList'
 import { useDraftsSections } from '@/features/drafts/hooks/useDraftsSections'

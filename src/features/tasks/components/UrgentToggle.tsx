@@ -1,7 +1,7 @@
 import { IconFlag } from '@/shared/lib/icons'
 import { TASKS_TEXTS } from '@/features/tasks/constants/texts'
 import { cn } from '@/shared/lib/utils'
-import { HintTooltip } from '@/components/ui/hint-tooltip'
+import { HintTooltip } from '@/components/feedback/hint-tooltip'
 
 type UrgentToggleProps = {
   flagged: boolean

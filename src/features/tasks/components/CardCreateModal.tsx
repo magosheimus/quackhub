@@ -3,7 +3,7 @@ import { useTitleDue } from '@/features/tasks/hooks/useTitleDue'
 import { isDueWithinSprint } from '@/features/sprints/lib/sprint'
 import { formatDueTime, toTaskDue } from '@/features/tasks/lib/due'
 import { UrgentToggle } from '@/features/tasks/components/UrgentToggle'
-import { InlineHint } from '@/components/ui/inline-hint'
+import { InlineHint } from '@/components/feedback/inline-hint'
 import { useRef, useState, type ReactNode } from 'react'
 import {
   Dialog,
@@ -52,7 +52,7 @@ import { isStudyProject } from '@/features/projects/lib/project'
 import { DEFAULT_PALETTE_COLOR } from '@/shared/lib/palette'
 import { AssigneeCombobox } from '@/features/personas/components/AssigneeCombobox'
 import { PERSONAS_TEXTS } from '@/features/personas/constants/texts'
-import { HintTooltip } from '@/components/ui/hint-tooltip'
+import { HintTooltip } from '@/components/feedback/hint-tooltip'
 import { DependencyPicker } from '@/features/tasks/components/DependencyPicker'
 
 const NONE_VALUE = '__backlog__'

@@ -14,7 +14,7 @@ import type { Task } from '@/features/tasks/model/task'
 import { BOARD_TEXTS } from '@/features/board/constants/texts'
 import type { ProjectLabels } from '@/features/projects/lib/project'
 import { Button } from '@/components/ui/button'
-import { EmptyState } from '@/components/ui/empty-state'
+import { EmptyState } from '@/components/feedback/empty-state'
 import { IconFolder, IconPlus } from '@/shared/lib/icons'
 
 type ProjectProgressViewProps = {

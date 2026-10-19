@@ -1,5 +1,5 @@
 import { IconArticle } from '@/shared/lib/icons'
-import { SectionLabel } from '@/components/ui/section-label'
+import { SectionLabel } from '@/components/layout/section-label'
 import { Textarea } from '@/components/ui/textarea'
 import { TASKS_TEXTS } from '@/features/tasks/constants/texts'
 

@@ -19,7 +19,7 @@ import { addDaysToToday } from '@/shared/lib/date'
 import type { Task } from '@/features/tasks/model/task'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
 import { SRS_TEXTS } from '@/features/srs/constants/texts'
-import { Panel } from '@/components/ui/panel'
+import { Panel } from '@/components/layout/panel'
 
 const CONFIANCA_OPTIONS = [1, 2, 3, 4, 5]
 

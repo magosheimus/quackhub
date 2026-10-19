@@ -1,4 +1,4 @@
-import { ErrorState } from '@/components/ui/error-state'
+import { ErrorState } from '@/components/feedback/error-state'
 import {
   IconCalendar,
   IconFlag,
@@ -9,15 +9,15 @@ import { cn } from '@/shared/lib/utils'
 import type { InboxCounterTone } from '@/features/inbox/lib/inboxCounters'
 import { CardCreateModal } from '@/features/tasks/components/CardCreateModal'
 import { ProjectCreateModal } from '@/features/projects/components/ProjectCreateModal'
-import { Marquee } from '@/components/ui/marquee'
+import { Marquee } from '@/components/brand/marquee'
 import { useInboxPage } from '@/features/inbox/hooks/useInboxPage'
 import { InboxSection } from '@/features/inbox/components/InboxSection'
 import { RegisterPerformanceModal } from '@/features/srs/components/RegisterPerformanceModal'
-import { LoadingText } from '@/components/ui/loading-text'
-import { PageTitle } from '@/components/ui/page-title'
+import { LoadingText } from '@/components/feedback/loading-text'
+import { PageTitle } from '@/components/layout/page-title'
 import { INBOX_TEXTS } from '@/features/inbox/constants/texts'
-import { Panel } from '@/components/ui/panel'
-import { EmptyState } from '@/components/ui/empty-state'
+import { Panel } from '@/components/layout/panel'
+import { EmptyState } from '@/components/feedback/empty-state'
 
 const COUNTER_TONE_CLASS: Record<InboxCounterTone, string> = {
   default: 'text-fg',

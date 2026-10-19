@@ -1,5 +1,5 @@
 import { IconClock } from '@/shared/lib/icons'
-import { SectionLabel } from '@/components/ui/section-label'
+import { SectionLabel } from '@/components/layout/section-label'
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
@@ -8,8 +8,8 @@ import { useAddManualComment } from '@/features/srs/hooks/useAddManualComment'
 import { formatFullDate } from '@/shared/lib/date'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
 import { TASKS_TEXTS } from '@/features/tasks/constants/texts'
-import { EmptyMessage } from '@/components/ui/empty-message'
-import { Panel } from '@/components/ui/panel'
+import { EmptyMessage } from '@/components/feedback/empty-message'
+import { Panel } from '@/components/layout/panel'
 import { useActivityEntries } from '@/features/tasks/hooks/activityLog/useActivityEntries'
 
 const PAGE_SIZE = 5

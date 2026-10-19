@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button'
-import { ColorDot } from '@/components/ui/color-dot'
+import { ColorDot } from '@/components/pickers/color-dot'
 import type { EpicOption } from '@/features/epics/lib/epic'
 import type { ProjectOption } from '@/features/projects/lib/project'
 import { BOARD_TEXTS } from '@/features/board/constants/texts'

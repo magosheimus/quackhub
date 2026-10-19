@@ -1,5 +1,5 @@
 import { IconSettings } from '@/shared/lib/icons'
-import { PageTitle } from '@/components/ui/page-title'
+import { PageTitle } from '@/components/layout/page-title'
 import { Tabs, TabsList, TabsPanel, TabsTab } from '@/components/ui/tabs'
 import { PersonaManager } from '@/features/personas/components/PersonaManager'
 import { AccountSettings } from '@/features/settings/components/AccountSettings'

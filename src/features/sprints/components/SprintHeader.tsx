@@ -3,14 +3,14 @@ import { useStartSprint } from '@/features/sprints/hooks/useStartSprint'
 import { SprintCreateModal } from './SprintCreateModal'
 import { SprintCloseModal } from './SprintCloseModal'
 import { useSprints } from '@/features/sprints/hooks/useSprints'
-import { SegmentedProgress } from '@/components/ui/segmented-progress'
+import { SegmentedProgress } from '@/components/brand/segmented-progress'
 import { formatFullDate } from '@/shared/lib/date'
 import type { Sprint } from '@/shared/types/entities'
 import type { Task } from '@/features/tasks/model/task'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
 import { SPRINTS_TEXTS } from '@/features/sprints/constants/texts'
-import { EmptyMessage } from '@/components/ui/empty-message'
-import { Panel } from '@/components/ui/panel'
+import { EmptyMessage } from '@/components/feedback/empty-message'
+import { Panel } from '@/components/layout/panel'
 
 type SprintHeaderProps = {
   activeSprint: Sprint | null

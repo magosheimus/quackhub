@@ -1,6 +1,6 @@
 import { Checkbox } from '@/components/ui/checkbox'
 import { Button } from '@/components/ui/button'
-import { Panel } from '@/components/ui/panel'
+import { Panel } from '@/components/layout/panel'
 import { IconChevronRight, IconToolCase, IconTrash } from '@/shared/lib/icons'
 import { DRAFTS_TEXTS } from '@/features/drafts/constants/texts'
 import { useDraftsArchive } from '@/features/drafts/hooks/useDraftsArchive'

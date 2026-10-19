@@ -1,4 +1,4 @@
-import { SectionLabel } from '@/components/ui/section-label'
+import { SectionLabel } from '@/components/layout/section-label'
 import { IconChecklist, IconClose, IconPlusBoxSharp } from '@/shared/lib/icons'
 import { useState } from 'react'
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd'
@@ -9,7 +9,7 @@ import { useCreateChecklistItem } from '@/features/tasks/hooks/checklist/useCrea
 import { useUpdateChecklistItem } from '@/features/tasks/hooks/checklist/useUpdateChecklistItem'
 import { useDeleteChecklistItem } from '@/features/tasks/hooks/checklist/useDeleteChecklistItem'
 import { TASKS_TEXTS } from '@/features/tasks/constants/texts'
-import { Panel } from '@/components/ui/panel'
+import { Panel } from '@/components/layout/panel'
 import { useReorderList } from '@/shared/hooks/useReorderList'
 import { queryKeys } from '@/shared/query/queryKeys'
 

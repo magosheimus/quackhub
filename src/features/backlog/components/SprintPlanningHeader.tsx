@@ -3,7 +3,7 @@ import { useStartSprint } from '@/features/sprints/hooks/useStartSprint'
 import { formatDayMonth } from '@/shared/lib/date'
 import type { Sprint } from '@/shared/types/entities'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
-import { Panel } from '@/components/ui/panel'
+import { Panel } from '@/components/layout/panel'
 
 type SprintPlanningHeaderProps = {
   sprint: Sprint

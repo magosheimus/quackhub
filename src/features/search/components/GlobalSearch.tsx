@@ -14,9 +14,9 @@ import { DRAFTS_PATH } from '@/features/drafts/constants/paths'
 import { useProjects } from '@/features/projects/hooks/useProjects'
 import { useAllEpics } from '@/features/epics/hooks/useAllEpics'
 import { STATUS_LABELS } from '@/features/tasks/lib/taskStatus'
-import { LoadingText } from '@/components/ui/loading-text'
+import { LoadingText } from '@/components/feedback/loading-text'
 import { SEARCH_TEXTS } from '@/features/search/constants/texts'
-import { EmptyMessage } from '@/components/ui/empty-message'
+import { EmptyMessage } from '@/components/feedback/empty-message'
 import { IconCardText, IconNotes, type IconComponent } from '@/shared/lib/icons'
 
 const RESULT_CLASS =
