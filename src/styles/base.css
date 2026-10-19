@@ -28,11 +28,13 @@ body {
   background: var(--bg-page);
   color: var(--text-primary);
   font-family: var(--font-body);
+  font-size-adjust: var(--font-body-adjust, none);
   margin: 0;
 }
 
 .font-heading {
   -webkit-text-stroke: 0.2px currentColor;
+  font-size-adjust: none;
 }
 
 input,

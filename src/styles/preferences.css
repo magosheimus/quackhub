@@ -1,6 +1,6 @@
 /* ==========================================================================
    Preferências de aparência — classes na raiz (scanlines-on, glow-on, lcd-*,
-   font-ibm-plex), ligadas em Configurações
+   font-*), ligadas em Configurações
    ========================================================================== */
 .scanlines-on {
   --scanline-opacity: 1;
@@ -104,4 +104,22 @@
 
 .font-ibm-plex {
   --font-body: 'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
+}
+
+.font-share-tech {
+  --font-body: 'Share Tech Mono', ui-monospace, SFMono-Regular, monospace;
+}
+
+.font-space-mono {
+  --font-body: 'Space Mono', ui-monospace, SFMono-Regular, monospace;
+}
+
+.font-courier-prime {
+  --font-body: 'Courier Prime', ui-monospace, SFMono-Regular, monospace;
+}
+
+/* Minúsculas baixas: o ajuste iguala a altura do x à das fontes mono */
+.font-pixelify {
+  --font-body: 'Pixelify Sans', ui-monospace, SFMono-Regular, monospace;
+  --font-body-adjust: 0.55;
 }

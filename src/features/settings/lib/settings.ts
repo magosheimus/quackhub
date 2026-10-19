@@ -13,7 +13,13 @@ export type Settings = {
   scanlines: boolean
   glow: boolean
   lcdGhost: 'off' | 'subtle' | 'glitch'
-  fontBody: 'jetbrains' | 'ibm-plex'
+  fontBody:
+    | 'jetbrains'
+    | 'ibm-plex'
+    | 'share-tech'
+    | 'space-mono'
+    | 'courier-prime'
+    | 'pixelify'
   dateFormat: 'dd/MM/yyyy' | 'MM/dd/yyyy'
   weekStartsOn: 0 | 1
   hiddenQuickFilters: string[]
@@ -23,6 +29,10 @@ export type Settings = {
 export const FONT_BODIES = [
   'jetbrains',
   'ibm-plex',
+  'share-tech',
+  'space-mono',
+  'courier-prime',
+  'pixelify',
 ] as const satisfies readonly Settings['fontBody'][]
 
 export const DATE_FORMATS = [
@@ -240,6 +250,10 @@ const LCD_GHOST_CLASS: Record<Settings['lcdGhost'], string> = {
 const FONT_CLASS: Record<Settings['fontBody'], string> = {
   jetbrains: '',
   'ibm-plex': 'font-ibm-plex',
+  'share-tech': 'font-share-tech',
+  'space-mono': 'font-space-mono',
+  'courier-prime': 'font-courier-prime',
+  pixelify: 'font-pixelify',
 }
 
 export function applySettings(s: Settings): void {

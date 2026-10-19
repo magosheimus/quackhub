@@ -20,6 +20,10 @@ export const TEXTURE_LABELS: Record<Settings['texture'], string> = {
 export const FONT_LABELS: Record<Settings['fontBody'], string> = {
   jetbrains: 'JetBrains Mono',
   'ibm-plex': 'IBM Plex Mono',
+  'share-tech': 'Share Tech Mono',
+  'space-mono': 'Space Mono',
+  'courier-prime': 'Courier Prime',
+  pixelify: 'Pixelify Sans',
 }
 
 export const DATE_FORMAT_LABELS: Record<Settings['dateFormat'], string> = {
