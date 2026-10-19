@@ -13,3 +13,10 @@ export function toggleItem<T>(items: T[], item: T): T[] {
     ? items.filter((current) => current !== item)
     : [...items, item]
 }
+
+// Próximo (1) ou anterior (-1) item, dando a volta nas pontas
+export function cycleItem<T>(items: readonly T[], current: T, step: 1 | -1): T {
+  const index = items.indexOf(current)
+  const next = (index + step + items.length) % items.length
+  return items[next] ?? current
+}

@@ -20,11 +20,27 @@ export const TEXTURE_LABELS: Record<Settings['texture'], string> = {
 export const FONT_LABELS: Record<Settings['fontBody'], string> = {
   jetbrains: 'JetBrains Mono',
   'ibm-plex': 'IBM Plex Mono',
+  'share-tech': 'Share Tech Mono',
+  'space-mono': 'Space Mono',
+  'courier-prime': 'Courier Prime',
+  pixelify: 'Pixelify Sans',
+}
+
+export const DATE_FORMAT_LABELS: Record<Settings['dateFormat'], string> = {
+  'dd/MM/yyyy': 'DD/MM/AAAA',
+  'MM/dd/yyyy': 'MM/DD/AAAA',
 }
 
 export const WEEK_START_LABELS: Record<Settings['weekStartsOn'], string> = {
   0: 'Domingo',
   1: 'Segunda',
+}
+
+export const TEXT_SIZE_LABELS: Record<Settings['textSize'], string> = {
+  small: 'Pequeno',
+  normal: 'Normal',
+  large: 'Grande',
+  xlarge: 'Muito grande',
 }
 
 export const LCD_GHOST_LABELS: Record<Settings['lcdGhost'], string> = {
@@ -44,22 +60,35 @@ export const CARTUCHO_LABELS: Record<Settings['cartucho'], string> = {
 
 export const SETTINGS_TEXTS = {
   title: 'Configurações',
-  intensity: 'Intensidade',
+  intensity: 'Intensidade de fundo',
   scanlines: 'Scanlines',
   glow: 'Glow',
   lcdGhost: 'Efeito LCD',
+  background: 'Fundo',
+  effects: 'Efeitos',
+  typography: 'Tipografia',
+  dates: 'Datas',
   bodyFont: 'Fonte do corpo',
+  textSize: 'Tamanho do texto',
   dateFormat: 'Formato de data',
   weekStart: 'Primeiro dia da semana',
   data: 'Dados',
   exportData: 'Exportar dados',
-  exportDescription: 'Baixa um .json com todas as suas informações.',
+  exportDescription:
+    'Baixa um .json com projetos, cards, sprints, revisões, hábitos, rascunhos, personas e preferências. Os arquivos anexados não entram, só a referência a eles.',
   export: 'Exportar',
   exporting: 'Exportando...',
   exportError: 'Falha ao exportar dados',
   clearCache: 'Limpar cache',
   clearCacheDescription:
-    'Remove os dados salvos no navegador e recarrega a página.',
+    'Apaga a cópia dos dados guardada neste navegador e recarrega a página. Nada da conta é perdido: tudo volta do servidor.',
   cartucho: 'Cartucho',
   syncError: 'Não foi possível sincronizar as preferências.',
+  dangerZone: 'Zona de risco',
+  autoSaved: 'Alterações salvas automaticamente',
+  restoreAppearance: 'Restaurar aparência padrão',
+  restoreAppearanceDescription:
+    'Volta cartucho, fonte, fundo e efeitos ao padrão. Datas e personas não mudam.',
+  restoreAppearanceTitle: 'Restaurar aparência?',
+  restoreAppearanceConfirm: 'Restaurar',
 } as const

@@ -8,9 +8,9 @@ import {
   getTextureOpacity,
   isDateFormat,
   isFontBody,
-  parseWeekStart,
   textureOpacityUpdate,
   normalizeSettings,
+  getDefaultAppearance,
 } from './settings'
 
 describe('settings', () => {
@@ -48,18 +48,12 @@ describe('settings', () => {
   })
 })
 
-describe('valores de Select', () => {
+describe('guards das preferências', () => {
   it('valida fonte e formato de data', () => {
     expect(isFontBody('ibm-plex')).toBe(true)
     expect(isFontBody('comic-sans')).toBe(false)
     expect(isDateFormat('MM/dd/yyyy')).toBe(true)
     expect(isDateFormat('yyyy-MM-dd')).toBe(false)
-  })
-
-  it('converte o primeiro dia da semana', () => {
-    expect(parseWeekStart('0')).toBe(0)
-    expect(parseWeekStart('1')).toBe(1)
-    expect(parseWeekStart('2')).toBeNull()
   })
 })
 
@@ -135,6 +129,11 @@ describe('normalizeSettings', () => {
     expect(result.lcdGhost).toBe(DEFAULT_SETTINGS.lcdGhost)
   })
 
+  it('tamanho do texto desconhecido volta ao normal', () => {
+    expect(normalizeSettings({ textSize: 'large' }).textSize).toBe('large')
+    expect(normalizeSettings({ textSize: 'gigante' }).textSize).toBe('normal')
+  })
+
   it('aproveita a intensidade salva no formato antigo', () => {
     const result = normalizeSettings({ gridOpacity: 20, dotsOpacity: 90 })
     expect(result.textureOpacity.grid).toBe(20)
@@ -154,5 +153,16 @@ describe('sidebarCollapsed', () => {
     expect(
       normalizeSettings({ sidebarCollapsed: 'sim' }).sidebarCollapsed,
     ).toBe(false)
+  })
+})
+
+describe('getDefaultAppearance', () => {
+  it('volta a aparência ao padrão sem mexer nas preferências', () => {
+    const defaults = getDefaultAppearance()
+    expect(defaults.cartucho).toBe(DEFAULT_SETTINGS.cartucho)
+    expect(defaults.textureOpacity).toEqual(DEFAULT_SETTINGS.textureOpacity)
+    expect(defaults).not.toHaveProperty('dateFormat')
+    expect(defaults).not.toHaveProperty('weekStartsOn')
+    expect(defaults).not.toHaveProperty('sidebarCollapsed')
   })
 })

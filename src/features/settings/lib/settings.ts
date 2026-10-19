@@ -13,7 +13,14 @@ export type Settings = {
   scanlines: boolean
   glow: boolean
   lcdGhost: 'off' | 'subtle' | 'glitch'
-  fontBody: 'jetbrains' | 'ibm-plex'
+  textSize: 'small' | 'normal' | 'large' | 'xlarge'
+  fontBody:
+    | 'jetbrains'
+    | 'ibm-plex'
+    | 'share-tech'
+    | 'space-mono'
+    | 'courier-prime'
+    | 'pixelify'
   dateFormat: 'dd/MM/yyyy' | 'MM/dd/yyyy'
   weekStartsOn: 0 | 1
   hiddenQuickFilters: string[]
@@ -23,6 +30,10 @@ export type Settings = {
 export const FONT_BODIES = [
   'jetbrains',
   'ibm-plex',
+  'share-tech',
+  'space-mono',
+  'courier-prime',
+  'pixelify',
 ] as const satisfies readonly Settings['fontBody'][]
 
 export const DATE_FORMATS = [
@@ -52,6 +63,10 @@ export const TEXTURES = [
   ...PATTERN_TEXTURES,
 ] as const satisfies readonly Texture[]
 
+export const WEEK_STARTS = [
+  0, 1,
+] as const satisfies readonly Settings['weekStartsOn'][]
+
 export const LCD_GHOSTS = [
   'off',
   'subtle',
@@ -62,20 +77,15 @@ export const isFontBody = createEnumGuard(FONT_BODIES)
 export const isDateFormat = createEnumGuard(DATE_FORMATS)
 export const isCartucho = createEnumGuard(CARTUCHOS)
 export const isTexture = createEnumGuard(TEXTURES)
-export const isLcdGhost = createEnumGuard(LCD_GHOSTS)
+export const TEXT_SIZES = [
+  'small',
+  'normal',
+  'large',
+  'xlarge',
+] as const satisfies readonly Settings['textSize'][]
 
-// Valores de Select chegam como texto ('0' | '1')
-export function parseWeekStart(
-  value: unknown,
-): Settings['weekStartsOn'] | null {
-  if (value === '0') {
-    return 0
-  }
-  if (value === '1') {
-    return 1
-  }
-  return null
-}
+export const isLcdGhost = createEnumGuard(LCD_GHOSTS)
+export const isTextSize = createEnumGuard(TEXT_SIZES)
 
 // O slider de intensidade controla a opacidade da textura ativa
 export function getTextureOpacity(settings: Settings): number {
@@ -103,11 +113,25 @@ export const DEFAULT_SETTINGS: Settings = {
   scanlines: false,
   glow: false,
   lcdGhost: 'subtle',
+  textSize: 'normal',
   fontBody: 'jetbrains',
   dateFormat: 'dd/MM/yyyy',
   weekStartsOn: 0,
   hiddenQuickFilters: [],
   sidebarCollapsed: false,
+}
+
+export function getDefaultAppearance(): Partial<Settings> {
+  return {
+    cartucho: DEFAULT_SETTINGS.cartucho,
+    fontBody: DEFAULT_SETTINGS.fontBody,
+    texture: DEFAULT_SETTINGS.texture,
+    textureOpacity: DEFAULT_SETTINGS.textureOpacity,
+    scanlines: DEFAULT_SETTINGS.scanlines,
+    glow: DEFAULT_SETTINGS.glow,
+    lcdGhost: DEFAULT_SETTINGS.lcdGhost,
+    textSize: DEFAULT_SETTINGS.textSize,
+  }
 }
 
 function isOpacity(value: unknown): value is number {
@@ -164,6 +188,9 @@ export function normalizeSettings(raw: unknown): Settings {
     }),
     scanlines: pickBoolean(source.scanlines, DEFAULT_SETTINGS.scanlines),
     glow: pickBoolean(source.glow, DEFAULT_SETTINGS.glow),
+    textSize: isTextSize(source.textSize)
+      ? source.textSize
+      : DEFAULT_SETTINGS.textSize,
     lcdGhost: isLcdGhost(source.lcdGhost)
       ? source.lcdGhost
       : DEFAULT_SETTINGS.lcdGhost,
@@ -234,9 +261,20 @@ const LCD_GHOST_CLASS: Record<Settings['lcdGhost'], string> = {
   glitch: 'lcd-glitch',
 }
 
+const TEXT_SIZE_CLASS: Record<Settings['textSize'], string> = {
+  small: 'text-size-small',
+  normal: '',
+  large: 'text-size-large',
+  xlarge: 'text-size-xlarge',
+}
+
 const FONT_CLASS: Record<Settings['fontBody'], string> = {
   jetbrains: '',
   'ibm-plex': 'font-ibm-plex',
+  'share-tech': 'font-share-tech',
+  'space-mono': 'font-space-mono',
+  'courier-prime': 'font-courier-prime',
+  pixelify: 'font-pixelify',
 }
 
 export function applySettings(s: Settings): void {
@@ -244,6 +282,7 @@ export function applySettings(s: Settings): void {
     CARTUCHO_CLASS[s.cartucho],
     TEXTURE_CLASS[s.texture],
     FONT_CLASS[s.fontBody],
+    TEXT_SIZE_CLASS[s.textSize],
     s.scanlines ? 'scanlines-on' : '',
     s.glow ? 'glow-on' : '',
     s.glow ? LCD_GHOST_CLASS[s.lcdGhost] : '',

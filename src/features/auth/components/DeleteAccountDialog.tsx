@@ -33,7 +33,15 @@ export function DeleteAccountDialog({
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogTrigger render={<Button variant="destructive" size="sm" />}>
+      <DialogTrigger
+        render={
+          <Button
+            variant="outline"
+            size="sm"
+            className="border-on-accent bg-on-accent text-danger hover:bg-on-accent/85 hover:text-danger"
+          />
+        }
+      >
         {AUTH_TEXTS.deleteAccount}
       </DialogTrigger>
       <DialogContent className="dialog-inverted">

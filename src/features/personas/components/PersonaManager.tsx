@@ -24,14 +24,29 @@ export function PersonaManager() {
 
   return (
     <div className="flex flex-col gap-3">
-      <span className="text-caption">{PERSONAS_TEXTS.description}</span>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <span className="text-sm text-fg">{PERSONAS_TEXTS.description}</span>
+        {!isAdding && (
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={startAdding}
+            className="gap-2"
+          >
+            <IconUserPlus size={18} aria-hidden="true" className="size-4.5" />
+            {PERSONAS_TEXTS.newPersona}
+          </Button>
+        )}
+      </div>
+      {isAdding && <PersonaEditor persona={null} onDone={stopEditing} />}
       {isLoading && <LoadingText />}
       {showEmpty && <EmptyMessage>{PERSONAS_TEXTS.empty}</EmptyMessage>}
 
-      <ul className="flex flex-col gap-1">
+      <ul className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
         {personas.map((persona) =>
           isEditing(persona.id) ? (
-            <li key={persona.id}>
+            <li key={persona.id} className="col-span-full">
               <PersonaEditor persona={persona} onDone={stopEditing} />
             </li>
           ) : (
@@ -43,21 +58,6 @@ export function PersonaManager() {
           ),
         )}
       </ul>
-
-      {isAdding ? (
-        <PersonaEditor persona={null} onDone={stopEditing} />
-      ) : (
-        <Button
-          type="button"
-          variant="ghost"
-          size="sm"
-          onClick={startAdding}
-          className="-ml-2.5 gap-2 self-start"
-        >
-          <IconUserPlus size={18} aria-hidden="true" className="size-4.5" />
-          {PERSONAS_TEXTS.newPersona}
-        </Button>
-      )}
     </div>
   )
 }
@@ -77,15 +77,15 @@ function PersonaRow({ persona, onEdit }: PersonaRowProps) {
   } = usePersonaRow(persona)
 
   return (
-    <li className="flex items-center gap-2">
+    <li className="flex items-center gap-2 rounded-md border border-border p-1 pr-2">
       <button
         type="button"
         onClick={onEdit}
         aria-label={PERSONAS_TEXTS.edit(persona.name)}
         title={PERSONAS_TEXTS.edit(persona.name)}
-        className="-ml-1 flex min-w-0 flex-1 items-center gap-3 rounded-sm p-1 text-left hover:bg-hover"
+        className="flex min-w-0 flex-1 items-center gap-3 rounded-sm p-1 text-left hover:bg-hover"
       >
-        <PersonaAvatar icon={iconKey} name={persona.name} size="sm" />
+        <PersonaAvatar icon={iconKey} name={persona.name} size="md" />
         <span className="min-w-0 flex-1 truncate text-sm text-fg">
           {persona.name}
         </span>
