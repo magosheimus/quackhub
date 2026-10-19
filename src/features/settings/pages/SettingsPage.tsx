@@ -1,4 +1,4 @@
-import { IconSettings } from '@/shared/lib/icons'
+import { IconCheck, IconSettings } from '@/shared/lib/icons'
 import { PageTitle } from '@/components/layout/page-title'
 import { Tabs, TabsList, TabsPanel, TabsTab } from '@/components/ui/tabs'
 import { PersonaManager } from '@/features/personas/components/PersonaManager'
@@ -20,7 +20,13 @@ export function SettingsPage() {
   return (
     <Tabs value={tab} onValueChange={selectTab}>
       <div className="flex flex-col gap-4">
-        <PageTitle title={SETTINGS_TEXTS.title} icon={IconSettings} />
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <PageTitle title={SETTINGS_TEXTS.title} icon={IconSettings} />
+          <span className="flex items-center gap-1.5 text-caption">
+            <IconCheck size={14} aria-hidden="true" />
+            {SETTINGS_TEXTS.autoSaved}
+          </span>
+        </div>
         <TabsList aria-label={SETTINGS_TEXTS.title}>
           {SETTINGS_TABS.map((settingsTab) => (
             <TabsTab key={settingsTab} value={settingsTab}>

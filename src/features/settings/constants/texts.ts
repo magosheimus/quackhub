@@ -74,15 +74,18 @@ export const SETTINGS_TEXTS = {
   weekStart: 'Primeiro dia da semana',
   data: 'Dados',
   exportData: 'Exportar dados',
-  exportDescription: 'Baixa um .json com todas as suas informações.',
+  exportDescription:
+    'Baixa um .json com projetos, cards, sprints, revisões, hábitos, rascunhos, personas e preferências. Os arquivos anexados não entram, só a referência a eles.',
   export: 'Exportar',
   exporting: 'Exportando...',
   exportError: 'Falha ao exportar dados',
   clearCache: 'Limpar cache',
   clearCacheDescription:
-    'Remove os dados salvos no navegador e recarrega a página.',
+    'Apaga a cópia dos dados guardada neste navegador e recarrega a página. Nada da conta é perdido: tudo volta do servidor.',
   cartucho: 'Cartucho',
   syncError: 'Não foi possível sincronizar as preferências.',
+  dangerZone: 'Zona de risco',
+  autoSaved: 'Alterações salvas automaticamente',
   restoreAppearance: 'Restaurar aparência padrão',
   restoreAppearanceDescription:
     'Volta cartucho, fonte, fundo e efeitos ao padrão. Datas e personas não mudam.',

@@ -12,7 +12,7 @@ export function ClearCacheButton() {
   }
 
   return (
-    <Button variant="ghost" size="sm" onClick={handleClearCache}>
+    <Button variant="outline" size="sm" onClick={handleClearCache}>
       {SETTINGS_TEXTS.clearCache}
     </Button>
   )

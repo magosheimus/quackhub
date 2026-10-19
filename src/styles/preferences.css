@@ -103,8 +103,9 @@
 }
 
 /* Tamanho do texto: font-size-adjust aumenta só as letras, sem mexer nas
-   caixas (rem). --font-body-aspect é a altura do x de cada fonte; a Pixelify
-   usa 0,55 em vez dos 0,45 dela, porque as minúsculas são baixas */
+   caixas (rem). --font-body-aspect é a altura do x de cada fonte, então cada
+   uma mantém o próprio tamanho; só a Pixelify, de minúsculas baixas demais
+   (0,45), é tratada como 0,55 */
 :root {
   --font-body-aspect: 0.55;
   --text-scale: 1;

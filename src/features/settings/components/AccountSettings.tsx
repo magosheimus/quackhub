@@ -54,12 +54,6 @@ export function AccountSettings() {
               {isSigningOut ? AUTH_TEXTS.signingOut : AUTH_TEXTS.signOut}
             </Button>
           </SettingsAction>
-          <SettingsAction
-            title={AUTH_TEXTS.deleteAccount}
-            description={AUTH_TEXTS.deleteAccountDescription}
-          >
-            <DeleteAccountDialog accountEmail={accountEmail} />
-          </SettingsAction>
         </div>
         <Link
           to={PRIVACY_PATH}
@@ -67,6 +61,18 @@ export function AccountSettings() {
         >
           {PRIVACY_TEXTS.linkLabel}
         </Link>
+      </SettingsGroup>
+
+      <SettingsGroup title={SETTINGS_TEXTS.dangerZone}>
+        <div className="rounded-md border border-danger surface-danger p-4">
+          <SettingsAction
+            title={AUTH_TEXTS.deleteAccount}
+            description={AUTH_TEXTS.deleteAccountDescription}
+            tone="danger"
+          >
+            <DeleteAccountDialog accountEmail={accountEmail} />
+          </SettingsAction>
+        </div>
       </SettingsGroup>
     </SettingsSection>
   )

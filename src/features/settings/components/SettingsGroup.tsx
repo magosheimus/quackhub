@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { cn } from '@/shared/lib/utils'
 import { MenuCursor } from '@/components/brand/menu-cursor'
 import { SectionTitle } from '@/components/layout/section-title'
 
@@ -24,7 +25,7 @@ export function SettingsGroup({ title, children }: SettingsGroupProps) {
 // Linhas "nome  ‹ valor ›" alinhadas em duas colunas
 export function SettingsOptionList({ children }: { children: ReactNode }) {
   return (
-    <div className="grid w-fit grid-cols-[auto_auto] items-center gap-x-6 gap-y-1">
+    <div className="grid w-fit grid-cols-[11rem_auto] items-center gap-x-6 gap-y-1">
       {children}
     </div>
   )
@@ -48,20 +49,30 @@ export function SettingsOption({
 type SettingsActionProps = {
   title: string
   description?: string
+  tone?: 'default' | 'danger'
   children: ReactNode
 }
 
 // Linha de ação: título e descrição à esquerda, controle à direita
+const ACTION_TEXT_CLASS = {
+  default: { title: 'text-fg', description: 'text-caption' },
+  danger: { title: 'text-on-accent', description: 'text-xs text-on-accent/85' },
+}
+
 export function SettingsAction({
   title,
   description,
+  tone = 'default',
   children,
 }: SettingsActionProps) {
+  const textClass = ACTION_TEXT_CLASS[tone]
   return (
     <div className="flex items-center justify-between gap-4 not-first:border-t not-first:border-border not-first:pt-3">
       <div className="flex min-w-0 flex-col">
-        <span className="text-sm text-fg">{title}</span>
-        {description && <span className="text-caption">{description}</span>}
+        <span className={cn('text-sm', textClass.title)}>{title}</span>
+        {description && (
+          <span className={textClass.description}>{description}</span>
+        )}
       </div>
       {children}
     </div>

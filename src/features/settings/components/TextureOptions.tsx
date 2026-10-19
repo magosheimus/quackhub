@@ -38,7 +38,7 @@ export function TextureOptions({
             type="button"
             aria-pressed={isActive}
             onClick={() => onSelect(texture)}
-            className="flex flex-col items-center gap-1"
+            className="flex flex-col items-center gap-2"
           >
             <span
               style={swatchStyle(texture, opacity)}
