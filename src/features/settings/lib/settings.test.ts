@@ -8,7 +8,6 @@ import {
   getTextureOpacity,
   isDateFormat,
   isFontBody,
-  parseWeekStart,
   textureOpacityUpdate,
   normalizeSettings,
 } from './settings'
@@ -48,18 +47,12 @@ describe('settings', () => {
   })
 })
 
-describe('valores de Select', () => {
+describe('guards das preferências', () => {
   it('valida fonte e formato de data', () => {
     expect(isFontBody('ibm-plex')).toBe(true)
     expect(isFontBody('comic-sans')).toBe(false)
     expect(isDateFormat('MM/dd/yyyy')).toBe(true)
     expect(isDateFormat('yyyy-MM-dd')).toBe(false)
-  })
-
-  it('converte o primeiro dia da semana', () => {
-    expect(parseWeekStart('0')).toBe(0)
-    expect(parseWeekStart('1')).toBe(1)
-    expect(parseWeekStart('2')).toBeNull()
   })
 })
 

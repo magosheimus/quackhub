@@ -5,6 +5,7 @@ import { PersonaManager } from '@/features/personas/components/PersonaManager'
 import { AccountSettings } from '@/features/settings/components/AccountSettings'
 import { AppearanceSettings } from '@/features/settings/components/AppearanceSettings'
 import { PreferenceSettings } from '@/features/settings/components/PreferenceSettings'
+import { SettingsGroup } from '@/features/settings/components/SettingsGroup'
 import { SettingsSection } from '@/features/settings/components/SettingsSection'
 import {
   SETTINGS_TAB_LABELS,
@@ -39,7 +40,9 @@ export function SettingsPage() {
 
       <TabsPanel value="personas">
         <SettingsSection>
-          <PersonaManager />
+          <SettingsGroup title={SETTINGS_TAB_LABELS.personas}>
+            <PersonaManager />
+          </SettingsGroup>
         </SettingsSection>
       </TabsPanel>
 

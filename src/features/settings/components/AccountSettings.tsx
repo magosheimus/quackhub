@@ -7,6 +7,7 @@ import { PRIVACY_TEXTS } from '@/features/privacy/constants/texts'
 import { SETTINGS_TEXTS } from '@/features/settings/constants/texts'
 import { useAccountSettings } from '@/features/settings/hooks/useAccountSettings'
 import { ClearCacheButton } from './ClearCacheButton'
+import { SettingsAction, SettingsGroup } from './SettingsGroup'
 import { SettingsSection } from './SettingsSection'
 
 export function AccountSettings() {
@@ -14,57 +15,51 @@ export function AccountSettings() {
     useAccountSettings()
 
   return (
-    <>
-      <SettingsSection title={SETTINGS_TEXTS.data}>
-        <div className="flex items-center justify-between gap-4">
-          <div className="flex flex-col">
-            <span className="text-sm text-fg">{SETTINGS_TEXTS.exportData}</span>
-            <span className="text-caption">
-              {SETTINGS_TEXTS.exportDescription}
-            </span>
-          </div>
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={exportData}
-            disabled={isExporting}
+    <SettingsSection>
+      <SettingsGroup title={SETTINGS_TEXTS.data}>
+        <div className="flex flex-col gap-3">
+          <SettingsAction
+            title={SETTINGS_TEXTS.exportData}
+            description={SETTINGS_TEXTS.exportDescription}
           >
-            {isExporting ? SETTINGS_TEXTS.exporting : SETTINGS_TEXTS.export}
-          </Button>
-        </div>
-
-        <div className="flex items-center justify-between gap-4 border-t border-border pt-4">
-          <div className="flex flex-col">
-            <span className="text-sm text-fg">{SETTINGS_TEXTS.clearCache}</span>
-            <span className="text-caption">
-              {SETTINGS_TEXTS.clearCacheDescription}
-            </span>
-          </div>
-          <ClearCacheButton />
-        </div>
-      </SettingsSection>
-
-      <SettingsSection title={AUTH_TEXTS.account}>
-        <div className="flex items-center justify-between gap-4">
-          <span className="min-w-0 flex-1 text-sm text-fg">
-            {AUTH_TEXTS.signedInAs(accountEmail)}
-          </span>
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={signOut}
-            disabled={isSigningOut}
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={exportData}
+              disabled={isExporting}
+            >
+              {isExporting ? SETTINGS_TEXTS.exporting : SETTINGS_TEXTS.export}
+            </Button>
+          </SettingsAction>
+          <SettingsAction
+            title={SETTINGS_TEXTS.clearCache}
+            description={SETTINGS_TEXTS.clearCacheDescription}
           >
-            {isSigningOut ? AUTH_TEXTS.signingOut : AUTH_TEXTS.signOut}
-          </Button>
+            <ClearCacheButton />
+          </SettingsAction>
         </div>
-        <div className="flex items-center justify-between gap-4">
-          <span className="min-w-0 flex-1 text-subtle">
-            {AUTH_TEXTS.deleteAccountDescription}
-          </span>
-          <DeleteAccountDialog accountEmail={accountEmail} />
+      </SettingsGroup>
+
+      <SettingsGroup title={AUTH_TEXTS.account}>
+        <div className="flex flex-col gap-3">
+          <SettingsAction title={AUTH_TEXTS.signedInAs(accountEmail)}>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={signOut}
+              disabled={isSigningOut}
+            >
+              {isSigningOut ? AUTH_TEXTS.signingOut : AUTH_TEXTS.signOut}
+            </Button>
+          </SettingsAction>
+          <SettingsAction
+            title={AUTH_TEXTS.deleteAccount}
+            description={AUTH_TEXTS.deleteAccountDescription}
+          >
+            <DeleteAccountDialog accountEmail={accountEmail} />
+          </SettingsAction>
         </div>
         <Link
           to={PRIVACY_PATH}
@@ -72,7 +67,7 @@ export function AccountSettings() {
         >
           {PRIVACY_TEXTS.linkLabel}
         </Link>
-      </SettingsSection>
-    </>
+      </SettingsGroup>
+    </SettingsSection>
   )
 }

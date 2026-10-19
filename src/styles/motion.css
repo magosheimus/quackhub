@@ -123,17 +123,3 @@ button:hover > .logo-beacon {
   content: '';
   animation: loading-dots 1.2s steps(1, end) infinite;
 }
-
-@keyframes cartucho-pulse {
-  0%,
-  100% {
-    box-shadow:
-      2px 2px 0 0 var(--lcd-ink),
-      0 0 0 0 transparent;
-  }
-  50% {
-    box-shadow:
-      2px 2px 0 0 var(--lcd-ink),
-      0 0 12px 2px var(--accent);
-  }
-}

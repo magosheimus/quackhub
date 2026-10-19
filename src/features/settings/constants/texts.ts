@@ -22,6 +22,11 @@ export const FONT_LABELS: Record<Settings['fontBody'], string> = {
   'ibm-plex': 'IBM Plex Mono',
 }
 
+export const DATE_FORMAT_LABELS: Record<Settings['dateFormat'], string> = {
+  'dd/MM/yyyy': 'DD/MM/AAAA',
+  'MM/dd/yyyy': 'MM/DD/AAAA',
+}
+
 export const WEEK_START_LABELS: Record<Settings['weekStartsOn'], string> = {
   0: 'Domingo',
   1: 'Segunda',
@@ -44,10 +49,14 @@ export const CARTUCHO_LABELS: Record<Settings['cartucho'], string> = {
 
 export const SETTINGS_TEXTS = {
   title: 'Configurações',
-  intensity: 'Intensidade',
+  intensity: 'Intensidade de fundo',
   scanlines: 'Scanlines',
   glow: 'Glow',
   lcdGhost: 'Efeito LCD',
+  background: 'Fundo',
+  effects: 'Efeitos',
+  typography: 'Tipografia',
+  dates: 'Datas',
   bodyFont: 'Fonte do corpo',
   dateFormat: 'Formato de data',
   weekStart: 'Primeiro dia da semana',

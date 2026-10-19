@@ -4,6 +4,10 @@ import type { PaletteColor } from '@/shared/lib/palette'
 export const COMMON_TEXTS = {
   brand: 'QUACKHUB',
   cancel: 'Cancelar',
+  on: 'Ligado',
+  off: 'Desligado',
+  previousOption: (label: string) => `${label}: opção anterior`,
+  nextOption: (label: string) => `${label}: próxima opção`,
   loadErrorTitle: 'ERRO DE LEITURA',
   loadErrorDescription:
     'Não foi possível carregar os dados. Confira a conexão e tente de novo.',

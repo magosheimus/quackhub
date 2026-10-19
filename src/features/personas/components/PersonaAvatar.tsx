@@ -8,6 +8,7 @@ import { cn } from '@/shared/lib/utils'
 
 const AVATAR_SIZES = {
   sm: { box: 'size-8', icon: 16 },
+  md: { box: 'size-10', icon: 24 },
   lg: { box: 'aspect-square w-1/5 max-w-28', icon: 56 },
 } as const
 

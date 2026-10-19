@@ -38,9 +38,7 @@ export function CartuchoOptions({
           >
             <div
               className={`cartucho-${option.value} ${dimensions} flex flex-col justify-between rounded-sm border-2 border-(--accent) bg-(--lcd-screen) p-1 shadow-[2px_2px_0_0_var(--accent)] motion-safe:transition-transform motion-safe:hover:-translate-y-1 ${
-                isActive
-                  ? 'outline-2 outline-offset-2 outline-fg motion-safe:animate-[cartucho-pulse_2s_ease-in-out_infinite]'
-                  : ''
+                isActive ? 'outline-2 outline-offset-2 outline-fg' : ''
               }`}
             >
               <span className="mx-auto h-1 w-6 rounded-full bg-(--lcd-ink)/30" />

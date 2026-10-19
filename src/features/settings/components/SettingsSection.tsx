@@ -1,20 +1,7 @@
 import type { ReactNode } from 'react'
 import { Panel } from '@/components/layout/panel'
 
-type SettingsSectionProps = {
-  title?: string
-  children: ReactNode
-}
-
-export function SettingsSection({ title, children }: SettingsSectionProps) {
-  return (
-    <Panel className="flex flex-col gap-4 p-5">
-      {title && (
-        <span className="text-xs font-medium uppercase tracking-wide text-fg">
-          {title}
-        </span>
-      )}
-      {children}
-    </Panel>
-  )
+// Painel de uma aba das Configurações; os grupos ficam dentro dele
+export function SettingsSection({ children }: { children: ReactNode }) {
+  return <Panel className="flex flex-col gap-8 p-5">{children}</Panel>
 }

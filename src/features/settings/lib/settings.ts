@@ -52,6 +52,10 @@ export const TEXTURES = [
   ...PATTERN_TEXTURES,
 ] as const satisfies readonly Texture[]
 
+export const WEEK_STARTS = [
+  0, 1,
+] as const satisfies readonly Settings['weekStartsOn'][]
+
 export const LCD_GHOSTS = [
   'off',
   'subtle',
@@ -63,19 +67,6 @@ export const isDateFormat = createEnumGuard(DATE_FORMATS)
 export const isCartucho = createEnumGuard(CARTUCHOS)
 export const isTexture = createEnumGuard(TEXTURES)
 export const isLcdGhost = createEnumGuard(LCD_GHOSTS)
-
-// Valores de Select chegam como texto ('0' | '1')
-export function parseWeekStart(
-  value: unknown,
-): Settings['weekStartsOn'] | null {
-  if (value === '0') {
-    return 0
-  }
-  if (value === '1') {
-    return 1
-  }
-  return null
-}
 
 // O slider de intensidade controla a opacidade da textura ativa
 export function getTextureOpacity(settings: Settings): number {
