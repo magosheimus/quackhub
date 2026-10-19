@@ -12,16 +12,26 @@ import {
 import { useAppearanceSettings } from '@/features/settings/hooks/useAppearanceSettings'
 import { CartuchoOptions } from './CartuchoOptions'
 import {
+  SettingsAction,
   SettingsGroup,
   SettingsOption,
   SettingsOptionList,
 } from './SettingsGroup'
 import { SettingsSection } from './SettingsSection'
 import { TextureOptions } from './TextureOptions'
+import { Button } from '@/components/ui/button'
+import { ConfirmDialog } from '@/components/feedback/confirm-dialog'
 
 export function AppearanceSettings() {
-  const { settings, update, textureOpacity, setTextureOpacity } =
-    useAppearanceSettings()
+  const {
+    settings,
+    update,
+    textureOpacity,
+    setTextureOpacity,
+    restoreDefaults,
+    isConfirmingRestore,
+    setIsConfirmingRestore,
+  } = useAppearanceSettings()
 
   return (
     <SettingsSection>
@@ -95,6 +105,27 @@ export function AppearanceSettings() {
           )}
         </SettingsOptionList>
       </SettingsGroup>
+      <SettingsAction
+        title={SETTINGS_TEXTS.restoreAppearance}
+        description={SETTINGS_TEXTS.restoreAppearanceDescription}
+      >
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={() => setIsConfirmingRestore(true)}
+        >
+          {SETTINGS_TEXTS.restoreAppearance}
+        </Button>
+      </SettingsAction>
+      <ConfirmDialog
+        open={isConfirmingRestore}
+        onOpenChange={setIsConfirmingRestore}
+        title={SETTINGS_TEXTS.restoreAppearanceTitle}
+        description={SETTINGS_TEXTS.restoreAppearanceDescription}
+        confirmLabel={SETTINGS_TEXTS.restoreAppearanceConfirm}
+        onConfirm={restoreDefaults}
+      />
     </SettingsSection>
   )
 }

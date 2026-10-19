@@ -71,4 +71,9 @@ export const SETTINGS_TEXTS = {
     'Remove os dados salvos no navegador e recarrega a página.',
   cartucho: 'Cartucho',
   syncError: 'Não foi possível sincronizar as preferências.',
+  restoreAppearance: 'Restaurar aparência padrão',
+  restoreAppearanceDescription:
+    'Volta cartucho, fonte, fundo e efeitos ao padrão. Datas e personas não mudam.',
+  restoreAppearanceTitle: 'Restaurar aparência?',
+  restoreAppearanceConfirm: 'Restaurar',
 } as const

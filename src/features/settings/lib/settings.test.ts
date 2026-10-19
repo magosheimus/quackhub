@@ -10,6 +10,7 @@ import {
   isFontBody,
   textureOpacityUpdate,
   normalizeSettings,
+  getDefaultAppearance,
 } from './settings'
 
 describe('settings', () => {
@@ -147,5 +148,16 @@ describe('sidebarCollapsed', () => {
     expect(
       normalizeSettings({ sidebarCollapsed: 'sim' }).sidebarCollapsed,
     ).toBe(false)
+  })
+})
+
+describe('getDefaultAppearance', () => {
+  it('volta a aparência ao padrão sem mexer nas preferências', () => {
+    const defaults = getDefaultAppearance()
+    expect(defaults.cartucho).toBe(DEFAULT_SETTINGS.cartucho)
+    expect(defaults.textureOpacity).toEqual(DEFAULT_SETTINGS.textureOpacity)
+    expect(defaults).not.toHaveProperty('dateFormat')
+    expect(defaults).not.toHaveProperty('weekStartsOn')
+    expect(defaults).not.toHaveProperty('sidebarCollapsed')
   })
 })

@@ -101,6 +101,18 @@ export const DEFAULT_SETTINGS: Settings = {
   sidebarCollapsed: false,
 }
 
+export function getDefaultAppearance(): Partial<Settings> {
+  return {
+    cartucho: DEFAULT_SETTINGS.cartucho,
+    fontBody: DEFAULT_SETTINGS.fontBody,
+    texture: DEFAULT_SETTINGS.texture,
+    textureOpacity: DEFAULT_SETTINGS.textureOpacity,
+    scanlines: DEFAULT_SETTINGS.scanlines,
+    glow: DEFAULT_SETTINGS.glow,
+    lcdGhost: DEFAULT_SETTINGS.lcdGhost,
+  }
+}
+
 function isOpacity(value: unknown): value is number {
   return typeof value === 'number' && value >= 0 && value <= 100
 }
