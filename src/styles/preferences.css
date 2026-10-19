@@ -102,24 +102,47 @@
   --glow-color: currentColor;
 }
 
+/* Tamanho do texto: font-size-adjust aumenta só as letras, sem mexer nas
+   caixas (rem). --font-body-aspect é a altura do x de cada fonte; a Pixelify
+   usa 0,55 em vez dos 0,45 dela, porque as minúsculas são baixas */
+:root {
+  --font-body-aspect: 0.55;
+  --text-scale: 1;
+}
+
+.text-size-small {
+  --text-scale: 0.9;
+}
+
+.text-size-large {
+  --text-scale: 1.1;
+}
+
+.text-size-xlarge {
+  --text-scale: 1.2;
+}
+
 .font-ibm-plex {
   --font-body: 'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
+  --font-body-aspect: 0.516;
 }
 
 .font-share-tech {
   --font-body: 'Share Tech Mono', ui-monospace, SFMono-Regular, monospace;
+  --font-body-aspect: 0.5;
 }
 
 .font-space-mono {
   --font-body: 'Space Mono', ui-monospace, SFMono-Regular, monospace;
+  --font-body-aspect: 0.496;
 }
 
 .font-courier-prime {
   --font-body: 'Courier Prime', ui-monospace, SFMono-Regular, monospace;
+  --font-body-aspect: 0.451;
 }
 
-/* Minúsculas baixas: o ajuste iguala a altura do x à das fontes mono */
 .font-pixelify {
   --font-body: 'Pixelify Sans', ui-monospace, SFMono-Regular, monospace;
-  --font-body-adjust: 0.55;
+  --font-body-aspect: 0.55;
 }

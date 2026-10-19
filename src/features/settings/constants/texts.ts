@@ -36,6 +36,13 @@ export const WEEK_START_LABELS: Record<Settings['weekStartsOn'], string> = {
   1: 'Segunda',
 }
 
+export const TEXT_SIZE_LABELS: Record<Settings['textSize'], string> = {
+  small: 'Pequeno',
+  normal: 'Normal',
+  large: 'Grande',
+  xlarge: 'Muito grande',
+}
+
 export const LCD_GHOST_LABELS: Record<Settings['lcdGhost'], string> = {
   off: 'Desligado',
   subtle: 'Sutil',
@@ -62,6 +69,7 @@ export const SETTINGS_TEXTS = {
   typography: 'Tipografia',
   dates: 'Datas',
   bodyFont: 'Fonte do corpo',
+  textSize: 'Tamanho do texto',
   dateFormat: 'Formato de data',
   weekStart: 'Primeiro dia da semana',
   data: 'Dados',

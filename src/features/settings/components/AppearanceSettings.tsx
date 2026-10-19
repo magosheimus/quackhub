@@ -3,11 +3,16 @@ import {
   OnOffStepper,
   OptionStepper,
 } from '@/components/pickers/option-stepper'
-import { FONT_BODIES, LCD_GHOSTS } from '@/features/settings/lib/settings'
+import {
+  FONT_BODIES,
+  LCD_GHOSTS,
+  TEXT_SIZES,
+} from '@/features/settings/lib/settings'
 import {
   FONT_LABELS,
   LCD_GHOST_LABELS,
   SETTINGS_TEXTS,
+  TEXT_SIZE_LABELS,
 } from '@/features/settings/constants/texts'
 import { useAppearanceSettings } from '@/features/settings/hooks/useAppearanceSettings'
 import { CartuchoOptions } from './CartuchoOptions'
@@ -52,6 +57,15 @@ export function AppearanceSettings() {
               value={settings.fontBody}
               labels={FONT_LABELS}
               onChange={(fontBody) => update({ fontBody })}
+            />
+          </SettingsOption>
+          <SettingsOption label={SETTINGS_TEXTS.textSize}>
+            <OptionStepper
+              label={SETTINGS_TEXTS.textSize}
+              options={TEXT_SIZES}
+              value={settings.textSize}
+              labels={TEXT_SIZE_LABELS}
+              onChange={(textSize) => update({ textSize })}
             />
           </SettingsOption>
         </SettingsOptionList>

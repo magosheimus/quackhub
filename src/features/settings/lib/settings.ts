@@ -13,6 +13,7 @@ export type Settings = {
   scanlines: boolean
   glow: boolean
   lcdGhost: 'off' | 'subtle' | 'glitch'
+  textSize: 'small' | 'normal' | 'large' | 'xlarge'
   fontBody:
     | 'jetbrains'
     | 'ibm-plex'
@@ -76,7 +77,15 @@ export const isFontBody = createEnumGuard(FONT_BODIES)
 export const isDateFormat = createEnumGuard(DATE_FORMATS)
 export const isCartucho = createEnumGuard(CARTUCHOS)
 export const isTexture = createEnumGuard(TEXTURES)
+export const TEXT_SIZES = [
+  'small',
+  'normal',
+  'large',
+  'xlarge',
+] as const satisfies readonly Settings['textSize'][]
+
 export const isLcdGhost = createEnumGuard(LCD_GHOSTS)
+export const isTextSize = createEnumGuard(TEXT_SIZES)
 
 // O slider de intensidade controla a opacidade da textura ativa
 export function getTextureOpacity(settings: Settings): number {
@@ -104,6 +113,7 @@ export const DEFAULT_SETTINGS: Settings = {
   scanlines: false,
   glow: false,
   lcdGhost: 'subtle',
+  textSize: 'normal',
   fontBody: 'jetbrains',
   dateFormat: 'dd/MM/yyyy',
   weekStartsOn: 0,
@@ -120,6 +130,7 @@ export function getDefaultAppearance(): Partial<Settings> {
     scanlines: DEFAULT_SETTINGS.scanlines,
     glow: DEFAULT_SETTINGS.glow,
     lcdGhost: DEFAULT_SETTINGS.lcdGhost,
+    textSize: DEFAULT_SETTINGS.textSize,
   }
 }
 
@@ -177,6 +188,9 @@ export function normalizeSettings(raw: unknown): Settings {
     }),
     scanlines: pickBoolean(source.scanlines, DEFAULT_SETTINGS.scanlines),
     glow: pickBoolean(source.glow, DEFAULT_SETTINGS.glow),
+    textSize: isTextSize(source.textSize)
+      ? source.textSize
+      : DEFAULT_SETTINGS.textSize,
     lcdGhost: isLcdGhost(source.lcdGhost)
       ? source.lcdGhost
       : DEFAULT_SETTINGS.lcdGhost,
@@ -247,6 +261,13 @@ const LCD_GHOST_CLASS: Record<Settings['lcdGhost'], string> = {
   glitch: 'lcd-glitch',
 }
 
+const TEXT_SIZE_CLASS: Record<Settings['textSize'], string> = {
+  small: 'text-size-small',
+  normal: '',
+  large: 'text-size-large',
+  xlarge: 'text-size-xlarge',
+}
+
 const FONT_CLASS: Record<Settings['fontBody'], string> = {
   jetbrains: '',
   'ibm-plex': 'font-ibm-plex',
@@ -261,6 +282,7 @@ export function applySettings(s: Settings): void {
     CARTUCHO_CLASS[s.cartucho],
     TEXTURE_CLASS[s.texture],
     FONT_CLASS[s.fontBody],
+    TEXT_SIZE_CLASS[s.textSize],
     s.scanlines ? 'scanlines-on' : '',
     s.glow ? 'glow-on' : '',
     s.glow ? LCD_GHOST_CLASS[s.lcdGhost] : '',

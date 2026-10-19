@@ -129,6 +129,11 @@ describe('normalizeSettings', () => {
     expect(result.lcdGhost).toBe(DEFAULT_SETTINGS.lcdGhost)
   })
 
+  it('tamanho do texto desconhecido volta ao normal', () => {
+    expect(normalizeSettings({ textSize: 'large' }).textSize).toBe('large')
+    expect(normalizeSettings({ textSize: 'gigante' }).textSize).toBe('normal')
+  })
+
   it('aproveita a intensidade salva no formato antigo', () => {
     const result = normalizeSettings({ gridOpacity: 20, dotsOpacity: 90 })
     expect(result.textureOpacity.grid).toBe(20)
