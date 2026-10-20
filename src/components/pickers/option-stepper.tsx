@@ -30,7 +30,10 @@ export function OptionStepper<T extends string | number>({
       >
         <IconChevronLeft size={16} aria-hidden="true" />
       </Button>
-      <span aria-live="polite" className="w-36 text-center text-sm text-fg">
+      <span
+        aria-live="polite"
+        className="w-36 text-center text-body-sm text-fg"
+      >
         {labels[value]}
       </span>
       <Button

@@ -8,7 +8,7 @@ type SectionLabelProps = {
 }
 
 const SECTION_LABEL_CLASS =
-  'flex items-center gap-1.5 text-sm font-medium text-fg'
+  'flex items-center gap-2 font-heading text-heading-3 text-fg text-shadow-none!'
 
 export function SectionLabel({
   icon: Icon,

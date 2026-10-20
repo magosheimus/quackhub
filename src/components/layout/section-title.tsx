@@ -18,7 +18,7 @@ export function SectionTitle({
     <div className="flex items-end justify-between gap-4 border-b border-border pb-2">
       <h2
         className={cn(
-          'flex items-center gap-2 font-heading text-xl uppercase text-fg',
+          'flex items-center gap-2 font-heading text-heading-2 text-fg',
           className,
         )}
       >
