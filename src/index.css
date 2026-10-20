@@ -135,6 +135,22 @@
   letter-spacing: 0.05em;
 }
 
+/* Cursor de menu de jogo antes do texto da opção escolhida (o VercelSolid do
+   pixelarticons girado, como o MenuCursor). Desenhado em CSS para valer em
+   qualquer botão selecionado sem mexer no conteúdo; brilha com o glow ligado */
+@utility selected-cursor {
+  &::before {
+    content: '';
+    flex-shrink: 0;
+    width: 0.75em;
+    height: 0.75em;
+    background-color: currentColor;
+    mask: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"%3E%3Cpath transform="rotate%2890 12 12%29" d="M13 5h2v3h2v3h2v3h2v3h2v3H1v-3h2v-3h2v-3h2V8h2V5h2V3h2v2Z"/%3E%3C/svg%3E')
+      center / contain no-repeat;
+    filter: var(--glow-filter, none);
+  }
+}
+
 @utility surface-danger {
   @apply bg-danger text-on-accent;
 }
