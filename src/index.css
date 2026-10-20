@@ -135,10 +135,6 @@
   letter-spacing: 0.05em;
 }
 
-@utility text-subtle {
-  @apply text-sm text-fg-muted;
-}
-
 @utility surface-danger {
   @apply bg-danger text-on-accent;
 }

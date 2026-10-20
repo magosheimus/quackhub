@@ -133,7 +133,7 @@ export function DraftsList() {
                       ref={drag.innerRef}
                       {...drag.draggableProps}
                       {...drag.dragHandleProps}
-                      className="flex items-center gap-3 text-base hover:bg-card-hover"
+                      className="flex items-center gap-3 text-body hover:bg-card-hover"
                     >
                       <Checkbox
                         checked={false}

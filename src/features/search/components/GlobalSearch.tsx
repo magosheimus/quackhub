@@ -100,7 +100,7 @@ export function GlobalSearch() {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="flex w-full items-center justify-between rounded-md border border-border px-2 py-1.5 text-left text-subtle"
+        className="flex w-full items-center justify-between rounded-md border border-border px-2 py-1.5 text-left text-body text-fg-muted"
       >
         {SEARCH_TEXTS.trigger}
         <span className="text-xs">{SEARCH_TEXTS.shortcut}</span>

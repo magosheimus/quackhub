@@ -15,12 +15,16 @@ export function SprintPlanningHeader({ sprint }: SprintPlanningHeaderProps) {
   return (
     <Panel className="flex flex-wrap items-center justify-between gap-4">
       <div className="flex flex-col gap-1">
-        <span className="font-heading text-2xl text-fg">{sprint.name}</span>
+        <span className="font-heading text-heading-3 text-fg">
+          {sprint.name}
+        </span>
         <span className="text-caption">
           {formatDayMonth(sprint.start_date)} -{' '}
           {formatDayMonth(sprint.end_date)}
         </span>
-        {sprint.goal && <span className="text-subtle">{sprint.goal}</span>}
+        {sprint.goal && (
+          <span className="text-body text-fg-muted">{sprint.goal}</span>
+        )}
       </div>
       <Button
         size="sm"

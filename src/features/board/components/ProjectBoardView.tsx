@@ -53,7 +53,9 @@ export function ProjectBoardView({
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <span className="font-heading text-3xl text-fg">{project.name}</span>
+        <span className="font-heading text-heading-1 text-fg">
+          {project.name}
+        </span>
         <span className="text-caption">
           {activeSprintName
             ? BOARD_TEXTS.activeSprint(activeSprintName)

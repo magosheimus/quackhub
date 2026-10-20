@@ -50,7 +50,7 @@ export function WeeklyStats({
           <span className="font-heading text-display text-fg">
             {overallRate}%
           </span>
-          <span className="text-subtle">
+          <span className="text-body text-fg-muted">
             {DAILY_TRACKER_TEXTS.overallRate(isSprint)}
           </span>
         </div>

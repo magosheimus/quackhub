@@ -30,17 +30,17 @@ export function SprintHeader({ activeSprint, tasks }: SprintHeaderProps) {
     return (
       <Panel className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div className="flex flex-col gap-1">
-          <span className="flex flex-wrap items-baseline gap-x-2 font-heading text-2xl text-fg">
+          <span className="flex flex-wrap items-baseline gap-x-2 font-heading text-heading-3 text-fg">
             {activeSprint.name}
             {(activeSprint.start_date || activeSprint.end_date) && (
-              <span className="font-body text-base">
+              <span className="font-body text-body-strong">
                 ({formatFullDate(activeSprint.start_date)} →{' '}
                 {formatFullDate(activeSprint.end_date)})
               </span>
             )}
           </span>
           {activeSprint.goal && (
-            <span className="text-subtle">{activeSprint.goal}</span>
+            <span className="text-body text-fg-muted">{activeSprint.goal}</span>
           )}
         </div>
         <div className="flex flex-col gap-1 md:items-center">
