@@ -16,6 +16,11 @@ export const ANALYTICS_TEXTS = {
   noCards: '— nenhum card nesta sprint —',
   doneByProject: 'Cards concluídos por projeto',
   cardsByStatus: 'Cards por status',
+  burnup: 'Andamento da sprint',
+  burnupDone: 'Concluídos',
+  burnupIdeal: 'Ritmo ideal',
+  burnupHint:
+    'A linha tracejada é o ritmo para concluir todos os cards até o fim da sprint. Acima dela, adiantada; abaixo, atrasada.',
   doneByPersona: 'Cards concluídos por persona',
   completionBySprint: 'Taxa de conclusão por sprint',
   habitsAndMood: 'Hábitos e humor',

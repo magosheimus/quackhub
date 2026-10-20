@@ -314,3 +314,26 @@ export async function getReviewsByEpic(
 
   return Array.from(counts.values()).sort((a, b) => b.count - a.count)
 }
+
+export type DoneEvent = {
+  taskId: string
+  doneAt: string
+}
+
+// Movimentações para Finalizado dos cards informados (base do burnup)
+export async function getDoneEvents(taskIds: string[]): Promise<DoneEvent[]> {
+  if (taskIds.length === 0) {
+    return []
+  }
+  const { data, error } = await supabase
+    .from('task_activity_log')
+    .select('task_id, created_at')
+    .eq('event_type', 'status_change')
+    .eq('new_value', 'done')
+    .in('task_id', taskIds)
+  if (error)
+    throw new Error(`Falha ao buscar conclusões da sprint: ${error.message}`)
+  return data
+    .filter((row) => row.created_at !== null)
+    .map((row) => ({ taskId: row.task_id, doneAt: row.created_at ?? '' }))
+}
