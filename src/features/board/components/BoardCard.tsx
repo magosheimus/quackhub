@@ -47,6 +47,7 @@ type BoardCardBodyProps = {
   showStatus?: boolean
   tag?: string
   colorScope?: ColorScope
+  aside?: ReactNode
 }
 
 function BoardCardBody({
@@ -58,6 +59,7 @@ function BoardCardBody({
   showStatus = false,
   tag,
   colorScope = 'project',
+  aside,
 }: BoardCardBodyProps) {
   const priority = PRIORITY_CONFIG[task.priority]
   const PriorityIcon = priority.icon
@@ -113,9 +115,10 @@ function BoardCardBody({
         )}
       </div>
 
-      {showAssignee && (
-        <div className="shrink-0 self-start">
-          <AssigneeBadge assigneeId={task.assigneeId} />
+      {(showAssignee || aside) && (
+        <div className="flex shrink-0 flex-col items-center gap-1 self-start">
+          {showAssignee && <AssigneeBadge assigneeId={task.assigneeId} />}
+          {aside}
         </div>
       )}
     </>
@@ -157,7 +160,7 @@ function MoveMenu<T extends string>({
             variant="ghost"
             size="icon-sm"
             aria-label={BOARD_TEXTS.moveCard(taskTitle)}
-            className="ml-auto hidden shrink-0 self-start pointer-coarse:inline-flex"
+            className="hidden pointer-coarse:inline-flex"
           />
         }
       >
@@ -211,14 +214,17 @@ export function BoardCard<T extends string = BoardColumnKey>({
             tag={tag}
             colorScope={colorScope}
             showEpic={showEpic}
+            aside={
+              moveOptions &&
+              onMove && (
+                <MoveMenu
+                  taskTitle={task.title}
+                  options={moveOptions}
+                  onMove={onMove}
+                />
+              )
+            }
           />
-          {moveOptions && onMove && (
-            <MoveMenu
-              taskTitle={task.title}
-              options={moveOptions}
-              onMove={onMove}
-            />
-          )}
         </div>
       )}
     </Draggable>
