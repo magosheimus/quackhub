@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import type { MouseEvent, ReactNode } from 'react'
 import { NavLink } from 'react-router-dom'
 import type { IconComponent } from '@/shared/lib/icons'
 import {
@@ -18,6 +18,7 @@ type NavItemProps = {
   hint?: string
   hintSide?: 'right' | 'bottom'
   isCompact?: boolean
+  onClick?: (event: MouseEvent<HTMLAnchorElement>) => void
 }
 
 export function NavItem({
@@ -29,11 +30,13 @@ export function NavItem({
   hint,
   hintSide = 'right',
   isCompact = false,
+  onClick,
 }: NavItemProps) {
   const link = (
     <NavLink
       to={to}
       end={end}
+      onClick={onClick}
       aria-label={isCompact ? label : undefined}
       className={(state) =>
         cn(navLinkClass(state), isCompact && 'justify-center px-0')
