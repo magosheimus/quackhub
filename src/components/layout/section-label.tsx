@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 import type { IconComponent } from '@/shared/lib/icons'
 
 type SectionLabelProps = {
-  icon: IconComponent
+  icon?: IconComponent
   children: ReactNode
   htmlFor?: string
 }
@@ -17,7 +17,7 @@ export function SectionLabel({
 }: SectionLabelProps) {
   const content = (
     <>
-      <Icon size={16} aria-hidden="true" className="shrink-0" />
+      {Icon && <Icon size={16} aria-hidden="true" className="shrink-0" />}
       {children}
     </>
   )

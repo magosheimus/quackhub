@@ -22,6 +22,8 @@ export function AnalyticsPage() {
     hasNoActiveSprint,
     projectCompletion,
     statusCounts,
+    personaCompletion,
+    showStudy,
     completionRateOverTime,
     totalReviews,
     accuracyPercent,
@@ -62,15 +64,18 @@ export function AnalyticsPage() {
           <GeneralSection
             isAll={isAllScope}
             projects={projectCompletion}
+            personas={personaCompletion}
             statusCounts={statusCounts}
             completionRateOverTime={completionRateOverTime}
           />
-          <StudySection
-            totalReviews={totalReviews}
-            accuracyPercent={accuracyPercent}
-            accuracyChartData={accuracyChartData}
-            epicData={reviewsByEpic}
-          />
+          {showStudy && (
+            <StudySection
+              totalReviews={totalReviews}
+              accuracyPercent={accuracyPercent}
+              accuracyChartData={accuracyChartData}
+              epicData={reviewsByEpic}
+            />
+          )}
           <HabitsSection
             isAll={isAllScope}
             summary={habitSummary}

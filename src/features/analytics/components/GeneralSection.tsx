@@ -7,12 +7,19 @@ import {
   CartesianGrid,
 } from 'recharts'
 import { ChartCard } from './ChartCard'
-import { SectionTitle } from '@/components/layout/section-title'
-import { SegmentedProgress } from '@/components/brand/segmented-progress'
+import { SectionLabel } from '@/components/layout/section-label'
 import { ColorDot } from '@/components/pickers/color-dot'
-import type { ProjectCompletionItem } from '@/features/analytics/hooks/useAnalyticsPage'
+import type {
+  PersonaCompletionItem,
+  ProjectCompletionItem,
+  StatusCountItem,
+} from '@/features/analytics/hooks/useAnalyticsPage'
+import { StatusStrip } from './StatusStrip'
+import { CompletionRow } from './CompletionRow'
+import { PersonaIcon } from '@/features/personas/components/PersonaIcon'
+import { PERSONAS_TEXTS } from '@/features/personas/constants/texts'
+import { cn } from '@/shared/lib/utils'
 import type { CompletionRateOverTimeItem } from '@/features/analytics/api/analytics'
-import { COMMON_TEXTS } from '@/shared/constants/texts'
 import { SPRINTS_TEXTS } from '@/features/sprints/constants/texts'
 import { ANALYTICS_TEXTS } from '@/features/analytics/constants/texts'
 import { EmptyMessage } from '@/components/feedback/empty-message'
@@ -20,67 +27,76 @@ import { EmptyMessage } from '@/components/feedback/empty-message'
 type GeneralSectionProps = {
   isAll: boolean
   projects: ProjectCompletionItem[]
-  statusCounts: { name: string; count: number }[]
+  personas: PersonaCompletionItem[]
+  statusCounts: StatusCountItem[]
   completionRateOverTime: CompletionRateOverTimeItem[]
 }
 
 export function GeneralSection({
   isAll,
   projects,
+  personas,
   statusCounts,
   completionRateOverTime,
 }: GeneralSectionProps) {
   return (
     <section className="flex flex-col gap-4">
-      <SectionTitle>{ANALYTICS_TEXTS.general}</SectionTitle>
-
-      <ChartCard title={ANALYTICS_TEXTS.doneByProject}>
-        {projects.length > 0 ? (
-          <div className="flex flex-col gap-4">
-            {projects.map((project) => (
-              <div
-                key={project.projectName}
-                className="flex flex-col gap-1.5 sm:flex-row sm:items-center sm:gap-4"
-              >
-                <span className="flex min-w-0 items-center gap-2 text-sm text-fg sm:w-48 sm:shrink-0">
-                  <ColorDot color={project.color} />
-                  <span className="truncate">{project.projectName}</span>
-                </span>
-                <div className="flex items-center gap-3">
-                  <SegmentedProgress
-                    value={project.percent}
-                    color={project.color}
-                    label={COMMON_TEXTS.progressOf(project.projectName)}
-                  />
-                  <span className="text-caption">
-                    {project.completed} de {project.total}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <EmptyMessage>{ANALYTICS_TEXTS.noCards}</EmptyMessage>
-        )}
-      </ChartCard>
-
       {!isAll && (
-        <ChartCard title={ANALYTICS_TEXTS.cardsByStatus}>
-          <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-            {statusCounts.map((status) => (
-              <div
-                key={status.name}
-                className="flex flex-col gap-1 rounded-md border border-border bg-page p-4"
-              >
-                <span className="font-heading text-3xl text-fg">
-                  {status.count}
-                </span>
-                <span className="text-caption">{status.name}</span>
-              </div>
-            ))}
-          </div>
-        </ChartCard>
+        <div className="flex flex-col gap-4">
+          <SectionLabel>{ANALYTICS_TEXTS.cardsByStatus}</SectionLabel>
+          <StatusStrip items={statusCounts} />
+        </div>
       )}
+
+      <div className={cn('grid gap-4', !isAll && 'lg:grid-cols-2')}>
+        <ChartCard title={ANALYTICS_TEXTS.doneByProject}>
+          {projects.length > 0 ? (
+            <div className="flex flex-col gap-4">
+              {projects.map((project) => (
+                <CompletionRow
+                  key={project.projectName}
+                  marker={<ColorDot color={project.color} />}
+                  name={project.projectName}
+                  percent={project.percent}
+                  completed={project.completed}
+                  total={project.total}
+                  color={project.color}
+                />
+              ))}
+            </div>
+          ) : (
+            <EmptyMessage>{ANALYTICS_TEXTS.noCards}</EmptyMessage>
+          )}
+        </ChartCard>
+
+        {!isAll && (
+          <ChartCard title={ANALYTICS_TEXTS.doneByPersona}>
+            {personas.length > 0 ? (
+              <div className="flex flex-col gap-4">
+                {personas.map((item) => (
+                  <CompletionRow
+                    key={item.key}
+                    marker={
+                      item.persona ? (
+                        <PersonaIcon
+                          icon={item.persona.icon}
+                          name={item.persona.name}
+                        />
+                      ) : null
+                    }
+                    name={item.persona?.name ?? PERSONAS_TEXTS.noAssignee}
+                    percent={item.percent}
+                    completed={item.completed}
+                    total={item.total}
+                  />
+                ))}
+              </div>
+            ) : (
+              <EmptyMessage>{ANALYTICS_TEXTS.noCards}</EmptyMessage>
+            )}
+          </ChartCard>
+        )}
+      </div>
 
       {isAll && (
         <ChartCard title={ANALYTICS_TEXTS.completionBySprint}>

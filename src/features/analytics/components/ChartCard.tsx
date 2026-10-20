@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { Panel } from '@/components/layout/panel'
+import { SectionLabel } from '@/components/layout/section-label'
 
 export function ChartCard({
   title,
@@ -10,9 +11,7 @@ export function ChartCard({
 }) {
   return (
     <Panel className="flex flex-col gap-4 p-5">
-      <span className="text-xs font-medium uppercase tracking-wide text-fg">
-        {title}
-      </span>
+      <SectionLabel>{title}</SectionLabel>
       {children}
     </Panel>
   )

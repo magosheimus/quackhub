@@ -1,4 +1,6 @@
 import type { Task } from '@/features/tasks/model/task'
+import type { ProjectType } from '@/shared/types/entities'
+import { ALL_COLUMNS, getColumnsForType } from '@/features/board/lib/board'
 
 export function startOfWeek(dateStr: string): string {
   const [year, month, day] = dateStr.split('-').map(Number)
@@ -87,4 +89,86 @@ export function countTasksByStatus(
     status,
     count: tasks.filter((task) => task.status === status).length,
   }))
+}
+
+// Só os status que fazem sentido para os tipos de projeto presentes (sem projeto
+// de estudo, A ESTUDAR/ESTUDANDO/A REVISAR somem); status com card sempre aparece
+export function getRelevantStatuses(
+  tasks: Pick<Task, 'projectId' | 'status'>[],
+  projectTypeById: Map<string, ProjectType>,
+): string[] {
+  const relevant = new Set<string>()
+  for (const task of tasks) {
+    const type = projectTypeById.get(task.projectId)
+    if (type) {
+      getColumnsForType(type).forEach((status) => relevant.add(status))
+    }
+    relevant.add(task.status)
+  }
+  return ALL_COLUMNS.filter((status) => relevant.has(status))
+}
+
+// Seção Estudo só com algo de estudo no escopo: card de projeto de estudo,
+// revisão registrada ou, em "todas as sprints", algum projeto de estudo
+export function hasStudyContent(
+  tasks: Pick<Task, 'projectId'>[],
+  projectTypeById: Map<string, ProjectType>,
+  totalReviews: number,
+  isAllScope: boolean,
+): boolean {
+  if (totalReviews > 0) {
+    return true
+  }
+  if (isAllScope) {
+    return [...projectTypeById.values()].includes('study')
+  }
+  return tasks.some((task) => projectTypeById.get(task.projectId) === 'study')
+}
+
+export type StatusShare = { status: string; count: number; percent: number }
+
+// Fatia de cada status no total, para a barra proporcional
+export function toStatusShares(
+  counts: { status: string; count: number }[],
+): StatusShare[] {
+  const total = counts.reduce((sum, item) => sum + item.count, 0)
+  return counts.map((item) => ({
+    ...item,
+    percent: total > 0 ? (item.count / total) * 100 : 0,
+  }))
+}
+
+export type AssigneeCompletion = {
+  assigneeId: string | null
+  completed: number
+  total: number
+}
+
+// Concluídos e total por responsável; cards sem responsável ficam num grupo
+// próprio, por último. Ordem: quem tem mais cards primeiro
+export function completionByAssignee(
+  tasks: Pick<Task, 'assigneeId' | 'status'>[],
+): AssigneeCompletion[] {
+  const byAssignee = new Map<string | null, AssigneeCompletion>()
+  for (const task of tasks) {
+    const item = byAssignee.get(task.assigneeId) ?? {
+      assigneeId: task.assigneeId,
+      completed: 0,
+      total: 0,
+    }
+    item.total += 1
+    if (task.status === 'done') {
+      item.completed += 1
+    }
+    byAssignee.set(task.assigneeId, item)
+  }
+  return [...byAssignee.values()].sort((a, b) => {
+    if (a.assigneeId === null) {
+      return 1
+    }
+    if (b.assigneeId === null) {
+      return -1
+    }
+    return b.total - a.total
+  })
 }

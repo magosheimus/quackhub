@@ -12,6 +12,11 @@ import {
   CURRENT_SCOPE,
   countTasksByStatus,
   getAccuracyPercent,
+  getRelevantStatuses,
+  hasStudyContent,
+  toStatusShares,
+  completionByAssignee,
+  type StatusShare,
   resolveLiveSprintId,
   sumCounts,
   toAccuracyChartData,
@@ -21,9 +26,12 @@ import type {
   ReviewsByEpicItem,
 } from '@/features/analytics/api/analytics'
 import { getClosedSprintsByRecency } from '@/features/sprints/lib/sprint'
-import { ALL_COLUMNS } from '@/features/board/lib/board'
-import { getStatusLabel } from '@/features/tasks/lib/taskStatus'
-import type { Sprint } from '@/shared/types/entities'
+import {
+  getStatusLabel,
+  STATUS_BADGE_CLASS,
+} from '@/features/tasks/lib/taskStatus'
+import { isTaskStatus } from '@/shared/lib/enums'
+import type { ProjectType, Sprint } from '@/shared/types/entities'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
 import { ANALYTICS_TEXTS } from '@/features/analytics/constants/texts'
 import { useAllHabits } from '@/features/dailyTracker/hooks/useHabits'
@@ -38,6 +46,8 @@ import {
 import { todayLocal } from '@/shared/lib/date'
 import { NEUTRAL_COLOR, resolvePaletteColor } from '@/shared/lib/palette'
 import { useProjects } from '@/features/projects/hooks/useProjects'
+import { usePersonaOptions } from '@/features/personas/hooks/usePersonaOptions'
+import type { Persona } from '@/features/personas/model/persona'
 import { toProjectLabel } from '@/features/projects/lib/project'
 
 export type ProjectCompletionItem = CompletionByProjectItem & {
@@ -69,6 +79,22 @@ function getScopeLabel(
   return selectedSprint?.name ?? ANALYTICS_TEXTS.sprint
 }
 
+export type StatusCountItem = StatusShare & {
+  name: string
+  colorClass: string
+}
+
+const NEUTRAL_STATUS_CLASS = 'bg-fg-muted'
+const NO_ASSIGNEE_KEY = 'none'
+
+export type PersonaCompletionItem = {
+  key: string
+  persona: Persona | null
+  completed: number
+  total: number
+  percent: number
+}
+
 export function useAnalyticsPage() {
   const [searchParams, setSearchParams] = useSearchParams()
   const scope = searchParams.get('sprint') ?? CURRENT_SCOPE
@@ -93,6 +119,10 @@ export function useAnalyticsPage() {
   const accuracy = accuracyOverTime ?? []
 
   const { data: projects } = useProjects()
+  const personas = usePersonaOptions()
+  const projectTypeById = new Map<string, ProjectType>(
+    (projects ?? []).map((project) => [project.id, project.type]),
+  )
   const projectColorByName = new Map(
     (projects ?? []).map((project) => [
       project.name,
@@ -140,11 +170,35 @@ export function useAnalyticsPage() {
       percent:
         item.total > 0 ? Math.round((item.completed / item.total) * 100) : 0,
     })),
-    statusCounts: countTasksByStatus(tasks ?? [], ALL_COLUMNS).map(
-      ({ status, count }) => ({ name: getStatusLabel(status), count }),
+    statusCounts: toStatusShares(
+      countTasksByStatus(
+        tasks ?? [],
+        getRelevantStatuses(tasks ?? [], projectTypeById),
+      ),
+    ).map((share): StatusCountItem => ({
+      ...share,
+      name: getStatusLabel(share.status),
+      colorClass: isTaskStatus(share.status)
+        ? STATUS_BADGE_CLASS[share.status]
+        : NEUTRAL_STATUS_CLASS,
+    })),
+    personaCompletion: completionByAssignee(tasks ?? []).map(
+      (item): PersonaCompletionItem => ({
+        ...item,
+        key: item.assigneeId ?? NO_ASSIGNEE_KEY,
+        persona: personas.find((p) => p.id === item.assigneeId) ?? null,
+        percent:
+          item.total > 0 ? Math.round((item.completed / item.total) * 100) : 0,
+      }),
     ),
     completionRateOverTime: completionRateOverTime ?? [],
     totalReviews: sumCounts(calibration ?? []),
+    showStudy: hasStudyContent(
+      tasks ?? [],
+      projectTypeById,
+      sumCounts(calibration ?? []),
+      isAllScope,
+    ),
     accuracyPercent: getAccuracyPercent(accuracy),
     accuracyChartData: toAccuracyChartData(accuracy),
     reviewsByEpic: (reviewsByEpic ?? []).map((epic): EpicChartItem => ({
