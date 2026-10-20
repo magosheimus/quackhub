@@ -97,3 +97,44 @@ export function formatDateTime(timestamp: string | null): string {
   const minutes = String(date.getMinutes()).padStart(2, '0')
   return `${formatFullDate(toDbDate(date))} · ${hours}:${minutes}`
 }
+
+export type DateFormat = 'dd/MM/yyyy' | 'MM/dd/yyyy'
+
+// Data do banco ('yyyy-MM-dd') no formato escolhido nas Configurações
+export function formatDateAs(date: string, format: DateFormat): string {
+  const [year, month, day] = date.split('-')
+  return format === 'MM/dd/yyyy'
+    ? `${month}/${day}/${year}`
+    : `${day}/${month}/${year}`
+}
+
+const TIME_SLOT_MINUTES = 30
+
+// Horários do dia de 30 em 30 minutos: '00:00', '00:30', ... '23:30'
+export function getTimeSlots(): string[] {
+  const slots: string[] = []
+  for (let minutes = 0; minutes < 24 * 60; minutes += TIME_SLOT_MINUTES) {
+    const hour = String(Math.floor(minutes / 60)).padStart(2, '0')
+    const minute = String(minutes % 60).padStart(2, '0')
+    slots.push(`${hour}:${minute}`)
+  }
+  return slots
+}
+
+// Horário digitado em formatos livres ('9', '14h', '14h30', '1430', '9:5')
+// para 'HH:mm'; null se não for um horário válido
+export function parseTimeInput(text: string): string | null {
+  const match = text
+    .trim()
+    .toLowerCase()
+    .match(/^(\d{1,2})(?:[:h]?(\d{1,2})?)?$/)
+  if (!match) {
+    return null
+  }
+  const hour = Number(match[1])
+  const minute = Number(match[2] ?? 0)
+  if (hour > 23 || minute > 59) {
+    return null
+  }
+  return `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`
+}

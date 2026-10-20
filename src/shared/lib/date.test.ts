@@ -2,6 +2,9 @@ import { describe, it, expect } from 'vitest'
 import {
   daysBetween,
   formatDateTime,
+  formatDateAs,
+  getTimeSlots,
+  parseTimeInput,
   formatDayMonth,
   formatFullDate,
   formatMonthYear,
@@ -111,5 +114,35 @@ describe('formatDateTime', () => {
 describe('formatWeekdayName', () => {
   it('dia da semana por extenso', () => {
     expect(formatWeekdayName(new Date(2026, 9, 20))).toBe('terça-feira')
+  })
+})
+
+describe('formatDateAs', () => {
+  it('respeita o formato escolhido', () => {
+    expect(formatDateAs('2026-10-21', 'dd/MM/yyyy')).toBe('21/10/2026')
+    expect(formatDateAs('2026-10-21', 'MM/dd/yyyy')).toBe('10/21/2026')
+  })
+})
+
+describe('horários', () => {
+  it('lista o dia de 30 em 30 minutos', () => {
+    const slots = getTimeSlots()
+    expect(slots).toHaveLength(48)
+    expect(slots[0]).toBe('00:00')
+    expect(slots[29]).toBe('14:30')
+  })
+
+  it('entende horários digitados em formatos livres', () => {
+    expect(parseTimeInput('9')).toBe('09:00')
+    expect(parseTimeInput('14h')).toBe('14:00')
+    expect(parseTimeInput('14h30')).toBe('14:30')
+    expect(parseTimeInput('14:30')).toBe('14:30')
+    expect(parseTimeInput('1430')).toBe('14:30')
+  })
+
+  it('recusa horário inválido', () => {
+    expect(parseTimeInput('25:00')).toBeNull()
+    expect(parseTimeInput('10:75')).toBeNull()
+    expect(parseTimeInput('abc')).toBeNull()
   })
 })

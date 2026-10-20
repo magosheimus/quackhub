@@ -1,7 +1,7 @@
 import { IconCalendar, IconPlus, IconRefresh } from '@/shared/lib/icons'
 import { useTitleDue } from '@/features/tasks/hooks/useTitleDue'
 import { isDueWithinSprint } from '@/features/sprints/lib/sprint'
-import { formatDueTime, toTaskDue } from '@/features/tasks/lib/due'
+import { toTaskDue } from '@/features/tasks/lib/due'
 import { UrgentToggle } from '@/features/tasks/components/UrgentToggle'
 import { InlineHint } from '@/components/feedback/inline-hint'
 import { useRef, useState, type ReactNode } from 'react'
@@ -54,6 +54,9 @@ import { AssigneeCombobox } from '@/features/personas/components/AssigneeCombobo
 import { PERSONAS_TEXTS } from '@/features/personas/constants/texts'
 import { HintTooltip } from '@/components/feedback/hint-tooltip'
 import { DependencyPicker } from '@/features/tasks/components/DependencyPicker'
+import { DatePicker } from '@/components/pickers/date-picker'
+import { TimePicker } from '@/components/pickers/time-picker'
+import { useDatePreferences } from '@/features/settings/hooks/useDatePreferences'
 
 const NONE_VALUE = '__backlog__'
 
@@ -80,6 +83,7 @@ export function CardCreateModal({
   hideTrigger = false,
   triggerClassName,
 }: CardCreateModalProps = {}) {
+  const datePreferences = useDatePreferences()
   const [internalOpen, setInternalOpen] = useState(false)
   const isControlled = controlledOpen !== undefined
   const open = isControlled ? controlledOpen : internalOpen
@@ -437,31 +441,32 @@ export function CardCreateModal({
               <div className="flex min-w-0 gap-2">
                 <div className="flex min-w-0 flex-1 flex-col gap-1.5">
                   <label htmlFor="card-due-date" className="text-caption">
-                    {TASKS_TEXTS.dueDate}
+                    {TASKS_TEXTS.deadline}
                   </label>
-                  <Input
+                  <DatePicker
                     id="card-due-date"
-                    type="date"
-                    value={effectiveDueDate ?? ''}
-                    onChange={(e) => {
+                    label={TASKS_TEXTS.dueDateLabel}
+                    value={effectiveDueDate}
+                    onChange={(date) => {
                       titleDue.keepInTitle()
                       setDueTime(effectiveDueTime)
-                      setDueDate(e.target.value || null)
+                      setDueDate(date)
                     }}
+                    {...datePreferences}
                   />
                 </div>
                 <div className="flex w-28 shrink-0 flex-col gap-1.5">
                   <label htmlFor="card-due-time" className="text-caption">
                     {TASKS_TEXTS.dueTime}
                   </label>
-                  <Input
+                  <TimePicker
                     id="card-due-time"
-                    type="time"
-                    value={formatDueTime(effectiveDueTime) ?? ''}
-                    onChange={(e) => {
+                    label={TASKS_TEXTS.dueTime}
+                    value={effectiveDueTime}
+                    onChange={(time) => {
                       titleDue.keepInTitle()
                       setDueDate(effectiveDueDate)
-                      setDueTime(e.target.value || null)
+                      setDueTime(time)
                     }}
                     disabled={!effectiveDueDate}
                   />

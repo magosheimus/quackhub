@@ -1,5 +1,6 @@
 import { createEnumGuard } from '@/shared/lib/enums'
 import { STORAGE_KEYS } from '@/shared/constants/storageKeys'
+import type { DateFormat } from '@/shared/lib/date'
 
 const SETTINGS_KEY = STORAGE_KEYS.settings
 
@@ -21,7 +22,7 @@ export type Settings = {
     | 'space-mono'
     | 'courier-prime'
     | 'pixelify'
-  dateFormat: 'dd/MM/yyyy' | 'MM/dd/yyyy'
+  dateFormat: DateFormat
   weekStartsOn: 0 | 1
   hiddenQuickFilters: string[]
   sidebarCollapsed: boolean

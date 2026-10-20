@@ -18,6 +18,8 @@ import {
   EMPTY_RECURRENCE_VALUE,
   type RecurrenceValue,
 } from '@/features/tasks/lib/recurrence'
+import { DatePicker } from '@/components/pickers/date-picker'
+import { useDatePreferences } from '@/features/settings/hooks/useDatePreferences'
 
 type RecurrenceFieldsProps = {
   value: RecurrenceValue
@@ -31,6 +33,7 @@ function toEndOfMonthDate(yearMonth: string): string {
 }
 
 export function RecurrenceFields({ value, onChange }: RecurrenceFieldsProps) {
+  const datePreferences = useDatePreferences()
   if (!value.type) {
     return (
       <button
@@ -112,13 +115,11 @@ export function RecurrenceFields({ value, onChange }: RecurrenceFieldsProps) {
             onChange={(endDate) => onChange({ ...value, endDate })}
           />
         ) : (
-          <Input
-            type="date"
-            aria-label={TASKS_TEXTS.repeatUntil}
-            value={value.endDate ?? ''}
-            onChange={(e) =>
-              onChange({ ...value, endDate: e.target.value || null })
-            }
+          <DatePicker
+            label={TASKS_TEXTS.repeatUntil}
+            value={value.endDate}
+            onChange={(endDate) => onChange({ ...value, endDate })}
+            {...datePreferences}
           />
         )}
       </div>

@@ -21,10 +21,13 @@ import { useProjects } from '@/features/projects/hooks/useProjects'
 import { getInitialStatusForType } from '@/features/tasks/lib/taskStatus'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
 import { SPRINTS_TEXTS } from '@/features/sprints/constants/texts'
+import { DatePicker } from '@/components/pickers/date-picker'
+import { useDatePreferences } from '@/features/settings/hooks/useDatePreferences'
 
 const SPRINT_DURATION_DAYS = 14
 
 export function SprintCreateModal() {
+  const datePreferences = useDatePreferences()
   const [open, setOpen] = useState(false)
   const [name, setName] = useState('')
   const [startDate, setStartDate] = useState(todayLocal())
@@ -115,22 +118,24 @@ export function SprintCreateModal() {
               <label htmlFor="sprint-start" className="text-caption">
                 {SPRINTS_TEXTS.start}
               </label>
-              <Input
+              <DatePicker
                 id="sprint-start"
-                type="date"
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
+                label={SPRINTS_TEXTS.start}
+                value={startDate || null}
+                onChange={(date) => setStartDate(date ?? '')}
+                {...datePreferences}
               />
             </div>
             <div className="flex flex-1 flex-col gap-1.5">
               <label htmlFor="sprint-end" className="text-caption">
                 {SPRINTS_TEXTS.end}
               </label>
-              <Input
+              <DatePicker
                 id="sprint-end"
-                type="date"
-                value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
+                label={SPRINTS_TEXTS.end}
+                value={endDate || null}
+                onChange={(date) => setEndDate(date ?? '')}
+                {...datePreferences}
               />
             </div>
           </div>

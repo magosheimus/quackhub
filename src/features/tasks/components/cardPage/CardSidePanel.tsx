@@ -1,7 +1,11 @@
-import { IconCalendar, IconRefresh, IconUsers } from '@/shared/lib/icons'
+import {
+  IconAlarmClock,
+  IconCalendar,
+  IconRefresh,
+  IconUsers,
+} from '@/shared/lib/icons'
 import { SectionLabel } from '@/components/layout/section-label'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { RecurrenceFields } from '@/features/tasks/components/RecurrenceFields'
 import type { RecurrenceValue } from '@/features/tasks/lib/recurrence'
 import { canRegisterPerformance } from '@/features/srs/lib/review'
@@ -10,9 +14,11 @@ import type { Task, TaskDue, TaskSrs } from '@/features/tasks/model/task'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
 import { TASKS_TEXTS } from '@/features/tasks/constants/texts'
 import { Panel } from '@/components/layout/panel'
-import { formatDueTime } from '@/features/tasks/lib/due'
 import { AssigneeCombobox } from '@/features/personas/components/AssigneeCombobox'
 import { PERSONAS_TEXTS } from '@/features/personas/constants/texts'
+import { DatePicker } from '@/components/pickers/date-picker'
+import { TimePicker } from '@/components/pickers/time-picker'
+import { useDatePreferences } from '@/features/settings/hooks/useDatePreferences'
 
 function formatDate(value: string | null): string {
   if (!value) return '—'
@@ -50,6 +56,7 @@ export function CardSidePanel({
   onRecurrenceChange,
   onRegisterPerformance,
 }: CardSidePanelProps) {
+  const datePreferences = useDatePreferences()
   return (
     <div className="flex flex-col gap-4">
       <Panel className="flex flex-col gap-2 p-3">
@@ -79,27 +86,31 @@ export function CardSidePanel({
 
       {projectType === 'general' && (
         <Panel className="flex flex-col gap-3 p-3">
-          <div className="flex gap-2">
-            <div className="flex min-w-0 flex-1 flex-col gap-1.5">
+          <SectionLabel icon={IconAlarmClock}>
+            {TASKS_TEXTS.deadline}
+          </SectionLabel>
+          <div className="flex flex-col gap-3">
+            <div className="flex min-w-0 flex-col gap-1.5">
               <label htmlFor="card-due-date" className="text-caption">
-                {TASKS_TEXTS.dueDate}
+                {TASKS_TEXTS.dueDay}
               </label>
-              <Input
+              <DatePicker
                 id="card-due-date"
-                type="date"
-                value={due?.date ?? ''}
-                onChange={(e) => onDueDateChange(e.target.value || null)}
+                label={TASKS_TEXTS.dueDateLabel}
+                value={due?.date ?? null}
+                onChange={onDueDateChange}
+                {...datePreferences}
               />
             </div>
-            <div className="flex w-28 shrink-0 flex-col gap-1.5">
+            <div className="flex min-w-0 flex-col gap-1.5">
               <label htmlFor="card-due-time" className="text-caption">
                 {TASKS_TEXTS.dueTime}
               </label>
-              <Input
+              <TimePicker
                 id="card-due-time"
-                type="time"
-                value={formatDueTime(due?.time ?? null) ?? ''}
-                onChange={(e) => onDueTimeChange(e.target.value || null)}
+                label={TASKS_TEXTS.dueTime}
+                value={due?.time ?? null}
+                onChange={onDueTimeChange}
                 disabled={!due}
               />
             </div>
