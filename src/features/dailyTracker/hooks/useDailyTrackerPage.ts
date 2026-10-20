@@ -144,8 +144,11 @@ export function useDailyTrackerPage() {
   const dayWindowNav: DayWindowNav = {
     isWindowed: dayWindow.isWindowed,
     rangeLabel: DAILY_TRACKER_TEXTS.visibleRange(
-      formatDayMonth(visibleDays[0] ?? today),
-      formatDayMonth(visibleDays[visibleDays.length - 1] ?? today),
+      formatDayMonth(visibleDays[0] ?? today, settings.dateFormat),
+      formatDayMonth(
+        visibleDays[visibleDays.length - 1] ?? today,
+        settings.dateFormat,
+      ),
     ),
     canGoBack: dayWindow.canGoBack,
     canGoForward: dayWindow.canGoForward,
@@ -199,7 +202,7 @@ export function useDailyTrackerPage() {
           isEditable: canLogDay(habit, date, today),
           label: DAILY_TRACKER_TEXTS.cellLabel(
             habit.name,
-            formatDayMonth(date),
+            formatDayMonth(date, settings.dateFormat),
             describeCell(habit, value, isScheduled, isBeforeStart),
           ),
         }
@@ -214,7 +217,7 @@ export function useDailyTrackerPage() {
       date,
       level,
       label: DAILY_TRACKER_TEXTS.moodOf(
-        formatDayMonth(date),
+        formatDayMonth(date, settings.dateFormat),
         level ? MOOD_LABELS[level] : DAILY_TRACKER_TEXTS.noMood,
         log?.comment ?? null,
       ),
@@ -269,8 +272,8 @@ export function useDailyTrackerPage() {
     weekdayOrder: getWeekdayOrder(settings.weekStartsOn),
     periodLabel: DAILY_TRACKER_TEXTS.periodLabel(
       period.kind === 'sprint' ? period.name : null,
-      formatDayMonth(period.start),
-      formatDayMonth(period.end),
+      formatDayMonth(period.start, settings.dateFormat),
+      formatDayMonth(period.end, settings.dateFormat),
     ),
     isSprintPeriod: period.kind === 'sprint',
     hasHabits: habits.length > 0,

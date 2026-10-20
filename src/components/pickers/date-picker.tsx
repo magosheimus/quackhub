@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/popover'
 import { IconCalendar } from '@/shared/lib/icons'
 import {
-  formatDateAs,
+  formatFullDate,
   parseDbDate,
   todayLocal,
   toDbDate,
@@ -70,7 +70,7 @@ export function DatePicker({
       >
         <IconCalendar size={16} aria-hidden="true" />
         <span className={cn('truncate', !value && 'text-fg-muted')}>
-          {value ? formatDateAs(value, dateFormat) : placeholder}
+          {value ? formatFullDate(value, dateFormat) : placeholder}
         </span>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-3">

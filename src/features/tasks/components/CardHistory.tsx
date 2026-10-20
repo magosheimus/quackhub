@@ -11,6 +11,7 @@ import { TASKS_TEXTS } from '@/features/tasks/constants/texts'
 import { EmptyMessage } from '@/components/feedback/empty-message'
 import { Panel } from '@/components/layout/panel'
 import { useActivityEntries } from '@/features/tasks/hooks/activityLog/useActivityEntries'
+import { useDatePreferences } from '@/features/settings/hooks/useDatePreferences'
 
 const PAGE_SIZE = 5
 
@@ -21,6 +22,7 @@ type CardHistoryProps = {
 }
 
 export function CardHistory({ taskId }: CardHistoryProps) {
+  const { dateFormat } = useDatePreferences()
   const [tab, setTab] = useState<HistoryTab>('movimentacao')
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE)
   const [draft, setDraft] = useState('')
@@ -117,7 +119,7 @@ export function CardHistory({ taskId }: CardHistoryProps) {
               {visibleLogs.map((log) => (
                 <Panel key={log.id} className="p-2 text-body">
                   <div className="flex flex-wrap items-center gap-2 text-caption">
-                    <span>{formatFullDate(log.session_date)}</span>
+                    <span>{formatFullDate(log.session_date, dateFormat)}</span>
                     <span>·</span>
                     <span>
                       {log.log_type === 'srs'

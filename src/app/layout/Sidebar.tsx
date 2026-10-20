@@ -169,7 +169,7 @@ export function Sidebar({
                                       to={`/board?project=${project.id}`}
                                       aria-label={project.name}
                                       style={{ color }}
-                                      className="flex h-9 items-center justify-center rounded-md border border-border bg-page font-heading text-2xl leading-none text-shadow-none! hover:bg-hover"
+                                      className="chrome-page-tile flex h-9 items-center justify-center rounded-md border border-border bg-page font-heading text-2xl leading-none text-shadow-none! hover:bg-hover"
                                     />
                                   }
                                 >

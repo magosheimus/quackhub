@@ -19,11 +19,7 @@ import { PERSONAS_TEXTS } from '@/features/personas/constants/texts'
 import { DatePicker } from '@/components/pickers/date-picker'
 import { TimePicker } from '@/components/pickers/time-picker'
 import { useDatePreferences } from '@/features/settings/hooks/useDatePreferences'
-
-function formatDate(value: string | null): string {
-  if (!value) return '—'
-  return new Date(value).toLocaleDateString('pt-BR')
-}
+import { formatTimestampDate } from '@/shared/lib/date'
 
 type CardSidePanelProps = {
   projectType?: ProjectType | null
@@ -77,10 +73,14 @@ export function CardSidePanel({
       <Panel className="flex flex-col gap-1.5 p-3">
         <SectionLabel icon={IconCalendar}>{TASKS_TEXTS.dates}</SectionLabel>
         <span className="text-body">
-          {TASKS_TEXTS.createdAt(formatDate(createdAt))}
+          {TASKS_TEXTS.createdAt(
+            formatTimestampDate(createdAt, datePreferences.dateFormat),
+          )}
         </span>
         <span className="text-body">
-          {TASKS_TEXTS.updatedAt(formatDate(updatedAt))}
+          {TASKS_TEXTS.updatedAt(
+            formatTimestampDate(updatedAt, datePreferences.dateFormat),
+          )}
         </span>
       </Panel>
 

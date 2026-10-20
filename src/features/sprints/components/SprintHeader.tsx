@@ -11,6 +11,7 @@ import { COMMON_TEXTS } from '@/shared/constants/texts'
 import { SPRINTS_TEXTS } from '@/features/sprints/constants/texts'
 import { EmptyMessage } from '@/components/feedback/empty-message'
 import { Panel } from '@/components/layout/panel'
+import { useDatePreferences } from '@/features/settings/hooks/useDatePreferences'
 
 type SprintHeaderProps = {
   activeSprint: Sprint | null
@@ -18,6 +19,7 @@ type SprintHeaderProps = {
 }
 
 export function SprintHeader({ activeSprint, tasks }: SprintHeaderProps) {
+  const { dateFormat } = useDatePreferences()
   const { data: sprints } = useSprints()
   const { mutate: startSprint, isPending } = useStartSprint()
   const plannedSprint = sprints?.find((s) => s.status === 'planned')
@@ -34,8 +36,8 @@ export function SprintHeader({ activeSprint, tasks }: SprintHeaderProps) {
             {activeSprint.name}
             {(activeSprint.start_date || activeSprint.end_date) && (
               <span className="font-body text-body-strong">
-                ({formatFullDate(activeSprint.start_date)} →{' '}
-                {formatFullDate(activeSprint.end_date)})
+                ({formatFullDate(activeSprint.start_date, dateFormat)} →{' '}
+                {formatFullDate(activeSprint.end_date, dateFormat)})
               </span>
             )}
           </span>

@@ -10,6 +10,7 @@ import type { Sprint } from '@/shared/types/entities'
 import { SPRINTS_TEXTS } from '@/features/sprints/constants/texts'
 import { formatFullDate } from '@/shared/lib/date'
 import { Panel } from '@/components/layout/panel'
+import { useDatePreferences } from '@/features/settings/hooks/useDatePreferences'
 
 type ProjectCompletion = {
   project_id: string
@@ -24,6 +25,7 @@ type SprintSummaryProps = {
 }
 
 export function SprintSummary({ sprint }: SprintSummaryProps) {
+  const { dateFormat } = useDatePreferences()
   const completionByProject =
     (sprint.completion_by_project as ProjectCompletion[] | null) ?? []
 
@@ -40,8 +42,8 @@ export function SprintSummary({ sprint }: SprintSummaryProps) {
         </span>
         {(sprint.start_date || sprint.end_date) && (
           <div className="text-body text-fg-muted">
-            {formatFullDate(sprint.start_date)} →{' '}
-            {formatFullDate(sprint.end_date)}
+            {formatFullDate(sprint.start_date, dateFormat)} →{' '}
+            {formatFullDate(sprint.end_date, dateFormat)}
           </div>
         )}
         {sprint.goal && <div className="mt-2 text-body">{sprint.goal}</div>}

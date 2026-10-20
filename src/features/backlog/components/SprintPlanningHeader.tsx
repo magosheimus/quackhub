@@ -4,12 +4,14 @@ import { formatDayMonth } from '@/shared/lib/date'
 import type { Sprint } from '@/shared/types/entities'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
 import { Panel } from '@/components/layout/panel'
+import { useDatePreferences } from '@/features/settings/hooks/useDatePreferences'
 
 type SprintPlanningHeaderProps = {
   sprint: Sprint
 }
 
 export function SprintPlanningHeader({ sprint }: SprintPlanningHeaderProps) {
+  const { dateFormat } = useDatePreferences()
   const { mutate: startSprint, isPending } = useStartSprint()
 
   return (
@@ -19,8 +21,8 @@ export function SprintPlanningHeader({ sprint }: SprintPlanningHeaderProps) {
           {sprint.name}
         </span>
         <span className="text-caption">
-          {formatDayMonth(sprint.start_date)} -{' '}
-          {formatDayMonth(sprint.end_date)}
+          {formatDayMonth(sprint.start_date, dateFormat)} -{' '}
+          {formatDayMonth(sprint.end_date, dateFormat)}
         </span>
         {sprint.goal && (
           <span className="text-body text-fg-muted">{sprint.goal}</span>

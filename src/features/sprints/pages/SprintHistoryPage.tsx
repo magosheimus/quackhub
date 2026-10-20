@@ -12,8 +12,10 @@ import { SPRINTS_TEXTS } from '@/features/sprints/constants/texts'
 import { EmptyState } from '@/components/feedback/empty-state'
 import { Button } from '@/components/ui/button'
 import { Link } from 'react-router-dom'
+import { useDatePreferences } from '@/features/settings/hooks/useDatePreferences'
 
 export function SprintHistoryPage() {
+  const { dateFormat } = useDatePreferences()
   const {
     isLoading,
     hasError,
@@ -71,8 +73,8 @@ export function SprintHistoryPage() {
                   <span className="text-body-strong">
                     {sprint.name}
                     <span className="ml-2 text-caption">
-                      ({formatDayMonth(sprint.start_date)} -{' '}
-                      {formatDayMonth(sprint.end_date)})
+                      ({formatDayMonth(sprint.start_date, dateFormat)} -{' '}
+                      {formatDayMonth(sprint.end_date, dateFormat)})
                     </span>
                   </span>
                   {sprint.goal && (

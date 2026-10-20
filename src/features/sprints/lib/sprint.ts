@@ -1,4 +1,8 @@
-import { formatDayMonth } from '@/shared/lib/date'
+import {
+  DEFAULT_DATE_FORMAT,
+  formatDayMonth,
+  type DateFormat,
+} from '@/shared/lib/date'
 import type { Sprint } from '@/shared/types/entities'
 import type { Task } from '@/features/tasks/model/task'
 
@@ -91,9 +95,12 @@ export function getCompletionPercent(sprint: Sprint): number {
 }
 
 // "Sprint 8 — meta (05/10 - 11/10)"
-export function formatSprintBanner(sprint: Sprint): string {
+export function formatSprintBanner(
+  sprint: Sprint,
+  format: DateFormat = DEFAULT_DATE_FORMAT,
+): string {
   const goal = sprint.goal ? ` — ${sprint.goal}` : ''
-  const period = `${formatDayMonth(sprint.start_date)} - ${formatDayMonth(sprint.end_date)}`
+  const period = `${formatDayMonth(sprint.start_date, format)} - ${formatDayMonth(sprint.end_date, format)}`
   return `${sprint.name}${goal} (${period})`
 }
 

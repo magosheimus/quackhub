@@ -2,7 +2,6 @@ import { describe, it, expect } from 'vitest'
 import {
   daysBetween,
   formatDateTime,
-  formatDateAs,
   getTimeSlots,
   parseTimeInput,
   formatDayMonth,
@@ -117,10 +116,15 @@ describe('formatWeekdayName', () => {
   })
 })
 
-describe('formatDateAs', () => {
-  it('respeita o formato escolhido', () => {
-    expect(formatDateAs('2026-10-21', 'dd/MM/yyyy')).toBe('21/10/2026')
-    expect(formatDateAs('2026-10-21', 'MM/dd/yyyy')).toBe('10/21/2026')
+describe('formato de data das Configurações', () => {
+  it('dia/mês e data completa seguem o formato', () => {
+    expect(formatDayMonth('2026-10-21', 'MM/dd/yyyy')).toBe('10/21')
+    expect(formatFullDate('2026-10-21', 'dd/MM/yyyy')).toBe('21/10/2026')
+    expect(formatFullDate('2026-10-21', 'MM/dd/yyyy')).toBe('10/21/2026')
+  })
+
+  it('sem formato, usa o brasileiro', () => {
+    expect(formatDayMonth('2026-10-21')).toBe('21/10')
   })
 })
 

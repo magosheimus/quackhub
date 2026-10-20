@@ -54,6 +54,7 @@ import { useProjects } from '@/features/projects/hooks/useProjects'
 import { usePersonaOptions } from '@/features/personas/hooks/usePersonaOptions'
 import type { Persona } from '@/features/personas/model/persona'
 import { toProjectLabel } from '@/features/projects/lib/project'
+import { useDatePreferences } from '@/features/settings/hooks/useDatePreferences'
 
 export type ProjectCompletionItem = CompletionByProjectItem & {
   color: string
@@ -101,6 +102,7 @@ export type PersonaCompletionItem = {
 }
 
 export function useAnalyticsPage() {
+  const { dateFormat } = useDatePreferences()
   const [searchParams, setSearchParams] = useSearchParams()
   const scope = searchParams.get('sprint') ?? CURRENT_SCOPE
 
@@ -199,6 +201,7 @@ export function useAnalyticsPage() {
             tasks: tasks ?? [],
             doneDateByTask: lastDoneDateByTask(doneEvents ?? []),
             today,
+            dateFormat,
           })
         : [],
     personaCompletion: completionByAssignee(tasks ?? []).map(
