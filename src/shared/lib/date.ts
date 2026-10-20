@@ -1,20 +1,46 @@
 // Datas no formato do banco ('yyyy-MM-dd')
 const MISSING_DATE = '?'
 
-export function formatDayMonth(date: string | null): string {
+// Formato escolhido nas Configurações; todas as datas exibidas seguem ele
+export type DateFormat = 'dd/MM/yyyy' | 'MM/dd/yyyy'
+
+export const DEFAULT_DATE_FORMAT: DateFormat = 'dd/MM/yyyy'
+
+// '21/10' ou '10/21'
+export function formatDayMonth(
+  date: string | null,
+  format: DateFormat = DEFAULT_DATE_FORMAT,
+): string {
   if (!date) {
     return MISSING_DATE
   }
   const [, month, day] = date.split('-')
-  return `${day}/${month}`
+  return format === 'MM/dd/yyyy' ? `${month}/${day}` : `${day}/${month}`
 }
 
-export function formatFullDate(date: string | null): string {
+// '21/10/2026' ou '10/21/2026'
+export function formatFullDate(
+  date: string | null,
+  format: DateFormat = DEFAULT_DATE_FORMAT,
+): string {
   if (!date) {
     return MISSING_DATE
   }
   const [year, month, day] = date.split('-')
-  return `${day}/${month}/${year}`
+  return format === 'MM/dd/yyyy'
+    ? `${month}/${day}/${year}`
+    : `${day}/${month}/${year}`
+}
+
+// Data de um timestamp (ex.: criado/atualizado), no dia local
+export function formatTimestampDate(
+  timestamp: string | null,
+  format: DateFormat = DEFAULT_DATE_FORMAT,
+): string {
+  if (!timestamp) {
+    return MISSING_DATE
+  }
+  return formatFullDate(toDbDate(new Date(timestamp)), format)
 }
 
 // 'terça-feira'
@@ -88,24 +114,17 @@ export function formatMonthYear(yearMonth: string): string {
 }
 
 // Timestamp do banco no horário local: '17/10/2026 · 20:52'
-export function formatDateTime(timestamp: string | null): string {
+export function formatDateTime(
+  timestamp: string | null,
+  format: DateFormat = DEFAULT_DATE_FORMAT,
+): string {
   if (!timestamp) {
     return MISSING_DATE
   }
   const date = new Date(timestamp)
   const hours = String(date.getHours()).padStart(2, '0')
   const minutes = String(date.getMinutes()).padStart(2, '0')
-  return `${formatFullDate(toDbDate(date))} · ${hours}:${minutes}`
-}
-
-export type DateFormat = 'dd/MM/yyyy' | 'MM/dd/yyyy'
-
-// Data do banco ('yyyy-MM-dd') no formato escolhido nas Configurações
-export function formatDateAs(date: string, format: DateFormat): string {
-  const [year, month, day] = date.split('-')
-  return format === 'MM/dd/yyyy'
-    ? `${month}/${day}/${year}`
-    : `${day}/${month}/${year}`
+  return `${formatFullDate(toDbDate(date), format)} · ${hours}:${minutes}`
 }
 
 const TIME_SLOT_MINUTES = 30

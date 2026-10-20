@@ -14,8 +14,10 @@ import {
   todayLocal,
 } from '@/shared/lib/date'
 import type { Task } from '@/features/tasks/model/task'
+import { useDatePreferences } from '@/features/settings/hooks/useDatePreferences'
 
 export function useInboxPage() {
+  const { dateFormat } = useDatePreferences()
   const inboxQuery = useInboxItems()
   const { data: inbox, isLoading } = inboxQuery
   const { data: activeSprint } = useActiveSprint()
@@ -45,9 +47,11 @@ export function useInboxPage() {
     }),
     title: INBOX_TEXTS.titleWithDate(
       formatWeekdayName(new Date()),
-      formatDayMonth(todayLocal()),
+      formatDayMonth(todayLocal(), dateFormat),
     ),
-    sprintBanner: activeSprint ? formatSprintBanner(activeSprint) : null,
+    sprintBanner: activeSprint
+      ? formatSprintBanner(activeSprint, dateFormat)
+      : null,
     projects: projects ?? [],
     hasProjects: (projects?.length ?? 0) > 0,
     completeTask,

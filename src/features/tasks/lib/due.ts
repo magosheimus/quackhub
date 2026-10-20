@@ -1,5 +1,8 @@
 import {
+  DEFAULT_DATE_FORMAT,
   daysBetween,
+  formatDayMonth,
+  type DateFormat,
   parseDbDate,
   shiftDbDate,
   toDbDate,
@@ -417,11 +420,15 @@ export function formatDue(
   dueTime: string | null,
   today: string,
   labels: { today: string; tomorrow: string },
+  format: DateFormat = DEFAULT_DATE_FORMAT,
 ): DueLabel {
   const days = daysBetween(today, dueDate)
-  const [, month, day] = dueDate.split('-')
   const dateText =
-    days === 0 ? labels.today : days === 1 ? labels.tomorrow : `${day}/${month}`
+    days === 0
+      ? labels.today
+      : days === 1
+        ? labels.tomorrow
+        : formatDayMonth(dueDate, format)
   const time = formatDueTime(dueTime)
   return {
     text: time ? `${dateText} · ${time}` : dateText,

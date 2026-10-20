@@ -1,4 +1,9 @@
-import { formatDayMonth, toDbDate } from '@/shared/lib/date'
+import {
+  DEFAULT_DATE_FORMAT,
+  formatDayMonth,
+  toDbDate,
+  type DateFormat,
+} from '@/shared/lib/date'
 import type { Task } from '@/features/tasks/model/task'
 import type { DoneEvent } from '@/features/analytics/api/analytics'
 
@@ -25,6 +30,7 @@ export function lastDoneDateByTask(events: DoneEvent[]): Map<string, string> {
 
 type BurnupInput = {
   days: string[]
+  dateFormat?: DateFormat
   tasks: Pick<Task, 'id' | 'status'>[]
   doneDateByTask: Map<string, string>
   today: string
@@ -38,6 +44,7 @@ export function buildBurnup({
   tasks,
   doneDateByTask,
   today,
+  dateFormat = DEFAULT_DATE_FORMAT,
 }: BurnupInput): BurnupPoint[] {
   if (days.length === 0) {
     return []
@@ -51,7 +58,7 @@ export function buildBurnup({
 
   return days.map((date, index) => ({
     date,
-    label: formatDayMonth(date),
+    label: formatDayMonth(date, dateFormat),
     done:
       date > today
         ? null

@@ -30,6 +30,7 @@ import {
 } from '@/components/ui/tooltip'
 import { cn } from '@/shared/lib/utils'
 import { SETTINGS_PATH } from '@/features/settings/constants/paths'
+import { useSettingsToggle } from '@/features/settings/hooks/useSettingsToggle'
 import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd'
 
 type SidebarProps = {
@@ -45,6 +46,7 @@ export function Sidebar({
   isCollapsed = false,
   onToggleCollapse,
 }: SidebarProps) {
+  const { isOnSettings, leaveSettings } = useSettingsToggle()
   const {
     isLoading,
     items: projectItems,
@@ -169,7 +171,7 @@ export function Sidebar({
                                       to={`/board?project=${project.id}`}
                                       aria-label={project.name}
                                       style={{ color }}
-                                      className="flex h-9 items-center justify-center rounded-md border border-border bg-page font-heading text-2xl leading-none text-shadow-none! hover:bg-hover"
+                                      className="chrome-page-tile flex h-9 items-center justify-center rounded-md border border-border bg-page font-heading text-2xl leading-none text-shadow-none! hover:bg-hover"
                                     />
                                   }
                                 >
@@ -224,6 +226,12 @@ export function Sidebar({
         {!isCollapsed && <CartuchoMenu />}
         <NavItem
           to={SETTINGS_PATH}
+          onClick={(event) => {
+            if (isOnSettings) {
+              event.preventDefault()
+              leaveSettings()
+            }
+          }}
           icon={IconSettings}
           label={APP_TEXTS.settings}
           hint={APP_TEXTS.hintSettings}

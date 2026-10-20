@@ -1,19 +1,18 @@
 import { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { SETTINGS_PATH } from '@/features/settings/constants/paths'
 import { isSettingsShortcut } from '@/features/settings/lib/shortcut'
+import { useSettingsToggle } from '@/features/settings/hooks/useSettingsToggle'
 
 export function useSettingsShortcut() {
-  const navigate = useNavigate()
+  const { toggleSettings } = useSettingsToggle()
 
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
       if (isSettingsShortcut(event)) {
         event.preventDefault()
-        navigate(SETTINGS_PATH)
+        toggleSettings()
       }
     }
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [navigate])
+  }, [toggleSettings])
 }

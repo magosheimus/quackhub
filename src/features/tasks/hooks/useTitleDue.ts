@@ -27,7 +27,13 @@ export function useTitleDue(title: string, enabled: boolean) {
     hint: token
       ? TASKS_TEXTS.dueFromTitle(
           token.dueDate
-            ? formatDue(token.dueDate, token.dueTime, today, DUE_LABELS).text
+            ? formatDue(
+                token.dueDate,
+                token.dueTime,
+                today,
+                DUE_LABELS,
+                settings.dateFormat,
+              ).text
             : TASKS_TEXTS.noDue,
         )
       : null,
