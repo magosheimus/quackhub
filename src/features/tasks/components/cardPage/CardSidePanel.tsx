@@ -69,10 +69,10 @@ export function CardSidePanel({
 
       <Panel className="flex flex-col gap-1.5 p-3">
         <SectionLabel icon={IconCalendar}>{TASKS_TEXTS.dates}</SectionLabel>
-        <span className="text-sm text-fg">
+        <span className="text-body">
           {TASKS_TEXTS.createdAt(formatDate(createdAt))}
         </span>
-        <span className="text-sm text-fg">
+        <span className="text-body">
           {TASKS_TEXTS.updatedAt(formatDate(updatedAt))}
         </span>
       </Panel>
@@ -115,11 +115,11 @@ export function CardSidePanel({
       {canRegisterPerformance(projectType, status) && (
         <Panel className="flex flex-col gap-1.5 p-3">
           <SectionLabel icon={IconRefresh}>{TASKS_TEXTS.srs}</SectionLabel>
-          <span className="text-sm text-fg">
-            EF: {(srs?.easeFactor ?? 2.5).toFixed(2)}
+          <span className="text-body">
+            {TASKS_TEXTS.easeFactor((srs?.easeFactor ?? 2.5).toFixed(2))}
           </span>
-          <span className="text-sm text-fg">
-            Próxima revisão: {srs?.nextReview ?? '—'}
+          <span className="text-body">
+            {TASKS_TEXTS.nextReview(srs?.nextReview ?? '—')}
           </span>
           <Button type="button" size="sm" onClick={onRegisterPerformance}>
             {COMMON_TEXTS.registerPerformance}

@@ -64,6 +64,8 @@ export const TASKS_TEXTS = {
   descriptionPlaceholder: 'Adicionar contexto...',
   dates: 'Datas',
   createdAt: (date: string) => `Criado: ${date}`,
+  easeFactor: (value: string) => `EF: ${value}`,
+  nextReview: (date: string) => `Próxima revisão: ${date}`,
   updatedAt: (date: string) => `Atualizado: ${date}`,
   dueDate: 'Due Date',
   dueTime: 'Horário',

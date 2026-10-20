@@ -47,7 +47,7 @@ export function BacklogRow({
     >
       <div
         style={{ borderLeftColor: `var(${priority.colorVar})` }}
-        className="flex flex-wrap items-center gap-3 rounded-md border border-l-4 border-border bg-card p-3 text-sm"
+        className="flex flex-wrap items-center gap-3 rounded-md border border-l-4 border-border bg-card p-3 text-body-sm"
       >
         <div className="flex w-4 shrink-0 flex-col items-center gap-1">
           {task.flag && (
@@ -67,13 +67,18 @@ export function BacklogRow({
         </div>
 
         <div className="flex min-w-40 flex-1 flex-col gap-0.5">
-          {task.number && (
-            <ProjectCode
-              label={projectLabels.get(task.projectId)}
-              taskNumber={task.number}
-              withColor={colorScope === 'project'}
-            />
-          )}
+          <div className="flex min-w-0 flex-wrap items-center gap-1.5">
+            {task.number && (
+              <ProjectCode
+                label={projectLabels.get(task.projectId)}
+                taskNumber={task.number}
+                withColor={colorScope === 'project'}
+              />
+            )}
+            {epicLabel && (
+              <EpicChip label={epicLabel} withSeparator={!!task.number} />
+            )}
+          </div>
           <Link
             to={`/cards/${task.id}`}
             className="wrap-break-word text-fg hover:text-accent hover:underline"
@@ -84,9 +89,7 @@ export function BacklogRow({
 
         <DueBadge due={task.due} />
 
-        <span className="text-caption">{STATUS_LABELS[task.status]}</span>
-
-        {epicLabel && <EpicChip label={epicLabel} />}
+        <span className="text-fg-muted">{STATUS_LABELS[task.status]}</span>
 
         <AssigneeBadge assigneeId={task.assigneeId} />
 

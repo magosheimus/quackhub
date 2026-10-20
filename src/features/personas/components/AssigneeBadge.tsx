@@ -30,7 +30,7 @@ export function AssigneeBadge({
   return (
     <HintTooltip text={hint}>
       <span role="img" aria-label={hint} className="inline-flex text-fg">
-        <PersonaIcon icon={assignee.icon} name={assignee.name} size={20} />
+        <PersonaIcon icon={assignee.icon} name={assignee.name} size={24} />
       </span>
     </HintTooltip>
   )

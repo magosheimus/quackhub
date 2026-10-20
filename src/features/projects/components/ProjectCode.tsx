@@ -18,14 +18,11 @@ export function ProjectCode({
 }: ProjectCodeProps) {
   const code = formatTaskCode(label?.prefix ?? '', taskNumber)
   if (!withColor) {
-    return <span className="text-caption">{code}</span>
+    return <span className="font-semibold text-fg-muted">{code}</span>
   }
   const color = label?.color ?? NEUTRAL_COLOR
   return (
-    <span
-      className="flex items-center gap-1.5 text-xs font-medium"
-      style={{ color }}
-    >
+    <span className="flex items-center gap-1.5 font-semibold" style={{ color }}>
       <ColorDot color={color} />
       {code}
     </span>

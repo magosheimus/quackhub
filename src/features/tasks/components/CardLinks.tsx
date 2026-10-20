@@ -63,7 +63,7 @@ export function CardLinks({ taskId }: CardLinksProps) {
             </button>
           </div>
           {showInvalid && (
-            <span className="text-xs text-danger">
+            <span className="text-caption text-danger">
               {TASKS_TEXTS.invalidLink}
             </span>
           )}
@@ -84,7 +84,7 @@ export function CardLinks({ taskId }: CardLinksProps) {
                         ref={drag.innerRef}
                         {...drag.draggableProps}
                         {...drag.dragHandleProps}
-                        className="flex items-center gap-2 text-sm"
+                        className="flex items-center gap-2 text-body"
                       >
                         <a
                           href={link.url}

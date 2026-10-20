@@ -31,7 +31,7 @@ import { CardEpicChip } from '@/features/epics/components/CardEpicChip'
 import { DueBadge } from '@/features/tasks/components/DueBadge'
 
 const CARD_CLASS =
-  'flex gap-2 rounded-md border border-l-4 border-border bg-card p-3 text-sm hover:bg-card-hover'
+  'flex gap-2 rounded-md border border-l-4 border-border bg-card p-3 text-body-sm hover:bg-card-hover'
 
 function getBorderStyle(task: Task) {
   const priority = PRIORITY_CONFIG[task.priority]
@@ -82,25 +82,29 @@ function BoardCardBody({
       </div>
 
       <div className="flex min-w-0 flex-1 flex-col gap-1">
-        {task.number && (
-          <ProjectCode
-            label={projectLabels.get(task.projectId)}
-            taskNumber={task.number}
-            withColor={colorScope === 'project'}
-          />
-        )}
+        <div className="flex min-w-0 flex-wrap items-center gap-1.5">
+          {task.number && (
+            <ProjectCode
+              label={projectLabels.get(task.projectId)}
+              taskNumber={task.number}
+              withColor={colorScope === 'project'}
+            />
+          )}
+          {showEpic && (
+            <CardEpicChip epicId={task.epicId} withSeparator={!!task.number} />
+          )}
+        </div>
         <Link
           to={`/cards/${task.id}`}
           className="line-clamp-3 text-fg hover:text-accent hover:underline"
         >
           {task.title}
         </Link>
-        {showEpic && <CardEpicChip epicId={task.epicId} />}
         {showDue && <DueBadge due={task.due} />}
-        {tag && <span className="text-caption">{tag}</span>}
+        {tag && <span className="text-fg-muted">{tag}</span>}
         {showStatus && (
           <span
-            className={`w-fit rounded-sm px-2 py-0.5 text-xs font-medium text-page ${
+            className={`w-fit rounded-sm px-2 py-0.5 text-page ${
               STATUS_BADGE_CLASS[task.status]
             }`}
           >

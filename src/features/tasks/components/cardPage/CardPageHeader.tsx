@@ -60,7 +60,7 @@ export function CardPageHeader({
       <PageTitle icon={IconFolder} iconSize={48} withAccentBar={false}>
         <div className="flex flex-col gap-0.5">
           {taskNumber && (
-            <span className="flex flex-wrap items-center gap-x-3 gap-y-1 px-2">
+            <span className="flex flex-wrap items-center gap-x-3 gap-y-1 px-2 text-body-sm">
               <ProjectCode label={projectLabel} taskNumber={taskNumber} />
               {epicLabel && <EpicTag label={epicLabel} withColor={false} />}
             </span>
@@ -73,7 +73,7 @@ export function CardPageHeader({
             onBlur={onTitleBlur}
             onKeyDown={onTitleKeyDown}
             aria-label={TASKS_TEXTS.titleLabel}
-            className={`h-8 rounded-md px-2 py-0 font-heading text-3xl leading-tight text-fg outline-none ${
+            className={`h-10 rounded-md px-2 py-0 font-heading text-heading-1 leading-tight normal-case text-fg outline-none ${
               isEditingTitle
                 ? 'border border-border bg-transparent shadow-[inset_1px_1px_2px_color-mix(in_srgb,var(--lcd-ink)_20%,transparent),inset_-1px_-1px_0_color-mix(in_srgb,var(--lcd-screen)_40%,transparent)]'
                 : 'input-static'
