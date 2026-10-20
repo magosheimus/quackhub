@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 import { cn } from '@/shared/lib/utils'
 import { ErrorState } from '@/components/feedback/error-state'
 import { LoadingText } from '@/components/feedback/loading-text'
+import { PageBadge } from '@/components/layout/page-badge'
 import { PageTitle } from '@/components/layout/page-title'
 import { Panel } from '@/components/layout/panel'
 import { SectionLabel } from '@/components/layout/section-label'
@@ -94,9 +95,7 @@ export function DailyTrackerPage() {
     <div className="flex flex-col gap-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <PageTitle title={DAILY_TRACKER_TEXTS.title} icon={IconCalendarWeeks} />
-        <span className="rounded-md bg-accent px-3 py-1 text-body-strong text-on-accent">
-          {periodLabel}
-        </span>
+        <PageBadge>{periodLabel}</PageBadge>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">

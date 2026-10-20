@@ -17,14 +17,9 @@ export function formatFullDate(date: string | null): string {
   return `${day}/${month}/${year}`
 }
 
-export function formatWeekdayShort(date: Date): string {
-  return new Intl.DateTimeFormat('pt-BR', {
-    weekday: 'short',
-    day: '2-digit',
-    month: '2-digit',
-  })
-    .format(date)
-    .toUpperCase()
+// 'terça-feira'
+export function formatWeekdayName(date: Date): string {
+  return new Intl.DateTimeFormat('pt-BR', { weekday: 'long' }).format(date)
 }
 
 export function toDbDate(date: Date): string {

@@ -42,7 +42,7 @@ export function InboxSection({
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-center justify-between px-1">
-        <span className="font-heading text-xl uppercase text-fg">{title}</span>
+        <span className="font-heading text-heading-2 text-fg">{title}</span>
         <span className="text-caption">{tasks.length}</span>
       </div>
       {tasks.map((task) => {
