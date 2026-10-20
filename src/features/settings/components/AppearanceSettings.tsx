@@ -13,8 +13,11 @@ import {
   LCD_GHOST_LABELS,
   SETTINGS_TEXTS,
   TEXT_SIZE_LABELS,
+  UI_SCALE_LABELS,
 } from '@/features/settings/constants/texts'
 import { useAppearanceSettings } from '@/features/settings/hooks/useAppearanceSettings'
+import { useUiScale } from '@/features/settings/hooks/useUiScale'
+import { UI_SCALES } from '@/features/settings/lib/uiScale'
 import { CartuchoOptions } from './CartuchoOptions'
 import {
   SettingsAction,
@@ -37,6 +40,7 @@ export function AppearanceSettings() {
     isConfirmingRestore,
     setIsConfirmingRestore,
   } = useAppearanceSettings()
+  const { uiScale, setUiScale } = useUiScale()
 
   return (
     <SettingsSection>
@@ -66,6 +70,23 @@ export function AppearanceSettings() {
               value={settings.textSize}
               labels={TEXT_SIZE_LABELS}
               onChange={(textSize) => update({ textSize })}
+            />
+          </SettingsOption>
+        </SettingsOptionList>
+      </SettingsGroup>
+
+      <SettingsGroup title={SETTINGS_TEXTS.screen}>
+        <SettingsOptionList>
+          <SettingsOption
+            label={SETTINGS_TEXTS.uiScale}
+            hint={SETTINGS_TEXTS.uiScaleHint}
+          >
+            <OptionStepper
+              label={SETTINGS_TEXTS.uiScale}
+              options={UI_SCALES}
+              value={uiScale}
+              labels={UI_SCALE_LABELS}
+              onChange={setUiScale}
             />
           </SettingsOption>
         </SettingsOptionList>

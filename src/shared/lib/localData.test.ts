@@ -29,6 +29,7 @@ describe('dados locais', () => {
     expect(queryClient.getQueryData(['tasks'])).toBeUndefined()
     expect(storedKeys()).toEqual([
       STORAGE_KEYS.settings,
+      STORAGE_KEYS.uiScale,
       STORAGE_KEYS.draftsQueue,
       STORAGE_KEYS.projectView,
     ])
@@ -40,6 +41,7 @@ describe('dados locais', () => {
     expect(queryClient.getQueryData(['tasks'])).toBeUndefined()
     expect(storedKeys()).toEqual([
       STORAGE_KEYS.settings,
+      STORAGE_KEYS.uiScale,
       STORAGE_KEYS.projectView,
     ])
   })

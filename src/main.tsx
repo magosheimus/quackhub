@@ -24,8 +24,10 @@ import {
   loadSettings,
   applySettings,
 } from './features/settings/lib/settings.ts'
+import { applyUiScale, loadUiScale } from './features/settings/lib/uiScale.ts'
 
 applySettings(loadSettings())
+applyUiScale(loadUiScale())
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
