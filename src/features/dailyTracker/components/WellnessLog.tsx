@@ -55,11 +55,15 @@ export function WellnessLog({
               className={cn(
                 'flex w-20 flex-col items-center gap-1 rounded-sm border px-2 py-2 text-xs transition-colors',
                 isSelected
-                  ? 'glow-active border-accent bg-selected text-accent'
-                  : 'border-transparent text-fg-muted hover:bg-hover hover:text-fg',
+                  ? 'glow-active border-transparent font-semibold text-accent'
+                  : 'border-transparent text-fg-muted',
               )}
             >
-              <Icon size={24} aria-hidden="true" />
+              <Icon
+                size={48}
+                aria-hidden="true"
+                className={cn(isSelected && 'icon-glow')}
+              />
               {MOOD_LABELS[level]}
             </button>
           )

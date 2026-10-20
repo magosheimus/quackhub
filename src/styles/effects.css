@@ -34,6 +34,13 @@
   filter: none;
 }
 
+/* Ícone escolhido (ex.: humor do dia): o mesmo glow do pato da logo
+   (fantasma do LCD + brilho), no lugar de fundo e borda; sem glow nas
+   Configurações, só a cor de destaque marca a escolha */
+.icon-shadow.icon-glow {
+  filter: var(--glow-filter);
+}
+
 .logo-mark {
   filter: var(--glow-filter);
 }
