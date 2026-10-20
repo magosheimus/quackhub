@@ -29,7 +29,9 @@ export function SetPasswordPage() {
           <span className="font-heading text-3xl text-fg">
             {COMMON_TEXTS.brand}
           </span>
-          <span className="text-subtle">{AUTH_TEXTS.setPasswordSubtitle}</span>
+          <span className="text-body text-fg-muted">
+            {AUTH_TEXTS.setPasswordSubtitle}
+          </span>
         </div>
 
         {isLoading ? (

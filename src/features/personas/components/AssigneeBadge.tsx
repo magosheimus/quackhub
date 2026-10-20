@@ -20,8 +20,8 @@ export function AssigneeBadge({
 
   if (compact) {
     return (
-      <span className="inline-flex items-center gap-1 text-caption">
-        <PersonaIcon icon={assignee.icon} name={assignee.name} size={14} />
+      <span className="inline-flex items-center gap-1.5 text-fg">
+        <PersonaIcon icon={assignee.icon} name={assignee.name} size={16} />
         {assignee.name}
       </span>
     )
@@ -30,7 +30,7 @@ export function AssigneeBadge({
   return (
     <HintTooltip text={hint}>
       <span role="img" aria-label={hint} className="inline-flex text-fg">
-        <PersonaIcon icon={assignee.icon} name={assignee.name} size={20} />
+        <PersonaIcon icon={assignee.icon} name={assignee.name} size={24} />
       </span>
     </HintTooltip>
   )

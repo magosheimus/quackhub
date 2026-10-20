@@ -1,5 +1,4 @@
 import { ChartCard } from './ChartCard'
-import { SectionTitle } from '@/components/layout/section-title'
 import { SegmentedProgress } from '@/components/brand/segmented-progress'
 import { EmptyMessage } from '@/components/feedback/empty-message'
 import { ANALYTICS_TEXTS } from '@/features/analytics/constants/texts'
@@ -20,8 +19,10 @@ type HabitsSectionProps = {
 
 export function HabitsSection({ isAll, summary, trend }: HabitsSectionProps) {
   return (
-    <section className="flex flex-col gap-4">
-      <SectionTitle>{ANALYTICS_TEXTS.habitsAndMood}</SectionTitle>
+    <section
+      aria-label={ANALYTICS_TEXTS.habitsAndMood}
+      className="flex flex-col gap-4"
+    >
       {isAll ? (
         <SprintTrend trend={trend} />
       ) : (
@@ -41,7 +42,7 @@ function HabitGoals({ summary }: { summary: HabitPeriodSummary }) {
         <EmptyMessage>{ANALYTICS_TEXTS.noHabits}</EmptyMessage>
       ) : (
         <>
-          <span className="font-heading text-4xl text-fg">
+          <span className="font-heading text-display text-fg">
             {summary.overallRate}%
           </span>
           <div className="flex flex-col gap-2">
@@ -52,7 +53,7 @@ function HabitGoals({ summary }: { summary: HabitPeriodSummary }) {
               >
                 <span className="flex min-w-0 items-center gap-2">
                   <HabitIcon habit={item.habit} />
-                  <span className="truncate text-sm text-fg">
+                  <span className="truncate text-body-strong">
                     {item.habit.name}
                   </span>
                 </span>
@@ -86,8 +87,8 @@ function MoodSummaryCard({ summary }: { summary: HabitPeriodSummary }) {
         <EmptyMessage>{ANALYTICS_TEXTS.noMood}</EmptyMessage>
       ) : (
         <>
-          <span className="flex items-center gap-2 text-sm text-fg">
-            <AverageIcon size={24} aria-hidden="true" className="text-accent" />
+          <span className="flex items-center gap-3 font-heading text-heading-2 text-fg">
+            <AverageIcon size={48} aria-hidden="true" className="text-accent" />
             {ANALYTICS_TEXTS.moodAverage(MOOD_LABELS[mood.average])}
           </span>
           <div className="flex flex-col gap-2">
@@ -98,7 +99,7 @@ function MoodSummaryCard({ summary }: { summary: HabitPeriodSummary }) {
                   key={level}
                   className="grid grid-cols-[minmax(0,1fr)_auto_2rem] items-center gap-3"
                 >
-                  <span className="flex items-center gap-2 text-sm text-fg">
+                  <span className="flex items-center gap-2 text-body">
                     <Icon
                       size={16}
                       aria-hidden="true"
@@ -138,7 +139,7 @@ function SprintTrend({ trend }: { trend: SprintHabitTrendItem[] }) {
                 key={item.sprintId}
                 className="grid grid-cols-[minmax(0,1fr)_auto_3rem_1.5rem] items-center gap-3"
               >
-                <span className="truncate text-sm text-fg">{item.name}</span>
+                <span className="truncate text-body-strong">{item.name}</span>
                 <SegmentedProgress
                   value={item.overallRate}
                   segments={10}

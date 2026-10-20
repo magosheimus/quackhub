@@ -11,7 +11,6 @@ import {
   CartesianGrid,
 } from 'recharts'
 import { ChartCard } from './ChartCard'
-import { SectionTitle } from '@/components/layout/section-title'
 import type { EpicChartItem } from '@/features/analytics/hooks/useAnalyticsPage'
 import { ANALYTICS_TEXTS } from '@/features/analytics/constants/texts'
 import { EmptyMessage } from '@/components/feedback/empty-message'
@@ -31,21 +30,17 @@ export function StudySection({
   epicData,
 }: StudySectionProps) {
   return (
-    <section className="flex flex-col gap-4">
-      <SectionTitle>{ANALYTICS_TEXTS.study}</SectionTitle>
-
+    <section aria-label={ANALYTICS_TEXTS.study} className="flex flex-col gap-4">
       <div className="grid grid-cols-2 gap-4">
         <Panel className="flex flex-col gap-1 p-5">
-          <span className="text-xs font-medium uppercase tracking-wide text-fg">
-            {ANALYTICS_TEXTS.reviews}
+          <span className="text-caption">{ANALYTICS_TEXTS.reviews}</span>
+          <span className="font-heading text-display text-fg">
+            {totalReviews}
           </span>
-          <span className="font-heading text-4xl text-fg">{totalReviews}</span>
         </Panel>
         <Panel className="flex flex-col gap-1 p-5">
-          <span className="text-xs font-medium uppercase tracking-wide text-fg">
-            {ANALYTICS_TEXTS.accuracy}
-          </span>
-          <span className="font-heading text-4xl text-fg">
+          <span className="text-caption">{ANALYTICS_TEXTS.accuracy}</span>
+          <span className="font-heading text-display text-fg">
             {accuracyPercent}%
           </span>
         </Panel>
@@ -102,7 +97,7 @@ export function StudySection({
                 <Tooltip />
               </PieChart>
             </ResponsiveContainer>
-            <ul className="flex flex-col gap-2 text-sm text-fg">
+            <ul className="flex flex-col gap-2 text-body">
               {epicData.map((epic) => (
                 <li key={epic.epicName} className="flex items-center gap-2">
                   <span

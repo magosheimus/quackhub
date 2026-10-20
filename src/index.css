@@ -84,12 +84,55 @@
   --radius-lg: 6px;
 }
 
-@utility text-caption {
-  @apply text-xs text-fg-muted;
+/* Escala tipográfica (tabela no Design System).
+   Headings: usar com font-heading (VT323, glow e traço); só display e
+   heading-1 em maiúsculas. A VT323 é baixa (maiúscula a 0,56 do tamanho,
+   contra 0,73 da fonte do corpo), por isso os números altos.
+   Body: fonte escolhida nas Configurações */
+@utility text-display {
+  @apply uppercase;
+  font-size: 3rem;
+  line-height: 1;
 }
 
-@utility text-subtle {
-  @apply text-sm text-fg-muted;
+@utility text-heading-1 {
+  @apply text-4xl uppercase;
+}
+
+@utility text-heading-2 {
+  font-size: 1.75rem;
+  line-height: 2rem;
+}
+
+@utility text-heading-3 {
+  font-size: 1.375rem;
+  line-height: 1.75rem;
+}
+
+@utility text-body-strong {
+  @apply text-sm font-semibold text-fg;
+}
+
+@utility text-body {
+  @apply text-sm text-fg;
+}
+
+@utility text-body-sm {
+  font-size: 0.8125rem;
+  line-height: 1.25rem;
+}
+
+@utility text-caption {
+  @apply text-fg-muted;
+  font-size: 0.8125rem;
+  line-height: 1.25rem;
+}
+
+@utility text-micro {
+  @apply text-fg-muted uppercase;
+  font-size: 0.6875rem;
+  line-height: 1rem;
+  letter-spacing: 0.05em;
 }
 
 @utility surface-danger {

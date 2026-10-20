@@ -134,7 +134,7 @@ export function CardDetailsSection({
             </Select>
           </DetailRow>
           <DetailRow label={TASKS_TEXTS.typeLabel}>
-            <span className="text-sm text-fg">
+            <span className="text-body">
               {PROJECT_TYPE_LABELS[projectType ?? 'general']}
             </span>
           </DetailRow>

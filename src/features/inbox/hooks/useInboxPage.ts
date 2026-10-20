@@ -1,3 +1,4 @@
+import { INBOX_TEXTS } from '@/features/inbox/constants/texts'
 import { countOverdue } from '@/features/inbox/lib/inboxDue'
 import { buildInboxCounters } from '@/features/inbox/lib/inboxCounters'
 import { hasLoadError, retryFailedQueries } from '@/shared/query/queryState'
@@ -7,7 +8,11 @@ import { useCompleteTask } from '@/features/inbox/hooks/useCompleteTask'
 import { useActiveSprint } from '@/features/sprints/hooks/useActiveSprint'
 import { useProjects } from '@/features/projects/hooks/useProjects'
 import { formatSprintBanner } from '@/features/sprints/lib/sprint'
-import { formatWeekdayShort, todayLocal } from '@/shared/lib/date'
+import {
+  formatDayMonth,
+  formatWeekdayName,
+  todayLocal,
+} from '@/shared/lib/date'
 import type { Task } from '@/features/tasks/model/task'
 
 export function useInboxPage() {
@@ -38,7 +43,10 @@ export function useInboxPage() {
       srsOverdue: srsOverdue.length,
       urgent: urgent.length,
     }),
-    todayLabel: formatWeekdayShort(new Date()),
+    title: INBOX_TEXTS.titleWithDate(
+      formatWeekdayName(new Date()),
+      formatDayMonth(todayLocal()),
+    ),
     sprintBanner: activeSprint ? formatSprintBanner(activeSprint) : null,
     projects: projects ?? [],
     hasProjects: (projects?.length ?? 0) > 0,

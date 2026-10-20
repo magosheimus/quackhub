@@ -18,8 +18,8 @@ export function EmptyState({
     <div className="flex flex-col items-center gap-4 rounded-md border border-(--border-card-empty) bg-card-empty px-6 py-12 text-center">
       <Icon size={24} aria-hidden="true" className="text-fg-muted" />
       <div className="flex flex-col gap-1">
-        <span className="font-heading text-2xl text-fg">{title}</span>
-        <span className="text-subtle">{description}</span>
+        <span className="font-heading text-heading-2 text-fg">{title}</span>
+        <span className="text-body text-fg-muted">{description}</span>
       </div>
       {children && (
         <div className="flex flex-wrap justify-center gap-3 pt-2">

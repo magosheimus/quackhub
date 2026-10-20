@@ -1,5 +1,7 @@
 export const INBOX_TEXTS = {
   title: 'Inbox',
+  titleWithDate: (weekday: string, dayMonth: string) =>
+    `Inbox · ${weekday} · ${dayMonth}`,
   urgentSection: 'Urgentes',
   srsOverdueSection: 'SRS vencido',
   dueSection: 'Prazo até hoje',

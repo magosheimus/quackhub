@@ -38,7 +38,7 @@ export function DraftsArchive({
         type="button"
         onClick={toggleOpen}
         aria-expanded={isOpen}
-        className="flex w-fit items-center gap-2 text-base text-fg hover:text-accent"
+        className="flex w-fit items-center gap-2 text-body-strong hover:text-accent"
       >
         <IconChevronRight
           size={12}
@@ -59,7 +59,7 @@ export function DraftsArchive({
                   type="button"
                   onClick={() => toggleGroup(group.key)}
                   aria-expanded={isGroupExpanded}
-                  className="flex w-fit items-center gap-2 text-sm text-fg hover:text-accent"
+                  className="flex w-fit items-center gap-2 text-body hover:text-accent"
                 >
                   <IconChevronRight
                     size={12}
@@ -77,7 +77,7 @@ export function DraftsArchive({
                   group.items.map((item) => (
                     <Panel
                       key={item.id}
-                      className="flex items-center gap-3 py-2 text-base"
+                      className="flex items-center gap-3 py-2 text-body"
                     >
                       <Checkbox
                         checked

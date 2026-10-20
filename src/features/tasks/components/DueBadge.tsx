@@ -24,12 +24,9 @@ export function DueBadge({ due: taskDue }: DueBadgeProps) {
   return (
     <span
       title={TASKS_TEXTS.dueLabel(due.text)}
-      className={cn(
-        'flex w-fit items-center gap-1 text-xs',
-        TONE_CLASS[due.tone],
-      )}
+      className={cn('flex w-fit items-center gap-1', TONE_CLASS[due.tone])}
     >
-      <IconCalendar size={12} aria-hidden="true" />
+      <IconCalendar size={14} aria-hidden="true" />
       {due.text}
     </span>
   )

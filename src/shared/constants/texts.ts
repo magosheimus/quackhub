@@ -4,6 +4,7 @@ import type { PaletteColor } from '@/shared/lib/palette'
 export const COMMON_TEXTS = {
   brand: 'QUACKHUB',
   cancel: 'Cancelar',
+  pathSeparator: '/',
   on: 'Ligado',
   off: 'Desligado',
   previousOption: (label: string) => `${label}: opção anterior`,

@@ -8,5 +8,5 @@ type EmptyMessageProps = {
 
 // Mensagem de lista ou seção vazia (ex.: "— nenhum card no backlog —")
 export function EmptyMessage({ children, className }: EmptyMessageProps) {
-  return <p className={cn('text-subtle', className)}>{children}</p>
+  return <p className={cn('text-body text-fg-muted', className)}>{children}</p>
 }

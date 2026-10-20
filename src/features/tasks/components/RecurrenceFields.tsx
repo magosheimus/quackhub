@@ -36,7 +36,7 @@ export function RecurrenceFields({ value, onChange }: RecurrenceFieldsProps) {
       <button
         type="button"
         onClick={() => onChange({ ...value, type: 'monthly', interval: 1 })}
-        className="flex h-8 items-center text-left text-subtle"
+        className="flex h-8 items-center text-left text-body text-fg-muted"
       >
         {TASKS_TEXTS.notRecurring}
       </button>

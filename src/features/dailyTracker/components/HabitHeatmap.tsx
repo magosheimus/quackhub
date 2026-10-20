@@ -109,7 +109,9 @@ function Cell({
   }
 
   const className = cn(CELL, 'border', cellToneClass(cell))
-  const content = cell.isMet && <IconCheck size={12} aria-hidden="true" />
+  const content = cell.isMet && (
+    <IconCheck size={12} aria-hidden="true" className="icon-flat" />
+  )
 
   if (!cell.isEditable) {
     return (
@@ -222,7 +224,7 @@ function Legend() {
     },
   ]
   return (
-    <div className="flex flex-wrap items-center gap-4 text-xs text-fg-muted">
+    <div className="flex flex-wrap items-center gap-4 text-caption">
       {items.map((item) => (
         <span key={item.label} className="flex items-center gap-1.5">
           <span className={cn('size-3 rounded-sm border', item.className)} />
@@ -267,18 +269,15 @@ export function HabitHeatmap({
                   key={day.date}
                   scope="col"
                   className={cn(
-                    'min-w-7 text-xs font-normal',
-                    day.isToday ? 'text-accent' : 'text-fg-muted',
+                    'min-w-7 text-micro font-normal',
+                    day.isToday && 'text-accent',
                   )}
                 >
                   <div>{day.weekday}</div>
                   <div>{day.dayNumber}</div>
                 </th>
               ))}
-              <th
-                scope="col"
-                className="pl-3 text-left text-xs font-normal text-fg-muted"
-              >
+              <th scope="col" className="pl-3 text-left text-micro font-normal">
                 {DAILY_TRACKER_TEXTS.doneColumn}
               </th>
             </tr>
@@ -288,7 +287,7 @@ export function HabitHeatmap({
               <tr key={habit.id}>
                 <th
                   scope="row"
-                  className="pr-3 text-left text-sm font-normal whitespace-nowrap text-fg"
+                  className="pr-3 text-left text-body-strong whitespace-nowrap"
                 >
                   <span className="flex max-w-44 items-center gap-2">
                     <HabitIcon habit={habit} />
@@ -300,7 +299,7 @@ export function HabitHeatmap({
                     <Cell habit={habit} cell={cell} actions={actions} />
                   </td>
                 ))}
-                <td className="pl-3 text-xs whitespace-nowrap text-fg-muted">
+                <td className="pl-3 whitespace-nowrap text-micro">
                   {DAILY_TRACKER_TEXTS.habitStats(daysCompleted, totalDays)}
                 </td>
               </tr>

@@ -14,10 +14,12 @@ export function ErrorState({ onRetry }: ErrorStateProps) {
     >
       <IconWarning size={24} aria-hidden="true" className="text-danger" />
       <div className="flex flex-col gap-1">
-        <span className="font-heading text-2xl text-danger">
+        <span className="font-heading text-heading-2 text-danger">
           {COMMON_TEXTS.loadErrorTitle}
         </span>
-        <span className="text-subtle">{COMMON_TEXTS.loadErrorDescription}</span>
+        <span className="text-body text-fg-muted">
+          {COMMON_TEXTS.loadErrorDescription}
+        </span>
       </div>
       <Button variant="outline" size="sm" onClick={onRetry}>
         {COMMON_TEXTS.retry}

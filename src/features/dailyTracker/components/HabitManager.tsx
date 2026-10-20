@@ -52,7 +52,7 @@ export function HabitManager({ habits, weekdayOrder }: HabitManagerProps) {
         ) : (
           <div className={TABLE}>
             <div
-              className={`${ROW} border-b border-border text-xs text-fg-muted *:py-2`}
+              className={`${ROW} border-b border-border text-caption *:py-2`}
             >
               <span className={NAME_CELL}>
                 {DAILY_TRACKER_TEXTS.columnName}
@@ -125,7 +125,7 @@ export function HabitManager({ habits, weekdayOrder }: HabitManagerProps) {
                                   <IconMenu size={14} aria-hidden="true" />
                                 </span>
                                 <HabitIcon habit={habit} />
-                                <span className="truncate text-fg">
+                                <span className="truncate text-body-strong">
                                   {habit.name}
                                 </span>
                               </span>

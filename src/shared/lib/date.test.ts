@@ -1,14 +1,15 @@
 import { describe, it, expect } from 'vitest'
 import {
   daysBetween,
-  formatMonthYear,
+  formatDateTime,
   formatDayMonth,
   formatFullDate,
+  formatMonthYear,
+  formatWeekdayName,
   getDateRange,
   getWeekDays,
   shiftDbDate,
   toDbDate,
-  formatDateTime,
 } from './date'
 
 describe('formatDayMonth', () => {
@@ -104,5 +105,11 @@ describe('formatDateTime', () => {
 
   it('usa ? para data ausente', () => {
     expect(formatDateTime(null)).toBe('?')
+  })
+})
+
+describe('formatWeekdayName', () => {
+  it('dia da semana por extenso', () => {
+    expect(formatWeekdayName(new Date(2026, 9, 20))).toBe('terça-feira')
   })
 })

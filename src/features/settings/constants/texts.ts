@@ -88,7 +88,7 @@ export const SETTINGS_TEXTS = {
   autoSaved: 'Alterações salvas automaticamente',
   restoreAppearance: 'Restaurar aparência padrão',
   restoreAppearanceDescription:
-    'Volta cartucho, fonte, fundo e efeitos ao padrão. Datas e personas não mudam.',
+    'Redefine cartucho, fonte, fundo e efeitos ao padrão. Datas e personas não mudam.',
   restoreAppearanceTitle: 'Restaurar aparência?',
   restoreAppearanceConfirm: 'Restaurar',
 } as const

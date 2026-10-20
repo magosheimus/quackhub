@@ -29,7 +29,11 @@ export function AppShell({ children }: AppShellProps) {
 
   return (
     <div className="app-root retro-motion flex h-dvh flex-col overflow-hidden bg-page">
-      <TopBar isMobile={isMobile} onOpenMenu={() => setIsOpen(true)} />
+      <TopBar
+        isMobile={isMobile}
+        isSidebarCollapsed={sidebar.isCollapsed}
+        onOpenMenu={() => setIsOpen(true)}
+      />
       {isMobile && (
         <Drawer
           open={isOpen}

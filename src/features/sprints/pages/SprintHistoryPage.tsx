@@ -68,7 +68,7 @@ export function SprintHistoryPage() {
                 className="relative flex flex-col gap-3 rounded-md border border-border bg-card p-4 text-left hover:bg-card-hover sm:flex-row sm:items-center sm:gap-4"
               >
                 <div className="flex min-w-0 flex-1 flex-col gap-1 pr-6 sm:pr-0">
-                  <span className="text-base text-fg">
+                  <span className="text-body-strong">
                     {sprint.name}
                     <span className="ml-2 text-caption">
                       ({formatDayMonth(sprint.start_date)} -{' '}
@@ -76,7 +76,9 @@ export function SprintHistoryPage() {
                     </span>
                   </span>
                   {sprint.goal && (
-                    <span className="text-subtle">{sprint.goal}</span>
+                    <span className="text-body text-fg-muted">
+                      {sprint.goal}
+                    </span>
                   )}
                 </div>
                 <div className="flex flex-col gap-1 sm:items-end">

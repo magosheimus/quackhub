@@ -4,6 +4,10 @@ import {
   CURRENT_SCOPE,
   countTasksByStatus,
   getAccuracyPercent,
+  getRelevantStatuses,
+  hasStudyContent,
+  toStatusShares,
+  completionByAssignee,
   groupQualityByWeek,
   resolveLiveSprintId,
   startOfWeek,
@@ -100,6 +104,82 @@ describe('contagens', () => {
       { status: 'todo', count: 1 },
       { status: 'done', count: 2 },
       { status: 'blocked', count: 0 },
+    ])
+  })
+})
+
+describe('getRelevantStatuses', () => {
+  const types = new Map([
+    ['g', 'general' as const],
+    ['s', 'study' as const],
+  ])
+
+  it('sem projeto de estudo, esconde os status de estudo', () => {
+    const tasks = [{ projectId: 'g', status: 'todo' as const }]
+    expect(getRelevantStatuses(tasks, types)).toEqual([
+      'todo',
+      'doing',
+      'blocked',
+      'done',
+    ])
+  })
+
+  it('com projeto de estudo, mostra os dois conjuntos', () => {
+    const tasks = [
+      { projectId: 'g', status: 'todo' as const },
+      { projectId: 's', status: 'to_study' as const },
+    ]
+    expect(getRelevantStatuses(tasks, types)).toContain('to_review')
+    expect(getRelevantStatuses(tasks, types)).toContain('doing')
+  })
+})
+
+describe('hasStudyContent', () => {
+  const types = new Map([
+    ['g', 'general' as const],
+    ['s', 'study' as const],
+  ])
+
+  it('sprint só com projetos gerais e sem revisão não tem estudo', () => {
+    expect(hasStudyContent([{ projectId: 'g' }], types, 0, false)).toBe(false)
+  })
+
+  it('card de estudo ou revisão registrada mostram a seção', () => {
+    expect(hasStudyContent([{ projectId: 's' }], types, 0, false)).toBe(true)
+    expect(hasStudyContent([{ projectId: 'g' }], types, 3, false)).toBe(true)
+  })
+
+  it('em todas as sprints, basta existir projeto de estudo', () => {
+    expect(hasStudyContent([], types, 0, true)).toBe(true)
+  })
+})
+
+describe('toStatusShares', () => {
+  it('calcula a fatia de cada status no total', () => {
+    const shares = toStatusShares([
+      { status: 'todo', count: 3 },
+      { status: 'done', count: 1 },
+    ])
+    expect(shares.map((share) => share.percent)).toEqual([75, 25])
+  })
+
+  it('sem cards, todas as fatias são zero', () => {
+    expect(toStatusShares([{ status: 'todo', count: 0 }])[0].percent).toBe(0)
+  })
+})
+
+describe('completionByAssignee', () => {
+  it('conta concluídos por responsável, sem responsável por último', () => {
+    const result = completionByAssignee([
+      { assigneeId: null, status: 'todo' },
+      { assigneeId: 'a', status: 'done' },
+      { assigneeId: 'b', status: 'done' },
+      { assigneeId: 'b', status: 'todo' },
+    ])
+    expect(result).toEqual([
+      { assigneeId: 'b', completed: 1, total: 2 },
+      { assigneeId: 'a', completed: 1, total: 1 },
+      { assigneeId: null, completed: 0, total: 1 },
     ])
   })
 })

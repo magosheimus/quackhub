@@ -36,7 +36,7 @@ export function InboxPage() {
     totalCount,
     isEmpty,
     counters,
-    todayLabel,
+    title,
     sprintBanner,
     projects,
     hasProjects,
@@ -58,14 +58,7 @@ export function InboxPage() {
     <div className="flex flex-col gap-4">
       {sprintBanner && <Marquee>{sprintBanner}</Marquee>}
 
-      <div className="flex flex-col gap-1">
-        <PageTitle
-          title={INBOX_TEXTS.title}
-          icon={IconInbox}
-          count={totalCount}
-        />
-        <span className="pl-4 text-caption">{todayLabel}</span>
-      </div>
+      <PageTitle title={title} icon={IconInbox} count={totalCount} />
 
       <div className="grid grid-cols-3 gap-3">
         {counters.map((counter) => (
@@ -78,7 +71,7 @@ export function InboxPage() {
           >
             <span
               className={cn(
-                'flex items-center gap-2 font-heading text-3xl',
+                'flex items-center gap-2 font-heading text-display',
                 COUNTER_TONE_CLASS[counter.tone],
               )}
             >
@@ -89,7 +82,7 @@ export function InboxPage() {
             </span>
             <span className="text-caption">{counter.label}</span>
             {counter.overdueDetail && (
-              <span className="text-xs text-danger">
+              <span className="text-caption text-danger">
                 {counter.overdueDetail}
               </span>
             )}

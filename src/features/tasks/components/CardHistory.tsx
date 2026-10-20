@@ -93,7 +93,7 @@ export function CardHistory({ taskId }: CardHistoryProps) {
           {visibleActivity.length > 0 ? (
             <div className="flex flex-col gap-2">
               {visibleActivity.map((entry) => (
-                <Panel key={entry.id} className="p-2 text-sm">
+                <Panel key={entry.id} className="p-2 text-body">
                   <span className="text-caption">{entry.dateTime}</span>
                   <p className="mt-1 flex flex-wrap gap-x-2 text-fg">
                     <span className="text-fg-muted">{entry.label}:</span>
@@ -115,7 +115,7 @@ export function CardHistory({ taskId }: CardHistoryProps) {
           {visibleLogs.length > 0 ? (
             <div className="flex flex-col gap-2">
               {visibleLogs.map((log) => (
-                <Panel key={log.id} className="p-2 text-sm">
+                <Panel key={log.id} className="p-2 text-body">
                   <div className="flex flex-wrap items-center gap-2 text-caption">
                     <span>{formatFullDate(log.session_date)}</span>
                     <span>·</span>

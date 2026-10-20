@@ -74,7 +74,7 @@ export function CardChecklist({ taskId }: CardChecklistProps) {
                         ref={dragProvided.innerRef}
                         {...dragProvided.draggableProps}
                         {...dragProvided.dragHandleProps}
-                        className="flex items-center gap-2 text-sm"
+                        className="flex items-center gap-2 text-body"
                       >
                         <Checkbox
                           checked={item.done}

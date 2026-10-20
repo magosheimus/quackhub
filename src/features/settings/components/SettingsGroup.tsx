@@ -11,10 +11,7 @@ type SettingsGroupProps = {
 export function SettingsGroup({ title, children }: SettingsGroupProps) {
   return (
     <div className="flex flex-col gap-3">
-      <SectionTitle
-        className="normal-case"
-        marker={<MenuCursor className="text-accent" />}
-      >
+      <SectionTitle marker={<MenuCursor className="text-accent" />}>
         {title}
       </SectionTitle>
       {children}

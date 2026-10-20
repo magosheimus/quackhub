@@ -45,6 +45,12 @@
     var(--glow);
 }
 
+/* Em cor de sinal, sem a franja na tinta do LCD: ela misturaria cores
+   (ex.: vermelho com o verde-amarelo do Sage Dark) */
+.theme-dark .font-heading:is(.text-danger, .text-warning, .text-success) {
+  text-shadow: var(--glow);
+}
+
 .glow-on.theme-dark .font-heading.text-accent {
   color: color-mix(in oklch, var(--accent) 60%, white);
 }

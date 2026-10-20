@@ -35,34 +35,34 @@ export function SprintSummary({ sprint }: SprintSummaryProps) {
   return (
     <Panel className="flex flex-col gap-6 p-6">
       <div>
-        <span className="font-heading text-3xl text-fg">{sprint.name}</span>
+        <span className="font-heading text-heading-2 text-fg">
+          {sprint.name}
+        </span>
         {(sprint.start_date || sprint.end_date) && (
-          <div className="text-subtle">
+          <div className="text-body text-fg-muted">
             {formatFullDate(sprint.start_date)} →{' '}
             {formatFullDate(sprint.end_date)}
           </div>
         )}
-        {sprint.goal && (
-          <div className="mt-2 text-sm text-fg">{sprint.goal}</div>
-        )}
+        {sprint.goal && <div className="mt-2 text-body">{sprint.goal}</div>}
       </div>
 
       <div className="grid grid-cols-3 gap-4 border-t border-border pt-4">
         <div>
           <div className="text-caption">{SPRINTS_TEXTS.totalIssues}</div>
-          <div className="font-heading text-3xl text-fg">
+          <div className="font-heading text-display text-fg">
             {sprint.total_tasks ?? 0}
           </div>
         </div>
         <div>
           <div className="text-caption">{SPRINTS_TEXTS.completedIssues}</div>
-          <div className="font-heading text-3xl text-fg">
+          <div className="font-heading text-display text-fg">
             {sprint.completed_tasks ?? 0}
           </div>
         </div>
         <div>
           <div className="text-caption">{SPRINTS_TEXTS.completionRate}</div>
-          <div className="font-heading text-3xl text-fg">
+          <div className="font-heading text-display text-fg">
             {Math.round((sprint.completion_rate ?? 0) * 100)}%
           </div>
         </div>
