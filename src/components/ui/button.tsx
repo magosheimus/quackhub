@@ -11,7 +11,7 @@ const buttonVariants = cva(
         outline:
           'border-(--control-border) bg-(--control-bg) hover:bg-(--control-hover) hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground',
         selected:
-          'glow-active border border-border bg-selected text-fg hover:bg-selected',
+          'selected-cursor border-accent bg-accent font-semibold text-on-accent hover:bg-accent/90',
         secondary:
           'bg-secondary text-secondary-foreground hover:bg-[color-mix(in_oklch,var(--secondary),var(--foreground)_5%)] aria-expanded:bg-secondary aria-expanded:text-secondary-foreground',
         ghost:

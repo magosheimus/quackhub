@@ -20,15 +20,19 @@ function TabsList({ className, ...props }: TabsPrimitive.List.Props) {
   )
 }
 
-// Mesmo visual dos botões de seleção do app (outline / selected)
+// Mesmo visual dos botões de seleção do app: a ativa usa a variante selected
 function TabsTab({ className, ...props }: TabsPrimitive.Tab.Props) {
   return (
     <TabsPrimitive.Tab
-      className={cn(
-        buttonVariants({ variant: 'outline', size: 'sm' }),
-        'data-active:glow-active data-active:border-border data-active:bg-selected data-active:text-fg data-active:hover:bg-selected',
-        className,
-      )}
+      className={(state) =>
+        cn(
+          buttonVariants({
+            variant: state.active ? 'selected' : 'outline',
+            size: 'sm',
+          }),
+          typeof className === 'function' ? className(state) : className,
+        )
+      }
       {...props}
     />
   )
