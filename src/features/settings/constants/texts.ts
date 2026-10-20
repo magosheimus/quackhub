@@ -1,5 +1,6 @@
 import type { Settings } from '@/features/settings/lib/settings'
 import type { SettingsTab } from '@/features/settings/lib/settingsTab'
+import type { UiScale } from '@/features/settings/lib/uiScale'
 
 export const SETTINGS_TAB_LABELS: Record<SettingsTab, string> = {
   appearance: 'Aparência',
@@ -43,6 +44,14 @@ export const TEXT_SIZE_LABELS: Record<Settings['textSize'], string> = {
   xlarge: 'Muito grande',
 }
 
+export const UI_SCALE_LABELS: Record<UiScale, string> = {
+  '80': '80%',
+  '90': '90%',
+  '100': 'Normal',
+  '110': '110%',
+  '120': '120%',
+}
+
 export const LCD_GHOST_LABELS: Record<Settings['lcdGhost'], string> = {
   off: 'Desligado',
   subtle: 'Sutil',
@@ -67,6 +76,9 @@ export const SETTINGS_TEXTS = {
   background: 'Fundo',
   effects: 'Efeitos',
   typography: 'Tipografia',
+  screen: 'Tela',
+  uiScale: 'Escala da interface',
+  uiScaleHint: 'Salva só neste aparelho.',
   dates: 'Datas',
   bodyFont: 'Fonte do corpo',
   textSize: 'Tamanho do texto',

@@ -86,6 +86,7 @@ import { RobotFaceSharp } from 'pixelarticons/react/RobotFaceSharp'
 import { RobotSharp } from 'pixelarticons/react/RobotSharp'
 import { Scale } from 'pixelarticons/react/Scale'
 import { Send } from 'pixelarticons/react/Send'
+import { Tablet } from 'pixelarticons/react/Tablet'
 import { VercelSolid } from 'pixelarticons/react/VercelSolid'
 import { SettingsCog2 } from 'pixelarticons/react/SettingsCog2'
 import { SkullSharp } from 'pixelarticons/react/SkullSharp'
@@ -201,6 +202,7 @@ export const IconRefresh = createIcon(RefreshSolid)
 export const IconRobot = createIcon(Robot)
 export const IconScale = createIcon(Scale)
 export const IconSend = createIcon(Send)
+export const IconTablet = createIcon(Tablet)
 export const IconVercelSolid = createIcon(VercelSolid)
 export const IconSettings = createIcon(SettingsCog2)
 export const IconSkull = createIcon(SkullSharp)

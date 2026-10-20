@@ -29,7 +29,7 @@ export function BoardColumn({
   return (
     <div className="flex w-[78vw] max-w-72 shrink-0 snap-start flex-col gap-2 lg:w-auto lg:max-w-none lg:min-w-0 lg:flex-1 lg:shrink">
       <div className="page-backdrop sticky top-0 z-10 flex items-center justify-between px-1 py-1">
-        <span className="font-heading text-xl text-fg">{label}</span>
+        <span className="font-heading text-heading-3 text-fg">{label}</span>
         <span className="flex size-6 items-center justify-center rounded-md border border-(--border-card-empty) bg-card-empty text-caption">
           {tasks.length}
         </span>

@@ -2,6 +2,8 @@ import type { ReactNode } from 'react'
 import { cn } from '@/shared/lib/utils'
 import { MenuCursor } from '@/components/brand/menu-cursor'
 import { SectionTitle } from '@/components/layout/section-title'
+import { HintTooltip } from '@/components/feedback/hint-tooltip'
+import { IconTablet } from '@/shared/lib/icons'
 
 type SettingsGroupProps = {
   title: string
@@ -28,16 +30,27 @@ export function SettingsOptionList({ children }: { children: ReactNode }) {
   )
 }
 
+// hint: preferência com regra própria (ex.: salva só no aparelho), explicada
+// no tooltip do ícone ao lado do nome
 export function SettingsOption({
   label,
+  hint,
   children,
 }: {
   label: string
+  hint?: string
   children: ReactNode
 }) {
   return (
     <>
-      <span className="text-sm text-fg">{label}</span>
+      <span className="flex items-center gap-2 text-sm text-fg">
+        {label}
+        {hint && (
+          <HintTooltip text={hint}>
+            <IconTablet size={16} aria-label={hint} className="text-fg-muted" />
+          </HintTooltip>
+        )}
+      </span>
       {children}
     </>
   )
