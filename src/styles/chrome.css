@@ -54,3 +54,10 @@ html:not(.theme-dark) .app-chrome .bg-accent {
   background-color: var(--on-accent);
   color: var(--accent);
 }
+
+/* Peças com o fundo da página dentro da barra (letras dos projetos na sidebar
+   recolhida): nos temas claros, o hover da barra invertida é escuro demais
+   para elas; escurecem só um pouco o próprio fundo */
+html:not(.theme-dark) .app-chrome .chrome-page-tile:hover {
+  background-color: color-mix(in oklch, var(--bg-page) 88%, var(--lcd-ink));
+}
