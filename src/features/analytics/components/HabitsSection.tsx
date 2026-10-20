@@ -41,7 +41,7 @@ function HabitGoals({ summary }: { summary: HabitPeriodSummary }) {
         <EmptyMessage>{ANALYTICS_TEXTS.noHabits}</EmptyMessage>
       ) : (
         <>
-          <span className="font-heading text-4xl text-fg">
+          <span className="font-heading text-display text-fg">
             {summary.overallRate}%
           </span>
           <div className="flex flex-col gap-2">

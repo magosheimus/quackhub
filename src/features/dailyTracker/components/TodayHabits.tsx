@@ -64,8 +64,8 @@ export function TodayHabits({
               <div className="flex min-w-0 flex-col gap-0.5">
                 <span
                   className={cn(
-                    'truncate text-sm',
-                    isDone ? 'text-fg-muted line-through' : 'text-fg',
+                    'truncate text-body-strong',
+                    isDone && 'font-normal text-fg-muted line-through',
                   )}
                 >
                   {item.habit.name}

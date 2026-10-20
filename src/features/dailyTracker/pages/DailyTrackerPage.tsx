@@ -94,7 +94,9 @@ export function DailyTrackerPage() {
     <div className="flex flex-col gap-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <PageTitle title={DAILY_TRACKER_TEXTS.title} icon={IconCalendarWeeks} />
-        <span className="text-sm text-fg">{periodLabel}</span>
+        <span className="rounded-md bg-accent px-3 py-1 text-body-strong text-on-accent">
+          {periodLabel}
+        </span>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">

@@ -29,10 +29,7 @@ export function DayCommentField({
   }
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="-ml-[calc(0.625rem+1px)] flex items-center gap-2"
-    >
+    <form onSubmit={handleSubmit} className="flex items-center gap-2">
       <Input
         ref={inputRef}
         value={draft}
@@ -46,7 +43,9 @@ export function DayCommentField({
         }
         aria-label={DAILY_TRACKER_TEXTS.commentLabel}
         disabled={!isEnabled}
-        className={cn(isStatic && 'input-static cursor-text')}
+        className={cn(
+          isStatic && 'input-static input-static-flush cursor-text',
+        )}
       />
       {!isStatic && (
         <Button

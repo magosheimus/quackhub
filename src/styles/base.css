@@ -58,6 +58,18 @@ select {
   border-color: var(--border);
 }
 
+/* Variante sem espaço interno (texto alinhado com o resto): no hover,
+   sublinhado em vez da borda, que ficaria encostada no texto */
+.input-static.input-static-flush {
+  padding-inline: 0;
+}
+
+.input-static.input-static-flush:hover {
+  border-color: transparent;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
 input:autofill,
 input:-webkit-autofill {
   -webkit-text-fill-color: var(--text-primary);

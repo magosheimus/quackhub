@@ -47,7 +47,9 @@ export function WeeklyStats({
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-2">
         <div className="flex flex-wrap items-baseline gap-x-2">
-          <span className="font-heading text-4xl text-fg">{overallRate}%</span>
+          <span className="font-heading text-display text-fg">
+            {overallRate}%
+          </span>
           <span className="text-subtle">
             {DAILY_TRACKER_TEXTS.overallRate(isSprint)}
           </span>
