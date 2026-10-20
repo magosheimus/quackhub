@@ -8,14 +8,27 @@
 
 /* Cores redeclaradas nos elementos para --glow-color valer por elemento */
 .glow-on,
-.glow-on :is(.font-heading, [aria-current='page'], .glow-active, .logo-mark) {
+.glow-on
+  :is(
+    .font-heading,
+    [aria-current='page'],
+    .glow-active,
+    .logo-mark,
+    .icon-glow
+  ) {
   --ghost-a: transparent;
   --ghost-b: var(--glow-color);
 }
 
 .glow-on.lcd-glitch,
 .glow-on.lcd-glitch
-  :is(.font-heading, [aria-current='page'], .glow-active, .logo-mark) {
+  :is(
+    .font-heading,
+    [aria-current='page'],
+    .glow-active,
+    .logo-mark,
+    .icon-glow
+  ) {
   --ghost-a: var(--glitch-red);
   --ghost-b: var(--glitch-cyan);
 }
@@ -40,7 +53,7 @@
 
 /* Pato da logo: drop-shadow em px, declarado no próprio pato para --glow-color
    valer por elemento (as barras do app trocam a cor do brilho) */
-.glow-on .logo-mark {
+.glow-on :is(.logo-mark, .icon-glow) {
   --glow-filter: drop-shadow(
       calc(var(--ghost-logo-offset) * -1) 0 0
         color-mix(in oklch, var(--ghost-a) var(--ghost-alpha), transparent)
@@ -57,7 +70,7 @@
 }
 
 /* Temas claros: brilho suave, exceto nas barras do app, que têm fundo escuro */
-.glow-on:not(.theme-dark) .logo-mark:not(.app-chrome *) {
+.glow-on:not(.theme-dark) :is(.logo-mark, .icon-glow):not(.app-chrome *) {
   --glow-filter: drop-shadow(
       calc(var(--ghost-logo-offset) * -1) 0 0
         color-mix(in oklch, var(--ghost-a) var(--ghost-alpha), transparent)
