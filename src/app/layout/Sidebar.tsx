@@ -14,6 +14,7 @@ import { getProjectInitial } from '@/features/projects/lib/project'
 import { NavItem } from './NavItem'
 import { navLinkClass } from './navLinkClass'
 import { CartuchoMenu } from './CartuchoMenu'
+import { SIDEBAR_COLLAPSED_WIDTH, SIDEBAR_EXPANDED_WIDTH } from './sidebarWidth'
 import { ProjectCreateModal } from '@/features/projects/components/ProjectCreateModal'
 import { ProjectEditModal } from '@/features/projects/components/ProjectEditModal'
 import { LoadingText } from '@/components/feedback/loading-text'
@@ -60,7 +61,9 @@ export function Sidebar({
     <aside
       className={cn(
         'app-chrome flex h-full shrink-0 flex-col overflow-y-auto border-r-2 border-(--chrome-edge) bg-surface',
-        isCollapsed ? 'w-14 p-2' : 'w-55 p-4',
+        isCollapsed
+          ? `${SIDEBAR_COLLAPSED_WIDTH} p-2`
+          : `${SIDEBAR_EXPANDED_WIDTH} p-4`,
         className,
       )}
     >

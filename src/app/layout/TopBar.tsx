@@ -6,13 +6,22 @@ import { IconMenu } from '@/shared/lib/icons'
 import { APP_TEXTS } from '@/app/constants/texts'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
 import { DailyNav } from './DailyNav'
+import { SIDEBAR_EXPANDED_WIDTH } from './sidebarWidth'
+import { cn } from '@/shared/lib/utils'
 
 type TopBarProps = {
   isMobile: boolean
+  isSidebarCollapsed: boolean
   onOpenMenu: () => void
 }
 
-export function TopBar({ isMobile, onOpenMenu }: TopBarProps) {
+export function TopBar({
+  isMobile,
+  isSidebarCollapsed,
+  onOpenMenu,
+}: TopBarProps) {
+  const isBrandOverSidebar = !isMobile && !isSidebarCollapsed
+
   return (
     <header className="app-chrome flex h-14 shrink-0 items-stretch gap-6 border-b-2 border-(--chrome-edge) bg-surface px-4">
       {isMobile && (
@@ -27,7 +36,13 @@ export function TopBar({ isMobile, onOpenMenu }: TopBarProps) {
           <IconMenu size={20} aria-hidden="true" />
         </Button>
       )}
-      <div className="flex shrink-0 items-center gap-3 font-heading text-3xl text-accent">
+      <div
+        className={cn(
+          'flex shrink-0 items-center gap-3 font-heading text-3xl text-accent',
+          isBrandOverSidebar &&
+            `-ml-4 justify-center ${SIDEBAR_EXPANDED_WIDTH}`,
+        )}
+      >
         {isMobile && <LogoMark />}
         <span>{COMMON_TEXTS.brand}</span>
       </div>
