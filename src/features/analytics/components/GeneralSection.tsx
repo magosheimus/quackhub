@@ -15,6 +15,8 @@ import type {
   StatusCountItem,
 } from '@/features/analytics/hooks/useAnalyticsPage'
 import { StatusStrip } from './StatusStrip'
+import { BurnupCard } from './BurnupCard'
+import type { BurnupPoint } from '@/features/analytics/lib/burnup'
 import { CompletionRow } from './CompletionRow'
 import { PersonaIcon } from '@/features/personas/components/PersonaIcon'
 import { PERSONAS_TEXTS } from '@/features/personas/constants/texts'
@@ -29,6 +31,7 @@ type GeneralSectionProps = {
   projects: ProjectCompletionItem[]
   personas: PersonaCompletionItem[]
   statusCounts: StatusCountItem[]
+  burnup: BurnupPoint[]
   completionRateOverTime: CompletionRateOverTimeItem[]
 }
 
@@ -37,6 +40,7 @@ export function GeneralSection({
   projects,
   personas,
   statusCounts,
+  burnup,
   completionRateOverTime,
 }: GeneralSectionProps) {
   return (
@@ -47,6 +51,8 @@ export function GeneralSection({
           <StatusStrip items={statusCounts} />
         </div>
       )}
+
+      {!isAll && burnup.length > 0 && <BurnupCard points={burnup} />}
 
       <div className={cn('grid gap-4', !isAll && 'lg:grid-cols-2')}>
         <ChartCard title={ANALYTICS_TEXTS.doneByProject}>

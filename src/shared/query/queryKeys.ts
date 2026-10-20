@@ -80,6 +80,8 @@ export const queryKeys = {
       ['analytics', 'confidence-calibration', sprintId ?? 'all'] as const,
     confidenceDistribution: (sprintId?: string | null) =>
       ['analytics', 'confidence-distribution', sprintId ?? 'all'] as const,
+    doneEvents: (sprintId: string | null) =>
+      ['analytics', 'done-events', sprintId ?? 'none'] as const,
     reviewsByEpic: (sprintId?: string | null) =>
       ['analytics', 'reviews-by-epic', sprintId ?? 'all'] as const,
     sprintHistory: (projectId?: string | null) =>

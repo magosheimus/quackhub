@@ -22,6 +22,7 @@ export function AnalyticsPage() {
     hasNoActiveSprint,
     projectCompletion,
     statusCounts,
+    burnup,
     personaCompletion,
     showStudy,
     completionRateOverTime,
@@ -66,6 +67,7 @@ export function AnalyticsPage() {
             projects={projectCompletion}
             personas={personaCompletion}
             statusCounts={statusCounts}
+            burnup={burnup}
             completionRateOverTime={completionRateOverTime}
           />
           {showStudy && (

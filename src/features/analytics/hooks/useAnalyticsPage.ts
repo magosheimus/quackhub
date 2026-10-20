@@ -43,7 +43,12 @@ import {
   getEarliestSprintStart,
   summarizeHabitPeriod,
 } from '@/features/analytics/lib/habitMetrics'
-import { todayLocal } from '@/shared/lib/date'
+import { getDateRange, todayLocal } from '@/shared/lib/date'
+import {
+  buildBurnup,
+  lastDoneDateByTask,
+} from '@/features/analytics/lib/burnup'
+import { useDoneEvents } from '@/features/analytics/hooks/useDoneEvents'
 import { NEUTRAL_COLOR, resolvePaletteColor } from '@/shared/lib/palette'
 import { useProjects } from '@/features/projects/hooks/useProjects'
 import { usePersonaOptions } from '@/features/personas/hooks/usePersonaOptions'
@@ -110,6 +115,11 @@ export function useAnalyticsPage() {
       : null
 
   const { data: tasks } = useTasksBySprintId(liveSprintId ?? '')
+  const { data: doneEvents } = useDoneEvents(
+    liveSprintId,
+    (tasks ?? []).map((task) => task.id),
+  )
+  const liveSprint = sprints?.find((sprint) => sprint.id === liveSprintId)
   const { data: calibration } = useConfidenceCalibration(liveSprintId)
   const { data: accuracyOverTime } = useAccuracyOverTime(liveSprintId)
   const { data: reviewsByEpic } = useReviewsByEpic(liveSprintId)
@@ -182,6 +192,15 @@ export function useAnalyticsPage() {
         ? STATUS_BADGE_CLASS[share.status]
         : NEUTRAL_STATUS_CLASS,
     })),
+    burnup:
+      liveSprint?.start_date && liveSprint.end_date
+        ? buildBurnup({
+            days: getDateRange(liveSprint.start_date, liveSprint.end_date),
+            tasks: tasks ?? [],
+            doneDateByTask: lastDoneDateByTask(doneEvents ?? []),
+            today,
+          })
+        : [],
     personaCompletion: completionByAssignee(tasks ?? []).map(
       (item): PersonaCompletionItem => ({
         ...item,
