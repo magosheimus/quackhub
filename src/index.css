@@ -84,11 +84,6 @@
   --radius-lg: 6px;
 }
 
-/* Escala tipográfica (tabela no Design System).
-   Headings: usar com font-heading (VT323, glow e traço); só display e
-   heading-1 em maiúsculas. A VT323 é baixa (maiúscula a 0,56 do tamanho,
-   contra 0,73 da fonte do corpo), por isso os números altos.
-   Body: fonte escolhida nas Configurações */
 @utility text-display {
   @apply uppercase;
   font-size: 3rem;
@@ -135,9 +130,6 @@
   letter-spacing: 0.05em;
 }
 
-/* Cursor de menu de jogo antes do texto da opção escolhida (o VercelSolid do
-   pixelarticons girado, como o MenuCursor). Desenhado em CSS para valer em
-   qualquer botão selecionado sem mexer no conteúdo; brilha com o glow ligado */
 @utility selected-cursor {
   &::before {
     content: '';

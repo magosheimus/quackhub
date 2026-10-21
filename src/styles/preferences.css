@@ -51,8 +51,6 @@
   --ghost-alpha: 0%;
 }
 
-/* Pato da logo: drop-shadow em px, declarado no próprio pato para --glow-color
-   valer por elemento (as barras do app trocam a cor do brilho) */
 .glow-on :is(.logo-mark, .icon-glow, .selected-cursor) {
   --glow-filter: drop-shadow(
       calc(var(--ghost-logo-offset) * -1) 0 0
@@ -69,7 +67,6 @@
     );
 }
 
-/* Temas claros: brilho suave, exceto nas barras do app, que têm fundo escuro */
 .glow-on:not(.theme-dark)
   :is(.logo-mark, .icon-glow, .selected-cursor):not(.app-chrome *) {
   --glow-filter: drop-shadow(
@@ -98,8 +95,6 @@
     0 0 1em color-mix(in oklch, var(--glow-color) 15%, transparent);
 }
 
-/* Temas claros trocam o halo largo do escuro por um suave, exceto nas barras
-   do app, que têm fundo escuro */
 .glow-on:not(.theme-dark)
   :is(.font-heading, [aria-current='page'], .glow-active):not(.app-chrome *) {
   --glow:
@@ -116,10 +111,6 @@
   --glow-color: currentColor;
 }
 
-/* Tamanho do texto: font-size-adjust aumenta só as letras, sem mexer nas
-   caixas (rem). --font-body-aspect é a altura do x de cada fonte, então cada
-   uma mantém o próprio tamanho; só a Pixelify, de minúsculas baixas demais
-   (0,45), é tratada como 0,55 */
 :root {
   --font-body-aspect: 0.55;
   --text-scale: 1;

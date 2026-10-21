@@ -12,7 +12,6 @@ type CompletionRowProps = {
   color?: string
 }
 
-// Linha "marcador · nome · barra · X de Y", usada por projeto e por persona
 export function CompletionRow({
   marker,
   name,

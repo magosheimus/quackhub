@@ -5,8 +5,6 @@ import { buttonVariants } from '@/components/ui/button'
 import { IconChevronLeft, IconChevronRight } from '@/shared/lib/icons'
 import { cn } from '@/shared/lib/utils'
 
-// Calendário do app sobre o react-day-picker (sem o CSS dele): mês em VT323,
-// dia escolhido invertido, hoje com borda de destaque, dias de fora apagados
 function Calendar({
   className,
   classNames,

@@ -7,7 +7,6 @@ import type {
 
 export type Sprint = Tables<'sprints'>
 export type NewSprint = TablesInsert<'sprints'>
-export type SprintUpdate = TablesUpdate<'sprints'>
 
 export type Project = Tables<'projects'>
 export type NewProject = TablesInsert<'projects'>

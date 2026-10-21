@@ -2,10 +2,7 @@ import { createIcon } from './createIcon'
 import { Alien } from 'pixelarticons/react/Alien'
 import { Android } from 'pixelarticons/react/Android'
 import { Apple } from 'pixelarticons/react/Apple'
-import { Archive } from 'pixelarticons/react/Archive'
-import { ArrowDown } from 'pixelarticons/react/ArrowDown'
 import { ArrowLeft } from 'pixelarticons/react/ArrowLeft'
-import { ArrowUp } from 'pixelarticons/react/ArrowUp'
 import { Article } from 'pixelarticons/react/Article'
 import { Attachment } from 'pixelarticons/react/Attachment'
 import { AvatarCircle } from 'pixelarticons/react/AvatarCircle'
@@ -17,7 +14,6 @@ import { Brush } from 'pixelarticons/react/Brush'
 import { Bulletlist } from 'pixelarticons/react/Bulletlist'
 import { Calendar } from 'pixelarticons/react/Calendar'
 import { CalendarWeeks } from 'pixelarticons/react/CalendarWeeks'
-import { Card } from 'pixelarticons/react/Card'
 import { CardTextSharp } from 'pixelarticons/react/CardTextSharp'
 import { ChartColumnDecreasingSharp } from 'pixelarticons/react/ChartColumnDecreasingSharp'
 import { Check } from 'pixelarticons/react/Check'
@@ -47,7 +43,6 @@ import { Folder } from 'pixelarticons/react/Folder'
 import { Gamepad } from 'pixelarticons/react/Gamepad'
 import { Github } from 'pixelarticons/react/Github'
 import { Gitlab } from 'pixelarticons/react/Gitlab'
-import { Grid2x3 } from 'pixelarticons/react/Grid2x3'
 import { Headphone } from 'pixelarticons/react/Headphone'
 import { Heart } from 'pixelarticons/react/Heart'
 import { Home } from 'pixelarticons/react/Home'
@@ -71,9 +66,7 @@ import { Music } from 'pixelarticons/react/Music'
 import { Notebook } from 'pixelarticons/react/Notebook'
 import { Notes } from 'pixelarticons/react/Notes'
 import { Pencil } from 'pixelarticons/react/Pencil'
-import { PenSquare } from 'pixelarticons/react/PenSquare'
 import { Plus } from 'pixelarticons/react/Plus'
-import { PlusBox } from 'pixelarticons/react/PlusBox'
 import { PlusBoxSharp } from 'pixelarticons/react/PlusBoxSharp'
 import { Potion } from 'pixelarticons/react/Potion'
 import { Redo } from 'pixelarticons/react/Redo'
@@ -119,10 +112,7 @@ export type { IconComponent, IconProps, IconSize } from './createIcon'
 export const IconAlien = createIcon(Alien)
 export const IconAndroid = createIcon(Android)
 export const IconApple = createIcon(Apple)
-export const IconArchive = createIcon(Archive)
-export const IconArrowDown = createIcon(ArrowDown)
 export const IconArrowLeft = createIcon(ArrowLeft)
-export const IconArrowUp = createIcon(ArrowUp)
 export const IconArticle = createIcon(Article)
 export const IconAttachment = createIcon(Attachment)
 export const IconAvatar = createIcon(AvatarCircle)
@@ -134,7 +124,6 @@ export const IconBrush = createIcon(Brush)
 export const IconBulletlist = createIcon(Bulletlist)
 export const IconCalendar = createIcon(Calendar)
 export const IconCalendarWeeks = createIcon(CalendarWeeks)
-export const IconCard = createIcon(Card)
 export const IconCardText = createIcon(CardTextSharp)
 export const IconChartColumnDecreasing = createIcon(ChartColumnDecreasingSharp)
 export const IconCheck = createIcon(Check)
@@ -164,7 +153,6 @@ export const IconGamepad = createIcon(Gamepad)
 export const IconGem = createIcon(DiamondGem)
 export const IconGithub = createIcon(Github)
 export const IconGitlab = createIcon(Gitlab)
-export const IconGrid = createIcon(Grid2x3)
 export const IconHeadphone = createIcon(Headphone)
 export const IconHeart = createIcon(Heart)
 export const IconHome = createIcon(Home)
@@ -193,9 +181,7 @@ export const IconNoSmoking = createIcon(CigaretteOff)
 export const IconNotebook = createIcon(Notebook)
 export const IconNotes = createIcon(Notes)
 export const IconPencil = createIcon(Pencil)
-export const IconPenSquare = createIcon(PenSquare)
 export const IconPlus = createIcon(Plus)
-export const IconPlusBox = createIcon(PlusBox)
 export const IconPlusBoxSharp = createIcon(PlusBoxSharp)
 export const IconPotion = createIcon(Potion)
 export const IconRedo = createIcon(Redo)

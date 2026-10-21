@@ -20,7 +20,6 @@ function TabsList({ className, ...props }: TabsPrimitive.List.Props) {
   )
 }
 
-// Mesmo visual dos botões de seleção do app: a ativa usa a variante selected
 function TabsTab({ className, ...props }: TabsPrimitive.Tab.Props) {
   return (
     <TabsPrimitive.Tab

@@ -14,7 +14,6 @@ export type BurnupPoint = {
   ideal: number
 }
 
-// Dia (local) da última vez que cada card foi para Finalizado
 export function lastDoneDateByTask(events: DoneEvent[]): Map<string, string> {
   const byTask = new Map<string, string>()
   for (const event of events) {
@@ -36,9 +35,6 @@ type BurnupInput = {
   today: string
 }
 
-// Concluídos acumulados por dia contra a reta ideal (0 → total de cards).
-// Card concluído sem registro de movimentação conta no primeiro dia; dias
-// futuros ficam sem valor, para a linha parar em hoje
 export function buildBurnup({
   days,
   tasks,

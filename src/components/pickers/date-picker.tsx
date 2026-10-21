@@ -29,8 +29,6 @@ type DatePickerProps = {
   className?: string
 }
 
-// Campo de data do app: mostra a data no formato das Configurações e abre o
-// calendário num popover. Valor no formato do banco ('yyyy-MM-dd') ou null
 export function DatePicker({
   value,
   onChange,

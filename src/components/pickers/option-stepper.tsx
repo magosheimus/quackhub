@@ -11,7 +11,6 @@ type OptionStepperProps<T extends string | number> = {
   onChange: (value: T) => void
 }
 
-// Seletor "< opção >" de menu de jogo: as setas andam pelas opções e dão a volta
 export function OptionStepper<T extends string | number>({
   label,
   options,
@@ -63,7 +62,6 @@ type OnOffStepperProps = {
   onChange: (checked: boolean) => void
 }
 
-// Liga/desliga no mesmo formato "< opção >"
 export function OnOffStepper({ label, checked, onChange }: OnOffStepperProps) {
   return (
     <OptionStepper

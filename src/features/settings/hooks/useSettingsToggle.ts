@@ -2,8 +2,6 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { HOME_PATH } from '@/features/auth/lib/redirect'
 import { SETTINGS_PATH } from '@/features/settings/constants/paths'
 
-// Abrir e sair das Configurações pelo mesmo botão/atalho. Sair volta para a
-// tela anterior; sem tela anterior (abriu direto na URL), vai para a Inbox
 export function useSettingsToggle() {
   const navigate = useNavigate()
   const location = useLocation()

@@ -298,7 +298,6 @@ export function groupTasksByColumn(
   return groups
 }
 
-// A REVISAR só existe se houver cards de "estudo"
 export function getVisibleBoardColumns(
   tasks: Task[],
   projectTypeById: Map<string, ProjectType>,

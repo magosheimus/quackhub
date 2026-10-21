@@ -6,7 +6,6 @@ function shareStyle(percent: number): CSSProperties {
   return { width: `${percent}%` }
 }
 
-// Barra proporcional por status e os números embaixo, numa faixa só
 export function StatusStrip({ items }: { items: StatusCountItem[] }) {
   return (
     <div className="flex flex-col gap-4">
