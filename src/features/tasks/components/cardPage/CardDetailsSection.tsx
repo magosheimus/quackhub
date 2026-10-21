@@ -36,6 +36,8 @@ import { TASKS_TEXTS } from '@/features/tasks/constants/texts'
 import { Panel } from '@/components/layout/panel'
 import { cn } from '@/shared/lib/utils'
 import type { ProjectOption } from '@/features/projects/lib/project'
+import { ImportanceStars } from '@/features/tasks/components/ImportanceStars'
+import type { Importance } from '@/features/tasks/lib/importance'
 
 const NONE_EPIC = '__none__'
 const NONE_SPRINT = '__none__'
@@ -50,6 +52,7 @@ type CardDetailsSectionProps = {
   projectType?: ProjectType | null
   status: TaskStatus
   priority: TaskPriority
+  importance: Importance | null
   isFlagged: boolean
   epicId: string | null
   epicLabel?: EpicLabel
@@ -88,6 +91,7 @@ export function CardDetailsSection({
   projectType,
   status,
   priority,
+  importance,
   isFlagged,
   epicId,
   epicLabel,
@@ -262,6 +266,12 @@ export function CardDetailsSection({
                 ))}
               </SelectContent>
             </Select>
+          </DetailRow>
+          <DetailRow label={TASKS_TEXTS.importanceLabel}>
+            <ImportanceStars
+              value={importance}
+              onChange={(value) => onUpdate({ importance: value })}
+            />
           </DetailRow>
           <UrgentToggle
             flagged={isFlagged}

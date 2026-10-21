@@ -9,6 +9,7 @@ export function makeTask(overrides: Partial<Task> = {}): Task {
     description: null,
     status: 'todo',
     priority: 'medium',
+    importance: null,
     origin: 'manual',
     projectId: 'project-1',
     epicId: null,
