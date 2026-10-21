@@ -1,12 +1,10 @@
 // Datas no formato do banco ('yyyy-MM-dd')
 const MISSING_DATE = '?'
 
-// Formato escolhido nas Configurações; todas as datas exibidas seguem ele
 export type DateFormat = 'dd/MM/yyyy' | 'MM/dd/yyyy'
 
 export const DEFAULT_DATE_FORMAT: DateFormat = 'dd/MM/yyyy'
 
-// '21/10' ou '10/21'
 export function formatDayMonth(
   date: string | null,
   format: DateFormat = DEFAULT_DATE_FORMAT,
@@ -18,7 +16,6 @@ export function formatDayMonth(
   return format === 'MM/dd/yyyy' ? `${month}/${day}` : `${day}/${month}`
 }
 
-// '21/10/2026' ou '10/21/2026'
 export function formatFullDate(
   date: string | null,
   format: DateFormat = DEFAULT_DATE_FORMAT,
@@ -32,7 +29,6 @@ export function formatFullDate(
     : `${day}/${month}/${year}`
 }
 
-// Data de um timestamp (ex.: criado/atualizado), no dia local
 export function formatTimestampDate(
   timestamp: string | null,
   format: DateFormat = DEFAULT_DATE_FORMAT,
@@ -43,7 +39,6 @@ export function formatTimestampDate(
   return formatFullDate(toDbDate(new Date(timestamp)), format)
 }
 
-// 'terça-feira'
 export function formatWeekdayName(date: Date): string {
   return new Intl.DateTimeFormat('pt-BR', { weekday: 'long' }).format(date)
 }
@@ -113,7 +108,6 @@ export function formatMonthYear(yearMonth: string): string {
   return label.charAt(0).toUpperCase() + label.slice(1)
 }
 
-// Timestamp do banco no horário local: '17/10/2026 · 20:52'
 export function formatDateTime(
   timestamp: string | null,
   format: DateFormat = DEFAULT_DATE_FORMAT,
@@ -129,7 +123,6 @@ export function formatDateTime(
 
 const TIME_SLOT_MINUTES = 30
 
-// Horários do dia de 30 em 30 minutos: '00:00', '00:30', ... '23:30'
 export function getTimeSlots(): string[] {
   const slots: string[] = []
   for (let minutes = 0; minutes < 24 * 60; minutes += TIME_SLOT_MINUTES) {
@@ -140,8 +133,6 @@ export function getTimeSlots(): string[] {
   return slots
 }
 
-// Horário digitado em formatos livres ('9', '14h', '14h30', '1430', '9:5')
-// para 'HH:mm'; null se não for um horário válido
 export function parseTimeInput(text: string): string | null {
   const match = text
     .trim()

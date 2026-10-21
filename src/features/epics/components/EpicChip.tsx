@@ -6,7 +6,6 @@ type EpicChipProps = {
   withSeparator?: boolean
 }
 
-// Com separador, vai na linha do código do projeto: "ME-1 / Épico"
 export function EpicChip({ label, withSeparator }: EpicChipProps) {
   return (
     <>

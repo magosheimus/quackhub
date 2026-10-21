@@ -64,7 +64,6 @@
   --control-radius: min(var(--radius-md), 12px);
   --control-height: 1.75rem;
 
-  /* Faixa do marquee (banner da sprint na Inbox) */
   --marquee-bg: var(--bg-selected);
 
   /* Efeitos */
@@ -114,7 +113,6 @@
   /* Motion */
   --motion-fast: 150ms ease;
 
-  /* Barras do app (top bar e sidebar) */
   --chrome-bg: color-mix(in oklch, var(--accent) 82%, var(--on-accent));
   --chrome-edge: color-mix(in oklch, var(--accent) 70%, black);
 }
@@ -160,7 +158,6 @@
   --palette-lime: #5f9a3a;
   --palette-graphite: #3f3a36;
 
-  /* Barras do app (top bar e sidebar): o accent misturado ao claro desbotava o vinho; aqui escurece */
   --chrome-bg: color-mix(in oklch, var(--accent) 85%, black);
   --chrome-edge: color-mix(in oklch, var(--accent) 70%, black);
 }
@@ -203,7 +200,6 @@
   --palette-lime: #9dc20a;
   --palette-graphite: #2d3d3d;
 
-  /* Barras do app (top bar e sidebar): borda clara: no azul, contorno nítido fica melhor */
   --chrome-bg: color-mix(in oklch, var(--accent) 82%, var(--on-accent));
   --chrome-edge: var(--on-accent);
 }
@@ -246,7 +242,6 @@
   --palette-lime: #8aa040;
   --palette-graphite: #7d7c7b;
 
-  /* Barras do app (top bar e sidebar) */
   --chrome-bg: color-mix(in oklch, var(--accent) 82%, var(--on-accent));
   --chrome-edge: color-mix(in oklch, var(--accent) 70%, black);
 }
@@ -291,7 +286,6 @@
   --palette-lime: #748c41;
   --palette-graphite: #8a8f94;
 
-  /* Barras do app (top bar e sidebar) */
   --chrome-bg: color-mix(in oklch, var(--bg-page) 90%, black);
   --chrome-edge: var(--border-strong);
 }
@@ -336,7 +330,6 @@
   --palette-lime: #fabd2f;
   --palette-graphite: #928374;
 
-  /* Barras do app (top bar e sidebar) */
   --chrome-bg: color-mix(in oklch, var(--bg-page) 90%, black);
   --chrome-edge: var(--border-strong);
 }

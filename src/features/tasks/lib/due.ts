@@ -436,7 +436,6 @@ export function formatDue(
   }
 }
 
-// Hora só existe com data: sem data, o prazo inteiro some
 export function toTaskDue(
   date: string | null,
   time: string | null,

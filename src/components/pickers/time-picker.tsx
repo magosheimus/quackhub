@@ -22,8 +22,6 @@ type TimePickerProps = {
   className?: string
 }
 
-// Campo de horário do app: lista de 30 em 30 minutos e campo para digitar
-// qualquer horário ('14h30', '1430'...). Valor 'HH:mm' ou null
 export function TimePicker({
   value,
   onChange,

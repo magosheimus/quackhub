@@ -2,8 +2,6 @@
    Paleta invertida e barras do app (top bar e sidebar)
    ========================================================================== */
 
-/* Paleta invertida (fundo = destaque, texto = sobre destaque): modais de
-   exclusão e, nos temas claros, as barras do app */
 .dialog-inverted,
 html:not(.theme-dark) .app-chrome {
   --bg-card: var(--accent);
@@ -31,8 +29,6 @@ html:not(.theme-dark) .app-chrome {
   --bg-surface: var(--chrome-bg);
 }
 
-/* Temas claros: dentro das barras invertidas, hover e selecionado partem da
-   cor da barra, e o que usa o destaque passa a usar o tom claro */
 html:not(.theme-dark) .app-chrome {
   --bg-surface: var(--chrome-bg);
   --bg-selected: color-mix(in oklch, var(--bg-surface) 80%, var(--on-accent));
@@ -55,9 +51,6 @@ html:not(.theme-dark) .app-chrome .bg-accent {
   color: var(--accent);
 }
 
-/* Peças com o fundo da página dentro da barra (letras dos projetos na sidebar
-   recolhida): nos temas claros, o hover da barra invertida é escuro demais
-   para elas; escurecem só um pouco o próprio fundo */
 html:not(.theme-dark) .app-chrome .chrome-page-tile:hover {
   background-color: color-mix(in oklch, var(--bg-page) 88%, var(--lcd-ink));
 }

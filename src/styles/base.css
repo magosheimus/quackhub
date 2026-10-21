@@ -12,8 +12,6 @@
   outline-offset: 2px;
 }
 
-/* Fonte base por tamanho de tela, multiplicada pela escala da interface
-   (--ui-scale, salva no aparelho) */
 html {
   font-size: calc(16px * var(--ui-scale, 1));
 }
@@ -64,8 +62,6 @@ select {
   border-color: var(--border);
 }
 
-/* Variante sem espaço interno (texto alinhado com o resto): no hover,
-   sublinhado em vez da borda, que ficaria encostada no texto */
 .input-static.input-static-flush {
   padding-inline: 0;
 }

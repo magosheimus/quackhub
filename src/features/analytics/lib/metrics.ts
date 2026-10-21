@@ -91,8 +91,6 @@ export function countTasksByStatus(
   }))
 }
 
-// Só os status que fazem sentido para os tipos de projeto presentes (sem projeto
-// de estudo, A ESTUDAR/ESTUDANDO/A REVISAR somem); status com card sempre aparece
 export function getRelevantStatuses(
   tasks: Pick<Task, 'projectId' | 'status'>[],
   projectTypeById: Map<string, ProjectType>,
@@ -108,8 +106,6 @@ export function getRelevantStatuses(
   return ALL_COLUMNS.filter((status) => relevant.has(status))
 }
 
-// Seção Estudo só com algo de estudo no escopo: card de projeto de estudo,
-// revisão registrada ou, em "todas as sprints", algum projeto de estudo
 export function hasStudyContent(
   tasks: Pick<Task, 'projectId'>[],
   projectTypeById: Map<string, ProjectType>,
@@ -127,7 +123,6 @@ export function hasStudyContent(
 
 export type StatusShare = { status: string; count: number; percent: number }
 
-// Fatia de cada status no total, para a barra proporcional
 export function toStatusShares(
   counts: { status: string; count: number }[],
 ): StatusShare[] {
@@ -144,8 +139,6 @@ export type AssigneeCompletion = {
   total: number
 }
 
-// Concluídos e total por responsável; cards sem responsável ficam num grupo
-// próprio, por último. Ordem: quem tem mais cards primeiro
 export function completionByAssignee(
   tasks: Pick<Task, 'assigneeId' | 'status'>[],
 ): AssigneeCompletion[] {

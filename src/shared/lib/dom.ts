@@ -1,4 +1,3 @@
-// Atalhos de teclado não devem agir enquanto o usuário digita
 export function isEditableTarget(target: EventTarget | null): boolean {
   if (!(target instanceof HTMLElement)) {
     return false

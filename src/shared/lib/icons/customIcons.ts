@@ -81,7 +81,6 @@ export const IconFlag = createPixelIcon([
   '................',
 ])
 
-// Pasta preenchida, para a cor do projeto aparecer inteira
 export const IconFolderFilled = createPixelIcon([
   '................',
   '................',

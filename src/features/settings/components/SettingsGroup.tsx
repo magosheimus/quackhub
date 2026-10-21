@@ -21,7 +21,6 @@ export function SettingsGroup({ title, children }: SettingsGroupProps) {
   )
 }
 
-// Linhas "nome  ‹ valor ›" alinhadas em duas colunas
 export function SettingsOptionList({ children }: { children: ReactNode }) {
   return (
     <div className="grid w-fit grid-cols-[11rem_auto] items-center gap-x-6 gap-y-1">
@@ -30,8 +29,6 @@ export function SettingsOptionList({ children }: { children: ReactNode }) {
   )
 }
 
-// hint: preferência com regra própria (ex.: salva só no aparelho), explicada
-// no tooltip do ícone ao lado do nome
 export function SettingsOption({
   label,
   hint,
@@ -63,7 +60,6 @@ type SettingsActionProps = {
   children: ReactNode
 }
 
-// Linha de ação: título e descrição à esquerda, controle à direita
 const ACTION_TEXT_CLASS = {
   default: { title: 'text-fg', description: 'text-caption' },
   danger: { title: 'text-on-accent', description: 'text-xs text-on-accent/85' },

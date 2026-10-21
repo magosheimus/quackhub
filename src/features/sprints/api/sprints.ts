@@ -17,7 +17,7 @@ import {
   getCompletionByProject,
   getConfidenceDistribution,
 } from '@/features/analytics/api/analytics'
-import type { NewSprint, Sprint, SprintUpdate } from '@/shared/types/entities'
+import type { NewSprint, Sprint } from '@/shared/types/entities'
 import { SPRINT_ERRORS } from '@/features/sprints/constants/texts'
 
 export async function getSprints(): Promise<Sprint[]> {
@@ -50,20 +50,6 @@ export async function createSprint(data: NewSprint): Promise<Sprint> {
   return sprint
 }
 
-export async function updateSprint(
-  id: string,
-  data: SprintUpdate,
-): Promise<Sprint> {
-  const { data: sprint, error } = await supabase
-    .from('sprints')
-    .update(data)
-    .eq('id', id)
-    .select()
-    .single()
-  if (error) throw new Error(`Falha ao atualizar sprint: ${error.message}`)
-  return sprint
-}
-
 export async function activateSprint(id: string): Promise<Sprint> {
   const { data, error } = await supabase
     .from('sprints')
@@ -80,7 +66,7 @@ export async function activateSprint(id: string): Promise<Sprint> {
   return data
 }
 
-export async function setSprintClosed(
+async function setSprintClosed(
   id: string,
   metrics: SprintMetrics & {
     carried_to_next: number
@@ -95,16 +81,6 @@ export async function setSprintClosed(
     .select()
     .single()
   if (error) throw new Error(`Falha ao encerrar sprint: ${error.message}`)
-  return data
-}
-
-export async function getSprintById(id: string): Promise<Sprint> {
-  const { data, error } = await supabase
-    .from('sprints')
-    .select('*')
-    .eq('id', id)
-    .single()
-  if (error) throw new Error(`Falha ao buscar sprint: ${error.message}`)
   return data
 }
 

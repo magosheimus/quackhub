@@ -2,8 +2,6 @@
    Texturas
    ========================================================================== */
 
-/* Cada textura declara o desenho em variáveis; a página e as miniaturas das
-   Configurações usam a mesma regra. --texture-opacity vem do slider */
 :is(
   .texture-lines,
   .texture-grid,
@@ -37,7 +35,6 @@
     calc(24px * var(--texture-scale));
 }
 
-/* Milimetrado: grade fina e uma linha forte a cada 5 quadrados */
 .texture-graph {
   --texture-image:
     linear-gradient(var(--texture-ink) 1px, transparent 1px),
@@ -61,7 +58,6 @@
     calc(20px * var(--texture-scale));
 }
 
-/* Malha LCD: o vão entre os pixels de uma tela de Game Boy */
 .texture-lcd {
   --texture-image:
     linear-gradient(var(--texture-ink) 1px, transparent 1px),
@@ -74,14 +70,10 @@
   background-size: var(--texture-size, auto);
 }
 
-/* Miniatura das Configurações: a página inteira reduzida */
 .texture-swatch {
   --texture-scale: 0.4;
 }
 
-/* Fundo de "página" para elementos fixos sobre o conteúdo (ex.: título das
-   colunas do Board): mesma cor e textura da raiz, presa à tela, para encaixar
-   com o desenho da página */
 .page-backdrop {
   background-color: var(--bg-page);
   background-attachment: fixed;

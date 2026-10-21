@@ -2,7 +2,6 @@ import { todayLocal, toDbDate } from '@/shared/lib/date'
 import type { NewTask, Task, TaskRecurrence } from '@/features/tasks/model/task'
 import type { RecurrenceType } from '@/shared/types/entities'
 
-// Estado do formulário de recorrência: campos soltos, editáveis um a um
 export type RecurrenceValue = {
   type: RecurrenceType | null
   interval: number | null

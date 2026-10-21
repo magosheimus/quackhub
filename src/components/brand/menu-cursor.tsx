@@ -5,7 +5,6 @@ type MenuCursorProps = {
   className?: string
 }
 
-// Seta de menu de jogo apontando para a direita (o ícone original aponta para cima)
 export function MenuCursor({ className }: MenuCursorProps) {
   return (
     <IconVercelSolid

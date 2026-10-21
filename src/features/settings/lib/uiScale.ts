@@ -1,9 +1,6 @@
 import { createEnumGuard } from '@/shared/lib/enums'
 import { STORAGE_KEYS } from '@/shared/constants/storageKeys'
 
-// Escala da interface: multiplica a fonte base (rem), então texto, espaços e
-// caixas crescem juntos; ícones e bordas em px ficam nítidos. Fica só no
-// aparelho (não segue a conta): tablet e computador podem ter escalas diferentes
 export const UI_SCALES = ['80', '90', '100', '110', '120'] as const
 export type UiScale = (typeof UI_SCALES)[number]
 

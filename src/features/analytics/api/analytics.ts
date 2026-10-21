@@ -320,7 +320,6 @@ export type DoneEvent = {
   doneAt: string
 }
 
-// Movimentações para Finalizado dos cards informados (base do burnup)
 export async function getDoneEvents(taskIds: string[]): Promise<DoneEvent[]> {
   if (taskIds.length === 0) {
     return []

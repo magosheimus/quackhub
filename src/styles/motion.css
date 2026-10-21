@@ -10,7 +10,6 @@
   }
 }
 
-/* Pato da sidebar: farol com halo pulsando e uma piscada de CRT; acelera no hover */
 .logo-beacon {
   animation: logo-beacon 3.2s ease-in-out infinite;
 }
@@ -52,9 +51,6 @@ button:hover > .logo-beacon {
   }
 }
 
-/* Botão "+ Novo card" da top bar: no hover (e no foco por teclado), contorno
-   neon na cor de brilho do lugar, com um zumbido de letreiro. O fundo fica
-   sólido: o hover padrão (primary/80) deixava vazar a cor da barra */
 .neon-hover:is(:hover, :focus-visible) {
   background-color: var(--primary);
   border-color: var(--glow-color);
