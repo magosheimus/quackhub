@@ -29,6 +29,7 @@ import type { ProjectLabels } from '@/features/projects/lib/project'
 import { AssigneeBadge } from '@/features/personas/components/AssigneeBadge'
 import { CardEpicChip } from '@/features/epics/components/CardEpicChip'
 import { DueBadge } from '@/features/tasks/components/DueBadge'
+import { ImportanceBadge } from '@/features/tasks/components/ImportanceBadge'
 
 const CARD_CLASS =
   'flex gap-2 rounded-md border border-l-4 border-border bg-card p-3 text-body-sm hover:bg-card-hover'
@@ -102,7 +103,12 @@ function BoardCardBody({
         >
           {task.title}
         </Link>
-        {showDue && <DueBadge due={task.due} />}
+        {((showDue && task.due) || task.importance) && (
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+            {showDue && <DueBadge due={task.due} />}
+            <ImportanceBadge value={task.importance} />
+          </div>
+        )}
         {tag && <span className="text-fg-muted">{tag}</span>}
         {showStatus && (
           <span

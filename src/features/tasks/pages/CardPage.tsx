@@ -123,6 +123,7 @@ function CardPageBody({ task }: { task: Task }) {
             tags={tags ?? []}
             tagSuggestions={tagSuggestions ?? []}
             priority={task.priority}
+            importance={task.importance}
             isFlagged={task.flag !== null}
             onUpdate={(data) => updateTask({ id: task.id, data })}
             onStatusChange={changeStatus}

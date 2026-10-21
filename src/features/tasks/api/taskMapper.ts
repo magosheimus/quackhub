@@ -13,6 +13,8 @@ import type {
   TablesUpdate,
 } from '@/shared/types/database.types'
 
+import { toImportance } from '@/features/tasks/lib/importance'
+
 type TaskRow = Tables<'tasks'>
 
 function toDue(row: TaskRow): TaskDue | null {
@@ -63,6 +65,7 @@ export function toTask(row: TaskRow): Task {
     description: row.description,
     status: row.status,
     priority: row.priority,
+    importance: toImportance(row.importance),
     origin: row.origin,
     projectId: row.project_id,
     epicId: row.epic_id,
@@ -111,6 +114,7 @@ export function toTaskUpdate(changes: TaskUpdate): TablesUpdate<'tasks'> {
     description: changes.description,
     status: changes.status,
     priority: changes.priority,
+    importance: changes.importance,
     origin: changes.origin,
     project_id: changes.projectId,
     epic_id: changes.epicId,

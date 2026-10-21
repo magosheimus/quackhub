@@ -57,6 +57,8 @@ import { DependencyPicker } from '@/features/tasks/components/DependencyPicker'
 import { DatePicker } from '@/components/pickers/date-picker'
 import { TimePicker } from '@/components/pickers/time-picker'
 import { useDatePreferences } from '@/features/settings/hooks/useDatePreferences'
+import { ImportanceStars } from './ImportanceStars'
+import type { Importance } from '@/features/tasks/lib/importance'
 
 const NONE_VALUE = '__backlog__'
 
@@ -98,6 +100,7 @@ export function CardCreateModal({
   const [title, setTitle] = useState(prefill?.title ?? '')
   const [description, setDescription] = useState('')
   const [priority, setPriority] = useState<TaskPriority>('medium')
+  const [importance, setImportance] = useState<Importance | null>(null)
   const [flagged, setFlagged] = useState(false)
   const [dueDate, setDueDate] = useState<string | null>(null)
   const [dueTime, setDueTime] = useState<string | null>(null)
@@ -150,6 +153,7 @@ export function CardCreateModal({
     setTitle('')
     setDescription('')
     setPriority('medium')
+    setImportance(null)
     setFlagged(false)
     setDueDate(null)
     setDueTime(null)
@@ -190,6 +194,7 @@ export function CardCreateModal({
       title: titleDue.cleanTitle,
       description: description.trim() || null,
       priority,
+      importance,
       flag: flagged ? { note: null } : null,
       due: isGeneral ? toTaskDue(effectiveDueDate, effectiveDueTime) : null,
       status: getInitialStatusForType(project.type),
@@ -391,7 +396,7 @@ export function CardCreateModal({
             <SimilarCardsHint cards={similarCards ?? []} />
           </div>
 
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-x-4 gap-y-3 sm:grid-cols-2">
             <div className="flex min-w-0 flex-col gap-1.5">
               <span className="text-caption">{TASKS_TEXTS.priority}</span>
               <div
@@ -411,15 +416,10 @@ export function CardCreateModal({
                   </Button>
                 ))}
               </div>
-              <UrgentToggle
-                flagged={flagged}
-                onToggle={() => setFlagged((current) => !current)}
-                className="pt-1"
-              />
             </div>
 
             <div className="flex min-w-0 flex-col gap-1.5">
-              <span id="card-assignee-label" className="pt-1 text-caption">
+              <span id="card-assignee-label" className="text-caption">
                 {PERSONAS_TEXTS.assignee}
               </span>
               <AssigneeCombobox
@@ -427,6 +427,20 @@ export function CardCreateModal({
                 onChange={setAssigneeId}
                 labelId="card-assignee-label"
               />
+            </div>
+
+            <UrgentToggle
+              flagged={flagged}
+              onToggle={() => setFlagged((current) => !current)}
+              className="self-start"
+            />
+
+            <div className="flex min-w-0 flex-col gap-1.5">
+              <span className="text-caption">{TASKS_TEXTS.importance}</span>
+              <ImportanceStars value={importance} onChange={setImportance} />
+            </div>
+
+            <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1.5 sm:col-start-2">
               <span className="text-caption">{TASKS_TEXTS.tags}</span>
               <TagInput
                 tags={tags}

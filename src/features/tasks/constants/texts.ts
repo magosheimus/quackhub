@@ -57,6 +57,7 @@ export const TASKS_TEXTS = {
   none: 'Nenhum',
   sprintLabel: 'Sprint:',
   priorityLabel: 'Prioridade:',
+  importanceLabel: 'Importância:',
   statusLabel: 'Situação:',
   tagsLabel: 'Tags:',
   cardActions: 'Ações do card',
@@ -64,6 +65,9 @@ export const TASKS_TEXTS = {
   descriptionPlaceholder: 'Adicionar contexto...',
   dates: 'Datas',
   deadline: 'Prazo',
+  importance: 'Importância',
+  importanceStars: (count: number) =>
+    count === 1 ? '1 estrela' : `${count} estrelas`,
   createdAt: (date: string) => `Criado: ${date}`,
   easeFactor: (value: string) => `EF: ${value}`,
   nextReview: (date: string) => `Próxima revisão: ${date}`,

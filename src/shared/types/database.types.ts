@@ -602,6 +602,7 @@ export type Database = {
           flag_note: string | null
           flagged: boolean
           id: string
+          importance: number | null
           interval: number | null
           next_review: string | null
           origin: Database['public']['Enums']['task_origin']
@@ -632,6 +633,7 @@ export type Database = {
           flag_note?: string | null
           flagged?: boolean
           id?: string
+          importance?: number | null
           interval?: number | null
           next_review?: string | null
           origin?: Database['public']['Enums']['task_origin']
@@ -663,6 +665,7 @@ export type Database = {
           flag_note?: string | null
           flagged?: boolean
           id?: string
+          importance?: number | null
           interval?: number | null
           next_review?: string | null
           origin?: Database['public']['Enums']['task_origin']

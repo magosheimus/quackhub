@@ -234,6 +234,8 @@ export const IconWaves = createIcon(Waves)
 export {
   IconFlag,
   IconFolderFilled,
+  IconStarFilled,
+  IconStarOutline,
   IconPriorityHigh,
   IconPriorityLow,
   IconPriorityMedium,

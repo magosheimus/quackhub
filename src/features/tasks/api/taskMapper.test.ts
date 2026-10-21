@@ -10,6 +10,7 @@ const row: Tables<'tasks'> = {
   description: null,
   status: 'todo',
   priority: 'medium',
+  importance: null,
   origin: 'manual',
   project_id: 'p1',
   epic_id: null,
@@ -34,6 +35,11 @@ const row: Tables<'tasks'> = {
 }
 
 describe('toTask', () => {
+  it('importância fora de 1 a 5 vira null', () => {
+    expect(toTask({ ...row, importance: 4 }).importance).toBe(4)
+    expect(toTask({ ...row, importance: 9 }).importance).toBeNull()
+  })
+
   it('converte para camelCase e descarta os campos do banco', () => {
     const task = toTask(row)
     expect(task.number).toBe(7)

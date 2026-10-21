@@ -17,6 +17,7 @@ import type { EpicLabel } from '@/features/epics/lib/epic'
 import type { ColorScope } from '@/shared/lib/palette'
 import { AssigneeBadge } from '@/features/personas/components/AssigneeBadge'
 import { DueBadge } from '@/features/tasks/components/DueBadge'
+import { ImportanceBadge } from '@/features/tasks/components/ImportanceBadge'
 
 type BacklogRowProps = {
   task: Task
@@ -88,6 +89,7 @@ export function BacklogRow({
         </div>
 
         <DueBadge due={task.due} />
+        <ImportanceBadge value={task.importance} />
 
         <span className="text-fg-muted">{STATUS_LABELS[task.status]}</span>
 

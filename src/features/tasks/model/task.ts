@@ -4,6 +4,7 @@ import type {
   TaskPriority,
   TaskStatus,
 } from '@/shared/types/entities'
+import type { Importance } from '@/features/tasks/lib/importance'
 
 export type TaskDue = {
   date: string
@@ -40,6 +41,7 @@ export type Task = {
   description: string | null
   status: TaskStatus
   priority: TaskPriority
+  importance: Importance | null
   origin: TaskOrigin
   projectId: string
   epicId: string | null
