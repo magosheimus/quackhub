@@ -21,6 +21,7 @@ export function BoardPage() {
     activeSprint,
     plannedSprint,
     projectLabels,
+    projectColor,
     filters,
     updateFilter,
     sprintProjects,
@@ -44,7 +45,7 @@ export function BoardPage() {
     return <ErrorState onRetry={retry} />
   }
 
-  if (project) {
+  if (project && projectColor) {
     return (
       <ProjectBoardView
         project={project}
@@ -52,6 +53,7 @@ export function BoardPage() {
         activeSprintName={activeSprint?.name ?? null}
         tasks={projectTasks}
         projectLabels={projectLabels}
+        projectColor={projectColor}
       />
     )
   }

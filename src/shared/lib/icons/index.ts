@@ -65,6 +65,7 @@ import { Mug } from 'pixelarticons/react/Mug'
 import { Music } from 'pixelarticons/react/Music'
 import { Notebook } from 'pixelarticons/react/Notebook'
 import { Notes } from 'pixelarticons/react/Notes'
+import { PenSquareSharp } from 'pixelarticons/react/PenSquareSharp'
 import { Pencil } from 'pixelarticons/react/Pencil'
 import { Plus } from 'pixelarticons/react/Plus'
 import { PlusBoxSharp } from 'pixelarticons/react/PlusBoxSharp'
@@ -92,7 +93,6 @@ import { Sparkles } from 'pixelarticons/react/Sparkles'
 import { Spray } from 'pixelarticons/react/Spray'
 import { Star } from 'pixelarticons/react/Star'
 import { StickerSharp } from 'pixelarticons/react/StickerSharp'
-import { StickyNoteSharp } from 'pixelarticons/react/StickyNoteSharp'
 import { Sun } from 'pixelarticons/react/Sun'
 import { SunglassesSharp } from 'pixelarticons/react/SunglassesSharp'
 import { Target } from 'pixelarticons/react/Target'
@@ -180,6 +180,7 @@ export const IconMusic = createIcon(Music)
 export const IconNoSmoking = createIcon(CigaretteOff)
 export const IconNotebook = createIcon(Notebook)
 export const IconNotes = createIcon(Notes)
+export const IconPenSquare = createIcon(PenSquareSharp)
 export const IconPencil = createIcon(Pencil)
 export const IconPlus = createIcon(Plus)
 export const IconPlusBoxSharp = createIcon(PlusBoxSharp)
@@ -202,7 +203,6 @@ export const IconSparkles = createIcon(Sparkles)
 export const IconSpray = createIcon(Spray)
 export const IconStar = createIcon(Star)
 export const IconSticker = createIcon(StickerSharp)
-export const IconStickyNoteSharp = createIcon(StickyNoteSharp)
 export const IconSun = createIcon(Sun)
 export const IconSunglasses = createIcon(SunglassesSharp)
 export const IconTarget = createIcon(Target)

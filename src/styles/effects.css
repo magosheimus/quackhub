@@ -114,3 +114,29 @@ html.theme-dark .urgent-drop-zone {
 html.theme-dark .urgent-drop-zone[data-over] {
   --urgent-zone-mix: 60%;
 }
+
+.group-title {
+  --group-shadow: var(--bg-card);
+  --group-band-mix: 40%;
+  --group-shadow-offset: 1px;
+  padding-inline: 0.25em;
+  box-decoration-break: clone;
+  background-image: linear-gradient(
+    transparent 45%,
+    color-mix(in srgb, var(--group-color) var(--group-band-mix), transparent)
+      45%
+  );
+}
+
+.font-heading.group-title {
+  text-shadow:
+    -0.5px 0 0 color-mix(in srgb, var(--lcd-ink) 40%, transparent),
+    0.5px 0 0 color-mix(in srgb, var(--lcd-ink) 35%, transparent),
+    var(--group-shadow-offset) var(--group-shadow-offset) 0 var(--group-shadow),
+    var(--glow);
+}
+
+html.theme-dark .group-title {
+  --group-shadow: color-mix(in srgb, var(--lcd-screen) 40%, black);
+  --group-band-mix: 60%;
+}

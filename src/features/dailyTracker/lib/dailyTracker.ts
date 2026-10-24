@@ -328,9 +328,12 @@ export function buildHabitFields(values: HabitFormValues): HabitFields | null {
   }
 }
 
-export function getHabitFormValues(habit?: Habit): HabitFormValues {
+export function getHabitFormValues(
+  habit?: Habit,
+  initialName = '',
+): HabitFormValues {
   return {
-    name: habit?.name ?? '',
+    name: habit?.name ?? initialName,
     type: habit?.type ?? 'boolean',
     goalText: habit?.goal ? String(habit.goal) : '',
     weekdays: habit?.weekdays?.length ? habit.weekdays : [...ALL_WEEKDAYS],

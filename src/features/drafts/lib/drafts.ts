@@ -1,4 +1,7 @@
-import type { DraftsItem } from '@/shared/types/entities'
+import type { DraftsItem, Project } from '@/shared/types/entities'
+import { moveItem } from '@/shared/lib/array'
+import { NEUTRAL_COLOR } from '@/shared/lib/palette'
+import { toProjectLabel } from '@/features/projects/lib/project'
 import { formatMonthYear, getWeekDays, toDbDate } from '@/shared/lib/date'
 import { DRAFTS_TEXTS } from '@/features/drafts/constants/texts'
 
@@ -87,4 +90,114 @@ export function getDraftPosition(
 ): { current: number; total: number } {
   const index = pending.findIndex((item) => item.id === currentId)
   return { current: index + 1, total: pending.length }
+}
+
+export const NO_PROJECT_DROPPABLE_ID = 'no-project'
+
+export type DraftProjectGroup = {
+  droppableId: string
+  projectId: string | null
+  label: string
+  color: string
+  items: DraftsItem[]
+}
+
+export function groupDraftsByProject(
+  pending: DraftsItem[],
+  projects: Project[],
+  includeEmpty: boolean,
+): DraftProjectGroup[] {
+  const projectIds = new Set(projects.map((project) => project.id))
+  const groups: DraftProjectGroup[] = [
+    {
+      droppableId: NO_PROJECT_DROPPABLE_ID,
+      projectId: null,
+      label: DRAFTS_TEXTS.noProject,
+      color: NEUTRAL_COLOR,
+      items: pending.filter(
+        (item) => item.project_id === null || !projectIds.has(item.project_id),
+      ),
+    },
+    ...projects.map((project) => ({
+      droppableId: project.id,
+      projectId: project.id,
+      label: project.name,
+      color: toProjectLabel(project).color,
+      items: pending.filter((item) => item.project_id === project.id),
+    })),
+  ]
+  const filled = groups.filter((group) => group.items.length > 0)
+  if (!includeEmpty) {
+    return filled
+  }
+  return [...filled, ...groups.filter((group) => group.items.length === 0)]
+}
+
+export type DraftArrangement = {
+  draftId: string
+  projectId: string | null
+  movesProject: boolean
+  orderedIds: string[]
+}
+
+type DropLocation = { droppableId: string; index: number }
+
+export function arrangeDraftsAfterDrop(
+  groups: DraftProjectGroup[],
+  source: DropLocation,
+  destination: DropLocation,
+): DraftArrangement | null {
+  const sourceGroup = groups.find((g) => g.droppableId === source.droppableId)
+  const targetGroup = groups.find(
+    (g) => g.droppableId === destination.droppableId,
+  )
+  const moved = sourceGroup?.items[source.index]
+  if (!sourceGroup || !targetGroup || !moved) {
+    return null
+  }
+  if (sourceGroup === targetGroup) {
+    if (source.index === destination.index) {
+      return null
+    }
+    return {
+      draftId: moved.id,
+      projectId: targetGroup.projectId,
+      movesProject: false,
+      orderedIds: moveItem(
+        targetGroup.items,
+        source.index,
+        destination.index,
+      ).map((item) => item.id),
+    }
+  }
+  const orderedIds = targetGroup.items.map((item) => item.id)
+  orderedIds.splice(destination.index, 0, moved.id)
+  return {
+    draftId: moved.id,
+    projectId: targetGroup.projectId,
+    movesProject: true,
+    orderedIds,
+  }
+}
+
+function compareDraftOrder(a: DraftsItem, b: DraftsItem): number {
+  return (
+    a.position - b.position ||
+    (b.created_at ?? '').localeCompare(a.created_at ?? '')
+  )
+}
+
+export function applyDraftArrangement(
+  items: DraftsItem[],
+  { draftId, projectId, movesProject, orderedIds }: DraftArrangement,
+): DraftsItem[] {
+  const positionById = new Map(orderedIds.map((id, index) => [id, index]))
+  return items
+    .map((item) => ({
+      ...item,
+      position: positionById.get(item.id) ?? item.position,
+      project_id:
+        movesProject && item.id === draftId ? projectId : item.project_id,
+    }))
+    .sort(compareDraftOrder)
 }

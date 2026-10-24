@@ -7,6 +7,7 @@ import {
   FONT_BODIES,
   LCD_GHOSTS,
   TEXT_SIZES,
+  getEffectiveLcdGhost,
 } from '@/features/settings/lib/settings'
 import {
   FONT_LABELS,
@@ -127,17 +128,19 @@ export function AppearanceSettings() {
               onChange={(glow) => update({ glow })}
             />
           </SettingsOption>
-          {settings.glow && (
-            <SettingsOption label={SETTINGS_TEXTS.lcdGhost}>
-              <OptionStepper
-                label={SETTINGS_TEXTS.lcdGhost}
-                options={LCD_GHOSTS}
-                value={settings.lcdGhost}
-                labels={LCD_GHOST_LABELS}
-                onChange={(lcdGhost) => update({ lcdGhost })}
-              />
-            </SettingsOption>
-          )}
+          <SettingsOption
+            label={SETTINGS_TEXTS.lcdGhost}
+            disabled={!settings.glow}
+          >
+            <OptionStepper
+              label={SETTINGS_TEXTS.lcdGhost}
+              options={LCD_GHOSTS}
+              value={getEffectiveLcdGhost(settings)}
+              labels={LCD_GHOST_LABELS}
+              onChange={(lcdGhost) => update({ lcdGhost })}
+              disabled={!settings.glow}
+            />
+          </SettingsOption>
         </SettingsOptionList>
       </SettingsGroup>
       <SettingsAction

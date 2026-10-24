@@ -32,15 +32,22 @@ export function SettingsOptionList({ children }: { children: ReactNode }) {
 export function SettingsOption({
   label,
   hint,
+  disabled = false,
   children,
 }: {
   label: string
   hint?: string
+  disabled?: boolean
   children: ReactNode
 }) {
   return (
     <>
-      <span className="flex items-center gap-2 text-sm text-fg">
+      <span
+        className={cn(
+          'flex items-center gap-2 text-sm',
+          disabled ? 'text-fg-muted' : 'text-fg',
+        )}
+      >
         {label}
         {hint && (
           <HintTooltip text={hint}>

@@ -10,10 +10,14 @@ import type {
   DraftTriageTarget,
 } from '@/shared/types/entities'
 
-export async function captureItem(content: string): Promise<DraftsItem | null> {
+export async function captureItem(
+  content: string,
+  projectId: string | null,
+): Promise<DraftsItem | null> {
   const item: NewDraftsItem = {
     id: crypto.randomUUID(),
     content,
+    project_id: projectId,
     created_at: new Date().toISOString(),
     triaged_at: null,
     triaged_to: null,
@@ -94,6 +98,19 @@ export async function updateDraftContent(
     .eq('id', id)
   if (error) {
     throw new Error(`Falha ao editar rascunho: ${error.message}`)
+  }
+}
+
+export async function updateDraftProject(
+  id: string,
+  projectId: string | null,
+): Promise<void> {
+  const { error } = await supabase
+    .from('drafts_items')
+    .update({ project_id: projectId })
+    .eq('id', id)
+  if (error) {
+    throw new Error(`Falha ao mover rascunho de projeto: ${error.message}`)
   }
 }
 

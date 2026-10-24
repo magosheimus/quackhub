@@ -520,3 +520,15 @@ describe('canLogDay', () => {
     expect(canLogDay(createdToday, today, today)).toBe(true)
   })
 })
+
+describe('getHabitFormValues', () => {
+  it('começa com o nome inicial quando não há hábito (rascunho)', () => {
+    expect(getHabitFormValues(undefined, 'Beber água').name).toBe('Beber água')
+  })
+
+  it('usa o nome do hábito ao editar', () => {
+    expect(getHabitFormValues(makeHabit({ name: 'Ler' }), 'Outro').name).toBe(
+      'Ler',
+    )
+  })
+})

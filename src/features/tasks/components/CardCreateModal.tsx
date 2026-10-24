@@ -65,7 +65,7 @@ const NONE_VALUE = '__backlog__'
 type CardCreateModalProps = {
   open?: boolean
   onOpenChange?: (open: boolean) => void
-  prefill?: { id: string; title: string }
+  prefill?: CardPrefill
   titleSlot?: ReactNode
   onCreated?: (task: Task, context: CardCreatedContext) => void
   hideTrigger?: boolean
@@ -74,6 +74,12 @@ type CardCreateModalProps = {
 }
 
 export type CardCreatedContext = { willCreateAnother: boolean }
+
+export type CardPrefill = {
+  id: string
+  title: string
+  projectId: string | null
+}
 
 export function CardCreateModal({
   open: controlledOpen,
@@ -163,6 +169,24 @@ export function CardCreateModal({
     setDependencies([])
   }
 
+  function selectProject(nextProjectId: string | null) {
+    setProjectId(nextProjectId)
+    setNewEpicName(null)
+    setEpicId(null)
+    setDependencies([])
+  }
+
+  function applyPrefill({
+    title: prefillTitle,
+    projectId: prefillProjectId,
+  }: CardPrefill) {
+    setTitle(prefillTitle)
+    const hasProject = projects?.some((p) => p.id === prefillProjectId)
+    if (prefillProjectId && hasProject && prefillProjectId !== projectId) {
+      selectProject(prefillProjectId)
+    }
+  }
+
   function handleOpenChange(nextOpen: boolean) {
     if (isControlled) {
       controlledOnOpenChange?.(nextOpen)
@@ -179,7 +203,7 @@ export function CardCreateModal({
     if (!open) {
       resetForm()
     } else if (prefill) {
-      setTitle(prefill.title)
+      applyPrefill(prefill)
     }
   }
 
@@ -289,15 +313,7 @@ export function CardCreateModal({
               <span id="card-project-label" className="text-caption">
                 {TASKS_TEXTS.project}
               </span>
-              <Select
-                value={projectId ?? ''}
-                onValueChange={(v) => {
-                  setProjectId(v)
-                  setNewEpicName(null)
-                  setEpicId(null)
-                  setDependencies([])
-                }}
-              >
+              <Select value={projectId ?? ''} onValueChange={selectProject}>
                 <SelectTrigger aria-labelledby="card-project-label">
                   <SelectValue>
                     {project?.name ?? TASKS_TEXTS.selectProject}

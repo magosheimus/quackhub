@@ -11,6 +11,7 @@ import {
   textureOpacityUpdate,
   normalizeSettings,
   getDefaultAppearance,
+  getEffectiveLcdGhost,
 } from './settings'
 
 describe('settings', () => {
@@ -164,5 +165,27 @@ describe('getDefaultAppearance', () => {
     expect(defaults).not.toHaveProperty('dateFormat')
     expect(defaults).not.toHaveProperty('weekStartsOn')
     expect(defaults).not.toHaveProperty('sidebarCollapsed')
+  })
+})
+
+describe('getEffectiveLcdGhost', () => {
+  it('usa a preferência quando o glow está ligado', () => {
+    expect(
+      getEffectiveLcdGhost({
+        ...DEFAULT_SETTINGS,
+        glow: true,
+        lcdGhost: 'glitch',
+      }),
+    ).toBe('glitch')
+  })
+
+  it('fica desligado com o glow desligado, sem perder a preferência', () => {
+    const settings = {
+      ...DEFAULT_SETTINGS,
+      glow: false,
+      lcdGhost: 'glitch' as const,
+    }
+    expect(getEffectiveLcdGhost(settings)).toBe('off')
+    expect(settings.lcdGhost).toBe('glitch')
   })
 })

@@ -1,6 +1,6 @@
 import { DragDropContext, Droppable } from '@hello-pangea/dnd'
 import { BoardCard } from './BoardCard'
-import { ColorDot } from '@/components/pickers/color-dot'
+import { GroupTitle } from '@/components/layout/group-title'
 import { Button } from '@/components/ui/button'
 import { EmptyState } from '@/components/feedback/empty-state'
 import { LoadingText } from '@/components/feedback/loading-text'
@@ -40,12 +40,9 @@ function EpicColumn({
     <div className="flex w-[78vw] max-w-72 shrink-0 snap-start flex-col gap-2 lg:w-72">
       <div className="flex flex-col gap-1.5 px-1">
         <div className="flex items-center justify-between gap-2">
-          <span className="flex min-w-0 items-center gap-2">
-            <ColorDot color={column.color} className="size-3" />
-            <span className="truncate font-heading text-xl text-fg">
-              {column.title}
-            </span>
-          </span>
+          <GroupTitle color={column.color} className="min-w-0 truncate">
+            {column.title}
+          </GroupTitle>
           <span className="text-caption">{column.items.length}</span>
         </div>
         <SegmentedProgress

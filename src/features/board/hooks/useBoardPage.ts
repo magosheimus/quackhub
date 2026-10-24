@@ -42,6 +42,7 @@ import type { Task } from '@/features/tasks/model/task'
 import {
   buildProjectLabels,
   buildProjectOptions,
+  toProjectLabel,
 } from '@/features/projects/lib/project'
 import { buildEpicOptions } from '@/features/epics/lib/epic'
 import { usePersonaOptions } from '@/features/personas/hooks/usePersonaOptions'
@@ -80,6 +81,7 @@ export function useBoardPage() {
   const plannedSprint = sprints?.find((s) => s.status === 'planned') ?? null
 
   const projectLabels = buildProjectLabels(projects ?? [])
+  const projectColor = project ? toProjectLabel(project).color : null
   const projectTypeById = new Map<string, ProjectType>(
     projects?.map((p) => [p.id, p.type]),
   )
@@ -200,6 +202,7 @@ export function useBoardPage() {
     activeSprint: activeSprint ?? null,
     plannedSprint,
     projectLabels,
+    projectColor,
     filters,
     updateFilter,
     sprintProjects: withoutHidden(sprintProjectOptions, 'project', hidden),

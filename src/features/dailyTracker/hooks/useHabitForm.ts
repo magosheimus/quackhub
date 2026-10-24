@@ -6,9 +6,9 @@ import {
 } from '@/features/dailyTracker/lib/dailyTracker'
 import type { Habit } from '@/shared/types/entities'
 
-export function useHabitForm(habit?: Habit) {
+export function useHabitForm(habit?: Habit, initialName?: string) {
   const [values, setValues] = useState<HabitFormValues>(() =>
-    getHabitFormValues(habit),
+    getHabitFormValues(habit, initialName),
   )
 
   function update(changes: Partial<HabitFormValues>) {
@@ -29,6 +29,6 @@ export function useHabitForm(habit?: Habit) {
     update,
     toggleWeekday,
     fields: buildHabitFields(values),
-    reset: () => setValues(getHabitFormValues(habit)),
+    reset: () => setValues(getHabitFormValues(habit, initialName)),
   }
 }
