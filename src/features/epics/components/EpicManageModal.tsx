@@ -70,7 +70,9 @@ export function EpicManageModal({
   const { handleDragEnd } = useReorderEpics(projectId ?? '', epics ?? [])
 
   function handleCreate() {
-    if (!projectId || !newEpicName.trim()) return
+    if (!projectId || !newEpicName.trim()) {
+      return
+    }
     createEpic(
       { project_id: projectId, name: newEpicName.trim(), color },
       { onSuccess: () => setNewEpicName('') },

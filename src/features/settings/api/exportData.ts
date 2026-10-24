@@ -26,7 +26,9 @@ export async function exportAllData(): Promise<Record<string, unknown[]>> {
 
   for (const table of TABLES) {
     const { data, error } = await supabase.from(table).select('*')
-    if (error) throw new Error(`Falha ao exportar ${table}: ${error.message}`)
+    if (error) {
+      throw new Error(`Falha ao exportar ${table}: ${error.message}`)
+    }
     snapshot[table] = data
   }
 

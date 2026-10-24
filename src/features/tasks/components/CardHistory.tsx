@@ -37,13 +37,17 @@ export function CardHistory({ taskId }: CardHistoryProps) {
 
   function handleAddComment() {
     const trimmed = draft.trim()
-    if (!trimmed) return
+    if (!trimmed) {
+      return
+    }
     addComment({ taskId, comment: trimmed }, { onSuccess: () => setDraft('') })
   }
 
   function renderToggle(total: number) {
     const canExpand = total > visibleCount
-    if (!canExpand && visibleCount <= PAGE_SIZE) return null
+    if (!canExpand && visibleCount <= PAGE_SIZE) {
+      return null
+    }
 
     return (
       <div className="flex justify-center">

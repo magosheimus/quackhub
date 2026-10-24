@@ -38,14 +38,17 @@ export async function getInboxItems(): Promise<InboxData> {
       .or(`next_review.is.null,next_review.gt.${today}`),
   ])
 
-  if (urgentRes.error)
+  if (urgentRes.error) {
     throw new Error(`Falha ao buscar urgentes: ${urgentRes.error.message}`)
-  if (srsOverdueRes.error)
+  }
+  if (srsOverdueRes.error) {
     throw new Error(
       `Falha ao buscar SRS vencido: ${srsOverdueRes.error.message}`,
     )
-  if (dueByTodayRes.error)
+  }
+  if (dueByTodayRes.error) {
     throw new Error(`Falha ao buscar prazos: ${dueByTodayRes.error.message}`)
+  }
 
   return {
     urgent: sortByPriorityThenDate(urgentRes.data.map(toTask)),

@@ -30,19 +30,24 @@ export async function captureItem(content: string): Promise<DraftsItem | null> {
     .insert(item)
     .select()
     .single()
-  if (error) throw new Error(`Falha ao capturar item: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao capturar item: ${error.message}`)
+  }
   return data
 }
 
 export async function syncDraftsQueue(): Promise<void> {
   const queue = getQueue()
-  if (queue.length === 0) return
+  if (queue.length === 0) {
+    return
+  }
 
   const { error } = await supabase
     .from('drafts_items')
     .upsert(queue, { onConflict: 'id', ignoreDuplicates: true })
-  if (error)
+  if (error) {
     throw new Error(`Falha ao sincronizar fila do drafts: ${error.message}`)
+  }
   clearQueue()
 }
 
@@ -53,8 +58,9 @@ export async function getDraftsItems(): Promise<DraftsItem[]> {
     .is('triaged_at', null)
     .order('position')
     .order('created_at', { ascending: false })
-  if (error)
+  if (error) {
     throw new Error(`Falha ao buscar itens do drafts: ${error.message}`)
+  }
   return data
 }
 
@@ -72,7 +78,9 @@ export async function triageItem(
     .eq('id', id)
     .select()
     .single()
-  if (error) throw new Error(`Falha ao triar item: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao triar item: ${error.message}`)
+  }
   return data
 }
 
@@ -84,7 +92,9 @@ export async function updateDraftContent(
     .from('drafts_items')
     .update({ content })
     .eq('id', id)
-  if (error) throw new Error(`Falha ao editar rascunho: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao editar rascunho: ${error.message}`)
+  }
 }
 
 export async function setDraftChecked(
@@ -95,5 +105,7 @@ export async function setDraftChecked(
     .from('drafts_items')
     .update({ checked_at: checked ? new Date().toISOString() : null })
     .eq('id', id)
-  if (error) throw new Error(`Falha ao marcar rascunho: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao marcar rascunho: ${error.message}`)
+  }
 }

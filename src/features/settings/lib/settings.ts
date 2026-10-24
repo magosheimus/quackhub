@@ -220,7 +220,9 @@ export function isDarkCartucho(cartucho: Settings['cartucho']): boolean {
 export function loadSettings(): Settings {
   try {
     const raw = localStorage.getItem(SETTINGS_KEY)
-    if (!raw) return DEFAULT_SETTINGS
+    if (!raw) {
+      return DEFAULT_SETTINGS
+    }
     return normalizeSettings(JSON.parse(raw))
   } catch {
     return DEFAULT_SETTINGS

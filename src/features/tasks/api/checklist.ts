@@ -13,7 +13,9 @@ export async function getChecklistItems(
     .select('*')
     .eq('task_id', taskId)
     .order('position', { ascending: true })
-  if (error) throw new Error(`Falha ao buscar checklist: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao buscar checklist: ${error.message}`)
+  }
   return data
 }
 
@@ -25,7 +27,9 @@ export async function createChecklistItem(
     .insert(data)
     .select()
     .single()
-  if (error) throw new Error(`Falha ao criar item: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao criar item: ${error.message}`)
+  }
   return item
 }
 
@@ -39,7 +43,9 @@ export async function updateChecklistItem(
     .eq('id', id)
     .select()
     .single()
-  if (error) throw new Error(`Falha ao atualizar item: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao atualizar item: ${error.message}`)
+  }
   return item
 }
 
@@ -48,5 +54,7 @@ export async function deleteChecklistItem(id: string): Promise<void> {
     .from('task_checklist_items')
     .delete()
     .eq('id', id)
-  if (error) throw new Error(`Falha ao remover item: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao remover item: ${error.message}`)
+  }
 }

@@ -59,7 +59,9 @@ export function computeSprintMetrics(
   for (const task of tasks) {
     const entry = byProject.get(task.projectId) ?? { total: 0, completed: 0 }
     entry.total += 1
-    if (task.status === 'done') entry.completed += 1
+    if (task.status === 'done') {
+      entry.completed += 1
+    }
     byProject.set(task.projectId, entry)
   }
 

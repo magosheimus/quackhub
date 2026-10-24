@@ -63,7 +63,9 @@ function lastDayOfMonth(year: number, month: number): number {
 
 export function calculateNextDueDate(task: Task): Date | null {
   const { recurrence } = task
-  if (!recurrence) return null
+  if (!recurrence) {
+    return null
+  }
 
   const base = parseDate(task.due?.date ?? todayLocal())
   const { interval } = recurrence
@@ -96,7 +98,9 @@ export function calculateNextDueDate(task: Task): Date | null {
   if (recurrence.endDate) {
     const end = parseDate(recurrence.endDate)
     const endDate = new Date(end.year, end.month, end.day)
-    if (next > endDate) return null
+    if (next > endDate) {
+      return null
+    }
   }
 
   return next

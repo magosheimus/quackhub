@@ -56,7 +56,9 @@ export function SprintCreateModal() {
   }
 
   function handleSubmit() {
-    if (!name.trim()) return
+    if (!name.trim()) {
+      return
+    }
 
     createSprint(
       {

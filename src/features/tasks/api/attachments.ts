@@ -20,8 +20,12 @@ export async function getAttachments(
     .select('*')
     .eq('task_id', taskId)
     .order('created_at', { ascending: true })
-  if (error) throw new Error(`Falha ao buscar anexos: ${error.message}`)
-  if (data.length === 0) return []
+  if (error) {
+    throw new Error(`Falha ao buscar anexos: ${error.message}`)
+  }
+  if (data.length === 0) {
+    return []
+  }
 
   const { data: signed, error: signError } = await supabase.storage
     .from(ATTACHMENTS_BUCKET)
@@ -29,8 +33,9 @@ export async function getAttachments(
       data.map((attachment) => attachment.storage_path),
       SIGNED_URL_TTL_SECONDS,
     )
-  if (signError)
+  if (signError) {
     throw new Error(`Falha ao gerar links dos anexos: ${signError.message}`)
+  }
 
   const urlByPath = new Map(signed.map((item) => [item.path, item.signedUrl]))
   return data.map((attachment) => ({
@@ -53,8 +58,9 @@ export async function uploadAttachment(
   const { error: uploadError } = await supabase.storage
     .from(ATTACHMENTS_BUCKET)
     .upload(storagePath, file)
-  if (uploadError)
+  if (uploadError) {
     throw new Error(`Falha ao enviar arquivo: ${uploadError.message}`)
+  }
 
   const { data, error } = await supabase
     .from('task_attachments')
@@ -66,7 +72,9 @@ export async function uploadAttachment(
     })
     .select()
     .single()
-  if (error) throw new Error(`Falha ao salvar anexo: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao salvar anexo: ${error.message}`)
+  }
   return data
 }
 
@@ -77,12 +85,15 @@ export async function deleteAttachment(
   const { error: storageError } = await supabase.storage
     .from(ATTACHMENTS_BUCKET)
     .remove([storagePath])
-  if (storageError)
+  if (storageError) {
     throw new Error(`Falha ao remover arquivo: ${storageError.message}`)
+  }
 
   const { error } = await supabase
     .from('task_attachments')
     .delete()
     .eq('id', id)
-  if (error) throw new Error(`Falha ao remover anexo: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao remover anexo: ${error.message}`)
+  }
 }

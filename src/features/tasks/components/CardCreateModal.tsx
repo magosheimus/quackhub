@@ -184,7 +184,9 @@ export function CardCreateModal({
   }
 
   function buildTaskPayload() {
-    if (!projectId || !titleDue.cleanTitle || !project) return null
+    if (!projectId || !titleDue.cleanTitle || !project) {
+      return null
+    }
     const isGeneral = project.type === 'general'
     return {
       projectId,
@@ -235,7 +237,9 @@ export function CardCreateModal({
 
   async function handleSubmit() {
     const data = buildTaskPayload()
-    if (!data) return
+    if (!data) {
+      return
+    }
     let resolvedEpicId: string | null
     try {
       resolvedEpicId = await resolveEpicId()

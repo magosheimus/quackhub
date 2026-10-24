@@ -6,7 +6,9 @@ type SimilarCardsHintProps = {
 }
 
 export function SimilarCardsHint({ cards }: SimilarCardsHintProps) {
-  if (cards.length === 0) return null
+  if (cards.length === 0) {
+    return null
+  }
 
   return (
     <div className="flex flex-col gap-1 rounded-md border border-border bg-surface p-2">

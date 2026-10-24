@@ -5,7 +5,9 @@ import type { DraftsItem } from '@/shared/types/entities'
 
 export async function searchTasks(query: string): Promise<Task[]> {
   const trimmed = query.trim()
-  if (!trimmed) return []
+  if (!trimmed) {
+    return []
+  }
 
   const [byContentRes, byTagRes] = await Promise.all([
     supabase
@@ -19,10 +21,12 @@ export async function searchTasks(query: string): Promise<Task[]> {
       .ilike('tag_name', `%${trimmed}%`),
   ])
 
-  if (byContentRes.error)
+  if (byContentRes.error) {
     throw new Error(`Falha ao buscar cards: ${byContentRes.error.message}`)
-  if (byTagRes.error)
+  }
+  if (byTagRes.error) {
     throw new Error(`Falha ao buscar por tag: ${byTagRes.error.message}`)
+  }
 
   const taskIdsFromTags = byTagRes.data.map((row) => row.task_id)
   let tasksFromTags: Task[] = []
@@ -32,8 +36,9 @@ export async function searchTasks(query: string): Promise<Task[]> {
       .select('*')
       .in('id', taskIdsFromTags)
       .is('deleted_at', null)
-    if (error)
+    if (error) {
       throw new Error(`Falha ao buscar cards por tag: ${error.message}`)
+    }
     tasksFromTags = data.map(toTask)
   }
 
@@ -49,7 +54,9 @@ const DRAFT_RESULTS_LIMIT = 20
 // Rascunhos pendentes e arquivados; descartados e transformados em card ficam de fora
 export async function searchDrafts(query: string): Promise<DraftsItem[]> {
   const trimmed = query.trim()
-  if (!trimmed) return []
+  if (!trimmed) {
+    return []
+  }
 
   const { data, error } = await supabase
     .from('drafts_items')
@@ -58,6 +65,8 @@ export async function searchDrafts(query: string): Promise<DraftsItem[]> {
     .ilike('content', `%${trimmed}%`)
     .order('created_at', { ascending: false })
     .limit(DRAFT_RESULTS_LIMIT)
-  if (error) throw new Error(`Falha ao buscar rascunhos: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao buscar rascunhos: ${error.message}`)
+  }
   return data
 }

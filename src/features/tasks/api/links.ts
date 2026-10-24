@@ -8,7 +8,9 @@ export async function getTaskLinks(taskId: string): Promise<TaskLink[]> {
     .eq('task_id', taskId)
     .order('position')
     .order('created_at')
-  if (error) throw new Error(`Falha ao buscar links: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao buscar links: ${error.message}`)
+  }
   return data
 }
 
@@ -18,11 +20,15 @@ export async function createTaskLink(data: NewTaskLink): Promise<TaskLink> {
     .insert(data)
     .select()
     .single()
-  if (error) throw new Error(`Falha ao adicionar link: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao adicionar link: ${error.message}`)
+  }
   return link
 }
 
 export async function deleteTaskLink(id: string): Promise<void> {
   const { error } = await supabase.from('task_links').delete().eq('id', id)
-  if (error) throw new Error(`Falha ao remover link: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao remover link: ${error.message}`)
+  }
 }

@@ -7,7 +7,9 @@ export async function startTimer(taskId: string): Promise<TimeEntry> {
     .insert({ task_id: taskId, started_at: new Date().toISOString() })
     .select()
     .single()
-  if (error) throw new Error(`Falha ao iniciar cronômetro: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao iniciar cronômetro: ${error.message}`)
+  }
   return data
 }
 
@@ -18,7 +20,9 @@ export async function stopTimer(entryId: string): Promise<TimeEntry> {
     .eq('id', entryId)
     .select()
     .single()
-  if (error) throw new Error(`Falha ao parar cronômetro: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao parar cronômetro: ${error.message}`)
+  }
   return data
 }
 
@@ -28,8 +32,9 @@ export async function getTrackedSeconds(taskId: string): Promise<number> {
     .select('started_at, ended_at')
     .eq('task_id', taskId)
     .not('ended_at', 'is', null)
-  if (error)
+  if (error) {
     throw new Error(`Falha ao buscar tempo registrado: ${error.message}`)
+  }
 
   const finished = data.filter(
     (entry): entry is { started_at: string; ended_at: string } =>
@@ -55,7 +60,8 @@ export async function addManualEntry(
     .insert({ task_id: taskId, started_at: startedAt, ended_at: endedAt })
     .select()
     .single()
-  if (error)
+  if (error) {
     throw new Error(`Falha ao adicionar entrada manual: ${error.message}`)
+  }
   return data
 }

@@ -45,7 +45,9 @@ export async function registerPerformance(
     })
     .select()
     .single()
-  if (error) throw new Error(`Falha ao registrar desempenho: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao registrar desempenho: ${error.message}`)
+  }
   return data
 }
 
@@ -63,7 +65,9 @@ export async function addManualComment(
     })
     .select()
     .single()
-  if (error) throw new Error(`Falha ao salvar observação: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao salvar observação: ${error.message}`)
+  }
   return data
 }
 
@@ -73,6 +77,8 @@ export async function getSrsLogs(taskId: string): Promise<SrsLog[]> {
     .select('*')
     .eq('task_id', taskId)
     .order('session_date', { ascending: false })
-  if (error) throw new Error(`Falha ao buscar histórico: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao buscar histórico: ${error.message}`)
+  }
   return data
 }

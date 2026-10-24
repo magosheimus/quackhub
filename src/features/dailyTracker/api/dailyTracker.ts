@@ -14,7 +14,9 @@ export async function getHabits(): Promise<Habit[]> {
     .eq('active', true)
     .order('position')
     .order('created_at', { ascending: true })
-  if (error) throw new Error(`Falha ao buscar hábitos: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao buscar hábitos: ${error.message}`)
+  }
   return data
 }
 
@@ -24,7 +26,9 @@ export async function getAllHabits(): Promise<Habit[]> {
     .select('*')
     .order('position')
     .order('created_at', { ascending: true })
-  if (error) throw new Error(`Falha ao buscar hábitos: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao buscar hábitos: ${error.message}`)
+  }
   return data
 }
 
@@ -34,7 +38,9 @@ export async function createHabit(habit: NewHabit): Promise<Habit> {
     .insert(habit)
     .select()
     .single()
-  if (error) throw new Error(`Falha ao criar hábito: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao criar hábito: ${error.message}`)
+  }
   return data
 }
 
@@ -43,7 +49,9 @@ export async function updateHabit(
   changes: HabitUpdate,
 ): Promise<void> {
   const { error } = await supabase.from('habits').update(changes).eq('id', id)
-  if (error) throw new Error(`Falha ao editar hábito: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao editar hábito: ${error.message}`)
+  }
 }
 
 export async function archiveHabit(id: string): Promise<void> {
@@ -59,7 +67,9 @@ export async function getHabitLogs(
     .select('*')
     .gte('date', start)
     .lte('date', end)
-  if (error) throw new Error(`Falha ao buscar registros: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao buscar registros: ${error.message}`)
+  }
   return data
 }
 
@@ -71,7 +81,9 @@ export async function logHabit(
   const { error } = await supabase
     .from('habit_logs')
     .upsert({ habit_id: habitId, date, value }, { onConflict: 'habit_id,date' })
-  if (error) throw new Error(`Falha ao registrar hábito: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao registrar hábito: ${error.message}`)
+  }
 }
 
 export async function getDailyLogs(
@@ -84,7 +96,9 @@ export async function getDailyLogs(
     .gte('date', start)
     .lte('date', end)
     .order('date', { ascending: true })
-  if (error) throw new Error(`Falha ao buscar o diário: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao buscar o diário: ${error.message}`)
+  }
   return data
 }
 
@@ -96,5 +110,7 @@ export async function logMood(
   const { error } = await supabase
     .from('daily_logs')
     .upsert({ date, mood, comment }, { onConflict: 'user_id,date' })
-  if (error) throw new Error(`Falha ao registrar o humor: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao registrar o humor: ${error.message}`)
+  }
 }

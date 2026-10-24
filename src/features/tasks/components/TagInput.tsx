@@ -17,12 +17,16 @@ export function TagInput({ tags, onChange, suggestions }: TagInputProps) {
   const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
-    if (isAdding) inputRef.current?.focus()
+    if (isAdding) {
+      inputRef.current?.focus()
+    }
   }, [isAdding])
 
   function addTag(tag: string) {
     const trimmed = tag.trim()
-    if (!trimmed || tags.includes(trimmed)) return
+    if (!trimmed || tags.includes(trimmed)) {
+      return
+    }
     onChange([...tags, trimmed])
     setDraft('')
   }
@@ -43,7 +47,9 @@ export function TagInput({ tags, onChange, suggestions }: TagInputProps) {
   }
 
   function handleBlur() {
-    if (!draft.trim()) setIsAdding(false)
+    if (!draft.trim()) {
+      setIsAdding(false)
+    }
   }
 
   const matchingSuggestions = suggestions.filter(

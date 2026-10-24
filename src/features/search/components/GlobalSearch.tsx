@@ -67,7 +67,9 @@ export function GlobalSearch() {
   const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
-    if (open) inputRef.current?.focus()
+    if (open) {
+      inputRef.current?.focus()
+    }
   }, [open])
 
   useEffect(() => {
@@ -92,7 +94,9 @@ export function GlobalSearch() {
 
   function handleOpenChange(nextOpen: boolean) {
     setOpen(nextOpen)
-    if (!nextOpen) setQuery('')
+    if (!nextOpen) {
+      setQuery('')
+    }
   }
 
   return (
