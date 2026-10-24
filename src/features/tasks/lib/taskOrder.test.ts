@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { makeTask } from '@/test/factories'
-import { applyTaskOrder, compareTaskOrder } from './taskOrder'
+import { applyTaskOrder, compareTaskOrder, sortByImportance } from './taskOrder'
 
 describe('compareTaskOrder', () => {
   it('ordena pela posição e, no empate, do mais novo para o mais antigo', () => {
@@ -29,6 +29,23 @@ describe('applyTaskOrder', () => {
       ['b', 0],
       ['a', 1],
       ['other', 5],
+    ])
+  })
+})
+
+describe('sortByImportance', () => {
+  it('vai de mais para menos estrelas, sem nota no fim e empate na ordem atual', () => {
+    const tasks = [
+      makeTask({ id: 'none', importance: null }),
+      makeTask({ id: 'three-a', importance: 3 }),
+      makeTask({ id: 'five', importance: 5 }),
+      makeTask({ id: 'three-b', importance: 3 }),
+    ]
+    expect(sortByImportance(tasks).map((task) => task.id)).toEqual([
+      'five',
+      'three-a',
+      'three-b',
+      'none',
     ])
   })
 })

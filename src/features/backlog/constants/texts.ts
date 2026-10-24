@@ -4,6 +4,10 @@ export const BACKLOG_TEXTS = {
   allStatuses: 'Todos os status',
   allPriorities: 'Todas as prioridades',
   allImportances: 'Importância',
+  sortLabels: {
+    manual: 'Ordem manual',
+    importance: 'Por importância',
+  },
   allTags: 'Todas as tags',
   allEpics: 'Todos os épicos',
   empty: '— nenhum card com esses filtros —',
