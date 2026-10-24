@@ -5,6 +5,7 @@ export function makeTask(overrides: Partial<Task> = {}): Task {
   return {
     id: 'task-1',
     number: null,
+    position: 0,
     title: 'Tarefa',
     description: null,
     status: 'todo',

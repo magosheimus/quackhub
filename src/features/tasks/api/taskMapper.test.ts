@@ -6,6 +6,7 @@ const row: Tables<'tasks'> = {
   id: 't1',
   user_id: 'u1',
   task_number: 7,
+  position: 0,
   title: 'Revisar SM-2',
   description: null,
   status: 'todo',
@@ -38,6 +39,10 @@ describe('toTask', () => {
   it('importância fora de 1 a 5 vira null', () => {
     expect(toTask({ ...row, importance: 4 }).importance).toBe(4)
     expect(toTask({ ...row, importance: 9 }).importance).toBeNull()
+  })
+
+  it('mantém a posição manual do card', () => {
+    expect(toTask({ ...row, position: -3 }).position).toBe(-3)
   })
 
   it('converte para camelCase e descarta os campos do banco', () => {

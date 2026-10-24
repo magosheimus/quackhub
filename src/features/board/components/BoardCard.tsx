@@ -1,3 +1,4 @@
+import { cn } from '@/shared/lib/utils'
 import { Draggable } from '@hello-pangea/dnd'
 import { Link } from 'react-router-dom'
 import { IconFlag, IconMove } from '@/shared/lib/icons'
@@ -33,6 +34,8 @@ import { ImportanceBadge } from '@/features/tasks/components/ImportanceBadge'
 
 const CARD_CLASS =
   'flex gap-2 rounded-md border border-l-4 border-border bg-card p-3 text-body-sm hover:bg-card-hover'
+
+const INSTANT_DROP_STYLE = { transitionDuration: '0.001s' }
 
 function getBorderStyle(task: Task) {
   const priority = PRIORITY_CONFIG[task.priority]
@@ -208,11 +211,10 @@ export function BoardCard<T extends string = BoardColumnKey>({
           {...provided.dragHandleProps}
           style={{
             ...provided.draggableProps.style,
+            ...(snapshot.isDropAnimating && INSTANT_DROP_STYLE),
             ...getBorderStyle(task),
           }}
-          className={`${CARD_CLASS} ${
-            snapshot.isDragging ? 'bg-card-hover' : ''
-          }`}
+          className={cn(CARD_CLASS, snapshot.isDragging && 'bg-card-hover')}
         >
           <BoardCardBody
             task={task}

@@ -13,6 +13,7 @@ import { BacklogRow } from '@/features/backlog/components/BacklogRow'
 import { useBacklogPage } from '@/features/backlog/hooks/useBacklogPage'
 import { TASK_PRIORITIES, TASK_STATUSES } from '@/shared/lib/enums'
 import { AnimatePresence } from 'framer-motion'
+import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd'
 import { LoadingText } from '@/components/feedback/loading-text'
 import { Button } from '@/components/ui/button'
 import { ColorDot } from '@/components/pickers/color-dot'
@@ -26,21 +27,9 @@ import { CardCreateModal } from '@/features/tasks/components/CardCreateModal'
 import { PersonaSelect } from '@/features/personas/components/PersonaSelect'
 import { PERSONAS_TEXTS } from '@/features/personas/constants/texts'
 import { ImportanceBadge } from '@/features/tasks/components/ImportanceBadge'
-import {
-  IMPORTANCE_LEVELS,
-  type Importance,
-} from '@/features/tasks/lib/importance'
+import { IMPORTANCE_LEVELS_DESC } from '@/features/tasks/lib/importance'
 
 const NONE_VALUE = '__all__'
-
-function ImportanceOption({ level }: { level: Importance }) {
-  return (
-    <span className="flex items-center gap-1.5">
-      <ImportanceBadge value={level} />
-      {level < IMPORTANCE_LEVELS.length && BACKLOG_TEXTS.importanceOrMore}
-    </span>
-  )
-}
 
 export function BacklogPage() {
   const {
@@ -81,6 +70,8 @@ export function BacklogPage() {
     canAddToSprint,
     addToSprint,
     addAllToSprint,
+    canReorder,
+    handleDragEnd,
   } = useBacklogPage()
 
   if (isLoadingProjects) {
@@ -185,7 +176,7 @@ export function BacklogPage() {
           <SelectTrigger>
             <SelectValue>
               {minImportanceFilter ? (
-                <ImportanceOption level={minImportanceFilter} />
+                <ImportanceBadge value={minImportanceFilter} />
               ) : (
                 BACKLOG_TEXTS.allImportances
               )}
@@ -195,9 +186,9 @@ export function BacklogPage() {
             <SelectItem value={NONE_VALUE}>
               {BACKLOG_TEXTS.allImportances}
             </SelectItem>
-            {IMPORTANCE_LEVELS.map((level) => (
+            {IMPORTANCE_LEVELS_DESC.map((level) => (
               <SelectItem key={level} value={String(level)}>
-                <ImportanceOption level={level} />
+                <ImportanceBadge value={level} />
               </SelectItem>
             ))}
           </SelectContent>
@@ -271,57 +262,87 @@ export function BacklogPage() {
         {!isLoadingTasks && hasBacklogTasks && filteredTasks.length === 0 && (
           <EmptyMessage>{BACKLOG_TEXTS.empty}</EmptyMessage>
         )}
-        {projectGroups.map((group) => {
-          const { project, tasks } = group
-          const isCollapsed = isProjectCollapsed(project.id)
+        <DragDropContext onDragEnd={handleDragEnd}>
+          {projectGroups.map((group) => {
+            const { project, tasks } = group
+            const isCollapsed = isProjectCollapsed(project.id)
 
-          return (
-            <section key={project.id} className="flex flex-col gap-2">
-              <div className="flex items-center justify-between px-1">
-                <button
-                  type="button"
-                  onClick={() => toggleProject(project.id)}
-                  aria-expanded={!isCollapsed}
-                  className="flex items-center gap-2 font-heading text-xl uppercase text-fg"
-                >
-                  <IconChevronRight
-                    size={12}
-                    aria-hidden="true"
-                    className={`transition-transform ${isCollapsed ? '' : 'rotate-90'}`}
-                  />
-                  {project.name}
-                </button>
-                <div className="flex items-center gap-3">
-                  <span className="text-caption">{tasks.length}</span>
-                  {canAddToSprint && (
-                    <Button size="sm" onClick={() => addAllToSprint(group)}>
-                      <IconPlus size={12} aria-hidden="true" />
-                      {BACKLOG_TEXTS.addAll}
-                    </Button>
-                  )}
-                </div>
-              </div>
-              {!isCollapsed && (
-                <AnimatePresence>
-                  {tasks.map((task) => (
-                    <BacklogRow
-                      key={task.id}
-                      task={task}
-                      projectLabels={projectLabels}
-                      epicLabel={getEpicLabel(task)}
-                      colorScope={colorScope}
-                      onAddToSprint={
-                        canAddToSprint
-                          ? () => addToSprint(task, project)
-                          : undefined
-                      }
+            return (
+              <section key={project.id} className="flex flex-col gap-2">
+                <div className="flex items-center justify-between px-1">
+                  <button
+                    type="button"
+                    onClick={() => toggleProject(project.id)}
+                    aria-expanded={!isCollapsed}
+                    className="flex items-center gap-2 font-heading text-xl uppercase text-fg"
+                  >
+                    <IconChevronRight
+                      size={12}
+                      aria-hidden="true"
+                      className={`transition-transform ${isCollapsed ? '' : 'rotate-90'}`}
                     />
-                  ))}
-                </AnimatePresence>
-              )}
-            </section>
-          )
-        })}
+                    {project.name}
+                  </button>
+                  <div className="flex items-center gap-3">
+                    <span className="text-caption">{tasks.length}</span>
+                    {canAddToSprint && (
+                      <Button size="sm" onClick={() => addAllToSprint(group)}>
+                        <IconPlus size={12} aria-hidden="true" />
+                        {BACKLOG_TEXTS.addAll}
+                      </Button>
+                    )}
+                  </div>
+                </div>
+                {!isCollapsed && (
+                  <Droppable
+                    droppableId={project.id}
+                    isDropDisabled={!canReorder}
+                  >
+                    {(provided) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.droppableProps}
+                        className="flex flex-col gap-2"
+                      >
+                        <AnimatePresence>
+                          {tasks.map((task, index) => (
+                            <Draggable
+                              key={task.id}
+                              draggableId={task.id}
+                              index={index}
+                              isDragDisabled={!canReorder}
+                            >
+                              {(drag) => (
+                                <div
+                                  ref={drag.innerRef}
+                                  {...drag.draggableProps}
+                                  {...drag.dragHandleProps}
+                                >
+                                  <BacklogRow
+                                    task={task}
+                                    projectLabels={projectLabels}
+                                    epicLabel={getEpicLabel(task)}
+                                    colorScope={colorScope}
+                                    onAddToSprint={
+                                      canAddToSprint
+                                        ? () => addToSprint(task, project)
+                                        : undefined
+                                    }
+                                  />
+                                </div>
+                              )}
+                            </Draggable>
+                          ))}
+                        </AnimatePresence>
+                        {provided.placeholder}
+                      </div>
+                    )}
+                  </Droppable>
+                )}
+              </section>
+            )
+          })}
+        </DragDropContext>
       </div>
     </div>
   )

@@ -17,6 +17,7 @@ import { getInitialStatusForType } from '@/features/tasks/lib/taskStatus'
 import {
   filterBacklogTasks,
   groupTasksByProject,
+  hasActiveFilters,
   type ProjectTaskGroup,
 } from '@/features/backlog/lib/backlog'
 import { isTaskPriority, isTaskStatus } from '@/shared/lib/enums'
@@ -28,6 +29,10 @@ import type { Task } from '@/features/tasks/model/task'
 import { buildProjectLabels } from '@/features/projects/lib/project'
 import { usePersonaOptions } from '@/features/personas/hooks/usePersonaOptions'
 import { toImportance } from '@/features/tasks/lib/importance'
+import { useReorderTasks } from '@/features/tasks/hooks/useReorderTasks'
+import { queryKeys } from '@/shared/query/queryKeys'
+import { moveItem } from '@/shared/lib/array'
+import type { DropResult } from '@hello-pangea/dnd'
 
 export function useBacklogPage() {
   const { filters, update } = useBacklogFilters()
@@ -51,6 +56,7 @@ export function useBacklogPage() {
   const { data: activeSprint } = useActiveSprint()
   const { data: sprints } = useSprints()
   const { mutate: addTaskToSprint } = useAddTaskToSprint()
+  const { reorder } = useReorderTasks(queryKeys.tasks.backlog(projectFilter))
 
   const targetSprint =
     activeSprint ?? sprints?.find((s) => s.status === 'planned') ?? null
@@ -113,6 +119,27 @@ export function useBacklogPage() {
     })
   }
 
+  function handleDragEnd({ source, destination }: DropResult) {
+    if (
+      !destination ||
+      destination.droppableId !== source.droppableId ||
+      destination.index === source.index
+    ) {
+      return
+    }
+    const group = projectGroups.find(
+      ({ project }) => project.id === source.droppableId,
+    )
+    if (!group) {
+      return
+    }
+    reorder(
+      moveItem(group.tasks, source.index, destination.index).map(
+        (task) => task.id,
+      ),
+    )
+  }
+
   function addAllToSprint(group: ProjectTaskGroup) {
     group.tasks.forEach((task) => addToSprint(task, group.project))
   }
@@ -157,5 +184,7 @@ export function useBacklogPage() {
     canAddToSprint: targetSprint !== null,
     addToSprint,
     addAllToSprint,
+    canReorder: !hasActiveFilters(filters),
+    handleDragEnd,
   }
 }

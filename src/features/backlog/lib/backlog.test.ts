@@ -4,6 +4,7 @@ import {
   EMPTY_BACKLOG_FILTERS,
   filterBacklogTasks,
   groupTasksByProject,
+  hasActiveFilters,
   readBacklogFilters,
   writeBacklogFilters,
 } from './backlog'
@@ -84,6 +85,18 @@ describe('filtro de importância no backlog', () => {
       NO_TAGS,
     )
     expect(result.map((task) => task.id)).toEqual(['t2', 't3'])
+  })
+})
+
+describe('hasActiveFilters', () => {
+  it('ignora o projeto, que já é o grupo, e detecta os outros filtros', () => {
+    const projectOnly = { ...EMPTY_BACKLOG_FILTERS, projectId: 'p1' }
+    const withImportance = {
+      ...EMPTY_BACKLOG_FILTERS,
+      minImportance: 3 as const,
+    }
+    expect(hasActiveFilters(projectOnly)).toBe(false)
+    expect(hasActiveFilters(withImportance)).toBe(true)
   })
 })
 

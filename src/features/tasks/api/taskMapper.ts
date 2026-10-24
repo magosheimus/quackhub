@@ -61,6 +61,7 @@ export function toTask(row: TaskRow): Task {
   return {
     id: row.id,
     number: row.task_number,
+    position: row.position,
     title: row.title,
     description: row.description,
     status: row.status,

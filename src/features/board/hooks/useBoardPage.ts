@@ -1,5 +1,7 @@
 import { hasLoadError, retryFailedQueries } from '@/shared/query/queryState'
-import type { DropResult } from '@hello-pangea/dnd'
+import type { BeforeCapture, DropResult } from '@hello-pangea/dnd'
+import { useState } from 'react'
+import { flushSync } from 'react-dom'
 import { useSearchParams } from 'react-router-dom'
 import { useProjects } from '@/features/projects/hooks/useProjects'
 import { useTasksByProjectId } from '@/features/projects/hooks/useTasksByProjectId'
@@ -26,9 +28,11 @@ import {
   withoutHidden,
   type QuickFilterKind,
   type QuickFilterMenuGroup,
-  shouldFlagOnDrop,
-  isBoardColumnKey,
+  canFlagInColumn,
+  parseDropTarget,
   getMoveOptions,
+  getColumnOrderAfterDrop,
+  hasActiveBoardFilters,
   type BoardColumnKey,
   type MoveOption,
 } from '@/features/board/lib/board'
@@ -42,6 +46,8 @@ import {
 import { buildEpicOptions } from '@/features/epics/lib/epic'
 import { usePersonaOptions } from '@/features/personas/hooks/usePersonaOptions'
 import { getPersonasInTasks } from '@/features/personas/lib/persona'
+import { useReorderTasks } from '@/features/tasks/hooks/useReorderTasks'
+import { queryKeys } from '@/shared/query/queryKeys'
 
 export function useBoardPage() {
   const [searchParams] = useSearchParams()
@@ -57,6 +63,10 @@ export function useBoardPage() {
   const { data: projectTasks } = useTasksByProjectId(projectId)
   const { mutate: updateTaskStatus } = useUpdateTaskStatus()
   const { mutate: updateTask } = useUpdateTask()
+  const [draggingTask, setDraggingTask] = useState<Task | null>(null)
+  const { reorder } = useReorderTasks(
+    queryKeys.tasks.sprint(activeSprint?.id ?? ''),
+  )
   const { data: epics } = useAllEpics()
   const personaOptions = usePersonaOptions()
   const { filters, updateFilter, setFilters } = useBoardFilters()
@@ -87,6 +97,8 @@ export function useBoardPage() {
       key: column,
       label: getBoardColumnLabel(column, labelScope),
       tasks: tasksByColumn[column],
+      showUrgentZone:
+        draggingTask !== null && canFlagInColumn(draggingTask, column),
     }),
   )
 
@@ -106,17 +118,32 @@ export function useBoardPage() {
     updateTaskStatus({ id: taskId, status, sprintId: activeSprint.id })
   }
 
-  function handleDragEnd(result: DropResult) {
-    const { source, destination, draggableId } = result
-    if (!destination || !isBoardColumnKey(destination.droppableId)) {
+  function handleBeforeCapture({ draggableId }: BeforeCapture) {
+    flushSync(() => {
+      setDraggingTask(sprintTasks.find((t) => t.id === draggableId) ?? null)
+    })
+  }
+
+  function handleDragEnd({ source, destination, draggableId }: DropResult) {
+    setDraggingTask(null)
+    const target = destination ? parseDropTarget(destination.droppableId) : null
+    if (!destination || !target) {
       return
     }
-    const column = destination.droppableId
-    if (column !== source.droppableId) {
+    const { column, isUrgentZone } = target
+    const index = isUrgentZone ? 0 : destination.index
+    const isSameColumn = column === source.droppableId
+    if (!isSameColumn) {
       moveTask(draggableId, column)
     }
+    const isSameSpot = isSameColumn && index === source.index
+    if (!isSameSpot && !hasActiveBoardFilters(filters)) {
+      reorder(
+        getColumnOrderAfterDrop(tasksByColumn[column], draggableId, index),
+      )
+    }
     const task = sprintTasks.find((t) => t.id === draggableId)
-    if (task && shouldFlagOnDrop(task, column, destination.index)) {
+    if (isUrgentZone && task && canFlagInColumn(task, column)) {
       updateTask({ id: task.id, data: { flag: { note: null } } })
     }
   }
@@ -182,6 +209,7 @@ export function useBoardPage() {
     toggleQuickFilter,
     visibleTasks,
     columns,
+    handleBeforeCapture,
     handleDragEnd,
     moveTask,
     getMoveOptionsFor,

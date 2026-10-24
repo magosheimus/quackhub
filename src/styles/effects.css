@@ -75,3 +75,42 @@
     transparent 1px 2px
   );
 }
+
+.urgent-drop-zone {
+  --urgent-zone-mix: 15%;
+  background-color: color-mix(
+    in oklch,
+    var(--color-danger) var(--urgent-zone-mix),
+    var(--color-card)
+  );
+}
+
+.urgent-drop-zone[data-over] {
+  --urgent-zone-mix: 35%;
+}
+
+.cartucho-slate .urgent-drop-zone {
+  --urgent-zone-mix: 18%;
+  background-color: color-mix(
+    in srgb,
+    var(--color-danger) var(--urgent-zone-mix),
+    white
+  );
+}
+
+.cartucho-slate .urgent-drop-zone[data-over] {
+  --urgent-zone-mix: 35%;
+}
+
+html.theme-dark .urgent-drop-zone {
+  --urgent-zone-mix: 40%;
+  background-color: color-mix(
+    in srgb,
+    var(--color-danger) var(--urgent-zone-mix),
+    black
+  );
+}
+
+html.theme-dark .urgent-drop-zone[data-over] {
+  --urgent-zone-mix: 60%;
+}
