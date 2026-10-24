@@ -2,6 +2,7 @@ import type { TagsByTask } from '@/features/tasks/lib/taskTags'
 import { isTaskPriority, isTaskStatus } from '@/shared/lib/enums'
 import type { Project, TaskPriority, TaskStatus } from '@/shared/types/entities'
 import type { Task } from '@/features/tasks/model/task'
+import { toImportance, type Importance } from '@/features/tasks/lib/importance'
 
 export type BacklogFilters = {
   status: TaskStatus | null
@@ -9,6 +10,7 @@ export type BacklogFilters = {
   epicId: string | null
   tag: string | null
   assigneeId: string | null
+  minImportance: Importance | null
 }
 
 // Filtros na URL do Backlog: sobrevivem a abrir um card e voltar, e a recarregar
@@ -21,6 +23,7 @@ export const EMPTY_BACKLOG_FILTERS: BacklogUrlFilters = {
   epicId: null,
   tag: null,
   assigneeId: null,
+  minImportance: null,
 }
 
 const BACKLOG_PARAMS = {
@@ -30,6 +33,7 @@ const BACKLOG_PARAMS = {
   epicId: 'epic',
   tag: 'tag',
   assigneeId: 'assignee',
+  minImportance: 'importance',
 } as const satisfies Record<keyof BacklogUrlFilters, string>
 
 export function readBacklogFilters(params: URLSearchParams): BacklogUrlFilters {
@@ -42,6 +46,9 @@ export function readBacklogFilters(params: URLSearchParams): BacklogUrlFilters {
     epicId: params.get(BACKLOG_PARAMS.epicId) || null,
     tag: params.get(BACKLOG_PARAMS.tag) || null,
     assigneeId: params.get(BACKLOG_PARAMS.assigneeId) || null,
+    minImportance: toImportance(
+      Number(params.get(BACKLOG_PARAMS.minImportance)),
+    ),
   }
 }
 
@@ -55,7 +62,7 @@ export function writeBacklogFilters(
   ) as (keyof BacklogUrlFilters)[]) {
     const value = filters[key]
     if (value) {
-      next.set(BACKLOG_PARAMS[key], value)
+      next.set(BACKLOG_PARAMS[key], String(value))
     } else {
       next.delete(BACKLOG_PARAMS[key])
     }
@@ -79,6 +86,8 @@ export function filterBacklogTasks(
       (!filters.priority || task.priority === filters.priority) &&
       (!filters.epicId || task.epicId === filters.epicId) &&
       (!filters.assigneeId || task.assigneeId === filters.assigneeId) &&
+      (!filters.minImportance ||
+        (task.importance ?? 0) >= filters.minImportance) &&
       (!filters.tag || (tagsByTask[task.id] ?? []).includes(filters.tag)),
   )
 }

@@ -3,6 +3,8 @@ export const BACKLOG_TEXTS = {
   project: 'Projeto',
   allStatuses: 'Todos os status',
   allPriorities: 'Todas as prioridades',
+  allImportances: 'Qualquer importância',
+  importanceOrMore: 'ou mais',
   allTags: 'Todas as tags',
   allEpics: 'Todos os épicos',
   empty: '— nenhum card com esses filtros —',
