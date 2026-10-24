@@ -32,7 +32,9 @@ export function useDraftToCard(pending: DraftsItem[]) {
 
   return {
     isOpen: draft !== null,
-    prefill: draft ? { id: draft.id, title: draft.content } : undefined,
+    prefill: draft
+      ? { id: draft.id, title: draft.content, projectId: draft.project_id }
+      : undefined,
     position: draft ? getDraftPosition(pending, draft.id) : null,
     canGoPrevious: previousDraft !== null,
     canGoNext: nextDraft !== null,

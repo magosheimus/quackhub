@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { IconBulletlist, IconPlus } from '@/shared/lib/icons'
+import { IconBulletlist, IconFolderFilled, IconPlus } from '@/shared/lib/icons'
 import { ProjectProgressView } from './ProjectProgressView'
 import { ProjectEpicsView } from './ProjectEpicsView'
 import { CardCreateModal } from '@/features/tasks/components/CardCreateModal'
@@ -37,6 +37,7 @@ type ProjectBoardViewProps = {
   activeSprintName: string | null
   tasks: Task[]
   projectLabels: ProjectLabels
+  projectColor: string
 }
 
 export function ProjectBoardView({
@@ -45,6 +46,7 @@ export function ProjectBoardView({
   activeSprintName,
   tasks,
   projectLabels,
+  projectColor,
 }: ProjectBoardViewProps) {
   const [isCardModalOpen, setIsCardModalOpen] = useState(false)
   const [isEpicModalOpen, setIsEpicModalOpen] = useState(false)
@@ -53,7 +55,12 @@ export function ProjectBoardView({
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <span className="font-heading text-heading-1 text-fg">
+        <span className="flex items-center gap-3 font-heading text-heading-1 text-fg">
+          <IconFolderFilled
+            size={28}
+            aria-hidden="true"
+            style={{ color: projectColor }}
+          />
           {project.name}
         </span>
         <span className="text-caption">

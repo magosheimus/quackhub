@@ -48,6 +48,7 @@ export type Database = {
           created_at: string | null
           id: string
           position: number
+          project_id: string | null
           triaged_at: string | null
           triaged_task_id: string | null
           triaged_to: Database['public']['Enums']['draft_triage_target'] | null
@@ -59,6 +60,7 @@ export type Database = {
           created_at?: string | null
           id?: string
           position?: number
+          project_id?: string | null
           triaged_at?: string | null
           triaged_task_id?: string | null
           triaged_to?: Database['public']['Enums']['draft_triage_target'] | null
@@ -70,12 +72,20 @@ export type Database = {
           created_at?: string | null
           id?: string
           position?: number
+          project_id?: string | null
           triaged_at?: string | null
           triaged_task_id?: string | null
           triaged_to?: Database['public']['Enums']['draft_triage_target'] | null
           user_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: 'drafts_items_project_id_fkey'
+            columns: ['project_id']
+            isOneToOne: false
+            referencedRelation: 'projects'
+            referencedColumns: ['id']
+          },
           {
             foreignKeyName: 'inbox_items_triaged_task_id_fkey'
             columns: ['triaged_task_id']

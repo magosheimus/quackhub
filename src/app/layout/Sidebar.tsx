@@ -222,7 +222,7 @@ export function Sidebar({
         )}
       </nav>
 
-      <div className="mt-auto flex flex-col gap-1 pt-4">
+      <div className="mt-auto flex flex-col gap-3 pt-4">
         {!isCollapsed && <CartuchoMenu />}
         <NavItem
           to={SETTINGS_PATH}

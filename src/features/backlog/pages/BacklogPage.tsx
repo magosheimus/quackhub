@@ -17,6 +17,7 @@ import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd'
 import { LoadingText } from '@/components/feedback/loading-text'
 import { Button } from '@/components/ui/button'
 import { ColorDot } from '@/components/pickers/color-dot'
+import { GroupTitle } from '@/components/layout/group-title'
 import { EpicManageModal } from '@/features/epics/components/EpicManageModal'
 import { PageTitle } from '@/components/layout/page-title'
 import { COMMON_TEXTS } from '@/shared/constants/texts'
@@ -280,7 +281,7 @@ export function BacklogPage() {
         )}
         <DragDropContext onDragEnd={handleDragEnd}>
           {projectGroups.map((group) => {
-            const { project, tasks } = group
+            const { project, color, tasks } = group
             const isCollapsed = isProjectCollapsed(project.id)
 
             return (
@@ -290,14 +291,14 @@ export function BacklogPage() {
                     type="button"
                     onClick={() => toggleProject(project.id)}
                     aria-expanded={!isCollapsed}
-                    className="flex items-center gap-2 font-heading text-xl uppercase text-fg"
+                    className="flex items-center gap-2"
                   >
                     <IconChevronRight
                       size={12}
                       aria-hidden="true"
                       className={`transition-transform ${isCollapsed ? '' : 'rotate-90'}`}
                     />
-                    {project.name}
+                    <GroupTitle color={color}>{project.name}</GroupTitle>
                   </button>
                   <div className="flex items-center gap-3">
                     <span className="text-caption">{tasks.length}</span>

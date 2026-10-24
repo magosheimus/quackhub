@@ -5,9 +5,10 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
+  IconCalendarWeeks,
   IconNotes,
+  IconPenSquare,
   IconPencil,
-  IconStickyNoteSharp,
   IconTrash,
 } from '@/shared/lib/icons'
 import { useDraftsSections } from '@/features/drafts/hooks/useDraftsSections'
@@ -21,11 +22,13 @@ import type { DraftsItem } from '@/shared/types/entities'
 import { DRAFTS_TEXTS } from '@/features/drafts/constants/texts'
 import { EmptyMessage } from '@/components/feedback/empty-message'
 import { Panel } from '@/components/layout/panel'
+import { GroupTitle } from '@/components/layout/group-title'
 import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd'
-import { useReorderList } from '@/shared/hooks/useReorderList'
-import { queryKeys } from '@/shared/query/queryKeys'
+import { useDraftGroups } from '@/features/drafts/hooks/useDraftGroups'
 import { useDraftToCard } from '@/features/drafts/hooks/useDraftToCard'
 import { DraftNavigator } from '@/features/drafts/components/DraftNavigator'
+import { useDraftToHabit } from '@/features/drafts/hooks/useDraftToHabit'
+import { HabitCreateDialog } from '@/features/dailyTracker/components/HabitCreateDialog'
 
 type DraftEditInputProps = {
   value: string
@@ -70,16 +73,14 @@ export function DraftsList() {
   const { isLoading } = itemsQuery
   const { mutate: triage } = useTriageDraft()
   const { mutate: updateDraft } = useUpdateDraft()
-  const draftToCard = useDraftToCard(pending)
+  const { groups, orderedPending, handleBeforeCapture, handleDragEnd } =
+    useDraftGroups(pending)
+  const draftToCard = useDraftToCard(orderedPending)
+  const draftToHabit = useDraftToHabit()
   const [editing, setEditing] = useState<{ id: string; text: string } | null>(
     null,
   )
   const { mutate: toggleChecked } = useToggleDraftChecked()
-  const { handleDragEnd } = useReorderList({
-    table: 'drafts_items',
-    items: [...pending, ...archived],
-    queryKey: queryKeys.drafts.root,
-  })
 
   function handleDiscard(item: DraftsItem) {
     triage({
@@ -121,87 +122,117 @@ export function DraftsList() {
       {pending.length === 0 && (
         <EmptyMessage>{DRAFTS_TEXTS.allDone}</EmptyMessage>
       )}
-      <DragDropContext onDragEnd={handleDragEnd}>
-        <Droppable droppableId="drafts">
-          {(provided) => (
-            <div
-              ref={provided.innerRef}
-              {...provided.droppableProps}
-              className="flex flex-col gap-2"
-            >
-              {pending.map((item, index) => (
-                <Draggable
-                  key={item.id}
-                  draggableId={item.id}
-                  index={index}
-                  isDragDisabled={editing?.id === item.id}
-                >
-                  {(drag) => (
-                    <Panel
-                      ref={drag.innerRef}
-                      {...drag.draggableProps}
-                      {...drag.dragHandleProps}
-                      className="flex items-center gap-3 text-body hover:bg-card-hover"
-                    >
-                      <Checkbox
-                        checked={false}
-                        onCheckedChange={() =>
-                          toggleChecked({ id: item.id, checked: true })
-                        }
-                        aria-label={DRAFTS_TEXTS.pendingItem}
-                      />
-                      {editing?.id === item.id ? (
-                        <DraftEditInput
-                          value={editing.text}
-                          onChange={(text) => setEditing({ id: item.id, text })}
-                          onSave={saveEdit}
-                          onCancel={() => setEditing(null)}
-                        />
-                      ) : (
-                        <span className="min-w-0 flex-1 wrap-break-word text-fg">
-                          {item.content}
-                        </span>
-                      )}
-                      <Button
-                        type="button"
-                        title={DRAFTS_TEXTS.edit}
-                        variant="ghost"
-                        onClick={() =>
-                          setEditing({ id: item.id, text: item.content })
-                        }
-                        aria-label={DRAFTS_TEXTS.edit}
-                        className="size-8 shrink-0 p-0 hover:bg-surface! hover:text-fg!"
-                      >
-                        <IconPencil size={16} />
-                      </Button>
-                      <Button
-                        type="button"
-                        title={DRAFTS_TEXTS.discard}
-                        variant="ghost"
-                        onClick={() => handleDiscard(item)}
-                        aria-label={DRAFTS_TEXTS.discard}
-                        className="size-8 shrink-0 p-0 hover:bg-surface! hover:text-fg!"
-                      >
-                        <IconTrash size={16} />
-                      </Button>
-                      <Button
-                        type="button"
-                        title={DRAFTS_TEXTS.toCard}
-                        variant="ghost"
-                        onClick={() => draftToCard.open(item)}
-                        aria-label={DRAFTS_TEXTS.toCard}
-                        className="size-8 shrink-0 p-0 hover:bg-surface! hover:text-fg!"
-                      >
-                        <IconStickyNoteSharp size={16} />
-                      </Button>
-                    </Panel>
-                  )}
-                </Draggable>
-              ))}
-              {provided.placeholder}
+      <DragDropContext
+        onBeforeCapture={handleBeforeCapture}
+        onDragEnd={handleDragEnd}
+      >
+        {groups.map((group) => (
+          <section key={group.droppableId} className="flex flex-col gap-2">
+            <div className="flex items-center justify-between px-1">
+              <GroupTitle color={group.color}>{group.label}</GroupTitle>
+              <span className="text-caption">{group.items.length}</span>
             </div>
-          )}
-        </Droppable>
+            <Droppable droppableId={group.droppableId}>
+              {(provided) => (
+                <div
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                  className="flex flex-col gap-2"
+                >
+                  {group.items.length === 0 && (
+                    <div className="rounded-md border border-dashed border-(--border-card-empty) bg-card-empty px-3 py-2 text-caption">
+                      {DRAFTS_TEXTS.dropHere}
+                    </div>
+                  )}
+                  {group.items.map((item, index) => (
+                    <Draggable
+                      key={item.id}
+                      draggableId={item.id}
+                      index={index}
+                      isDragDisabled={editing?.id === item.id}
+                    >
+                      {(drag) => (
+                        <Panel
+                          ref={drag.innerRef}
+                          {...drag.draggableProps}
+                          {...drag.dragHandleProps}
+                          className="flex items-center gap-3 text-body hover:bg-card-hover"
+                        >
+                          <Checkbox
+                            checked={false}
+                            onCheckedChange={() =>
+                              toggleChecked({ id: item.id, checked: true })
+                            }
+                            aria-label={DRAFTS_TEXTS.pendingItem}
+                          />
+                          {editing?.id === item.id ? (
+                            <DraftEditInput
+                              value={editing.text}
+                              onChange={(text) =>
+                                setEditing({ id: item.id, text })
+                              }
+                              onSave={saveEdit}
+                              onCancel={() => setEditing(null)}
+                            />
+                          ) : (
+                            <span className="min-w-0 flex-1 wrap-break-word text-fg">
+                              {item.content}
+                            </span>
+                          )}
+                          <div className="flex shrink-0 items-center">
+                            <Button
+                              type="button"
+                              title={DRAFTS_TEXTS.edit}
+                              variant="ghost"
+                              onClick={() =>
+                                setEditing({ id: item.id, text: item.content })
+                              }
+                              aria-label={DRAFTS_TEXTS.edit}
+                              className="size-8 shrink-0 p-0 hover:bg-surface! hover:text-fg!"
+                            >
+                              <IconPencil size={18} />
+                            </Button>
+                            <Button
+                              type="button"
+                              title={DRAFTS_TEXTS.discard}
+                              variant="ghost"
+                              onClick={() => handleDiscard(item)}
+                              aria-label={DRAFTS_TEXTS.discard}
+                              className="size-8 shrink-0 p-0 hover:bg-surface! hover:text-fg!"
+                            >
+                              <IconTrash size={18} />
+                            </Button>
+                            <Button
+                              type="button"
+                              title={DRAFTS_TEXTS.toCard}
+                              variant="ghost"
+                              onClick={() => draftToCard.open(item)}
+                              aria-label={DRAFTS_TEXTS.toCard}
+                              className="size-8 shrink-0 p-0 hover:bg-surface! hover:text-fg!"
+                            >
+                              <IconPenSquare size={18} />
+                            </Button>
+                            <Button
+                              type="button"
+                              title={DRAFTS_TEXTS.toHabit}
+                              variant="ghost"
+                              onClick={() => draftToHabit.open(item)}
+                              aria-label={DRAFTS_TEXTS.toHabit}
+                              className="size-8 shrink-0 p-0 hover:bg-surface! hover:text-fg!"
+                            >
+                              <IconCalendarWeeks size={18} />
+                            </Button>
+                          </div>
+                        </Panel>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </section>
+        ))}
       </DragDropContext>
 
       <DraftsArchive
@@ -209,6 +240,15 @@ export function DraftsList() {
         onRestore={(item) => toggleChecked({ id: item.id, checked: false })}
         onDiscard={handleDiscard}
       />
+
+      {draftToHabit.draft && (
+        <HabitCreateDialog
+          key={draftToHabit.draft.id}
+          initialName={draftToHabit.draft.content}
+          onCreated={draftToHabit.handleCreated}
+          onClose={draftToHabit.close}
+        />
+      )}
 
       <CardCreateModal
         open={draftToCard.isOpen}

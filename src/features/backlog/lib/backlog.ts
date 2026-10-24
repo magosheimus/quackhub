@@ -6,6 +6,7 @@ import {
 } from '@/shared/lib/enums'
 import type { Project, TaskPriority, TaskStatus } from '@/shared/types/entities'
 import type { Task } from '@/features/tasks/model/task'
+import { toProjectLabel } from '@/features/projects/lib/project'
 import { toImportance, type Importance } from '@/features/tasks/lib/importance'
 
 export type BacklogFilters = {
@@ -100,6 +101,7 @@ export function hasActiveFilters(filters: BacklogFilters): boolean {
 
 export type ProjectTaskGroup = {
   project: Project
+  color: string
   tasks: Task[]
 }
 
@@ -128,6 +130,7 @@ export function groupTasksByProject(
   return projects
     .map((project) => ({
       project,
+      color: toProjectLabel(project).color,
       tasks: tasks.filter((task) => task.projectId === project.id),
     }))
     .filter((group) => group.tasks.length > 0)

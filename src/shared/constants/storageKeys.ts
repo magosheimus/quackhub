@@ -3,6 +3,7 @@ export const STORAGE_KEYS = {
   settings: 'quackhub-settings',
   uiScale: 'quackhub-ui-scale',
   draftsQueue: 'quackhub-drafts-queue',
+  draftsProject: 'quackhub-drafts-project',
   projectView: 'quackhub-project-view',
 } as const
 
@@ -11,4 +12,5 @@ export const STORAGE_KEYS = {
 export const USER_DATA_KEYS = [
   STORAGE_KEYS.queryCache,
   STORAGE_KEYS.draftsQueue,
+  STORAGE_KEYS.draftsProject,
 ] as const

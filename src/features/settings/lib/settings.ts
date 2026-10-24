@@ -217,6 +217,10 @@ export function isDarkCartucho(cartucho: Settings['cartucho']): boolean {
   return cartucho === 'sage-dark' || cartucho === 'amber-dark'
 }
 
+export function getEffectiveLcdGhost(settings: Settings): Settings['lcdGhost'] {
+  return settings.glow ? settings.lcdGhost : 'off'
+}
+
 export function loadSettings(): Settings {
   try {
     const raw = localStorage.getItem(SETTINGS_KEY)
