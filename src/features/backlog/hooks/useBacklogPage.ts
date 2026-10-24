@@ -18,6 +18,7 @@ import {
   filterBacklogTasks,
   groupTasksByProject,
   hasActiveFilters,
+  isBacklogSort,
   type ProjectTaskGroup,
 } from '@/features/backlog/lib/backlog'
 import { isTaskPriority, isTaskStatus } from '@/shared/lib/enums'
@@ -29,6 +30,7 @@ import type { Task } from '@/features/tasks/model/task'
 import { buildProjectLabels } from '@/features/projects/lib/project'
 import { usePersonaOptions } from '@/features/personas/hooks/usePersonaOptions'
 import { toImportance } from '@/features/tasks/lib/importance'
+import { sortByImportance } from '@/features/tasks/lib/taskOrder'
 import { useReorderTasks } from '@/features/tasks/hooks/useReorderTasks'
 import { queryKeys } from '@/shared/query/queryKeys'
 import { moveItem } from '@/shared/lib/array'
@@ -44,6 +46,7 @@ export function useBacklogPage() {
     tag: tagFilter,
     assigneeId: assigneeFilter,
     minImportance: minImportanceFilter,
+    sort,
   } = filters
   const [isEpicModalOpen, setIsEpicModalOpen] = useState(false)
   const collapsedProjects = useToggleSet<string>()
@@ -73,7 +76,9 @@ export function useBacklogPage() {
     filters,
     tagsByTask ?? {},
   )
-  const projectGroups = groupTasksByProject(projects ?? [], filteredTasks)
+  const orderedTasks =
+    sort === 'importance' ? sortByImportance(filteredTasks) : filteredTasks
+  const projectGroups = groupTasksByProject(projects ?? [], orderedTasks)
 
   const selectedProject = projectFilter
     ? (projectById.get(projectFilter) ?? null)
@@ -92,6 +97,12 @@ export function useBacklogPage() {
 
   function selectPriority(value: unknown) {
     update({ priority: isTaskPriority(value) ? value : null })
+  }
+
+  function selectSort(value: unknown) {
+    if (isBacklogSort(value)) {
+      update({ sort: value })
+    }
   }
 
   function selectMinImportance(value: unknown) {
@@ -157,6 +168,7 @@ export function useBacklogPage() {
     tagFilter,
     assigneeFilter,
     minImportanceFilter,
+    sort,
     hasPersonas,
     selectAssignee: (assigneeId: string | null) => update({ assigneeId }),
     tags: collectTags(tagsByTask ?? {}),
@@ -166,6 +178,7 @@ export function useBacklogPage() {
     selectStatus,
     selectPriority,
     selectMinImportance,
+    selectSort,
     selectTag: (tag: string | null) => update({ tag }),
     selectEpic: (epicId: string | null) => update({ epicId }),
     isEpicModalOpen,
@@ -184,7 +197,7 @@ export function useBacklogPage() {
     canAddToSprint: targetSprint !== null,
     addToSprint,
     addAllToSprint,
-    canReorder: !hasActiveFilters(filters),
+    canReorder: !hasActiveFilters(filters) && sort === 'manual',
     handleDragEnd,
   }
 }

@@ -28,6 +28,7 @@ import { PersonaSelect } from '@/features/personas/components/PersonaSelect'
 import { PERSONAS_TEXTS } from '@/features/personas/constants/texts'
 import { ImportanceBadge } from '@/features/tasks/components/ImportanceBadge'
 import { IMPORTANCE_LEVELS_DESC } from '@/features/tasks/lib/importance'
+import { BACKLOG_SORTS } from '@/features/backlog/lib/backlog'
 
 const NONE_VALUE = '__all__'
 
@@ -45,6 +46,7 @@ export function BacklogPage() {
     tagFilter,
     assigneeFilter,
     minImportanceFilter,
+    sort,
     hasPersonas,
     selectAssignee,
     tags,
@@ -54,6 +56,7 @@ export function BacklogPage() {
     selectStatus,
     selectPriority,
     selectMinImportance,
+    selectSort,
     selectTag,
     selectEpic,
     isEpicModalOpen,
@@ -189,6 +192,19 @@ export function BacklogPage() {
             {IMPORTANCE_LEVELS_DESC.map((level) => (
               <SelectItem key={level} value={String(level)}>
                 <ImportanceBadge value={level} />
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+
+        <Select value={sort} onValueChange={selectSort}>
+          <SelectTrigger>
+            <SelectValue>{BACKLOG_TEXTS.sortLabels[sort]}</SelectValue>
+          </SelectTrigger>
+          <SelectContent>
+            {BACKLOG_SORTS.map((option) => (
+              <SelectItem key={option} value={option}>
+                {BACKLOG_TEXTS.sortLabels[option]}
               </SelectItem>
             ))}
           </SelectContent>

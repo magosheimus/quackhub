@@ -1,5 +1,9 @@
 import type { TagsByTask } from '@/features/tasks/lib/taskTags'
-import { isTaskPriority, isTaskStatus } from '@/shared/lib/enums'
+import {
+  createEnumGuard,
+  isTaskPriority,
+  isTaskStatus,
+} from '@/shared/lib/enums'
 import type { Project, TaskPriority, TaskStatus } from '@/shared/types/entities'
 import type { Task } from '@/features/tasks/model/task'
 import { toImportance, type Importance } from '@/features/tasks/lib/importance'
@@ -14,7 +18,16 @@ export type BacklogFilters = {
 }
 
 // Filtros na URL do Backlog: sobrevivem a abrir um card e voltar, e a recarregar
-export type BacklogUrlFilters = BacklogFilters & { projectId: string | null }
+export const BACKLOG_SORTS = ['manual', 'importance'] as const
+
+export type BacklogSort = (typeof BACKLOG_SORTS)[number]
+
+export const isBacklogSort = createEnumGuard(BACKLOG_SORTS)
+
+export type BacklogUrlFilters = BacklogFilters & {
+  projectId: string | null
+  sort: BacklogSort
+}
 
 export const EMPTY_BACKLOG_FILTERS: BacklogUrlFilters = {
   projectId: null,
@@ -24,6 +37,7 @@ export const EMPTY_BACKLOG_FILTERS: BacklogUrlFilters = {
   tag: null,
   assigneeId: null,
   minImportance: null,
+  sort: 'manual',
 }
 
 const BACKLOG_PARAMS = {
@@ -34,11 +48,13 @@ const BACKLOG_PARAMS = {
   tag: 'tag',
   assigneeId: 'assignee',
   minImportance: 'importance',
+  sort: 'sort',
 } as const satisfies Record<keyof BacklogUrlFilters, string>
 
 export function readBacklogFilters(params: URLSearchParams): BacklogUrlFilters {
   const status = params.get(BACKLOG_PARAMS.status)
   const priority = params.get(BACKLOG_PARAMS.priority)
+  const sort = params.get(BACKLOG_PARAMS.sort)
   return {
     projectId: params.get(BACKLOG_PARAMS.projectId) || null,
     status: isTaskStatus(status) ? status : null,
@@ -49,6 +65,7 @@ export function readBacklogFilters(params: URLSearchParams): BacklogUrlFilters {
     minImportance: toImportance(
       Number(params.get(BACKLOG_PARAMS.minImportance)),
     ),
+    sort: isBacklogSort(sort) ? sort : EMPTY_BACKLOG_FILTERS.sort,
   }
 }
 
@@ -61,7 +78,7 @@ export function writeBacklogFilters(
     BACKLOG_PARAMS,
   ) as (keyof BacklogUrlFilters)[]) {
     const value = filters[key]
-    if (value) {
+    if (value && value !== EMPTY_BACKLOG_FILTERS[key]) {
       next.set(BACKLOG_PARAMS[key], String(value))
     } else {
       next.delete(BACKLOG_PARAMS[key])

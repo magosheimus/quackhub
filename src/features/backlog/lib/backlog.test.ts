@@ -128,6 +128,7 @@ describe('filtros do Backlog na URL', () => {
       status: 'todo' as const,
       assigneeId: 'a1',
       minImportance: 4 as const,
+      sort: 'importance' as const,
     }
     const params = writeBacklogFilters(new URLSearchParams(), filters)
     expect(readBacklogFilters(params)).toEqual(filters)
@@ -146,5 +147,8 @@ describe('filtros do Backlog na URL', () => {
     expect(
       readBacklogFilters(new URLSearchParams('importance=9')).minImportance,
     ).toBe(null)
+    expect(readBacklogFilters(new URLSearchParams('sort=xyz')).sort).toBe(
+      'manual',
+    )
   })
 })
