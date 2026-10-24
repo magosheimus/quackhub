@@ -53,8 +53,12 @@ function DraftEditInput({
       value={value}
       onChange={(e) => onChange(e.target.value)}
       onKeyDown={(e) => {
-        if (e.key === 'Enter') onSave()
-        if (e.key === 'Escape') onCancel()
+        if (e.key === 'Enter') {
+          onSave()
+        }
+        if (e.key === 'Escape') {
+          onCancel()
+        }
       }}
       onBlur={onSave}
     />
@@ -85,9 +89,13 @@ export function DraftsList() {
   }
 
   function saveEdit() {
-    if (!editing) return
+    if (!editing) {
+      return
+    }
     const trimmed = editing.text.trim()
-    if (trimmed) updateDraft({ id: editing.id, content: trimmed })
+    if (trimmed) {
+      updateDraft({ id: editing.id, content: trimmed })
+    }
     setEditing(null)
   }
 

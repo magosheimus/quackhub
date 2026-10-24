@@ -19,7 +19,9 @@ export async function createTask(data: NewTask): Promise<Task> {
     .insert(toTaskInsert(data))
     .select()
     .single()
-  if (error) throw new Error(`Falha ao criar card: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao criar card: ${error.message}`)
+  }
   return toTask(task)
 }
 
@@ -30,7 +32,9 @@ export async function updateTask(id: string, data: TaskUpdate): Promise<Task> {
     .eq('id', id)
     .select()
     .single()
-  if (error) throw new Error(`Falha ao atualizar card: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao atualizar card: ${error.message}`)
+  }
   return toTask(task)
 }
 
@@ -45,8 +49,9 @@ export async function addTaskToSprint(
     .eq('id', id)
     .select()
     .single()
-  if (error)
+  if (error) {
     throw new Error(`Falha ao adicionar task à sprint: ${error.message}`)
+  }
   return toTask(data)
 }
 
@@ -60,7 +65,9 @@ export async function updateTaskSprint(
     .eq('id', id)
     .select()
     .single()
-  if (error) throw new Error(`Falha ao mover task: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao mover task: ${error.message}`)
+  }
   return toTask(data)
 }
 
@@ -70,8 +77,9 @@ export async function getTasksBySprintId(sprintId: string): Promise<Task[]> {
     .select('*')
     .eq('sprint_id', sprintId)
     .is('deleted_at', null)
-  if (error)
+  if (error) {
     throw new Error(`Falha ao buscar tasks da sprint: ${error.message}`)
+  }
   return data.map(toTask)
 }
 
@@ -82,8 +90,9 @@ export async function getTasksByProjectId(projectId: string): Promise<Task[]> {
     .eq('project_id', projectId)
     .is('deleted_at', null)
     .order('task_number', { ascending: true })
-  if (error)
+  if (error) {
     throw new Error(`Falha ao buscar tasks do projeto: ${error.message}`)
+  }
   return data.map(toTask)
 }
 
@@ -109,8 +118,9 @@ export async function updateTaskStatus(
     .eq('id', id)
     .select()
     .single()
-  if (error)
+  if (error) {
     throw new Error(`Falha ao atualizar status da task: ${error.message}`)
+  }
 
   const task = toTask(data)
   if (status === 'done' && task.recurrence) {
@@ -134,8 +144,9 @@ export async function searchSimilarCards(
     .ilike('title', `%${title}%`)
     .is('deleted_at', null)
     .order('created_at', { ascending: false })
-  if (error)
+  if (error) {
     throw new Error(`Falha ao buscar cards similares: ${error.message}`)
+  }
   return data.map(toTask)
 }
 
@@ -153,7 +164,9 @@ export async function getBacklogTasks(
   }
 
   const { data, error } = await query.order('updated_at', { ascending: false })
-  if (error) throw new Error(`Falha ao buscar backlog: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao buscar backlog: ${error.message}`)
+  }
   return data.map(toTask)
 }
 
@@ -163,7 +176,9 @@ export async function getTagsByProject(projectId: string): Promise<string[]> {
     .select('tag_name, tasks!inner(project_id)')
     .is('tasks.deleted_at', null)
     .eq('tasks.project_id', projectId)
-  if (error) throw new Error(`Falha ao buscar tags: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao buscar tags: ${error.message}`)
+  }
   return Array.from(new Set(data.map((row) => row.tag_name)))
 }
 
@@ -171,25 +186,33 @@ export async function createTaskTags(
   taskId: string,
   tagNames: string[],
 ): Promise<void> {
-  if (tagNames.length === 0) return
+  if (tagNames.length === 0) {
+    return
+  }
   const { error } = await supabase
     .from('task_tags')
     .insert(tagNames.map((tag_name) => ({ task_id: taskId, tag_name })))
-  if (error) throw new Error(`Falha ao salvar tags: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao salvar tags: ${error.message}`)
+  }
 }
 
 async function createTaskDependencies(
   taskId: string,
   dependsOnTaskIds: string[],
 ): Promise<void> {
-  if (dependsOnTaskIds.length === 0) return
+  if (dependsOnTaskIds.length === 0) {
+    return
+  }
   const { error } = await supabase.from('task_dependencies').insert(
     dependsOnTaskIds.map((dependsOnTaskId) => ({
       task_id: taskId,
       depends_on_task_id: dependsOnTaskId,
     })),
   )
-  if (error) throw new Error(`Falha ao salvar dependências: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao salvar dependências: ${error.message}`)
+  }
 }
 
 export async function createTaskWithRelations(
@@ -210,7 +233,9 @@ export async function getTaskTags(taskId: string): Promise<string[]> {
     .from('task_tags')
     .select('tag_name')
     .eq('task_id', taskId)
-  if (error) throw new Error(`Falha ao buscar tags do card: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao buscar tags do card: ${error.message}`)
+  }
   return data.map((row) => row.tag_name)
 }
 
@@ -221,7 +246,9 @@ export async function addTaskTag(
   const { error } = await supabase
     .from('task_tags')
     .insert({ task_id: taskId, tag_name: tagName })
-  if (error) throw new Error(`Falha ao adicionar tag: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao adicionar tag: ${error.message}`)
+  }
 }
 
 export async function removeTaskTag(
@@ -233,7 +260,9 @@ export async function removeTaskTag(
     .delete()
     .eq('task_id', taskId)
     .eq('tag_name', tagName)
-  if (error) throw new Error(`Falha ao remover tag: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao remover tag: ${error.message}`)
+  }
 }
 
 export async function getDependencies(taskId: string): Promise<Task[]> {
@@ -241,9 +270,12 @@ export async function getDependencies(taskId: string): Promise<Task[]> {
     .from('task_dependencies')
     .select('depends_on_task_id')
     .eq('task_id', taskId)
-  if (depsError)
+  if (depsError) {
     throw new Error(`Falha ao buscar dependências: ${depsError.message}`)
-  if (deps.length === 0) return []
+  }
+  if (deps.length === 0) {
+    return []
+  }
 
   const { data: tasks, error: tasksError } = await supabase
     .from('tasks')
@@ -253,8 +285,9 @@ export async function getDependencies(taskId: string): Promise<Task[]> {
       'id',
       deps.map((d) => d.depends_on_task_id),
     )
-  if (tasksError)
+  if (tasksError) {
     throw new Error(`Falha ao buscar tasks dependentes: ${tasksError.message}`)
+  }
   return tasks.map(toTask)
 }
 
@@ -272,7 +305,9 @@ export async function addDependency(
   const { error } = await supabase
     .from('task_dependencies')
     .insert({ task_id: taskId, depends_on_task_id: dependsOnTaskId })
-  if (error) throw new Error(`Falha ao adicionar dependência: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao adicionar dependência: ${error.message}`)
+  }
 }
 
 export async function removeDependency(
@@ -284,7 +319,9 @@ export async function removeDependency(
     .delete()
     .eq('task_id', taskId)
     .eq('depends_on_task_id', dependsOnTaskId)
-  if (error) throw new Error(`Falha ao remover dependência: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao remover dependência: ${error.message}`)
+  }
 }
 
 export async function getTaskById(id: string): Promise<Task> {
@@ -294,7 +331,9 @@ export async function getTaskById(id: string): Promise<Task> {
     .eq('id', id)
     .is('deleted_at', null)
     .single()
-  if (error) throw new Error(`Falha ao buscar card: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao buscar card: ${error.message}`)
+  }
   return toTask(data)
 }
 
@@ -303,5 +342,7 @@ export async function softDeleteTask(id: string): Promise<void> {
     .from('tasks')
     .update({ deleted_at: new Date().toISOString() })
     .eq('id', id)
-  if (error) throw new Error(`Falha ao excluir card: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao excluir card: ${error.message}`)
+  }
 }

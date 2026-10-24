@@ -9,7 +9,9 @@ export async function getEpicsByProject(projectId: string): Promise<Epic[]> {
     .is('deleted_at', null)
     .order('position')
     .order('created_at')
-  if (error) throw new Error(`Falha ao buscar épicos: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao buscar épicos: ${error.message}`)
+  }
   return data
 }
 
@@ -19,7 +21,9 @@ export async function createEpic(data: NewEpic): Promise<Epic> {
     .insert(data)
     .select()
     .single()
-  if (error) throw new Error(`Falha ao criar épico: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao criar épico: ${error.message}`)
+  }
   return epic
 }
 
@@ -30,7 +34,9 @@ export async function updateEpic(id: string, data: EpicUpdate): Promise<Epic> {
     .eq('id', id)
     .select()
     .single()
-  if (error) throw new Error(`Falha ao atualizar épico: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao atualizar épico: ${error.message}`)
+  }
   return epic
 }
 
@@ -39,7 +45,9 @@ export async function softDeleteEpic(id: string): Promise<void> {
     .from('epics')
     .update({ deleted_at: new Date().toISOString() })
     .eq('id', id)
-  if (error) throw new Error(`Falha ao arquivar épico: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao arquivar épico: ${error.message}`)
+  }
 }
 
 export async function getAllEpics(): Promise<Epic[]> {
@@ -49,6 +57,8 @@ export async function getAllEpics(): Promise<Epic[]> {
     .is('deleted_at', null)
     .order('position')
     .order('created_at')
-  if (error) throw new Error(`Falha ao buscar épicos: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao buscar épicos: ${error.message}`)
+  }
   return data
 }

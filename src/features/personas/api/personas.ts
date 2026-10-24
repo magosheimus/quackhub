@@ -17,7 +17,9 @@ export async function getPersonas(): Promise<Persona[]> {
     .from('personas')
     .select('*')
     .order('name')
-  if (error) throw new Error(`Falha ao buscar personas: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao buscar personas: ${error.message}`)
+  }
   return data.map(toPersona)
 }
 
@@ -57,5 +59,7 @@ export async function updatePersona(
 
 export async function deletePersona(id: string): Promise<void> {
   const { error } = await supabase.from('personas').delete().eq('id', id)
-  if (error) throw new Error(`Falha ao remover persona: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao remover persona: ${error.message}`)
+  }
 }

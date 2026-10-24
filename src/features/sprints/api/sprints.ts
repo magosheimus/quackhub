@@ -26,7 +26,9 @@ export async function getSprints(): Promise<Sprint[]> {
     .select('*')
     .is('deleted_at', null)
     .order('created_at', { ascending: false })
-  if (error) throw new Error(`Falha ao buscar sprints: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao buscar sprints: ${error.message}`)
+  }
   return data
 }
 
@@ -36,7 +38,9 @@ export async function getActiveSprint(): Promise<Sprint | null> {
     .select('*')
     .eq('status', 'active')
     .maybeSingle()
-  if (error) throw new Error(`Falha ao buscar sprint ativa: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao buscar sprint ativa: ${error.message}`)
+  }
   return data
 }
 
@@ -46,7 +50,9 @@ export async function createSprint(data: NewSprint): Promise<Sprint> {
     .insert(data)
     .select()
     .single()
-  if (error) throw new Error(`Falha ao criar sprint: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao criar sprint: ${error.message}`)
+  }
   return sprint
 }
 
@@ -80,7 +86,9 @@ async function setSprintClosed(
     .eq('id', id)
     .select()
     .single()
-  if (error) throw new Error(`Falha ao encerrar sprint: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao encerrar sprint: ${error.message}`)
+  }
   return data
 }
 

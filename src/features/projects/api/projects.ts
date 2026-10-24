@@ -12,7 +12,9 @@ export async function getProjects(): Promise<Project[]> {
     .is('deleted_at', null)
     .order('position')
     .order('created_at')
-  if (error) throw new Error(`Falha ao buscar projetos: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao buscar projetos: ${error.message}`)
+  }
   return data
 }
 
@@ -22,7 +24,9 @@ export async function createProject(data: NewProject): Promise<Project> {
     .insert(data)
     .select()
     .single()
-  if (error) throw new Error(`Falha ao criar projeto: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao criar projeto: ${error.message}`)
+  }
   return project
 }
 
@@ -36,7 +40,9 @@ export async function updateProject(
     .eq('id', id)
     .select()
     .single()
-  if (error) throw new Error(`Falha ao atualizar projeto: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao atualizar projeto: ${error.message}`)
+  }
   return project
 }
 
@@ -45,5 +51,7 @@ export async function softDeleteProject(id: string): Promise<void> {
     .from('projects')
     .update({ deleted_at: new Date().toISOString() })
     .eq('id', id)
-  if (error) throw new Error(`Falha ao arquivar projeto: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao arquivar projeto: ${error.message}`)
+  }
 }

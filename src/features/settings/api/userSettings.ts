@@ -10,7 +10,9 @@ export async function fetchRemoteSettings(): Promise<Settings | null> {
     .from('user_settings')
     .select('settings')
     .maybeSingle()
-  if (error) throw new Error(`Falha ao carregar preferências: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao carregar preferências: ${error.message}`)
+  }
   return data ? normalizeSettings(data.settings) : null
 }
 
@@ -21,5 +23,7 @@ export async function saveRemoteSettings(settings: Settings): Promise<void> {
     settings,
     updated_at: new Date().toISOString(),
   })
-  if (error) throw new Error(`Falha ao salvar preferências: ${error.message}`)
+  if (error) {
+    throw new Error(`Falha ao salvar preferências: ${error.message}`)
+  }
 }

@@ -66,7 +66,9 @@ function ProjectEditForm({ project, onClose }: ProjectEditFormProps) {
     useSoftDeleteProject()
 
   function handleSave() {
-    if (!name.trim() || !prefix.trim()) return
+    if (!name.trim() || !prefix.trim()) {
+      return
+    }
     updateProject(
       {
         id: project.id,

@@ -30,6 +30,10 @@ export default defineConfig([
         typescript: true,
       },
     },
+    rules: {
+      curly: ['error', 'all'],
+      '@typescript-eslint/no-non-null-assertion': 'error',
+    },
   },
   {
     files: ['src/components/ui/**/*.{ts,tsx}'],

@@ -93,7 +93,9 @@ export function getStatusForColumn(
 }
 
 export function getColumnsForType(type: ProjectType | null): string[] {
-  if (!type) return ALL_COLUMNS
+  if (!type) {
+    return ALL_COLUMNS
+  }
   const columns: Record<ProjectType, string[]> = {
     general: COLUMNS_GENERAL,
     study: COLUMNS_STUDY,
@@ -223,28 +225,41 @@ export function applyBoardFilters(
   today: string,
 ): Task[] {
   return tasks.filter((task) => {
-    if (filters.flagged !== null && (task.flag !== null) !== filters.flagged)
+    if (filters.flagged !== null && (task.flag !== null) !== filters.flagged) {
       return false
-    if (filters.epicId && task.epicId !== filters.epicId) return false
+    }
+    if (filters.epicId && task.epicId !== filters.epicId) {
+      return false
+    }
     if (
       filters.projectIds.length > 0 &&
       !filters.projectIds.includes(task.projectId)
-    )
+    ) {
       return false
+    }
     if (
       filters.assigneeIds.length > 0 &&
       !(task.assigneeId && filters.assigneeIds.includes(task.assigneeId))
-    )
+    ) {
       return false
-    if (filters.priority && task.priority !== filters.priority) return false
-    if (filters.status && task.status !== filters.status) return false
+    }
+    if (filters.priority && task.priority !== filters.priority) {
+      return false
+    }
+    if (filters.status && task.status !== filters.status) {
+      return false
+    }
     if (filters.tag) {
       const tags = tagsByTask[task.id] ?? []
-      if (!tags.includes(filters.tag)) return false
+      if (!tags.includes(filters.tag)) {
+        return false
+      }
     }
     if (filters.srsOverdue) {
       const nextReview = task.srs?.nextReview
-      if (!nextReview || nextReview > today) return false
+      if (!nextReview || nextReview > today) {
+        return false
+      }
     }
     return true
   })

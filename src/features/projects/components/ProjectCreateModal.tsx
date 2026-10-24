@@ -32,7 +32,9 @@ export function ProjectCreateModal({
   const { mutate: createProject, isPending } = useCreateProject()
 
   useEffect(() => {
-    if (open) nameInputRef.current?.focus()
+    if (open) {
+      nameInputRef.current?.focus()
+    }
   }, [open])
 
   function resetForm() {
@@ -43,7 +45,9 @@ export function ProjectCreateModal({
   }
 
   function handleSubmit() {
-    if (!name.trim() || !prefix.trim()) return
+    if (!name.trim() || !prefix.trim()) {
+      return
+    }
 
     createProject(
       { name: name.trim(), type, color, prefix: prefix.trim().toUpperCase() },

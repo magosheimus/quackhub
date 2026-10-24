@@ -12,7 +12,9 @@ export function DraftsCapture() {
   const canSubmit = !isPending && content.trim().length > 0
 
   function handleSubmit() {
-    if (!canSubmit) return
+    if (!canSubmit) {
+      return
+    }
     capture(content.trim(), {
       onSuccess: () => setContent(''),
     })
@@ -24,7 +26,9 @@ export function DraftsCapture() {
         value={content}
         onChange={(e) => setContent(e.target.value)}
         onKeyDown={(e) => {
-          if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) handleSubmit()
+          if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+            handleSubmit()
+          }
         }}
         placeholder={DRAFTS_TEXTS.capturePlaceholder}
         className="min-h-16 px-2 py-1.5 focus-visible:ring-0"

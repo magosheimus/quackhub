@@ -104,7 +104,9 @@ export function useCardPage(task: Task) {
 
   function handleDescriptionBlur() {
     const trimmed = description.trim()
-    if (trimmed === (task.description ?? '')) return
+    if (trimmed === (task.description ?? '')) {
+      return
+    }
     updateTask({ id: task.id, data: { description: trimmed || null } })
   }
 

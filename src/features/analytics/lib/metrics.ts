@@ -27,7 +27,9 @@ export function groupQualityByWeek(rows: QualityLog[]): AccuracyOverTimeItem[] {
   const buckets = new Map<string, { sum: number; count: number }>()
 
   for (const row of rows) {
-    if (row.quality === null) continue
+    if (row.quality === null) {
+      continue
+    }
     const week = startOfWeek(row.session_date)
     const bucket = buckets.get(week) ?? { sum: 0, count: 0 }
     bucket.sum += row.quality

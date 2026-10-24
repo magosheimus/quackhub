@@ -47,7 +47,9 @@ export function CardAttachments({ taskId }: CardAttachmentsProps) {
 
   function handleFileChange(e: ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
-    if (!file) return
+    if (!file) {
+      return
+    }
     upload({ taskId, file })
     e.target.value = ''
   }
@@ -93,10 +95,16 @@ export function CardAttachments({ taskId }: CardAttachmentsProps) {
   }
 
   useEffect(() => {
-    if (viewerIndex === null) return
+    if (viewerIndex === null) {
+      return
+    }
     function handleKeyDown(e: KeyboardEvent) {
-      if (e.key === 'ArrowLeft') showPrev()
-      if (e.key === 'ArrowRight') showNext()
+      if (e.key === 'ArrowLeft') {
+        showPrev()
+      }
+      if (e.key === 'ArrowRight') {
+        showNext()
+      }
     }
     window.addEventListener('keydown', handleKeyDown, true)
     return () => window.removeEventListener('keydown', handleKeyDown, true)

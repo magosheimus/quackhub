@@ -24,14 +24,17 @@ export async function getConfidenceDistribution(
   }
 
   const { data, error } = await query
-  if (error)
+  if (error) {
     throw new Error(
       `Falha ao buscar distribuição de confiança: ${error.message}`,
     )
+  }
 
   const counts = new Map<number, number>()
   for (const row of data) {
-    if (row.confianca === null) continue
+    if (row.confianca === null) {
+      continue
+    }
     counts.set(row.confianca, (counts.get(row.confianca) ?? 0) + 1)
   }
 
@@ -56,8 +59,9 @@ export async function getAccuracyOverTime(
   }
 
   const { data, error } = await query
-  if (error)
+  if (error) {
     throw new Error(`Falha ao buscar evolução de acerto: ${error.message}`)
+  }
 
   return groupQualityByWeek(data)
 }
@@ -76,8 +80,9 @@ export async function getCompletionByProject(
     .select('status, projects!inner(name)')
     .eq('sprint_id', sprintId)
     .is('deleted_at', null)
-  if (error)
+  if (error) {
     throw new Error(`Falha ao buscar conclusão por projeto: ${error.message}`)
+  }
 
   const byProject = new Map<string, CompletionByProjectItem>()
   for (const task of data) {
@@ -88,7 +93,9 @@ export async function getCompletionByProject(
       completed: 0,
     }
     item.total += 1
-    if (task.status === 'done') item.completed += 1
+    if (task.status === 'done') {
+      item.completed += 1
+    }
     byProject.set(name, item)
   }
 
@@ -113,8 +120,9 @@ export async function getSprintHistory(
     .eq('status', 'closed')
     .is('deleted_at', null)
     .order('end_date', { ascending: true })
-  if (error)
+  if (error) {
     throw new Error(`Falha ao buscar histórico de sprints: ${error.message}`)
+  }
 
   return data.map((sprint) => {
     if (!projectId) {
@@ -177,18 +185,22 @@ export async function getSRSMetricsByTag(
   }
 
   const { data: logs, error: logsError } = await logsQuery
-  if (logsError)
+  if (logsError) {
     throw new Error(`Falha ao buscar logs de SRS: ${logsError.message}`)
+  }
 
   const taskIds = Array.from(new Set(logs.map((l) => l.task_id)))
-  if (taskIds.length === 0) return []
+  if (taskIds.length === 0) {
+    return []
+  }
 
   const { data: tagRows, error: tagsError } = await supabase
     .from('task_tags')
     .select('task_id, tag_name')
     .in('task_id', taskIds)
-  if (tagsError)
+  if (tagsError) {
     throw new Error(`Falha ao buscar tags das tasks: ${tagsError.message}`)
+  }
 
   const tagsByTask = new Map<string, string[]>()
   for (const row of tagRows) {
@@ -199,7 +211,9 @@ export async function getSRSMetricsByTag(
 
   const buckets = new Map<string, { sum: number; count: number }>()
   for (const log of logs) {
-    if (log.quality === null) continue
+    if (log.quality === null) {
+      continue
+    }
     const tags = tagsByTask.get(log.task_id) ?? []
     for (const tag of tags) {
       const bucket = buckets.get(tag) ?? { sum: 0, count: 0 }
@@ -239,12 +253,15 @@ export async function getConfidenceCalibration(
   }
 
   const { data, error } = await query
-  if (error)
+  if (error) {
     throw new Error(`Falha ao buscar calibração de confiança: ${error.message}`)
+  }
 
   const buckets = new Map<number, { sum: number; count: number }>()
   for (const row of data) {
-    if (row.confianca === null || row.quality === null) continue
+    if (row.confianca === null || row.quality === null) {
+      continue
+    }
     const bucket = buckets.get(row.confianca) ?? { sum: 0, count: 0 }
     bucket.sum += row.quality
     bucket.count += 1
@@ -277,23 +294,28 @@ export async function getReviewsByEpic(
   }
 
   const { data: logs, error: logsError } = await query
-  if (logsError)
+  if (logsError) {
     throw new Error(`Falha ao buscar revisões: ${logsError.message}`)
-  if (logs.length === 0) return []
+  }
+  if (logs.length === 0) {
+    return []
+  }
 
   const taskIds = Array.from(new Set(logs.map((l) => l.task_id)))
   const { data: tasks, error: tasksError } = await supabase
     .from('tasks')
     .select('id, epic_id')
     .in('id', taskIds)
-  if (tasksError)
+  if (tasksError) {
     throw new Error(`Falha ao buscar tasks: ${tasksError.message}`)
+  }
 
   const { data: epics, error: epicsError } = await supabase
     .from('epics')
     .select('id, name, color')
-  if (epicsError)
+  if (epicsError) {
     throw new Error(`Falha ao buscar épicos: ${epicsError.message}`)
+  }
 
   const epicIdByTask = new Map(tasks.map((t) => [t.id, t.epic_id]))
   const epicById = new Map(epics.map((e) => [e.id, e]))
@@ -330,8 +352,9 @@ export async function getDoneEvents(taskIds: string[]): Promise<DoneEvent[]> {
     .eq('event_type', 'status_change')
     .eq('new_value', 'done')
     .in('task_id', taskIds)
-  if (error)
+  if (error) {
     throw new Error(`Falha ao buscar conclusões da sprint: ${error.message}`)
+  }
   return data
     .filter((row) => row.created_at !== null)
     .map((row) => ({ taskId: row.task_id, doneAt: row.created_at ?? '' }))

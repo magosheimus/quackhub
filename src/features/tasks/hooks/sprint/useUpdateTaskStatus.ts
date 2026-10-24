@@ -28,9 +28,13 @@ export function useUpdateTaskStatus() {
       const previousTasks = queryClient.getQueryData<Task[]>(queryKey)
 
       queryClient.setQueryData<Task[]>(queryKey, (old) => {
-        if (!old) return old
+        if (!old) {
+          return old
+        }
         const movedTask = old.find((task) => task.id === id)
-        if (!movedTask) return old
+        if (!movedTask) {
+          return old
+        }
         const rest = old.filter((task) => task.id !== id)
         return [
           { ...movedTask, status, updated_at: new Date().toISOString() },

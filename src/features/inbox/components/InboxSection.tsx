@@ -11,10 +11,16 @@ import { buildProjectLabels } from '@/features/projects/lib/project'
 import { DueBadge } from '@/features/tasks/components/DueBadge'
 
 function describeReview(nextReview: string | null, today: string): string {
-  if (!nextReview) return INBOX_TEXTS.reviewWithoutDate
+  if (!nextReview) {
+    return INBOX_TEXTS.reviewWithoutDate
+  }
   const days = daysBetween(nextReview, today)
-  if (days === 0) return INBOX_TEXTS.reviewToday
-  if (days > 0) return INBOX_TEXTS.reviewOverdue(COMMON_TEXTS.dayCount(days))
+  if (days === 0) {
+    return INBOX_TEXTS.reviewToday
+  }
+  if (days > 0) {
+    return INBOX_TEXTS.reviewOverdue(COMMON_TEXTS.dayCount(days))
+  }
   const ahead = -days
   return INBOX_TEXTS.reviewIn(COMMON_TEXTS.dayCount(ahead))
 }
@@ -34,7 +40,9 @@ export function InboxSection({
   onComplete,
   onRegisterPerformance,
 }: InboxSectionProps) {
-  if (tasks.length === 0) return null
+  if (tasks.length === 0) {
+    return null
+  }
 
   const today = todayLocal()
   const projectLabels = buildProjectLabels(projects ?? [])

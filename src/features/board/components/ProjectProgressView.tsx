@@ -50,7 +50,9 @@ export function ProjectProgressView({
 
   function handleDragEnd(result: DropResult) {
     const { source, destination, draggableId } = result
-    if (!destination || !activeSprintId) return
+    if (!destination || !activeSprintId) {
+      return
+    }
     if (
       source.droppableId !== 'backlog' ||
       destination.droppableId !== 'sprint'

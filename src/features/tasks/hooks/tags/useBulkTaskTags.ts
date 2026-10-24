@@ -11,7 +11,9 @@ export function useBulkTaskTags(taskIds: string[]) {
         .from('task_tags')
         .select('task_id, tag_name')
         .in('task_id', taskIds)
-      if (error) throw new Error(`Falha ao buscar tags: ${error.message}`)
+      if (error) {
+        throw new Error(`Falha ao buscar tags: ${error.message}`)
+      }
 
       return groupTagsByTask(data)
     },

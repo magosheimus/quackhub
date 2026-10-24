@@ -31,7 +31,9 @@ export function CardChecklist({ taskId }: CardChecklistProps) {
 
   function handleAdd() {
     const content = draft.trim()
-    if (!content) return
+    if (!content) {
+      return
+    }
     createItem({ task_id: taskId, content, position: items?.length ?? 0 })
     setDraft('')
   }

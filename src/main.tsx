@@ -29,7 +29,12 @@ import { applyUiScale, loadUiScale } from './features/settings/lib/uiScale.ts'
 applySettings(loadSettings())
 applyUiScale(loadUiScale())
 
-createRoot(document.getElementById('root')!).render(
+const rootElement = document.getElementById('root')
+if (!rootElement) {
+  throw new Error('Elemento #root não encontrado no index.html')
+}
+
+createRoot(rootElement).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <App />
