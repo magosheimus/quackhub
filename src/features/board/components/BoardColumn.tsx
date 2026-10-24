@@ -4,6 +4,7 @@ import {
   type MoveOption,
 } from '@/features/board/lib/board'
 import { BoardCard } from './BoardCard'
+import { UrgentDropZone } from './UrgentDropZone'
 import { IconLayout } from '@/shared/lib/icons'
 import type { Task } from '@/features/tasks/model/task'
 import { BOARD_TEXTS } from '@/features/board/constants/texts'
@@ -13,6 +14,7 @@ type BoardColumnProps = {
   column: BoardColumnKey
   label: string
   tasks: Task[]
+  showUrgentZone: boolean
   projectLabels: ProjectLabels
   getMoveOptions: (task: Task) => MoveOption[]
   onMove: (taskId: string, column: BoardColumnKey) => void
@@ -22,6 +24,7 @@ export function BoardColumn({
   column,
   label,
   tasks,
+  showUrgentZone,
   projectLabels,
   getMoveOptions,
   onMove,
@@ -29,6 +32,7 @@ export function BoardColumn({
   return (
     <div className="flex w-[78vw] max-w-72 shrink-0 snap-start flex-col gap-2 lg:w-auto lg:max-w-none lg:min-w-0 lg:flex-1 lg:shrink">
       <div className="page-backdrop sticky top-0 z-10 flex items-center justify-between px-1 py-1">
+        {showUrgentZone && <UrgentDropZone column={column} />}
         <span className="font-heading text-heading-3 text-fg">{label}</span>
         <span className="flex size-6 items-center justify-center rounded-md border border-(--border-card-empty) bg-card-empty text-caption">
           {tasks.length}

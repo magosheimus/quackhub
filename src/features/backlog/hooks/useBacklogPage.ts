@@ -29,7 +29,8 @@ import type { Task } from '@/features/tasks/model/task'
 import { buildProjectLabels } from '@/features/projects/lib/project'
 import { usePersonaOptions } from '@/features/personas/hooks/usePersonaOptions'
 import { toImportance } from '@/features/tasks/lib/importance'
-import { useReorderBacklog } from '@/features/backlog/hooks/useReorderBacklog'
+import { useReorderTasks } from '@/features/tasks/hooks/useReorderTasks'
+import { queryKeys } from '@/shared/query/queryKeys'
 import { moveItem } from '@/shared/lib/array'
 import type { DropResult } from '@hello-pangea/dnd'
 
@@ -55,7 +56,7 @@ export function useBacklogPage() {
   const { data: activeSprint } = useActiveSprint()
   const { data: sprints } = useSprints()
   const { mutate: addTaskToSprint } = useAddTaskToSprint()
-  const { reorder } = useReorderBacklog(projectFilter)
+  const { reorder } = useReorderTasks(queryKeys.tasks.backlog(projectFilter))
 
   const targetSprint =
     activeSprint ?? sprints?.find((s) => s.status === 'planned') ?? null

@@ -1,12 +1,15 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import {
+  useMutation,
+  useQueryClient,
+  type QueryKey,
+} from '@tanstack/react-query'
 import { savePositions } from '@/shared/api/positions'
 import { queryKeys } from '@/shared/query/queryKeys'
 import { applyTaskOrder } from '@/features/tasks/lib/taskOrder'
 import type { Task } from '@/features/tasks/model/task'
 
-export function useReorderBacklog(projectId: string | null) {
+export function useReorderTasks(queryKey: QueryKey) {
   const queryClient = useQueryClient()
-  const queryKey = queryKeys.tasks.backlog(projectId)
 
   const { mutate: reorder } = useMutation({
     mutationFn: (orderedIds: string[]) => savePositions('tasks', orderedIds),

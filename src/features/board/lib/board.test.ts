@@ -6,7 +6,9 @@ import {
   getLabelScope,
   getProjectsInTasks,
   groupTasksByColumn,
-  shouldFlagOnDrop,
+  canFlagInColumn,
+  parseDropTarget,
+  toUrgentZoneId,
   readBoardFilters,
   clearHiddenFilter,
   quickFilterKey,
@@ -16,6 +18,8 @@ import {
   getMoveOptions,
   getVisibleBoardColumns,
   BOARD_COLUMNS,
+  getColumnOrderAfterDrop,
+  hasActiveBoardFilters,
 } from './board'
 import { makeEpic, makeProject, makeTask } from '@/test/factories'
 
@@ -187,19 +191,60 @@ describe('urgentes no topo da coluna', () => {
   })
 })
 
-describe('shouldFlagOnDrop', () => {
-  const card = makeTask({ flag: null })
-
-  it('marca como urgente ao soltar na primeira posição', () => {
-    expect(shouldFlagOnDrop(card, 'doing', 0)).toBe(true)
+describe('ordem manual na coluna', () => {
+  it('segue a posição de cada card, com os urgentes sempre em cima', () => {
+    const groups = groupTasksByColumn([
+      makeTask({ id: 'a', status: 'todo', position: 2 }),
+      makeTask({ id: 'b', status: 'todo', position: 0 }),
+      makeTask({ id: 'c', status: 'todo', position: 3, flag: { note: null } }),
+      makeTask({ id: 'd', status: 'todo', position: 1 }),
+    ])
+    expect(groups.todo.map((t) => t.id)).toEqual(['c', 'b', 'd', 'a'])
   })
 
-  it('não marca em outra posição, em Finalizado ou se já é urgente', () => {
-    expect(shouldFlagOnDrop(card, 'doing', 2)).toBe(false)
-    expect(shouldFlagOnDrop(card, 'done', 0)).toBe(false)
+  it('encaixa o card solto na posição escolhida', () => {
+    const column = [
+      makeTask({ id: 'a' }),
+      makeTask({ id: 'b' }),
+      makeTask({ id: 'c' }),
+    ]
+    expect(getColumnOrderAfterDrop(column, 'a', 2)).toEqual(['b', 'c', 'a'])
+    expect(getColumnOrderAfterDrop(column, 'new', 1)).toEqual([
+      'a',
+      'new',
+      'b',
+      'c',
+    ])
+  })
+
+  it('qualquer filtro ativo conta, inclusive o de projeto', () => {
+    expect(hasActiveBoardFilters(DEFAULT_BOARD_FILTERS)).toBe(false)
     expect(
-      shouldFlagOnDrop(makeTask({ flag: { note: null } }), 'doing', 0),
-    ).toBe(false)
+      hasActiveBoardFilters({ ...DEFAULT_BOARD_FILTERS, projectIds: ['p1'] }),
+    ).toBe(true)
+  })
+})
+
+describe('área de urgente', () => {
+  it('diferencia a área de urgente da lista da coluna', () => {
+    expect(parseDropTarget(toUrgentZoneId('doing'))).toEqual({
+      column: 'doing',
+      isUrgentZone: true,
+    })
+    expect(parseDropTarget('doing')).toEqual({
+      column: 'doing',
+      isUrgentZone: false,
+    })
+    expect(parseDropTarget('urgent:xyz')).toBeNull()
+  })
+
+  it('só aparece para card não urgente e fora de Finalizado', () => {
+    const card = makeTask({ flag: null })
+    expect(canFlagInColumn(card, 'doing')).toBe(true)
+    expect(canFlagInColumn(card, 'done')).toBe(false)
+    expect(canFlagInColumn(makeTask({ flag: { note: null } }), 'doing')).toBe(
+      false,
+    )
   })
 })
 

@@ -1,4 +1,5 @@
 import type { TagsByTask } from '@/features/tasks/lib/taskTags'
+import { compareTaskOrder } from '@/features/tasks/lib/taskOrder'
 import {
   createEnumGuard,
   isTaskPriority,
@@ -112,6 +113,19 @@ export type BoardFilters = {
   srsOverdue: boolean
   projectIds: string[]
   assigneeIds: string[]
+}
+
+export function hasActiveBoardFilters(filters: BoardFilters): boolean {
+  return Boolean(
+    filters.flagged !== null ||
+    filters.epicId ||
+    filters.priority ||
+    filters.tag ||
+    filters.status ||
+    filters.srsOverdue ||
+    filters.projectIds.length > 0 ||
+    filters.assigneeIds.length > 0,
+  )
 }
 
 export const DEFAULT_BOARD_FILTERS: BoardFilters = {
@@ -308,7 +322,7 @@ export function groupTasksByColumn(
     }
   }
   for (const column of BOARD_COLUMNS) {
-    groups[column] = flaggedFirst(groups[column])
+    groups[column] = flaggedFirst(groups[column].sort(compareTaskOrder))
   }
   return groups
 }
@@ -336,14 +350,42 @@ function flaggedFirst(tasks: Task[]): Task[] {
   ]
 }
 
-// Soltar um card na primeira posição de uma coluna marca como urgente.
-// Em Finalizado não: card concluído não precisa de atenção
-export function shouldFlagOnDrop(
+const URGENT_ZONE_PREFIX = 'urgent:'
+
+export function toUrgentZoneId(column: BoardColumnKey): string {
+  return `${URGENT_ZONE_PREFIX}${column}`
+}
+
+export type DropTarget = {
+  column: BoardColumnKey
+  isUrgentZone: boolean
+}
+
+export function parseDropTarget(droppableId: string): DropTarget | null {
+  const isUrgentZone = droppableId.startsWith(URGENT_ZONE_PREFIX)
+  const column = isUrgentZone
+    ? droppableId.slice(URGENT_ZONE_PREFIX.length)
+    : droppableId
+  return isBoardColumnKey(column) ? { column, isUrgentZone } : null
+}
+
+export function canFlagInColumn(
   task: Pick<Task, 'flag'>,
   column: BoardColumnKey,
-  index: number,
 ): boolean {
-  return index === 0 && column !== 'done' && task.flag === null
+  return column !== 'done' && task.flag === null
+}
+
+export function getColumnOrderAfterDrop(
+  columnTasks: Task[],
+  movedTaskId: string,
+  index: number,
+): string[] {
+  const ids = columnTasks
+    .map((task) => task.id)
+    .filter((id) => id !== movedTaskId)
+  ids.splice(index, 0, movedTaskId)
+  return ids
 }
 
 export type MoveOption<T extends string = BoardColumnKey> = {

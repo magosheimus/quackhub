@@ -30,6 +30,7 @@ export function BoardPage() {
     toggleQuickFilter,
     visibleTasks,
     columns,
+    handleBeforeCapture,
     handleDragEnd,
     moveTask,
     getMoveOptionsFor,
@@ -81,7 +82,10 @@ export function BoardPage() {
         onToggleQuickFilter={toggleQuickFilter}
       />
 
-      <DragDropContext onDragEnd={handleDragEnd}>
+      <DragDropContext
+        onBeforeCapture={handleBeforeCapture}
+        onDragEnd={handleDragEnd}
+      >
         <div className="min-h-0 flex-1 snap-x snap-proximity overflow-auto pb-2 lg:snap-none">
           <div className="flex min-h-full gap-4">
             {columns.map((column) => (
@@ -90,6 +94,7 @@ export function BoardPage() {
                 column={column.key}
                 label={column.label}
                 tasks={column.tasks}
+                showUrgentZone={column.showUrgentZone}
                 projectLabels={projectLabels}
                 getMoveOptions={getMoveOptionsFor}
                 onMove={moveTask}
