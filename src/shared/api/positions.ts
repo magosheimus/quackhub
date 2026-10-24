@@ -7,6 +7,7 @@ export type PositionedTable =
   | 'habits'
   | 'task_checklist_items'
   | 'task_links'
+  | 'tasks'
 
 export async function savePositions(
   table: PositionedTable,

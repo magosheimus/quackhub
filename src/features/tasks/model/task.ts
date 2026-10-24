@@ -37,6 +37,7 @@ export type TaskSrs = {
 export type Task = {
   id: string
   number: number | null
+  position: number
   title: string
   description: string | null
   status: TaskStatus
@@ -57,7 +58,10 @@ export type Task = {
   updatedAt: string
 }
 
-type TaskWritable = Omit<Task, 'id' | 'number' | 'createdAt' | 'updatedAt'>
+type TaskWritable = Omit<
+  Task,
+  'id' | 'number' | 'position' | 'createdAt' | 'updatedAt'
+>
 
 export type NewTask = Pick<TaskWritable, 'title' | 'projectId'> &
   Partial<TaskWritable>

@@ -77,6 +77,8 @@ export async function getTasksBySprintId(sprintId: string): Promise<Task[]> {
     .select('*')
     .eq('sprint_id', sprintId)
     .is('deleted_at', null)
+    .order('position')
+    .order('created_at', { ascending: false })
   if (error) {
     throw new Error(`Falha ao buscar tasks da sprint: ${error.message}`)
   }
@@ -163,7 +165,9 @@ export async function getBacklogTasks(
     query = query.eq('project_id', projectId)
   }
 
-  const { data, error } = await query.order('updated_at', { ascending: false })
+  const { data, error } = await query
+    .order('position')
+    .order('created_at', { ascending: false })
   if (error) {
     throw new Error(`Falha ao buscar backlog: ${error.message}`)
   }

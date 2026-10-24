@@ -70,6 +70,17 @@ export function writeBacklogFilters(
   return next
 }
 
+export function hasActiveFilters(filters: BacklogFilters): boolean {
+  return Boolean(
+    filters.status ||
+    filters.priority ||
+    filters.epicId ||
+    filters.tag ||
+    filters.assigneeId ||
+    filters.minImportance,
+  )
+}
+
 export type ProjectTaskGroup = {
   project: Project
   tasks: Task[]

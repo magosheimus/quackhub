@@ -606,6 +606,7 @@ export type Database = {
           interval: number | null
           next_review: string | null
           origin: Database['public']['Enums']['task_origin']
+          position: number
           priority: Database['public']['Enums']['task_priority']
           project_id: string
           recurrence_day_of_month: number | null
@@ -637,6 +638,7 @@ export type Database = {
           interval?: number | null
           next_review?: string | null
           origin?: Database['public']['Enums']['task_origin']
+          position?: number
           priority?: Database['public']['Enums']['task_priority']
           project_id: string
           recurrence_day_of_month?: number | null
@@ -669,6 +671,7 @@ export type Database = {
           interval?: number | null
           next_review?: string | null
           origin?: Database['public']['Enums']['task_origin']
+          position?: number
           priority?: Database['public']['Enums']['task_priority']
           project_id?: string
           recurrence_day_of_month?: number | null
