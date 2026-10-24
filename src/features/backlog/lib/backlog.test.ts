@@ -14,6 +14,7 @@ const NO_FILTERS = {
   epicId: null,
   tag: null,
   assigneeId: null,
+  minImportance: null,
 }
 const NO_TAGS = {}
 
@@ -69,6 +70,23 @@ describe('filtro de tag no backlog', () => {
   })
 })
 
+describe('filtro de importância no backlog', () => {
+  it('mantém os cards com a importância mínima ou mais, sem os não avaliados', () => {
+    const tasks = [
+      makeTask({ id: 't1', importance: 2 }),
+      makeTask({ id: 't2', importance: 3 }),
+      makeTask({ id: 't3', importance: 5 }),
+      makeTask({ id: 't4', importance: null }),
+    ]
+    const result = filterBacklogTasks(
+      tasks,
+      { ...NO_FILTERS, minImportance: 3 },
+      NO_TAGS,
+    )
+    expect(result.map((task) => task.id)).toEqual(['t2', 't3'])
+  })
+})
+
 describe('groupTasksByProject', () => {
   it('agrupa na ordem dos projetos e omite projetos sem tarefas', () => {
     const projects = [
@@ -96,6 +114,7 @@ describe('filtros do Backlog na URL', () => {
       projectId: 'p1',
       status: 'todo' as const,
       assigneeId: 'a1',
+      minImportance: 4 as const,
     }
     const params = writeBacklogFilters(new URLSearchParams(), filters)
     expect(readBacklogFilters(params)).toEqual(filters)
@@ -111,5 +130,8 @@ describe('filtros do Backlog na URL', () => {
     expect(readBacklogFilters(new URLSearchParams('status=xyz')).status).toBe(
       null,
     )
+    expect(
+      readBacklogFilters(new URLSearchParams('importance=9')).minImportance,
+    ).toBe(null)
   })
 })

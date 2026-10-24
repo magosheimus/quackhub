@@ -25,8 +25,22 @@ import { EmptyState } from '@/components/feedback/empty-state'
 import { CardCreateModal } from '@/features/tasks/components/CardCreateModal'
 import { PersonaSelect } from '@/features/personas/components/PersonaSelect'
 import { PERSONAS_TEXTS } from '@/features/personas/constants/texts'
+import { ImportanceBadge } from '@/features/tasks/components/ImportanceBadge'
+import {
+  IMPORTANCE_LEVELS,
+  type Importance,
+} from '@/features/tasks/lib/importance'
 
 const NONE_VALUE = '__all__'
+
+function ImportanceOption({ level }: { level: Importance }) {
+  return (
+    <span className="flex items-center gap-1.5">
+      <ImportanceBadge value={level} />
+      {level < IMPORTANCE_LEVELS.length && BACKLOG_TEXTS.importanceOrMore}
+    </span>
+  )
+}
 
 export function BacklogPage() {
   const {
@@ -41,6 +55,7 @@ export function BacklogPage() {
     epicFilter,
     tagFilter,
     assigneeFilter,
+    minImportanceFilter,
     hasPersonas,
     selectAssignee,
     tags,
@@ -49,6 +64,7 @@ export function BacklogPage() {
     selectProject,
     selectStatus,
     selectPriority,
+    selectMinImportance,
     selectTag,
     selectEpic,
     isEpicModalOpen,
@@ -157,6 +173,31 @@ export function BacklogPage() {
             {TASK_PRIORITIES.map((priority) => (
               <SelectItem key={priority} value={priority}>
                 {PRIORITY_CONFIG[priority].text}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+
+        <Select
+          value={minImportanceFilter ? String(minImportanceFilter) : NONE_VALUE}
+          onValueChange={selectMinImportance}
+        >
+          <SelectTrigger>
+            <SelectValue>
+              {minImportanceFilter ? (
+                <ImportanceOption level={minImportanceFilter} />
+              ) : (
+                BACKLOG_TEXTS.allImportances
+              )}
+            </SelectValue>
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value={NONE_VALUE}>
+              {BACKLOG_TEXTS.allImportances}
+            </SelectItem>
+            {IMPORTANCE_LEVELS.map((level) => (
+              <SelectItem key={level} value={String(level)}>
+                <ImportanceOption level={level} />
               </SelectItem>
             ))}
           </SelectContent>

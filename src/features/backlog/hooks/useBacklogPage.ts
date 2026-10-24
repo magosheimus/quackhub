@@ -27,6 +27,7 @@ import type { Project } from '@/shared/types/entities'
 import type { Task } from '@/features/tasks/model/task'
 import { buildProjectLabels } from '@/features/projects/lib/project'
 import { usePersonaOptions } from '@/features/personas/hooks/usePersonaOptions'
+import { toImportance } from '@/features/tasks/lib/importance'
 
 export function useBacklogPage() {
   const { filters, update } = useBacklogFilters()
@@ -37,6 +38,7 @@ export function useBacklogPage() {
     epicId: epicFilter,
     tag: tagFilter,
     assigneeId: assigneeFilter,
+    minImportance: minImportanceFilter,
   } = filters
   const [isEpicModalOpen, setIsEpicModalOpen] = useState(false)
   const collapsedProjects = useToggleSet<string>()
@@ -62,13 +64,7 @@ export function useBacklogPage() {
 
   const filteredTasks = filterBacklogTasks(
     tasks ?? [],
-    {
-      status: statusFilter,
-      priority: priorityFilter,
-      epicId: epicFilter,
-      tag: tagFilter,
-      assigneeId: assigneeFilter,
-    },
+    filters,
     tagsByTask ?? {},
   )
   const projectGroups = groupTasksByProject(projects ?? [], filteredTasks)
@@ -90,6 +86,12 @@ export function useBacklogPage() {
 
   function selectPriority(value: unknown) {
     update({ priority: isTaskPriority(value) ? value : null })
+  }
+
+  function selectMinImportance(value: unknown) {
+    update({
+      minImportance: toImportance(Number(value)),
+    })
   }
 
   function getEpicLabel(task: Task): EpicLabel | null {
@@ -127,6 +129,7 @@ export function useBacklogPage() {
     epicFilter,
     tagFilter,
     assigneeFilter,
+    minImportanceFilter,
     hasPersonas,
     selectAssignee: (assigneeId: string | null) => update({ assigneeId }),
     tags: collectTags(tagsByTask ?? {}),
@@ -135,6 +138,7 @@ export function useBacklogPage() {
     selectProject,
     selectStatus,
     selectPriority,
+    selectMinImportance,
     selectTag: (tag: string | null) => update({ tag }),
     selectEpic: (epicId: string | null) => update({ epicId }),
     isEpicModalOpen,
